@@ -42,10 +42,10 @@
 <div id="bubble">…</div>
 
 <div class="btns">
-  <button data-line="hello">👋 <span>Pasisveikink!</span></button>
-  <button data-line="city">🏙️ <span>Smegenų miestas</span></button>
-  <button data-line="vibe">😎 <span>Ar aš vibe žmogus?</span></button>
-  <button data-line="alien">👽 <span>Papasakok apie ateivius</span></button>
+  <button data-line="hello">👋 <span data-l="hello">Pasisveikink!</span></button>
+  <button data-line="city">🏙️ <span data-l="city">Smegenų miestas</span></button>
+  <button data-line="vibe">😎 <span data-l="vibe">Ar aš vibe žmogus?</span></button>
+  <button data-line="alien">👽 <span data-l="alien">Papasakok apie ateivius</span></button>
 </div>
 
 <footer>BrAIn Club · pirmos pamokos dovana · brainclub.io</footer>
@@ -59,7 +59,8 @@ const SCRIPT = {
     city: "Tavo galvoje auga tikras Smegenų Miestas! Kiekvieną kartą, kai išmoksti ką nors naujo, jame pastatomas naujas pastatas. Kai klysti ir bandai dar kartą — keliai tampa platesni. Tavo darbas — statyti, saugoti ir puoselėti savo miestą. Aš tau padėsiu!",
     vibe: "Taip! Tu mokaisi vibe'inti su savimi, su kitais ir su visu pasauliu. Tai reiškia — pažinti savo mintis, suprasti draugus ir smalsiai tyrinėti viską aplink. Tai pati svarbiausia supergalia!",
     alien: "Žinai, kokia mano svajonė? Kad mes, žmonės, taip gerai pažintume savo protą ir taip gražiai gyventume — kad net ateiviai norėtų būti mūsų draugais! Viskas prasideda nuo tavo smegenų miesto. Statykim!",
-    arHint: "Paspausk ✨ mygtuką ir nukreipk telefoną į grindis!"
+    arHint: "Paspausk ✨ mygtuką ir nukreipk telefoną į grindis!",
+    btn: { hello:"Pasisveikink!", city:"Smegenų miestas", vibe:"Ar aš vibe žmogus?", alien:"Papasakok apie ateivius" }
   },
   en: {
     subtitle: "Your BrAIn Club friend",
@@ -68,7 +69,8 @@ const SCRIPT = {
     city: "A real Brain City is growing inside your head! Every time you learn something new, a new building appears. When you make a mistake and try again — the roads get wider. Your job is to build, protect and grow your city. I'll help you!",
     vibe: "Yes! You're learning to vibe with yourself, with others, and with the whole world. That means knowing your thoughts, understanding your friends, and exploring everything around you with curiosity. It's the greatest superpower!",
     alien: "Want to know my dream? That we humans understand our minds so well, and live so beautifully — that even aliens would want to be our friends! It all starts with your Brain City. Let's build!",
-    arHint: "Tap the ✨ button and point your phone at the floor!"
+    arHint: "Tap the ✨ button and point your phone at the floor!",
+    btn: { hello:"Say hello!", city:"Brain City", vibe:"Am I a vibe person?", alien:"Tell me about aliens" }
   }
 };
 let lang = 'lt';
@@ -112,6 +114,7 @@ document.getElementById('lang').addEventListener('click', () => {
   lang = lang === 'lt' ? 'en' : 'lt';
   document.getElementById('lang').textContent = lang === 'lt' ? '🇱🇹 LT' : '🇬🇧 EN';
   document.getElementById('subtitle').textContent = SCRIPT[lang].subtitle;
+  document.querySelectorAll('[data-l]').forEach(el => { el.textContent = SCRIPT[lang].btn[el.dataset.l]; });
   bubble.textContent = SCRIPT[lang].greet;
 });
 
