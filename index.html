@@ -90,10 +90,19 @@ function speak(text){
   u.onend = () => bubble.classList.remove('speaking');
   synth.speak(u);
 }
+const clipAudio = new Audio();
 function say(key){
   const t = SCRIPT[lang][key];
   bubble.textContent = t;
-  speak(t);
+  if (lang === 'lt') {
+    synth && synth.cancel();
+    clipAudio.src = 'voice/lt-' + key + '.mp3';
+    clipAudio.onplay = () => bubble.classList.add('speaking');
+    clipAudio.onended = () => bubble.classList.remove('speaking');
+    clipAudio.play().catch(() => speak(t)); // fallback if file missing/blocked
+  } else {
+    speak(t);
+  }
   playAnim(key);
 }
 document.querySelectorAll('.btns button').forEach(b =>
@@ -132,7 +141,8 @@ mv.addEventListener('click', () => {
     const bf = anims.find(a => a.toLowerCase().includes('backflip'));
     if (bf) { mv.animationName = bf; mv.play();
       const msg = lang==='lt' ? 'OHOHO! Radai mano slaptą triuką! 🤸 Parodyk draugams!' : 'WHOA! You found my secret trick! 🤸 Show your friends!';
-      bubble.textContent = msg; speak(msg);
+      bubble.textContent = msg;
+      if (lang==='lt') { clipAudio.src='voice/lt-egg.mp3'; clipAudio.play().catch(()=>speak(msg)); } else { speak(msg); }
       setTimeout(() => { const back = pick(['walking']) || anims[0]; mv.animationName = back; mv.play(); }, 5000);
     }
   }
