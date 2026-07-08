@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koks būrelis tinka TAVO vaikui? 🧠</title>
+<meta property="og:title" content="Koks būrelis tinka TAVO vaikui?">
+<meta property="og:description" content="2 min testas tėvams — atrask vaiko archetipą ir tinkamiausias veiklas. Paremta RA ir KTU tyrimu su 1600 vaikų.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'Segoe UI',Roboto,sans-serif}
+body{background:linear-gradient(160deg,#0f1b3d 0%,#1a2f6b 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;color:#fff}
+.card{background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px 24px;max-width:520px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+h1{font-size:1.7em;margin-bottom:12px;line-height:1.25}
+.sub{color:#a8b8e8;font-size:.95em;margin-bottom:24px;line-height:1.5}
+.btn{display:inline-block;background:#ff8a3d;color:#fff;border:none;border-radius:14px;padding:16px 32px;font-size:1.05em;font-weight:700;cursor:pointer;transition:.2s;width:100%;margin-top:8px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,138,61,.4)}
+.btn.ghost{background:rgba(255,255,255,.1);font-weight:500;font-size:.9em}
+.progress{height:6px;background:rgba(255,255,255,.12);border-radius:3px;margin-bottom:24px;overflow:hidden}
+.progress b{display:block;height:100%;background:#ff8a3d;border-radius:3px;transition:width .3s}
+.q{font-size:1.25em;font-weight:700;margin-bottom:20px;line-height:1.35}
+.opt{display:block;width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:14px;padding:15px 18px;margin:10px 0;font-size:1em;cursor:pointer;text-align:left;transition:.15s;line-height:1.35}
+.opt:hover{background:rgba(255,138,61,.25);border-color:#ff8a3d}
+.emoji{font-size:3.2em;margin-bottom:8px}
+.arch{font-size:1.6em;font-weight:800;color:#ff8a3d;margin-bottom:6px}
+.res-block{background:rgba(255,255,255,.07);border-radius:16px;padding:18px;margin:14px 0;text-align:left;font-size:.95em;line-height:1.55}
+.res-block h3{color:#ffb37d;margin-bottom:8px;font-size:1em}
+input[type=email]{width:100%;padding:15px;border-radius:14px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-size:1em;margin:8px 0}
+input::placeholder{color:#8fa0cc}
+.small{font-size:.8em;color:#8fa0cc;margin-top:14px;line-height:1.4}
+.science{font-size:.82em;color:#a8b8e8;background:rgba(255,255,255,.05);border-radius:10px;padding:10px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="card" id="app"></div>
+<script>
+const Q=[
+ {t:"Kai vaikas gauna naują žaislą, jis pirmiausia...",o:[["Išardo arba bando surinkti kitaip","S"],["Klausia, KODĖL jis taip veikia","T"],["Rodo visiems ir demonstruoja","A"],["Sugalvoja savo žaidimo taisykles","G"]]},
+ {t:"Laisvą popietę vaikas rinktųsi...",o:[["Statyti ar konstruoti","S"],["Tyrinėti lauke, eksperimentuoti","T"],["Vaidinti, dainuoti, filmuotis","A"],["Stalo žaidimą ar galvosūkį","G"]]},
+ {t:"Kas vaiką labiausiai „užveda“?",o:[["Kai pavyksta kažką PADARYTI","S"],["Kai sužino, KAIP kas veikia","T"],["Kai kiti PAMATO, ką jis sukūrė","A"],["Kai LAIMI arba išsprendžia","G"]]},
+ {t:"Sunkumo akimirką vaikas...",o:[["Bando kitaip — pats","S"],["Klausia daug klausimų","T"],["Ieško palaikymo ir dėmesio","A"],["Sustoja ir apgalvoja planą","G"]]},
+ {t:"Vaiko energija dažniausiai...",o:[["Rankose — visada kažką daro","S"],["Akyse — visada kažko ieško","T"],["Scenoje — traukia dėmesys","A"],["Galvoje — visada žaidžia mintimis","G"]]},
+ {t:"Su draugais vaikas dažniausiai...",o:[["Stato ir kuria kartu","S"],["Veda visus tyrinėti","T"],["Linksmina kompaniją","A"],["Organizuoja žaidimus ir taisykles","G"]]},
+ {t:"Ko vaikui labiausiai trūksta mokykloje?",o:[["Darymo rankomis","S"],["Gilių atsakymų į „kodėl?“","T"],["Saviraiškos ir scenos","A"],["Tikro iššūkio protui","G"]]},
+ {t:"Ekranai vaikui dažniausiai yra...",o:[["Kūrybos įrankis (statybos, kūrimas)","S"],["Atsakymų šaltinis („kaip veikia?“)","T"],["Scena (filmukai, šokiai)","A"],["Arena (strateginiai žaidimai)","G"]]},
+ {t:"Jūs labiausiai norėtumėte, kad būrelis ugdytų...",o:[["Praktinius įgūdžius","S"],["Smalsumą ir mąstymą","T"],["Pasitikėjimą savimi","A"],["Discipliną ir logiką","G"]]},
+ {t:"Vaiko amžius?",o:[["5–7 m.","x5"],["7–9 m.","x7"],["9–12 m.","x9"],["12+ m.","x12"]]},
+ {t:"Kiek kartų per savaitę realu lankyti būrelį?",o:[["1 kartą","y1"],["2 kartus","y2"],["3 ir daugiau","y3"],["Dar nežinau","y0"]]},
+ {t:"Kas jums svarbiausia renkantis būrelį?",o:[["Arti namų","z1"],["Kaina","z2"],["Kokybė ir rezultatai","z3"],["Ten eina vaiko draugai","z4"]]}
+];
+const ARCH={
+ S:{e:"🔨",n:"STATYTOJAS",d:"Jūsų vaikas mokosi RANKOMIS — jam reikia kurti, liesti, konstruoti ir matyti rezultatą, kurį galima paimti į rankas.",r:["Robotika ir konstravimas","Inžinerija, medžio dirbtuvės","Keramika, modeliavimas"],k:"Ar mano vaikas kurs SAVO projektą, ar tik kartos instrukcijas?",f:"Robotikos būreliai turi stipriausią įrodytą poveikį STEM mokymuisi (efekto dydis g≈0.49 — moksliniai tyrimai)."},
+ T:{e:"🔬",n:"TYRINĖTOJAS",d:"Jūsų vaiką varo klausimas „KODĖL?“ — jam reikia erdvės eksperimentuoti, klysti ir atrasti pačiam.",r:["Mokslo laboratorijos, chemija","Gamtos ir lauko tyrinėjimai","Programavimas, AI būreliai"],k:"Kiek pamokoje vietos EKSPERIMENTUI, o kiek — instrukcijai?",f:"Smalsumu grįstas mokymasis stiprina ryšius tarp žinių — vaikai geriau įsimena tai, ką patys atrado."},
+ A:{e:"🎭",n:"ATLIKĖJAS",d:"Jūsų vaikas auga, kai yra MATOMAS — scena, publika ir saviraiška jam ne baimė, o kuras.",r:["Teatras, improvizacija","Šokis, muzika, vokalas","Video kūryba, YouTube studija"],k:"Kaip dažnai vaikai turi tikrus pasirodymus publikai?",f:"Scenos menai stiprina pasitikėjimą ir socialinius-emocinius įgūdžius — SEL programos pakelia ir akademinius rezultatus (+11 procentilių, 270 000 vaikų meta-analizė)."},
+ G:{e:"♟️",n:"STRATEGAS",d:"Jūsų vaikas mąsto SISTEMOMIS — jam reikia taisyklių, iššūkių ir erdvės planuoti kelis ėjimus į priekį.",r:["Šachmatai, strateginiai žaidimai","Programavimas, algoritmai","Debatai, protmūšiai"],k:"Ar yra lygiai, turnyrai, aiški progreso sistema?",f:"Struktūruota popamokinė veikla su aiškia progresija duoda +3 mėn. akademinės pažangos per metus (JK EEF tyrimai)."}
+};
+let i=0,score={S:0,T:0,A:0,G:0},meta={};
+const app=document.getElementById('app');
+function start(){app.innerHTML=`
+ <div class="emoji">🧠</div>
+ <h1>Koks būrelis tinka TAVO vaikui?</h1>
+ <p class="sub">12 klausimų · 2 minutės · atsakykite galvodami apie savo vaiką.<br>Sužinosite vaiko <b>archetipą</b>, tinkamiausias veiklas ir ko klausti būrelio vadovo.</p>
+ <button class="btn" onclick="next()">Pradėti testą →</button>
+ <div class="science">🔬 Paremta Robotikos akademijos ir KTU tyrimu su 1 600 vaikų bei tarptautinėmis meta-analizėmis.</div>`;}
+function next(){
+ if(i>=Q.length){return email();}
+ const q=Q[i];
+ app.innerHTML=`<div class="progress"><b style="width:${i/Q.length*100}%"></b></div>
+ <div class="q">${i+1}. ${q.t}</div>
+ ${q.o.map((o,j)=>`<button class="opt" onclick="ans('${o[1]}')">${o[0]}</button>`).join('')}`;
+ window.scrollTo(0,0);
+}
+function ans(v){
+ if(score[v]!==undefined)score[v]++;
+ else meta[v[0]]=v;
+ i++;next();
+}
+function email(){
+ app.innerHTML=`<div class="emoji">✨</div><h1>Rezultatas paruoštas!</h1>
+ <p class="sub">Įveskite el. paštą — atsiųsime pilną ataskaitą PDF ir geriausius būrelius jūsų vaikui, kai startuos <b>bureliai.lt</b>.</p>
+ <input type="email" id="em" placeholder="jusu@pastas.lt">
+ <button class="btn" onclick="submitEmail()">Rodyti rezultatą →</button>
+ <button class="btn ghost" onclick="show()">Praleisti ir tik parodyti rezultatą</button>
+ <p class="small">Jokio spamo. Tik ataskaita ir bureliai.lt starto žinia.</p>`;
+}
+function submitEmail(){
+ const em=document.getElementById('em').value.trim();
+ if(em&&em.includes('@')){
+   const arch=top();
+   const data={email:em,archetype:arch,scores:score,meta:meta,ts:new Date().toISOString()};
+   let all=JSON.parse(localStorage.getItem('burelio-testas')||'[]');all.push(data);
+   localStorage.setItem('burelio-testas',JSON.stringify(all));
+   fetch('https://formspree.io/f/burelio-testas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
+ }
+ show();
+}
+function top(){return Object.keys(score).reduce((a,b)=>score[a]>=score[b]?a:b);}
+function show(){
+ const a=ARCH[top()];
+ app.innerHTML=`<div class="emoji">${a.e}</div>
+ <div class="arch">${a.n}</div>
+ <p class="sub">${a.d}</p>
+ <div class="res-block"><h3>🎯 Tinkamiausios veiklos kryptys</h3>${a.r.map(r=>"• "+r).join("<br>")}</div>
+ <div class="res-block"><h3>❓ Ko paklausti būrelio vadovo</h3>„${a.k}“</div>
+ <div class="res-block"><h3>🔬 Mokslas sako</h3>${a.f}</div>
+ <button class="btn" onclick="share()">Pasidalinti rezultatu 📲</button>
+ <button class="btn ghost" onclick="location.reload()">Atlikti dar kartą</button>
+ <div class="science">Rugsėjį startuoja <b>bureliai.lt</b> — visi būreliai vienoje vietoje. Testo rezultatas padės parinkti geriausius.</div>`;
+}
+function share(){
+ const a=ARCH[top()];
+ const txt=`Mano vaikas — ${a.e} ${a.n}! Sužinok savo vaiko archetipą:`;
+ if(navigator.share){navigator.share({title:'Koks būrelis tinka tavo vaikui?',text:txt,url:location.href});}
+ else{navigator.clipboard.writeText(txt+' '+location.href);alert('Nuoroda nukopijuota!');}
+}
+start();
+</script>
+</body>
+</html>
