@@ -89,7 +89,7 @@ function submitEmail(){
    const data={email:em,archetype:arch,scores:score,meta:meta,ts:new Date().toISOString()};
    let all=JSON.parse(localStorage.getItem('burelio-testas')||'[]');all.push(data);
    localStorage.setItem('burelio-testas',JSON.stringify(all));
-   fetch('https://formspree.io/f/burelio-testas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
+   // TODO: real backend (Formspree ID arba Supabase) — kol kas saugom lokaliai
  }
  show();
 }
