@@ -85,7 +85,7 @@ function email(){
 function submitEmail(){
  const em=document.getElementById('em').value.trim();
  if(em&&em.includes('@')){
-   const arch=top();
+   const arch=topArch();
    const data={email:em,archetype:arch,scores:score,meta:meta,ts:new Date().toISOString()};
    let all=JSON.parse(localStorage.getItem('burelio-testas')||'[]');all.push(data);
    localStorage.setItem('burelio-testas',JSON.stringify(all));
@@ -93,9 +93,9 @@ function submitEmail(){
  }
  show();
 }
-function top(){return Object.keys(score).reduce((a,b)=>score[a]>=score[b]?a:b);}
+function topArch(){return Object.keys(score).reduce((a,b)=>score[a]>=score[b]?a:b);}
 function show(){
- const a=ARCH[top()];
+ const a=ARCH[topArch()];
  app.innerHTML=`<div class="emoji">${a.e}</div>
  <div class="arch">${a.n}</div>
  <p class="sub">${a.d}</p>
@@ -107,7 +107,7 @@ function show(){
  <div class="science">Rugsėjį startuoja <b>bureliai.lt</b> — visi būreliai vienoje vietoje. Testo rezultatas padės parinkti geriausius.</div>`;
 }
 function share(){
- const a=ARCH[top()];
+ const a=ARCH[topArch()];
  const txt=`Mano vaikas — ${a.e} ${a.n}! Sužinok savo vaiko archetipą:`;
  if(navigator.share){navigator.share({title:'Koks būrelis tinka tavo vaikui?',text:txt,url:location.href});}
  else{navigator.clipboard.writeText(txt+' '+location.href);alert('Nuoroda nukopijuota!');}
