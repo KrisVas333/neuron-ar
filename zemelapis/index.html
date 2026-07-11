@@ -66,6 +66,7 @@ Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencie
   topics=T.topics;deps=D.dependencies;
   topics.forEach(t=>{byId[t.id]=t;childs[t.id]=[];pars[t.id]=[];
     const h=hash(t.id);t.theta=(h%3600)/3600*Math.PI*2;t.rr=.35+((h>>4)%1000)/1000*.65;
+    t.jit=(((h>>8)%100)-50)/50;
     t.age=(t.ageRangeStart+t.ageRangeEnd)/2;});
   deps.forEach(e=>{childs[e.prerequisiteId].push(e.topicId);pars[e.topicId].push(e.prerequisiteId)});
   document.getElementById('nT').textContent=topics.length;
@@ -81,7 +82,7 @@ Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencie
 });
 function pos(t,W,H){
   const pad=90,coneTop=H*.09,coneBot=H*.94;
-  const y=coneBot-(t.age-3)/(13-3)*(coneBot-coneTop);
+  const y=coneBot-(t.age-3)/(13-3)*(coneBot-coneTop)+t.jit*H*.032;
   const maxR=(W>720?Math.min(W*.26,430):W*.36)*(.25+.75*(t.age-3)/10);
   const a=t.theta+rot;
   return {x:W*(W>720?.62:.5)+Math.cos(a)*maxR*t.rr, y, z:Math.sin(a)};
