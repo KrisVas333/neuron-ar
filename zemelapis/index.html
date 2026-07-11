@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viskas, ko išmoksta Lietuvos vaikas · LT mokymosi žemėlapis</title>
+<meta property="og:title" content="Viskas, ko išmoksta Lietuvos vaikas">
+<meta property="og:description" content="Atviras Lietuvos ugdymo programų žemėlapis: 364 mikro-temos, 616 ryšių — nuo darželio iki 6 klasės. Paliesk tašką ir pamatyk visą vaiko kelią.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0e1f;color:#fff;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;overflow:hidden;height:100vh}
+canvas{position:fixed;inset:0;cursor:grab}
+canvas:active{cursor:grabbing}
+.hero{position:fixed;left:28px;top:24px;max-width:390px;pointer-events:none;z-index:2}
+.hero h1{font-family:Georgia,'Times New Roman',serif;font-size:2.6em;line-height:1.08;font-weight:600}
+.hero h1 .dot{color:#ff8a3d}
+.hero p{color:#a8b8e8;font-size:.86em;margin-top:12px;line-height:1.5}
+.hero .stats b{color:#fff}
+.badge{display:inline-block;margin-top:12px;background:rgba(255,138,61,.15);border:1px solid rgba(255,138,61,.5);color:#ffb37d;border-radius:20px;padding:5px 14px;font-size:.75em;pointer-events:auto}
+.credit{margin-top:10px;font-size:.72em;color:#5f6c96}
+.legend{position:fixed;left:28px;bottom:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;z-index:2;backdrop-filter:blur(8px)}
+.legend h3{font-size:.65em;letter-spacing:.12em;color:#8fa0cc;margin-bottom:8px;text-transform:uppercase}
+.legend .row{display:flex;align-items:center;gap:8px;font-size:.8em;padding:3px 0;cursor:pointer;user-select:none}
+.legend .row.off{opacity:.3}
+.legend .swatch{width:10px;height:10px;border-radius:50%}
+.legend .n{margin-left:auto;color:#8fa0cc;font-size:.9em;padding-left:14px}
+.panel{position:fixed;right:20px;top:20px;width:330px;max-height:calc(100vh - 40px);overflow-y:auto;background:rgba(16,22,44,.92);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;z-index:3;display:none;backdrop-filter:blur(10px)}
+.panel .close{float:right;cursor:pointer;color:#8fa0cc;font-size:1.1em;padding:2px 8px}
+.panel .kicker{font-size:.68em;letter-spacing:.1em;text-transform:uppercase;color:#8fa0cc;margin-bottom:6px}
+.panel h2{font-size:1.25em;margin-bottom:8px;line-height:1.25}
+.panel .desc{color:#c7d2f0;font-size:.88em;line-height:1.5;margin-bottom:12px}
+.panel .big{font-size:2em;font-weight:800;color:#ff8a3d}
+.panel .big small{font-size:.4em;color:#8fa0cc;font-weight:400;margin-left:6px}
+.panel h4{font-size:.7em;letter-spacing:.1em;text-transform:uppercase;color:#8fa0cc;margin:14px 0 6px}
+.panel ul{list-style:none}
+.panel li{font-size:.84em;padding:4px 0;line-height:1.4;color:#dde5fa}
+.panel li.link{cursor:pointer}
+.panel li.link:hover{color:#ff8a3d}
+.panel li .age{color:#8fa0cc;font-size:.85em;float:right}
+.panel .ask{background:rgba(255,138,61,.1);border-left:3px solid #ff8a3d;border-radius:0 8px 8px 0;padding:10px 12px;font-size:.85em;line-height:1.45;color:#ffd9bd;margin-top:6px}
+.hint{position:fixed;right:24px;bottom:18px;color:#5f6c96;font-size:.72em;z-index:2}
+@media(max-width:720px){.hero{max-width:250px}.hero h1{font-size:1.7em}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh}.legend{display:none}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hero">
+  <h1>Viskas, ko išmoksta Lietuvos vaikas<span class="dot">.</span></h1>
+  <p class="stats">Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b id="nT">364</b> temos ir <b id="nD">616</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.</p>
+  <span class="badge">🧪 v0 pilotas: Matematika · Informatika · Pažinimas (darželis–6 kl.) — <b>5–12 kl. jau ruošiama</b></span>
+  <div class="credit">Kuria Kristijonas Vasiliauskas · tikrina Robotikos akademijos pedagogai · duomenys: LT BP 2022 · atvira (ODbL)</div>
+</div>
+<div class="legend"><h3>Dalykai · spausk</h3><div id="rows"></div></div>
+<div class="panel" id="panel"></div>
+<div class="hint">Tempk — sukti · Spausk tašką — kelias</div>
+<script>
+const COLORS={"Matematika":"#5b8def","Informatika":"#a06bff","Pažinimas":"#ff6b8a"};
+let topics=[],deps=[],byId={},childs={},pars={},on={"Matematika":1,"Informatika":1,"Pažinimas":1};
+let sel=null,ancestors=new Set(),descendants=new Set();
+let rot=0,vel=0.0018,drag=null;
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+addEventListener('resize',resize);resize();
+function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencies.json').then(r=>r.json())]).then(([T,D])=>{
+  topics=T.topics;deps=D.dependencies;
+  topics.forEach(t=>{byId[t.id]=t;childs[t.id]=[];pars[t.id]=[];
+    const h=hash(t.id);t.theta=(h%3600)/3600*Math.PI*2;t.rr=.35+((h>>4)%1000)/1000*.65;
+    t.age=(t.ageRangeStart+t.ageRangeEnd)/2;});
+  deps.forEach(e=>{childs[e.prerequisiteId].push(e.topicId);pars[e.topicId].push(e.prerequisiteId)});
+  document.getElementById('nT').textContent=topics.length;
+  document.getElementById('nD').textContent=deps.length;
+  const rows=document.getElementById('rows');
+  Object.keys(COLORS).forEach(s=>{
+    const n=topics.filter(t=>t.subject===s).length;
+    const div=document.createElement('div');div.className='row';
+    div.innerHTML=`<span class="swatch" style="background:${COLORS[s]}"></span>${s}<span class="n">${n}</span>`;
+    div.onclick=()=>{on[s]=!on[s];div.classList.toggle('off',!on[s])};
+    rows.appendChild(div);});
+  requestAnimationFrame(frame);
+});
+function pos(t,W,H){
+  const pad=90,coneTop=H*.09,coneBot=H*.94;
+  const y=coneBot-(t.age-3)/(13-3)*(coneBot-coneTop);
+  const maxR=(W>720?Math.min(W*.26,430):W*.36)*(.25+.75*(t.age-3)/10);
+  const a=t.theta+rot;
+  return {x:W*(W>720?.62:.5)+Math.cos(a)*maxR*t.rr, y, z:Math.sin(a)};
+}
+function frame(){
+  const W=innerWidth,H=innerHeight;
+  ctx.clearRect(0,0,W,H);
+  if(!drag)rot+=vel;
+  const P={};topics.forEach(t=>P[t.id]=pos(t,W,H));
+  ctx.lineWidth=.5;
+  deps.forEach(e=>{
+    const a=byId[e.prerequisiteId],b=byId[e.topicId];
+    if(!on[a.subject]&&!on[b.subject])return;
+    const hl=sel&&((ancestors.has(e.topicId)||e.topicId===sel.id)&&(ancestors.has(e.prerequisiteId)||e.prerequisiteId===sel.id));
+    ctx.strokeStyle=hl?'rgba(255,138,61,.85)':'rgba(160,180,240,.07)';
+    ctx.lineWidth=hl?1.4:.5;
+    ctx.beginPath();ctx.moveTo(P[a.id].x,P[a.id].y);ctx.lineTo(P[b.id].x,P[b.id].y);ctx.stroke();});
+  topics.forEach(t=>{
+    if(!on[t.subject])return;
+    const p=P[t.id],depth=(p.z+1)/2;
+    let r=1.6+t.centrality*14+depth*1.2,al=.35+depth*.55;
+    if(sel){ if(t.id===sel.id){r+=3;al=1} else if(ancestors.has(t.id)){r+=1.5;al=1} else if(descendants.has(t.id)){al=Math.min(1,al+.2)} else al*=.35; }
+    ctx.globalAlpha=al;ctx.fillStyle=sel&&(t.id===sel.id||ancestors.has(t.id))?'#ff8a3d':COLORS[t.subject];
+    ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fill();});
+  ctx.globalAlpha=1;
+  requestAnimationFrame(frame);
+}
+function collect(id,map,out){ (map[id]||[]).forEach(n=>{ if(!out.has(n)){out.add(n);collect(n,map,out)} }); }
+cv.addEventListener('mousedown',e=>drag={x:e.clientX,moved:0});
+cv.addEventListener('mousemove',e=>{ if(drag){const dx=e.clientX-drag.x;rot+=dx*.005;drag.x=e.clientX;drag.moved+=Math.abs(dx)} });
+cv.addEventListener('mouseup',e=>{ const wasDrag=drag&&drag.moved>6;drag=null; if(!wasDrag)pick(e.clientX,e.clientY); });
+cv.addEventListener('touchstart',e=>{drag={x:e.touches[0].clientX,moved:0}},{passive:true});
+cv.addEventListener('touchmove',e=>{const dx=e.touches[0].clientX-drag.x;rot+=dx*.005;drag.x=e.touches[0].clientX;drag.moved+=Math.abs(dx)},{passive:true});
+cv.addEventListener('touchend',e=>{const wasDrag=drag&&drag.moved>6;const t=e.changedTouches[0];drag=null;if(!wasDrag)pick(t.clientX,t.clientY)});
+function pick(mx,my){
+  const W=innerWidth,H=innerHeight;let best=null,bd=18*18;
+  topics.forEach(t=>{ if(!on[t.subject])return;const p=pos(t,W,H);const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=t} });
+  if(best)select(best);else{sel=null;document.getElementById('panel').style.display='none'}
+}
+function select(t){
+  sel=t;ancestors=new Set();descendants=new Set();
+  collect(t.id,pars,ancestors);collect(t.id,childs,descendants);
+  const dir=(pars[t.id]||[]).map(id=>byId[id]);
+  const un=(childs[t.id]||[]).map(id=>byId[id]);
+  const li=x=>`<li class="link" onclick="select(byId['${x.id}'])">● ${x.name}<span class="age">${x.ageRangeStart}–${x.ageRangeEnd} m.</span></li>`;
+  document.getElementById('panel').innerHTML=`
+    <span class="close" onclick="sel=null;this.parentElement.style.display='none'">✕</span>
+    <div class="kicker" style="color:${COLORS[t.subject]}">● ${t.subject} · ${t.domain} · ${t.ageRangeStart}–${t.ageRangeEnd} m.</div>
+    <h2>${t.name}</h2>
+    <div class="desc">${t.description}</div>
+    <div class="big">${ancestors.size}<small>žingsnių atveda iki šios temos</small></div>
+    ${t.assessmentPrompt?`<h4>❓ Klauskite savo vaiko</h4><div class="ask">${t.assessmentPrompt.replaceAll('{{name}}','jūsų vaikas')}</div>`:''}
+    ${t.evidence&&t.evidence.length?`<h4>✅ Moka, kai</h4><ul>${t.evidence.map(e=>`<li>· ${e}</li>`).join('')}</ul>`:''}
+    ${dir.length?`<h4>Remiasi (${dir.length})</h4><ul>${dir.map(li).join('')}</ul>`:''}
+    ${un.length?`<h4>Atrakina (${un.length})</h4><ul>${un.map(li).join('')}</ul>`:''}`;
+  document.getElementById('panel').style.display='block';
+}
+window.select=select;window.byId=byId;
+</script>
+</body>
+</html>
