@@ -47,15 +47,16 @@ canvas:active{cursor:grabbing}
 <div class="hero">
   <h1>Viskas, ko išmoksta Lietuvos vaikas<span class="dot">.</span></h1>
   <p class="stats">Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b id="nT">364</b> temos ir <b id="nD">616</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.</p>
-  <span class="badge">🧪 v0 pilotas: Matematika · Informatika · Pažinimas (darželis–6 kl.) — <b>5–12 kl. jau ruošiama</b></span>
+  <span class="badge">🧪 v0.2: Matematika · Lietuvių k. · Gamtos m. · Informatika · Pažinimas (darželis–6 kl.) — <b>daugiau dalykų ir 5–12 kl. jau ruošiama</b></span>
   <div class="credit">Kuria Kristijonas Vasiliauskas · v0 juodraštis — ruošiama pedagogų peržiūrai · duomenys: LT BP 2022 · atvira (ODbL)</div>
 </div>
 <div class="legend"><h3>Dalykai · spausk</h3><div id="rows"></div></div>
 <div class="panel" id="panel"></div>
 <div class="hint">Tempk — sukti · Spausk tašką — kelias</div>
 <script>
-const COLORS={"Matematika":"#5b8def","Informatika":"#a06bff","Pažinimas":"#ff6b8a"};
-let topics=[],deps=[],byId={},childs={},pars={},on={"Matematika":1,"Informatika":1,"Pažinimas":1};
+const COLORS={"Matematika":"#5b8def","Lietuvių kalba":"#f4d06f","Gamtos mokslai":"#57c7b8","Informatika":"#a06bff","Pažinimas":"#ff6b8a","Visuomeninis ugdymas":"#e88ab5","Istorija ir geografija":"#d9c7a7","Technologijos":"#7ac74f","Dailė":"#f78fb3","Muzika":"#c9a7eb","Fizinis ugdymas":"#90be6d","Etika":"#b5838d"};
+const FALLBACK="#8fa0cc";
+let topics=[],deps=[],byId={},childs={},pars={},on={};
 let sel=null,ancestors=new Set(),descendants=new Set();
 let rot=0,vel=0.0018,drag=null;
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
@@ -72,7 +73,9 @@ Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencie
   document.getElementById('nT').textContent=topics.length;
   document.getElementById('nD').textContent=deps.length;
   const rows=document.getElementById('rows');
-  Object.keys(COLORS).forEach(s=>{
+  const present=[...new Set(topics.map(t=>t.subject))].sort((a,b)=>topics.filter(t=>t.subject===b).length-topics.filter(t=>t.subject===a).length);
+  present.forEach(s=>{
+    on[s]=1; if(!COLORS[s])COLORS[s]=FALLBACK;
     const n=topics.filter(t=>t.subject===s).length;
     const div=document.createElement('div');div.className='row';
     div.innerHTML=`<span class="swatch" style="background:${COLORS[s]}"></span>${s}<span class="n">${n}</span>`;
