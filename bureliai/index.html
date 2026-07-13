@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ką iš tikrųjų prideda būrelis? — Robotikos akademija × Lietuvos mokymosi žemėlapis</title>
+<meta name="description" content="Robotikos akademijos programos, sujungtos su atviru Lietuvos vaiko mokymosi žemėlapiu: 234 pamokos, 952 sąsajos, 72 temos — anksčiau nei mokykla.">
+<style>
+:root{
+  --bg0:#0f1430; --bg1:#141931; --card:#1b2144; --card2:#222a52;
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+  --txt:#ffffff; --dim:#a7aecf; --dim2:#7d85ab;
+  --amber:#f2a900; --amber-hi:#ffbe2e;
+  --ugdo:#3ecf8e; --gilina:#5aa9ff; --aplenkia:#ffb020;
+  --r-lg:24px; --r-md:18px; --r-sm:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:linear-gradient(180deg,var(--bg0) 0%,var(--bg1) 40%,var(--bg0) 100%);
+  color:var(--txt); line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--amber-hi)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 48px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40% -20% auto;height:130%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(242,169,0,.13),transparent 62%);pointer-events:none}
+.hero .wrap{position:relative}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--amber);
+  background:rgba(242,169,0,.1);border:1px solid rgba(242,169,0,.3);
+  padding:7px 16px;border-radius:999px;margin-bottom:26px}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--amber)}
+h1{font-size:clamp(2rem,5.4vw,3.3rem);font-weight:800;line-height:1.12;letter-spacing:-.02em;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--amber)}
+.sub{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--dim);max-width:640px;margin:0 auto 40px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:860px;margin:0 auto 40px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:22px 12px 18px;transition:transform .2s,border-color .2s}
+.stat:hover{transform:translateY(-3px);border-color:var(--line2)}
+.stat b{display:block;font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+.stat span{font-size:.83rem;color:var(--dim)}
+.stat.gold{background:linear-gradient(160deg,rgba(242,169,0,.16),rgba(242,169,0,.05));border-color:rgba(242,169,0,.4)}
+.stat.gold b{color:var(--amber-hi)}
+.cta{display:inline-block;background:var(--amber);color:#141931;font-weight:800;font-size:1.05rem;
+  text-decoration:none;padding:16px 34px;border-radius:999px;
+  box-shadow:0 6px 24px rgba(242,169,0,.3);transition:background .2s,transform .2s,box-shadow .2s}
+.cta:hover{background:var(--amber-hi);transform:translateY(-2px);box-shadow:0 10px 30px rgba(242,169,0,.4)}
+.cta-note{margin-top:14px;font-size:.85rem;color:var(--dim2)}
+
+/* ---------- legend ---------- */
+.legend{padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.02)}
+.legend .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+.legend h2{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--dim2);width:100%;text-align:center;margin-bottom:4px}
+.lg{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:9px 18px 9px 12px;font-size:.9rem}
+.lg .dot{width:12px;height:12px;border-radius:50%;flex:none}
+.lg b{font-weight:800}
+.lg span{color:var(--dim)}
+.lg.u .dot{background:var(--ugdo)} .lg.u b{color:var(--ugdo)}
+.lg.g .dot{background:var(--gilina)} .lg.g b{color:var(--gilina)}
+.lg.a .dot{background:var(--aplenkia)} .lg.a b{color:var(--aplenkia)}
+
+/* ---------- sections ---------- */
+section{padding:64px 0}
+.sec-h{text-align:center;margin-bottom:14px;font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+.sec-sub{text-align:center;color:var(--dim);max-width:560px;margin:0 auto 42px}
+
+/* ---------- ladder ---------- */
+.ladder{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:6px;margin-bottom:46px}
+.rung{background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:12px 18px;text-align:center;min-width:130px}
+.rung b{display:block;font-size:.95rem;color:var(--amber-hi)}
+.rung span{font-size:.8rem;color:var(--dim)}
+.arrow{align-self:center;color:var(--amber);font-size:1.3rem;font-weight:800;padding:0 4px}
+
+/* ---------- program cards ---------- */
+.cards{display:grid;grid-template-columns:1fr;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--line2)}
+.card.open{border-color:rgba(242,169,0,.45);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.card-btn{display:block;width:100%;background:none;border:none;color:inherit;font:inherit;
+  text-align:left;padding:26px 26px 22px;cursor:pointer}
+.card-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin-bottom:6px}
+.pcode{font-size:1.5rem;font-weight:800;color:var(--amber-hi);letter-spacing:-.01em}
+.pname{font-size:1.1rem;font-weight:700}
+.pmeta{font-size:.86rem;color:var(--dim);background:rgba(255,255,255,.06);
+  border-radius:999px;padding:4px 12px;white-space:nowrap}
+.universe{color:var(--dim);font-size:.95rem;margin:6px 0 16px;max-width:720px}
+.mini{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.mini span{font-size:.83rem;background:rgba(255,255,255,.05);border:1px solid var(--line);
+  border-radius:999px;padding:5px 13px;color:var(--dim)}
+.mini b{color:var(--txt)}
+.mini .ap{border-color:rgba(255,176,32,.4);background:rgba(255,176,32,.08)}
+.mini .ap b{color:var(--aplenkia)}
+.topx{display:grid;gap:7px;margin-bottom:4px}
+.topx li{list-style:none;font-size:.9rem;color:var(--dim);display:flex;gap:9px;align-items:baseline}
+.topx li::before{content:"🟠";font-size:.75rem;transform:translateY(-1px)}
+.topx b{color:var(--txt);font-weight:600}
+.topx .sch{color:var(--aplenkia);font-weight:700;white-space:nowrap}
+.expand-hint{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:.85rem;font-weight:700;color:var(--amber)}
+.chev{display:inline-block;transition:transform .3s;font-size:.8rem}
+.card.open .chev{transform:rotate(180deg)}
+.acc{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s cubic-bezier(.4,0,.2,1)}
+.card.open .acc{grid-template-rows:1fr}
+.acc-in{overflow:hidden}
+.acc-pad{padding:4px 26px 26px;border-top:1px solid var(--line)}
+.lt-head{display:flex;gap:10px;font-size:.75rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--dim2);padding:16px 0 10px}
+.lesson{padding:13px 0;border-top:1px solid var(--line)}
+.lhead{display:flex;gap:12px;align-items:baseline;margin-bottom:8px}
+.lnr{flex:none;min-width:34px;height:26px;display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.07);border-radius:8px;font-size:.8rem;font-weight:700;color:var(--dim);padding:0 6px}
+.ltitle{font-weight:600;font-size:.95rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.78rem;line-height:1.3;padding:5px 11px;border-radius:999px;border:1px solid;
+  cursor:help;transition:transform .15s,filter .15s}
+.chip:hover{transform:translateY(-1px);filter:brightness(1.2)}
+.chip small{opacity:.75;font-size:.72rem}
+.chip.ugdo{color:var(--ugdo);border-color:rgba(62,207,142,.4);background:rgba(62,207,142,.08)}
+.chip.gilina{color:var(--gilina);border-color:rgba(90,169,255,.4);background:rgba(90,169,255,.08)}
+.chip.aplenkia{color:var(--aplenkia);border-color:rgba(255,176,32,.5);background:rgba(255,176,32,.1);font-weight:700}
+.loading,.err{text-align:center;color:var(--dim);padding:40px 0}
+.err{color:#ff8f8f}
+
+/* ---------- facts ---------- */
+#faktai{background:rgba(255,255,255,.02);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:24px;transition:transform .2s,border-color .2s}
+.fact:hover{transform:translateY(-3px);border-color:rgba(255,176,32,.4)}
+.fact .fi{font-size:1.7rem;margin-bottom:12px}
+.fact h3{font-size:1.02rem;font-weight:800;margin-bottom:8px;line-height:1.35}
+.fact h3 em{font-style:normal;color:var(--aplenkia)}
+.fact p{font-size:.88rem;color:var(--dim)}
+.fact .tag{display:inline-block;margin-top:12px;font-size:.75rem;font-weight:700;color:var(--aplenkia);
+  background:rgba(255,176,32,.1);border:1px solid rgba(255,176,32,.35);border-radius:999px;padding:3px 11px}
+
+/* ---------- bottom cta ---------- */
+.bottom-cta{text-align:center;padding:70px 0}
+.bottom-cta h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;margin-bottom:12px}
+.bottom-cta p{color:var(--dim);margin-bottom:30px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:44px 0 56px;font-size:.85rem;color:var(--dim2)}
+footer .meth{max-width:760px;margin:0 auto 22px;text-align:center}
+footer .meth b{color:var(--dim)}
+footer .links{display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;margin-bottom:22px}
+footer a{color:var(--dim);text-decoration:underline;text-underline-offset:3px}
+footer a:hover{color:var(--amber-hi)}
+footer .cred{text-align:center;color:var(--dim2)}
+
+@media(max-width:720px){
+  .hero{padding:52px 0 40px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  section{padding:48px 0}
+  .card-btn{padding:20px 18px 18px}
+  .acc-pad{padding:4px 18px 20px}
+  .arrow{width:100%;text-align:center;transform:rotate(90deg);padding:0}
+  .rung{min-width:0;flex:1 1 40%}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="badge">Robotikos akademija</div>
+    <h1>Ką <em>iš tikrųjų</em> prideda būrelis?</h1>
+    <p class="sub">Robotikos akademijos programos, sujungtos su atviru Lietuvos vaiko mokymosi žemėlapiu — pamoka po pamokos, tema po temos.</p>
+    <div class="stats">
+      <div class="stat"><b>234</b><span>pamokos</span></div>
+      <div class="stat"><b>952</b><span>sąsajos su žemėlapiu</span></div>
+      <div class="stat"><b>180</b><span>temų = 19,2 % žemėlapio</span></div>
+      <div class="stat gold"><b>72</b><span>temos — anksčiau nei mokykla</span></div>
+    </div>
+    <a class="cta" href="https://krisvas333.github.io/neuron-ar/zemelapis/" target="_blank" rel="noopener">Atrask žemėlapį →</a>
+    <p class="cta-note">Atviras Lietuvos vaiko mokymosi žemėlapis — 937 temos pagal BP programas</p>
+  </div>
+</header>
+
+<!-- ============ LEGEND ============ -->
+<div class="legend">
+  <div class="wrap">
+    <h2>Kaip skaityti sąsajas</h2>
+    <div class="lg u"><span class="dot"></span><div><b>ugdo</b> <span>— temą ugdo savo amžiuje</span></div></div>
+    <div class="lg g"><span class="dot"></span><div><b>gilina</b> <span>— kartoja ir tvirtina, ką mokykla jau lietė</span></div></div>
+    <div class="lg a"><span class="dot"></span><div><b>APLENKIA</b> <span>— mokykla tai mokys po 2+ metų</span></div></div>
+  </div>
+</div>
+
+<!-- ============ PROGRAMS ============ -->
+<section id="programos">
+  <div class="wrap">
+    <h2 class="sec-h">6 programos — vientisa progresija</h2>
+    <p class="sec-sub">Nuo pirmų konstrukcijų 5-erių iki jutiklių, ciklų ir kintamųjų pradinėse klasėse.</p>
+    <div class="ladder">
+      <div class="rung"><b>RT1</b><span>-1 kl. · 5–6 m.</span></div>
+      <div class="arrow">→</div>
+      <div class="rung"><b>RT2 · RT3</b><span>0 kl. · 6–7 m.</span></div>
+      <div class="arrow">→</div>
+      <div class="rung"><b>RN1 · RN2</b><span>1–2 kl. · 7–9 m.</span></div>
+      <div class="arrow">→</div>
+      <div class="rung"><b>RS1</b><span>1–2 kl. · 7–9 m.</span></div>
+    </div>
+    <div class="cards" id="cards"><p class="loading">Kraunamos programos…</p></div>
+  </div>
+</section>
+
+<!-- ============ TOP FACTS ============ -->
+<section id="faktai">
+  <div class="wrap">
+    <h2 class="sec-h">Top faktai iš sąsajų</h2>
+    <p class="sec-sub">Ryškiausi pavyzdžiai, kur būrelio vaikai dirba su turiniu, kurio mokykla mokys gerokai vėliau.</p>
+    <div class="facts">
+      <div class="fact"><div class="fi">🔁</div>
+        <h3>Ciklas — <em>3–4 metais anksčiau</em></h3>
+        <p>Kartojimo komandą (ciklą) žemėlapis numato 9–11 m. (3–4 kl.). Būrelyje pirmą LOOP bloką vaikai naudoja jau nuo 6 metų — RT2, RT3, o vėliau kiekvienoje programoje.</p>
+        <span class="tag">40 sąsajų · visose programose</span></div>
+      <div class="fact"><div class="fi">⚙️</div>
+        <h3>Skriemuliai ir svirtys — <em>5-mečių rankose</em></h3>
+        <p>„Paprastieji mechanizmai“ žemėlapyje — 11–13 m. (5–6 kl.) gamtos mokslų tema. RT1 vaikai skriemulį su virve konstruoja jau 3-ioje pamokoje, būdami 5-erių.</p>
+        <span class="tag">mokykloje 5–6 kl. → būrelyje -1 kl.</span></div>
+      <div class="fact"><div class="fi">🔢</div>
+        <h3>Kintamieji — <em>5–6 kl. turinys 2-oje klasėje</em></h3>
+        <p>Kintamojo sąvoka žemėlapyje atsiranda tik 11–13 m. RN1 ir RS1 mokiniai kintamuosius savo programose naudoja 7–9 metų — reikšmėms saugoti ir atsitiktiniams skaičiams.</p>
+        <span class="tag">RN1 · RS1 · aplenkia ~4 m.</span></div>
+      <div class="fact"><div class="fi">🛡️</div>
+        <h3>Phishing, 2FA ir šifravimas — <em>pradinukams</em></h3>
+        <p>„Kibernetinės grėsmės“ žemėlapyje — 11–13 m. tema. Būrelio 7–9-mečiai kalba apie sukčiavimą, dviejų veiksnių autentifikavimą ir iššifruoja slaptus kodus.</p>
+        <span class="tag">RN1 · RN2 · RS1</span></div>
+      <div class="fact"><div class="fi">🌱</div>
+        <h3>Fotosintezė — <em>6 metų</em></h3>
+        <p>Kaip augalai gaminasi maistą, mokykla aiškina 11–13 m. (5–6 kl.). RT2 programoje šią temą vaikai paliečia 10-oje pamokoje — būdami 6-erių.</p>
+        <span class="tag">mokykloje 5–6 kl. → būrelyje 0 kl.</span></div>
+      <div class="fact"><div class="fi">🏗️</div>
+        <h3>Judantys mechanizmai — <em>dažniausia sąsaja</em></h3>
+        <p>„Ašis, ratas, svirtis“ — žemėlapyje 9–11 m. technologijų tema, o būrelyje tai kasdienybė nuo pat pirmų pamokų: 67 sąsajos per visas programas.</p>
+        <span class="tag">67 sąsajos · nuo 5 m.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOTTOM CTA ============ -->
+<div class="bottom-cta">
+  <div class="wrap">
+    <h2>Pažiūrėk, kur visa tai gyvena žemėlapyje</h2>
+    <p>Kiekviena čia paminėta tema — atvirame Lietuvos vaiko mokymosi žemėlapyje su ryšiais, amžiais ir programomis.</p>
+    <a class="cta" href="https://krisvas333.github.io/neuron-ar/zemelapis/" target="_blank" rel="noopener">Atrask žemėlapį →</a>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <p class="meth"><b>v0 juodraštis</b> — sąsajos sugeneruotos AI, laukia RA pedagogų peržiūros.
+    <b>Metodika:</b> pamoka susieta su žemėlapio tema, kai jos turinys tiesiogiai ugdomas;
+    „aplenkia“ = temos amžius žemėlapyje ≥ 2 m. aukštesnis už pamokos amžių.</p>
+    <div class="links">
+      <a href="https://krisvas333.github.io/neuron-ar/zemelapis/" target="_blank" rel="noopener">Atviras mokymosi žemėlapis</a>
+      <a href="https://github.com/KrisVas333/neuron-ar" target="_blank" rel="noopener">Atviri duomenys (GitHub)</a>
+      <a href="https://robotikosakademija.lt" target="_blank" rel="noopener">robotikosakademija.lt</a>
+    </div>
+    <p class="cred">© Robotikos akademija · kuria Kristijonas Vasiliauskas</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var REL_LABEL = {ugdo:"ugdo", gilina:"gilina", aplenkia:"APLENKIA"};
+
+  function esc(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+  function klaseFromAge(a){
+    var start = parseInt(a, 10);
+    if (start <= 6) return "priešmokykliniame";
+    if (start === 7) return "1–2 kl.";
+    if (start === 9) return "3–4 kl.";
+    if (start === 11) return "5–6 kl.";
+    if (start === 13) return "7–8 kl.";
+    return "9+ kl.";
+  }
+
+  function chipHtml(lk){
+    var tip = REL_LABEL[lk.r] + " · " + lk.s + " · " + lk.a + " m. — " + lk.w;
+    return '<span class="chip ' + lk.r + '" title="' + esc(tip) + '">' +
+      esc(lk.t) + ' <small>' + esc(lk.a) + '</small></span>';
+  }
+
+  function lessonsHtml(p){
+    var h = '<div class="acc-pad"><div class="lt-head"><span>Nr · Pamoka · žemėlapio temos</span></div>';
+    for (var i = 0; i < p.lessons.length; i++){
+      var l = p.lessons[i];
+      h += '<div class="lesson"><div class="lhead"><span class="lnr">' + l.nr + '</span>' +
+           '<span class="ltitle">' + esc(l.title) + '</span></div><div class="chips">';
+      for (var j = 0; j < l.links.length; j++) h += chipHtml(l.links[j]);
+      h += '</div></div>';
+    }
+    return h + '</div>';
+  }
+
+  function cardHtml(p, idx){
+    var h = '<article class="card" id="card-' + esc(p.code) + '">';
+    h += '<button class="card-btn" type="button" data-idx="' + idx + '" aria-expanded="false">';
+    h += '<div class="card-top"><span class="pcode">' + esc(p.code) + '</span>' +
+         '<span class="pname">' + esc(p.name) + '</span>' +
+         '<span class="pmeta">' + esc(p.klase) + ' · ' + esc(p.age) + '</span>' +
+         '<span class="pmeta">' + esc(p.kit) + '</span></div>';
+    h += '<p class="universe">' + esc(p.universe) + '</p>';
+    h += '<div class="mini"><span><b>' + p.stats.lessons + '</b> pamokos</span>' +
+         '<span><b>' + p.stats.topics + '</b> žemėlapio temos</span>' +
+         '<span class="ap"><b>' + p.stats.aplenkia + '</b> kartus aplenkia mokyklą</span></div>';
+    h += '<ul class="topx">';
+    for (var i = 0; i < p.topAplenkia.length; i++){
+      var t = p.topAplenkia[i];
+      h += '<li><span><b>' + esc(t.t) + '</b> — mokykloje <span class="sch">' +
+           klaseFromAge(t.a) + '</span></span></li>';
+    }
+    h += '</ul><span class="expand-hint">Visos pamokos ir temos <span class="chev">▼</span></span>';
+    h += '</button><div class="acc"><div class="acc-in" data-body="' + idx + '"></div></div></article>';
+    return h;
+  }
+
+  function init(data){
+    var root = document.getElementById("cards");
+    var html = "";
+    for (var i = 0; i < data.programs.length; i++) html += cardHtml(data.programs[i], i);
+    root.innerHTML = html;
+
+    root.addEventListener("click", function(e){
+      var btn = e.target.closest ? e.target.closest(".card-btn") : null;
+      if (!btn) return;
+      var idx = parseInt(btn.getAttribute("data-idx"), 10);
+      var card = btn.parentNode;
+      var body = card.querySelector('[data-body="' + idx + '"]');
+      if (!body.innerHTML) body.innerHTML = lessonsHtml(data.programs[idx]);
+      var open = card.classList.toggle("open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+
+  fetch("data/bureliai-data.json")
+    .then(function(r){
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(init)
+    .catch(function(err){
+      document.getElementById("cards").innerHTML =
+        '<p class="err">Nepavyko įkelti duomenų (' + esc(err.message) + '). Bandykite atnaujinti puslapį.</p>';
+    });
+})();
+</script>
+</body>
+</html>
