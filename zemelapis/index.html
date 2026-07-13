@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Viskas, ko išmoksta Lietuvos vaikas · LT mokymosi žemėlapis</title>
 <meta property="og:title" content="Viskas, ko išmoksta Lietuvos vaikas">
-<meta property="og:description" content="Atviras Lietuvos ugdymo programų žemėlapis: 364 mikro-temos, 616 ryšių — nuo darželio iki 6 klasės. Paliesk tašką ir pamatyk visą vaiko kelią.">
+<meta property="og:description" content="Atviras Lietuvos ugdymo programų žemėlapis: 937 mikro-temos ir 1 520 ryšių — nuo darželio iki 6 klasės. Paliesk tašką ir pamatyk visą vaiko kelią.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0e1f;color:#fff;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;overflow:hidden;height:100vh}
@@ -18,13 +18,16 @@ canvas:active{cursor:grabbing}
 .hero .stats b{color:#fff}
 .badge{display:inline-block;margin-top:12px;background:rgba(255,138,61,.15);border:1px solid rgba(255,138,61,.5);color:#ffb37d;border-radius:20px;padding:5px 14px;font-size:.75em;pointer-events:auto}
 .credit{margin-top:10px;font-size:.72em;color:#5f6c96}
-.legend{position:fixed;left:28px;bottom:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;z-index:2;backdrop-filter:blur(8px)}
+.databtn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;pointer-events:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#dde5fa;border-radius:22px;padding:8px 16px;font-size:.78em;text-decoration:none;transition:.2s}
+.databtn:hover{background:rgba(255,255,255,.12)}
+.legend{position:fixed;left:28px;bottom:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;z-index:2;backdrop-filter:blur(8px);max-height:44vh;overflow-y:auto}
 .legend h3{font-size:.65em;letter-spacing:.12em;color:#8fa0cc;margin-bottom:8px;text-transform:uppercase}
 .legend .row{display:flex;align-items:center;gap:8px;font-size:.8em;padding:3px 0;cursor:pointer;user-select:none}
 .legend .row.off{opacity:.3}
 .legend .swatch{width:10px;height:10px;border-radius:50%}
 .legend .n{margin-left:auto;color:#8fa0cc;font-size:.9em;padding-left:14px}
-.panel{position:fixed;right:20px;top:20px;width:330px;max-height:calc(100vh - 40px);overflow-y:auto;background:rgba(16,22,44,.92);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;z-index:3;display:none;backdrop-filter:blur(10px)}
+.panel{position:fixed;right:20px;top:20px;width:330px;max-height:calc(100vh - 40px);overflow-y:auto;background:rgba(16,22,44,.92);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;z-index:3;backdrop-filter:blur(10px);opacity:0;transform:translateX(24px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+.panel.open{opacity:1;transform:none;pointer-events:auto}
 .panel .close{float:right;cursor:pointer;color:#8fa0cc;font-size:1.1em;padding:2px 8px}
 .panel .kicker{font-size:.68em;letter-spacing:.1em;text-transform:uppercase;color:#8fa0cc;margin-bottom:6px}
 .panel h2{font-size:1.25em;margin-bottom:8px;line-height:1.25}
@@ -39,36 +42,53 @@ canvas:active{cursor:grabbing}
 .panel li .age{color:#8fa0cc;font-size:.85em;float:right}
 .panel .ask{background:rgba(255,138,61,.1);border-left:3px solid #ff8a3d;border-radius:0 8px 8px 0;padding:10px 12px;font-size:.85em;line-height:1.45;color:#ffd9bd;margin-top:6px}
 .hint{position:fixed;right:24px;bottom:18px;color:#5f6c96;font-size:.72em;z-index:2}
-@media(max-width:720px){.hero{max-width:250px}.hero h1{font-size:1.7em}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh}.legend{display:none}}
+.hint b{color:#8fa0cc;font-weight:600}
+@media(max-width:720px){.hero{max-width:260px}.hero h1{font-size:1.7em}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh;transform:translateY(24px)}.panel.open{transform:none}.legend{display:none}.hint{display:none}}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 <div class="hero">
   <h1>Viskas, ko išmoksta Lietuvos vaikas<span class="dot">.</span></h1>
-  <p class="stats">Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b id="nT">364</b> temos ir <b id="nD">616</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.</p>
-  <span class="badge">🧪 v0.3 juodraštis: <b>visi 12 dalykų, darželis–6 kl.</b> — 7–12 klasės jau ruošiamos</span>
-  <div class="credit">Kuria Kristijonas Vasiliauskas · v0 juodraštis — ruošiama pedagogų peržiūrai · duomenys: LT BP 2022 · atvira (ODbL)</div>
+  <p class="stats">Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b id="nT">937</b> temos ir <b id="nD">1520</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.</p>
+  <span class="badge">🧪 v0.4 juodraštis: <b>visi 12 dalykų, darželis–6 kl.</b> — 7–12 klasės jau ruošiamos</span><br>
+  <a class="databtn" href="https://github.com/KrisVas333/neuron-ar/tree/main/zemelapis/data" target="_blank" rel="noopener">⬇ Atviri duomenys · ODbL</a>
+  <div class="credit">Kuria Kristijonas Vasiliauskas · v0 juodraštis — ruošiama pedagogų peržiūrai · duomenys: LT BP 2022</div>
 </div>
 <div class="legend"><h3>Dalykai · spausk</h3><div id="rows"></div></div>
 <div class="panel" id="panel"></div>
-<div class="hint">Tempk — sukti · Spausk tašką — kelias</div>
+<div class="hint"><b>Tempk</b> — sukti · <b>Dešinys/Shift</b> — stumdyti · <b>Ratukas</b> — priartinti · <b>Dukart</b> — atstatyti · <b>Spausk tašką</b> — kelias</div>
 <script>
 const COLORS={"Matematika":"#5b8def","Lietuvių kalba":"#f4d06f","Gamtos mokslai":"#57c7b8","Informatika":"#a06bff","Pažinimas":"#ff6b8a","Visuomeninis ugdymas":"#e88ab5","Istorija ir geografija":"#d9c7a7","Technologijos":"#7ac74f","Dailė":"#f78fb3","Muzika":"#c9a7eb","Fizinis ugdymas":"#90be6d","Etika":"#b5838d"};
 const FALLBACK="#8fa0cc";
 let topics=[],deps=[],byId={},childs={},pars={},on={};
 let sel=null,ancestors=new Set(),descendants=new Set();
-let rot=0,vel=0.0018,drag=null;
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
 addEventListener('resize',resize);resize();
 function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+
+// ---- 3D camera ----
+const DEF={yaw:0,pitch:-0.10,dist:1500,panX:0,panY:0};
+const cam={...DEF};
+const F=900, WORLD_H=980, R_MAX=460;
+let tween=null, lastInteract=0, autoSpin=true;
+function tweenTo(target,dur=650){const from={...cam};const t0=performance.now();tween={t0,dur,from,to:{...cam,...target}}}
+function stepTween(now){if(!tween)return;let k=Math.min(1,(now-tween.t0)/tween.dur);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+ for(const p of ['yaw','pitch','dist','panX','panY'])cam[p]=tween.from[p]+(tween.to[p]-tween.from[p])*k;
+ if(k>=1)tween=null}
+
 Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencies.json').then(r=>r.json())]).then(([T,D])=>{
   topics=T.topics;deps=D.dependencies;
   topics.forEach(t=>{byId[t.id]=t;childs[t.id]=[];pars[t.id]=[];
     const h=hash(t.id);t.theta=(h%3600)/3600*Math.PI*2;t.rr=.35+((h>>4)%1000)/1000*.65;
-    t.jit=(((h>>8)%100)-50)/50;
-    t.age=(t.ageRangeStart+t.ageRangeEnd)/2;});
+    const jit=(((h>>8)%100)-50)/50;
+    t.age=(t.ageRangeStart+t.ageRangeEnd)/2;
+    const a=(t.age-3)/10; // 0..1
+    t.y3=(0.5-a)*WORLD_H + jit*30;
+    const R=(0.22+0.78*a)*R_MAX*t.rr;
+    t.x3=Math.cos(t.theta)*R; t.z3=Math.sin(t.theta)*R;
+    t.baseR=1.7+t.centrality*16;});
   deps.forEach(e=>{childs[e.prerequisiteId].push(e.topicId);pars[e.topicId].push(e.prerequisiteId)});
   document.getElementById('nT').textContent=topics.length;
   document.getElementById('nD').textContent=deps.length;
@@ -83,56 +103,89 @@ Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencie
     rows.appendChild(div);});
   requestAnimationFrame(frame);
 });
-function pos(t,W,H){
-  const pad=90,coneTop=H*.09,coneBot=H*.94;
-  const y=coneBot-(t.age-3)/(13-3)*(coneBot-coneTop)+t.jit*H*.032;
-  const maxR=(W>720?Math.min(W*.26,430):W*.36)*(.25+.75*(t.age-3)/10);
-  const a=t.theta+rot;
-  return {x:W*(W>720?.62:.5)+Math.cos(a)*maxR*t.rr, y, z:Math.sin(a)};
+
+function project(t,W,H){
+  const cy=Math.cos(cam.yaw),sy=Math.sin(cam.yaw);
+  let x=t.x3*cy - t.z3*sy, z=t.x3*sy + t.z3*cy, y=t.y3;
+  const cp=Math.cos(cam.pitch),sp=Math.sin(cam.pitch);
+  let y2=y*cp - z*sp, z2=y*sp + z*cp;
+  const zc=z2+cam.dist, s=F/Math.max(120,zc);
+  return {x:W*0.5+120+(x*s)+cam.panX, y:H*0.52-(y2*s)+cam.panY, s, z:zc};
 }
-function frame(){
+function frame(now){
+  stepTween(now);
   const W=innerWidth,H=innerHeight;
   ctx.clearRect(0,0,W,H);
-  if(!drag)rot+=vel;
-  const P={};topics.forEach(t=>P[t.id]=pos(t,W,H));
-  ctx.lineWidth=.5;
+  if(autoSpin && !sel && !tween && now-lastInteract>4000) cam.yaw+=0.0015;
+  const P={};let zmin=1e9,zmax=-1e9;
+  topics.forEach(t=>{const p=project(t,W,H);P[t.id]=p;if(p.z<zmin)zmin=p.z;if(p.z>zmax)zmax=p.z});
+  const zr=Math.max(1,zmax-zmin);
+  // edges
   deps.forEach(e=>{
     const a=byId[e.prerequisiteId],b=byId[e.topicId];
     if(!on[a.subject]&&!on[b.subject])return;
     const hl=sel&&((ancestors.has(e.topicId)||e.topicId===sel.id)&&(ancestors.has(e.prerequisiteId)||e.prerequisiteId===sel.id));
-    ctx.strokeStyle=hl?'rgba(255,138,61,.85)':'rgba(160,180,240,.07)';
-    ctx.lineWidth=hl?1.4:.5;
+    if(sel&&!hl){ctx.strokeStyle='rgba(160,180,240,.028)';ctx.lineWidth=.4}
+    else if(hl){ctx.strokeStyle='rgba(255,158,84,.9)';ctx.lineWidth=1.6}
+    else{ctx.strokeStyle='rgba(160,180,240,.07)';ctx.lineWidth=.5}
     ctx.beginPath();ctx.moveTo(P[a.id].x,P[a.id].y);ctx.lineTo(P[b.id].x,P[b.id].y);ctx.stroke();});
-  topics.forEach(t=>{
+  // nodes far→near
+  const order=[...topics].sort((a,b)=>P[b.id].z-P[a.id].z);
+  order.forEach(t=>{
     if(!on[t.subject])return;
-    const p=P[t.id],depth=(p.z+1)/2;
-    let r=1.6+t.centrality*14+depth*1.2,al=.35+depth*.55;
-    if(sel){ if(t.id===sel.id){r+=3;al=1} else if(ancestors.has(t.id)){r+=1.5;al=1} else if(descendants.has(t.id)){al=Math.min(1,al+.2)} else al*=.35; }
-    ctx.globalAlpha=al;ctx.fillStyle=sel&&(t.id===sel.id||ancestors.has(t.id))?'#ff8a3d':COLORS[t.subject];
-    ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fill();});
+    const p=P[t.id], depth=1-(p.z-zmin)/zr; // 1=near
+    let r=Math.max(.8,t.baseR*p.s*1.15), al=.28+.62*depth;
+    const isSel=sel&&t.id===sel.id, isAnc=sel&&ancestors.has(t.id), isDesc=sel&&descendants.has(t.id);
+    if(sel){ if(isSel){al=1} else if(isAnc){al=1} else if(isDesc){al=Math.min(1,al+.15)} else al*=.12; }
+    ctx.globalAlpha=al;
+    ctx.fillStyle=isSel||isAnc?'#ff8a3d':COLORS[t.subject];
+    ctx.beginPath();ctx.arc(p.x,p.y,isSel?r+2.5:r,0,7);ctx.fill();
+    if(isSel){ctx.globalAlpha=1;ctx.strokeStyle='#fff';ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(p.x,p.y,r+6,0,7);ctx.stroke();}
+  });
   ctx.globalAlpha=1;
   requestAnimationFrame(frame);
 }
-function collect(id,map,out){ (map[id]||[]).forEach(n=>{ if(!out.has(n)){out.add(n);collect(n,map,out)} }); }
-cv.addEventListener('mousedown',e=>drag={x:e.clientX,moved:0});
-cv.addEventListener('mousemove',e=>{ if(drag){const dx=e.clientX-drag.x;rot+=dx*.005;drag.x=e.clientX;drag.moved+=Math.abs(dx)} });
-cv.addEventListener('mouseup',e=>{ const wasDrag=drag&&drag.moved>6;drag=null; if(!wasDrag)pick(e.clientX,e.clientY); });
-cv.addEventListener('touchstart',e=>{drag={x:e.touches[0].clientX,moved:0}},{passive:true});
-cv.addEventListener('touchmove',e=>{const dx=e.touches[0].clientX-drag.x;rot+=dx*.005;drag.x=e.touches[0].clientX;drag.moved+=Math.abs(dx)},{passive:true});
-cv.addEventListener('touchend',e=>{const wasDrag=drag&&drag.moved>6;const t=e.changedTouches[0];drag=null;if(!wasDrag)pick(t.clientX,t.clientY)});
+function collect(id,map,out){(map[id]||[]).forEach(n=>{if(!out.has(n)){out.add(n);collect(n,map,out)}})}
+
+// ---- interactions ----
+let drag=null;
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('mousedown',e=>{drag={x:e.clientX,y:e.clientY,btn:e.button,shift:e.shiftKey,moved:0};lastInteract=performance.now()});
+addEventListener('mousemove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+  if(drag.btn===2||drag.shift){cam.panX+=dx;cam.panY+=dy}
+  else{cam.yaw+=dx*.005;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch-dy*.003))}
+  drag.x=e.clientX;drag.y=e.clientY;drag.moved+=Math.abs(dx)+Math.abs(dy);lastInteract=performance.now()});
+addEventListener('mouseup',e=>{const was=drag&&drag.moved>6,btn=drag?drag.btn:0;drag=null;if(!was&&btn===0)pick(e.clientX,e.clientY)});
+cv.addEventListener('wheel',e=>{e.preventDefault();cam.dist=Math.max(650,Math.min(2800,cam.dist*(1+e.deltaY*.0012)));lastInteract=performance.now()},{passive:false});
+cv.addEventListener('dblclick',()=>{tweenTo({...DEF},700);lastInteract=performance.now()});
+let touches={};
+cv.addEventListener('touchstart',e=>{lastInteract=performance.now();
+  if(e.touches.length===1)drag={x:e.touches[0].clientX,y:e.touches[0].clientY,btn:0,moved:0};
+  if(e.touches.length===2){drag=null;touches.d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)}},{passive:true});
+cv.addEventListener('touchmove',e=>{lastInteract=performance.now();
+  if(e.touches.length===1&&drag){const dx=e.touches[0].clientX-drag.x,dy=e.touches[0].clientY-drag.y;cam.yaw+=dx*.005;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch-dy*.003));drag.x=e.touches[0].clientX;drag.y=e.touches[0].clientY;drag.moved+=Math.abs(dx)+Math.abs(dy)}
+  if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);cam.dist=Math.max(650,Math.min(2800,cam.dist*touches.d/d));touches.d=d}},{passive:true});
+cv.addEventListener('touchend',e=>{const was=drag&&drag.moved>8;const t=e.changedTouches[0];const had=!!drag;drag=null;if(had&&!was)pick(t.clientX,t.clientY)});
+
 function pick(mx,my){
-  const W=innerWidth,H=innerHeight;let best=null,bd=18*18;
-  topics.forEach(t=>{ if(!on[t.subject])return;const p=pos(t,W,H);const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=t} });
-  if(best)select(best);else{sel=null;document.getElementById('panel').style.display='none'}
+  const W=innerWidth,H=innerHeight;let best=null,bd=20*20;
+  topics.forEach(t=>{if(!on[t.subject])return;const p=project(t,W,H);const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=t}});
+  if(best)select(best);
+  else{sel=null;document.getElementById('panel').classList.remove('open')}
 }
 function select(t){
   sel=t;ancestors=new Set();descendants=new Set();
   collect(t.id,pars,ancestors);collect(t.id,childs,descendants);
+  // camera slide: bring node to front, gentle zoom
+  let ty=-Math.PI/2 - t.theta; // target yaw
+  while(ty-cam.yaw>Math.PI)ty-=2*Math.PI; while(ty-cam.yaw<-Math.PI)ty+=2*Math.PI;
+  tweenTo({yaw:ty,dist:Math.max(900,cam.dist*.9),panX:0,panY:0},700);
   const dir=(pars[t.id]||[]).map(id=>byId[id]);
   const un=(childs[t.id]||[]).map(id=>byId[id]);
   const li=x=>`<li class="link" onclick="select(byId['${x.id}'])">● ${x.name}<span class="age">${x.ageRangeStart}–${x.ageRangeEnd} m.</span></li>`;
-  document.getElementById('panel').innerHTML=`
-    <span class="close" onclick="sel=null;this.parentElement.style.display='none'">✕</span>
+  const pn=document.getElementById('panel');
+  pn.innerHTML=`
+    <span class="close" onclick="sel=null;this.parentElement.classList.remove('open')">✕</span>
     <div class="kicker" style="color:${COLORS[t.subject]}">● ${t.subject} · ${t.domain} · ${t.ageRangeStart}–${t.ageRangeEnd} m.</div>
     <h2>${t.name}</h2>
     <div class="desc">${t.description}</div>
@@ -141,9 +194,9 @@ function select(t){
     ${t.evidence&&t.evidence.length?`<h4>✅ Moka, kai</h4><ul>${t.evidence.map(e=>`<li>· ${e}</li>`).join('')}</ul>`:''}
     ${dir.length?`<h4>Remiasi (${dir.length})</h4><ul>${dir.map(li).join('')}</ul>`:''}
     ${un.length?`<h4>Atrakina (${un.length})</h4><ul>${un.map(li).join('')}</ul>`:''}`;
-  document.getElementById('panel').style.display='block';
+  pn.classList.add('open');
 }
-window.select=select;window.byId=byId;
+window.select=select;window.byId=byId;window.cam=cam;
 </script>
 </body>
 </html>
