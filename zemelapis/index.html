@@ -43,6 +43,15 @@ canvas:active{cursor:grabbing}
 .panel .ask{background:rgba(255,138,61,.1);border-left:3px solid #ff8a3d;border-radius:0 8px 8px 0;padding:10px 12px;font-size:.85em;line-height:1.45;color:#ffd9bd;margin-top:6px}
 .hint{position:fixed;right:24px;bottom:18px;color:#5f6c96;font-size:.72em;z-index:2}
 .hint b{color:#8fa0cc;font-weight:600}
+.about{position:fixed;inset:0;background:rgba(5,8,20,.75);backdrop-filter:blur(6px);z-index:9;display:none;align-items:center;justify-content:center}
+.about.open{display:flex}
+.about .sheet{background:#101a34;border:1px solid rgba(255,255,255,.14);border-radius:20px;max-width:640px;width:calc(100vw - 40px);max-height:84vh;overflow-y:auto;padding:30px 32px}
+.about h2{font-family:Georgia,serif;font-size:1.7em;margin-bottom:6px}
+.about h4{color:#ffb37d;font-size:.95em;margin:16px 0 4px}
+.about p{color:#c7d2f0;font-size:.9em;line-height:1.55}
+.about a{color:#ff8a3d}
+.about .close{float:right;cursor:pointer;color:#8fa0cc;font-size:1.2em;padding:2px 8px}
+.about .foot{margin-top:18px;color:#8fa0cc;font-size:.8em}
 @media(max-width:720px){.hero{max-width:260px}.hero h1{font-size:1.7em}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh;transform:translateY(24px)}.panel.open{transform:none}.legend{display:none}.hint{display:none}}
 </style>
 </head>
@@ -53,11 +62,33 @@ canvas:active{cursor:grabbing}
   <p class="stats">Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b id="nT">937</b> temos ir <b id="nD">1520</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.</p>
   <span class="badge">🧪 v0.4 juodraštis: <b>visi 12 dalykų, darželis–6 kl.</b> — 7–12 klasės jau ruošiamos</span><br>
   <a class="databtn" href="https://github.com/KrisVas333/neuron-ar/tree/main/zemelapis/data" target="_blank" rel="noopener">⬇ Atviri duomenys · ODbL</a>
+  <a class="databtn" href="#" onclick="document.getElementById('about').classList.add('open');return false" style="margin-left:8px">ℹ️ Apie žemėlapį</a>
   <div class="credit">Kuria Kristijonas Vasiliauskas · v0 juodraštis — ruošiama pedagogų peržiūrai · duomenys: LT BP 2022</div>
 </div>
 <div class="legend"><h3>Dalykai · spausk</h3><div id="rows"></div></div>
 <div class="panel" id="panel"></div>
 <div class="hint"><b>Tempk</b> — sukti · <b>Dešinys/Shift</b> — stumdyti · <b>Ratukas</b> — priartinti · <b>Dukart</b> — atstatyti · <b>Spausk tašką</b> — kelias</div>
+<div id="about" class="about"><div class="sheet">
+  <span class="close" onclick="document.getElementById('about').classList.remove('open')">✕</span>
+  <h2>Apie žemėlapį</h2>
+  <h4>Kas čia per daiktas?</h4>
+  <p>Pirmas atviras <b>Lietuvos vaiko mokymosi žemėlapis</b>: 937 mikro-temos ir 1 520 „kas turi ateiti pirmiau" ryšių — nuo darželio iki 6 klasės, visi 12 dalykų. Kiekviena tema turi aprašymą tėvų kalba, klausimą vaikui, mokėjimo kriterijus ir tikslų ugdymo programos kodą.</p>
+  <h4>Kaip jis padarytas?</h4>
+  <p>AI agentai perskaitė oficialias <b>2022 m. atnaujintas Bendrąsias programas</b> (emokykla.lt) ir NŠA ikimokyklinio ugdymo pasiekimų aprašą, išskaidė jas į mokomas mikro-temas ir supynė priklausomybių grafą. Dabar vyksta pedagogų peržiūra — todėl v0 „juodraštis". Duomenys atviri (ODbL), klaidas galima pranešti.</p>
+  <h4>Koks originalas?</h4>
+  <p>Idėjos autorius — <a href="https://withmarble.com/curriculum/" target="_blank" rel="noopener">Marble (withmarble.com)</a>: atviras JAV/JK programų žemėlapis su 1 590 temų. Šis — lietuviškas atitikmuo iš mūsų BUP; ateityje abu žemėlapiai jungsis (BUP + Common Core + UK NC).</p>
+  <h4>👨‍👩‍👧 Tėvams</h4>
+  <p>Pasirinkite vaiko amžių akimis — pamatysite, kas natūraliai „dega" dabar. Prie kiekvienos temos rasite <b>klausimą vaikui</b> prie vakarienės stalo ir „moka, kai" požymius. Renkantis būrelį — žiūrėkite, kurias temas jis atrakina toliau.</p>
+  <h4>🧑‍🏫 Mokytojams</h4>
+  <p>„Remiasi" sąrašas = ko mokinys turi jau mokėti prieš jūsų pamoką (spragų diagnostika). Tarppjūviniai ryšiai parodo tarpdalykines jungtis (pvz., matematikos sekos → muzikos ritmas → programavimo ciklai).</p>
+  <h4>🎓 Švietimo ekspertams</h4>
+  <p>Pilnas grafas su BP kodais kiekvienoje temoje — atsisiųskite, cituokite, plėskite. Tai infrastruktūra tyrimams: nuoseklumo analizei, programų lyginimui, mokymosi takų modeliavimui.</p>
+  <h4>🤸 Būrelių teikėjams</h4>
+  <p>Užmap'uokite savo programą ant žemėlapio — parodykite tėvams ir mokykloms, <b>kurias temas jūsų veikla ugdo ir ką atrakina</b>. Norite savo būrelio sluoksnio? Susisiekite.</p>
+  <h4>🔜 Kas bus toliau</h4>
+  <p>Paieška · amžiaus filtras · „Kur mano vaikas?" režimas · būrelių sluoksnis (formalus ↔ neformalus ugdymas) · 7–12 klasės · EN versija.</p>
+  <p class="foot">Kuria <b>Kristijonas Vasiliauskas</b> (Robotikos akademija · BrAIn Club). Kontaktas — LinkedIn: Kristijonas Vasiliauskas.</p>
+</div></div>
 <script>
 const COLORS={"Matematika":"#5b8def","Lietuvių kalba":"#f4d06f","Gamtos mokslai":"#57c7b8","Informatika":"#a06bff","Pažinimas":"#ff6b8a","Visuomeninis ugdymas":"#e88ab5","Istorija ir geografija":"#d9c7a7","Technologijos":"#7ac74f","Dailė":"#f78fb3","Muzika":"#c9a7eb","Fizinis ugdymas":"#90be6d","Etika":"#b5838d"};
 const FALLBACK="#8fa0cc";
