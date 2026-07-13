@@ -85,7 +85,7 @@ Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencie
     const jit=(((h>>8)%100)-50)/50;
     t.age=(t.ageRangeStart+t.ageRangeEnd)/2;
     const a=(t.age-3)/10; // 0..1
-    t.y3=(0.5-a)*WORLD_H + jit*30;
+    t.y3=(a-0.5)*WORLD_H + jit*30;
     const R=(0.22+0.78*a)*R_MAX*t.rr;
     t.x3=Math.cos(t.theta)*R; t.z3=Math.sin(t.theta)*R;
     t.baseR=1.7+t.centrality*16;});
