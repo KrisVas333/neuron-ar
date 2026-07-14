@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Ką moko ExoClass būreliai? · vidinis žemėlapis</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f4f6fb;color:#23262f;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;overflow:hidden;height:100vh}
+canvas{position:fixed;inset:0;width:100vw;height:100vh;cursor:grab}
+canvas:active{cursor:grabbing}
+.hero{position:fixed;left:28px;top:24px;max-width:400px;pointer-events:none;z-index:2}
+.brand{display:inline-flex;align-items:center;gap:6px;font-weight:800;letter-spacing:.14em;font-size:.9em;margin-bottom:10px}
+.brand .br{color:#3aa7d9}.brand .mg{color:#b0509e}
+.hero h1{font-size:2.15em;line-height:1.12;font-weight:800}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#3aa7d9,#7c5cd6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#5b6472;font-size:.87em;margin-top:10px;line-height:1.5}
+.stats{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.stat{background:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 4px 14px rgba(35,38,47,.08);pointer-events:auto}
+.stat b{display:block;font-size:1.35em}
+.stat span{font-size:.68em;color:#7b8494}
+.stat.gap b{background:linear-gradient(90deg,#b0509e,#7c5cd6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge{display:inline-block;margin-top:12px;background:rgba(124,92,214,.1);border:1px solid rgba(124,92,214,.35);color:#6a4fc4;border-radius:20px;padding:5px 13px;font-size:.72em}
+.modes{position:fixed;top:24px;right:24px;z-index:4;display:flex;gap:6px;background:#fff;border-radius:24px;padding:5px;box-shadow:0 4px 14px rgba(35,38,47,.1)}
+.modes button{border:0;background:transparent;border-radius:20px;padding:8px 16px;font-size:.8em;font-weight:600;color:#5b6472;cursor:pointer}
+.modes button.on{background:linear-gradient(90deg,#3aa7d9,#7c5cd6);color:#fff}
+.legend{position:fixed;left:28px;bottom:24px;background:#fff;border-radius:14px;padding:14px 16px;z-index:2;box-shadow:0 4px 14px rgba(35,38,47,.08);max-height:40vh;overflow-y:auto}
+.legend h3{font-size:.62em;letter-spacing:.12em;color:#7b8494;margin-bottom:8px;text-transform:uppercase}
+.legend .row{display:flex;align-items:center;gap:8px;font-size:.78em;padding:3px 0;cursor:pointer;user-select:none}
+.legend .row.off{opacity:.3}
+.legend .swatch{width:10px;height:10px;border-radius:50%}
+.legend .n{margin-left:auto;color:#7b8494;font-size:.9em;padding-left:14px}
+.panel{position:fixed;right:20px;top:84px;width:330px;max-height:calc(100vh - 104px);overflow-y:auto;background:#fff;border-radius:16px;padding:20px;z-index:3;box-shadow:0 10px 30px rgba(35,38,47,.14);opacity:0;transform:translateX(24px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+.panel.open{opacity:1;transform:none;pointer-events:auto}
+.panel .close{float:right;cursor:pointer;color:#7b8494;font-size:1.1em;padding:2px 8px}
+.panel .kicker{font-size:.66em;letter-spacing:.1em;text-transform:uppercase;color:#7b8494;margin-bottom:6px}
+.panel h2{font-size:1.2em;margin-bottom:8px;line-height:1.25}
+.panel .desc{color:#4a5262;font-size:.86em;line-height:1.5;margin-bottom:12px}
+.panel h4{font-size:.68em;letter-spacing:.1em;text-transform:uppercase;color:#7b8494;margin:14px 0 6px}
+.cov{border-radius:12px;padding:12px;font-size:.85em;line-height:1.5}
+.cov.yes{background:rgba(58,167,217,.1);border:1px solid rgba(58,167,217,.35)}
+.cov.no{background:rgba(176,80,158,.08);border:1px solid rgba(176,80,158,.3);color:#8d3f7e;font-weight:600}
+.chip{display:inline-block;background:#eef1f8;border-radius:12px;padding:3px 10px;font-size:.78em;margin:2px 3px 2px 0;color:#3c4454}
+.panel ul{list-style:none}
+.panel li{font-size:.82em;padding:4px 0;line-height:1.4;color:#3c4454}
+.panel li.link{cursor:pointer}
+.panel li.link:hover{color:#7c5cd6}
+.panel li .age{color:#7b8494;font-size:.85em;float:right}
+.hint{position:fixed;right:24px;bottom:18px;color:#9aa2b1;font-size:.7em;z-index:2}
+.hint b{color:#6b7382}
+.foot{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;color:#a7aebc;font-size:.62em;z-index:2;text-align:center;max-width:70vw}
+@media(max-width:720px){.hero{max-width:250px}.hero h1{font-size:1.4em}.stats{gap:6px}.stat{padding:8px 10px}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh;transform:translateY(24px)}.panel.open{transform:none}.legend,.hint,.foot{display:none}.modes{top:auto;bottom:16px;left:16px;right:auto}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hero">
+  <div class="brand"><span class="br">{</span><span>E<span class="mg">x</span>O</span><span class="br">}</span> CLASS · VIDINIS ŽEMĖLAPIS</div>
+  <h1>Ką moko <em>ExoClass būreliai</em>?</h1>
+  <p>Top klientų viešos veiklos, sujungtos su atviru Lietuvos vaiko mokymosi žemėlapiu (937 temos pagal 2022 BP).</p>
+  <div class="stats">
+    <div class="stat"><b id="sT">—</b><span>temų dengiama</span></div>
+    <div class="stat"><b id="sP">—</b><span>žemėlapio</span></div>
+    <div class="stat gap"><b id="sG">—</b><span>temų — dar niekieno 👀</span></div>
+  </div>
+  <span class="badge">🧪 juodraštis EXC komandai · AI iš viešų šaltinių · kategorijos be vardų</span>
+</div>
+<div class="modes">
+  <button id="mCov" onclick="setMode('cov')">Dengiama</button>
+  <button id="mGap" class="on" onclick="setMode('gap')">Spragos</button>
+  <button id="mAll" onclick="setMode('all')">Viskas</button>
+</div>
+<div class="legend"><h3>Dalykai · spausk</h3><div id="rows"></div></div>
+<div class="panel" id="panel"></div>
+<div class="hint"><b>Tempk</b> — sukti · <b>Ratukas</b> — zoom · <b>Dukart</b> — atstatyti · <b>Spausk tašką</b></div>
+<div class="foot">Metodika: veikla→tema kai turinys tiesiogiai ugdomas · „aplenkia" = temos amžius ≥2 m. aukštesnis · confidence ribos — vidinėje ataskaitoje</div>
+<script>
+const COLORS={"Matematika":"#5b8def","Lietuvių kalba":"#e0b13e","Gamtos mokslai":"#3aae9f","Informatika":"#8f5fe8","Pažinimas":"#f2668b","Visuomeninis ugdymas":"#d878ab","Istorija ir geografija":"#b09b78","Technologijos":"#5aa63f","Dailė":"#ef83b0","Muzika":"#a98adf","Fizinis ugdymas":"#7fae5c","Etika":"#a5726f"};
+const FALLBACK="#8fa0cc";
+let topics=[],deps=[],byId={},childs={},pars={},on={},EXC={},mode='gap';
+let sel=null,ancestors=new Set(),descendants=new Set();
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+addEventListener('resize',resize);resize();
+function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+const DEF={yaw:0,pitch:-0.10,dist:1500,panX:0,panY:0};
+const cam={...DEF};
+const F=900, WORLD_H=980, R_MAX=460;
+let tween=null,lastInteract=0,drag=null;
+function tweenTo(t,dur=650){tween={t0:performance.now(),dur,from:{...cam},to:{...cam,...t}}}
+function stepTween(now){if(!tween)return;let k=Math.min(1,(now-tween.t0)/tween.dur);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;for(const p of ['yaw','pitch','dist','panX','panY'])cam[p]=tween.from[p]+(tween.to[p]-tween.from[p])*k;if(k>=1)tween=null}
+function setMode(m){mode=m;for(const [id,mm] of [['mCov','cov'],['mGap','gap'],['mAll','all']])document.getElementById(id).classList.toggle('on',mm===m)}
+window.setMode=setMode;
+
+Promise.all(['data/topics.json','data/dependencies.json','data/exc-layer.json'].map(u=>fetch(u).then(r=>r.json()))).then(([T,D,X])=>{
+  topics=T.topics;deps=D.dependencies;EXC=X;
+  topics.forEach(t=>{byId[t.id]=t;childs[t.id]=[];pars[t.id]=[];
+    const h=hash(t.id);t.theta=(h%3600)/3600*Math.PI*2;t.rr=.35+((h>>4)%1000)/1000*.65;
+    const jit=(((h>>8)%100)-50)/50;
+    t.age=(t.ageRangeStart+t.ageRangeEnd)/2;
+    const a=(t.age-3)/10;
+    t.y3=(a-0.5)*WORLD_H + jit*30;
+    const R=(0.22+0.78*a)*R_MAX*t.rr;
+    t.x3=Math.cos(t.theta)*R; t.z3=Math.sin(t.theta)*R;
+    t.baseR=1.7+t.centrality*16;
+    t.cov=!!X.covered[t.id];});
+  deps.forEach(e=>{childs[e.prerequisiteId].push(e.topicId);pars[e.topicId].push(e.prerequisiteId)});
+  const n=Object.keys(X.covered).length;
+  document.getElementById('sT').textContent=n;
+  document.getElementById('sP').textContent=X.summary.pct+' %';
+  document.getElementById('sG').textContent=topics.length-n;
+  const rows=document.getElementById('rows');
+  const present=[...new Set(topics.map(t=>t.subject))].sort((a,b)=>topics.filter(t=>t.subject===b).length-topics.filter(t=>t.subject===a).length);
+  present.forEach(s=>{on[s]=1;if(!COLORS[s])COLORS[s]=FALLBACK;
+    const covN=topics.filter(t=>t.subject===s&&t.cov).length, tot=topics.filter(t=>t.subject===s).length;
+    const div=document.createElement('div');div.className='row';
+    div.innerHTML=`<span class="swatch" style="background:${COLORS[s]}"></span>${s}<span class="n">${covN}/${tot}</span>`;
+    div.onclick=()=>{on[s]=!on[s];div.classList.toggle('off',!on[s])};
+    rows.appendChild(div);});
+  requestAnimationFrame(frame);
+});
+function project(t,W,H){
+  const cy=Math.cos(cam.yaw),sy=Math.sin(cam.yaw);
+  let x=t.x3*cy-t.z3*sy, z=t.x3*sy+t.z3*cy, y=t.y3;
+  const cp=Math.cos(cam.pitch),sp=Math.sin(cam.pitch);
+  let y2=y*cp-z*sp, z2=y*sp+z*cp;
+  const zc=z2+cam.dist, s=F/Math.max(120,zc);
+  return {x:W*0.5+120+(x*s)+cam.panX, y:H*0.52-(y2*s)+cam.panY, s, z:zc};
+}
+function modeAlpha(t,base){
+  if(mode==='cov')return t.cov?base:base*0.12;
+  if(mode==='gap')return t.cov?base*0.15:base;
+  return base;
+}
+function frame(now){
+  stepTween(now);
+  const W=innerWidth,H=innerHeight;
+  ctx.clearRect(0,0,W,H);
+  if(!sel&&!tween&&now-lastInteract>4000)cam.yaw+=0.0015;
+  const P={};let zmin=1e9,zmax=-1e9;
+  topics.forEach(t=>{const p=project(t,W,H);P[t.id]=p;if(p.z<zmin)zmin=p.z;if(p.z>zmax)zmax=p.z});
+  const zr=Math.max(1,zmax-zmin);
+  deps.forEach(e=>{
+    const a=byId[e.prerequisiteId],b=byId[e.topicId];
+    if(!on[a.subject]&&!on[b.subject])return;
+    const hl=sel&&((ancestors.has(e.topicId)||e.topicId===sel.id)&&(ancestors.has(e.prerequisiteId)||e.prerequisiteId===sel.id));
+    if(sel&&!hl){ctx.strokeStyle='rgba(35,38,47,.025)';ctx.lineWidth=.4}
+    else if(hl){ctx.strokeStyle='rgba(124,92,214,.9)';ctx.lineWidth=1.6}
+    else{ctx.strokeStyle='rgba(35,38,47,.05)';ctx.lineWidth=.5}
+    ctx.beginPath();ctx.moveTo(P[a.id].x,P[a.id].y);ctx.lineTo(P[b.id].x,P[b.id].y);ctx.stroke();});
+  const order=[...topics].sort((a,b)=>P[b.id].z-P[a.id].z);
+  order.forEach(t=>{
+    if(!on[t.subject])return;
+    const p=P[t.id], depth=1-(p.z-zmin)/zr;
+    let r=Math.max(.8,t.baseR*p.s*1.15), al=modeAlpha(t,.35+.6*depth);
+    const isSel=sel&&t.id===sel.id, isAnc=sel&&ancestors.has(t.id);
+    if(sel){ if(isSel){al=1} else if(isAnc){al=1} else al*=.25; }
+    ctx.globalAlpha=al;
+    ctx.fillStyle=isSel||isAnc?'#7c5cd6':COLORS[t.subject];
+    ctx.beginPath();ctx.arc(p.x,p.y,isSel?r+2.5:r,0,7);ctx.fill();
+    if(isSel){ctx.globalAlpha=1;ctx.strokeStyle='#23262f';ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(p.x,p.y,r+6,0,7);ctx.stroke();}
+  });
+  ctx.globalAlpha=1;
+  requestAnimationFrame(frame);
+}
+function collect(id,map,out){(map[id]||[]).forEach(n=>{if(!out.has(n)){out.add(n);collect(n,map,out)}})}
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('mousedown',e=>{drag={x:e.clientX,y:e.clientY,btn:e.button,shift:e.shiftKey,moved:0};lastInteract=performance.now()});
+addEventListener('mousemove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+  if(drag.btn===2||drag.shift){cam.panX+=dx;cam.panY+=dy}
+  else{cam.yaw+=dx*.005;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch-dy*.003))}
+  drag.x=e.clientX;drag.y=e.clientY;drag.moved+=Math.abs(dx)+Math.abs(dy);lastInteract=performance.now()});
+addEventListener('mouseup',e=>{const was=drag&&drag.moved>6,btn=drag?drag.btn:0;drag=null;if(!was&&btn===0)pick(e.clientX,e.clientY)});
+cv.addEventListener('wheel',e=>{e.preventDefault();cam.dist=Math.max(650,Math.min(2800,cam.dist*(1+e.deltaY*.0012)));lastInteract=performance.now()},{passive:false});
+cv.addEventListener('dblclick',()=>{tweenTo({...DEF},700);lastInteract=performance.now()});
+let touches={};
+cv.addEventListener('touchstart',e=>{lastInteract=performance.now();
+  if(e.touches.length===1)drag={x:e.touches[0].clientX,y:e.touches[0].clientY,btn:0,moved:0};
+  if(e.touches.length===2){drag=null;touches.d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)}},{passive:true});
+cv.addEventListener('touchmove',e=>{lastInteract=performance.now();
+  if(e.touches.length===1&&drag){const dx=e.touches[0].clientX-drag.x,dy=e.touches[0].clientY-drag.y;cam.yaw+=dx*.005;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch-dy*.003));drag.x=e.touches[0].clientX;drag.y=e.touches[0].clientY;drag.moved+=Math.abs(dx)+Math.abs(dy)}
+  if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);cam.dist=Math.max(650,Math.min(2800,cam.dist*touches.d/d));touches.d=d}},{passive:true});
+cv.addEventListener('touchend',e=>{const was=drag&&drag.moved>8;const t=e.changedTouches[0];const had=!!drag;drag=null;if(had&&!was)pick(t.clientX,t.clientY)});
+function pick(mx,my){
+  const W=innerWidth,H=innerHeight;let best=null,bd=20*20;
+  topics.forEach(t=>{if(!on[t.subject])return;const p=project(t,W,H);const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=t}});
+  if(best)select(best);
+  else{sel=null;document.getElementById('panel').classList.remove('open')}
+}
+function select(t){
+  sel=t;ancestors=new Set();descendants=new Set();
+  collect(t.id,pars,ancestors);collect(t.id,childs,descendants);
+  let ty=-Math.PI/2 - t.theta;
+  while(ty-cam.yaw>Math.PI)ty-=2*Math.PI;while(ty-cam.yaw<-Math.PI)ty+=2*Math.PI;
+  tweenTo({yaw:ty,dist:Math.max(900,cam.dist*.9),panX:0,panY:0},700);
+  const x=EXC.covered[t.id];
+  let covHtml;
+  if(x){
+    const kats=Object.entries(x.kat).map(([k,v])=>`<span class="chip">${k} ×${v}</span>`).join('');
+    const rel=Object.entries(x.rel).map(([k,v])=>`${k} ${v}`).join(' · ');
+    covHtml=`<div class="cov yes"><b>✅ Dengia ExoClass klientai:</b><br>${kats}<br><span style="font-size:.85em;color:#5b6472">${rel} · patikimumas: ${x.conf}</span></div>`;
+  } else {
+    covHtml=`<div class="cov no">👀 Šios temos nedengia nė vienas ExoClass tiekėjas — rinkos spraga.</div>`;
+  }
+  const dir=(pars[t.id]||[]).map(id=>byId[id]);
+  const un=(childs[t.id]||[]).map(id=>byId[id]);
+  const li=x=>`<li class="link" onclick="select(byId['${x.id}'])">● ${x.name}<span class="age">${x.ageRangeStart}–${x.ageRangeEnd} m.</span></li>`;
+  const pn=document.getElementById('panel');
+  pn.innerHTML=`
+    <span class="close" onclick="sel=null;this.parentElement.classList.remove('open')">✕</span>
+    <div class="kicker" style="color:${COLORS[t.subject]}">● ${t.subject} · ${t.domain} · ${t.ageRangeStart}–${t.ageRangeEnd} m.</div>
+    <h2>${t.name}</h2>
+    <div class="desc">${t.description}</div>
+    ${covHtml}
+    ${dir.length?`<h4>Remiasi (${dir.length})</h4><ul>${dir.map(li).join('')}</ul>`:''}
+    ${un.length?`<h4>Atrakina (${un.length})</h4><ul>${un.map(li).join('')}</ul>`:''}`;
+  pn.classList.add('open');
+}
+window.select=select;window.byId=byId;
+</script>
+</body>
+</html>
