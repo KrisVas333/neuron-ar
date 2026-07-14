@@ -18,15 +18,18 @@ canvas:active{cursor:grabbing}
 .hero .stats b{color:#fff}
 .badge{display:inline-block;margin-top:12px;background:rgba(255,138,61,.15);border:1px solid rgba(255,138,61,.5);color:#ffb37d;border-radius:20px;padding:5px 14px;font-size:.75em;pointer-events:auto}
 .credit{margin-top:10px;font-size:.72em;color:#5f6c96}
-.databtn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;pointer-events:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#dde5fa;border-radius:22px;padding:8px 16px;font-size:.78em;text-decoration:none;transition:.2s}
+.databtn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;pointer-events:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#dde5fa;border-radius:22px;padding:8px 16px;font-size:.78em;text-decoration:none;transition:.2s;cursor:pointer}
 .databtn:hover{background:rgba(255,255,255,.12)}
+.lang{position:fixed;top:24px;right:24px;z-index:5;display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:3px}
+.lang button{border:0;background:transparent;color:#8fa0cc;border-radius:16px;padding:6px 14px;font-size:.78em;font-weight:700;cursor:pointer}
+.lang button.on{background:#ff8a3d;color:#0a0e1f}
 .legend{position:fixed;left:28px;bottom:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;z-index:2;backdrop-filter:blur(8px);max-height:44vh;overflow-y:auto}
 .legend h3{font-size:.65em;letter-spacing:.12em;color:#8fa0cc;margin-bottom:8px;text-transform:uppercase}
 .legend .row{display:flex;align-items:center;gap:8px;font-size:.8em;padding:3px 0;cursor:pointer;user-select:none}
 .legend .row.off{opacity:.3}
 .legend .swatch{width:10px;height:10px;border-radius:50%}
 .legend .n{margin-left:auto;color:#8fa0cc;font-size:.9em;padding-left:14px}
-.panel{position:fixed;right:20px;top:20px;width:330px;max-height:calc(100vh - 40px);overflow-y:auto;background:rgba(16,22,44,.92);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;z-index:3;backdrop-filter:blur(10px);opacity:0;transform:translateX(24px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+.panel{position:fixed;right:20px;top:74px;width:330px;max-height:calc(100vh - 94px);overflow-y:auto;background:rgba(16,22,44,.92);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;z-index:3;backdrop-filter:blur(10px);opacity:0;transform:translateX(24px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
 .panel.open{opacity:1;transform:none;pointer-events:auto}
 .panel .close{float:right;cursor:pointer;color:#8fa0cc;font-size:1.1em;padding:2px 8px}
 .panel .kicker{font-size:.68em;letter-spacing:.1em;text-transform:uppercase;color:#8fa0cc;margin-bottom:6px}
@@ -52,62 +55,97 @@ canvas:active{cursor:grabbing}
 .about a{color:#ff8a3d}
 .about .close{float:right;cursor:pointer;color:#8fa0cc;font-size:1.2em;padding:2px 8px}
 .about .foot{margin-top:18px;color:#8fa0cc;font-size:.8em}
-@media(max-width:720px){.hero{max-width:260px}.hero h1{font-size:1.7em}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh;transform:translateY(24px)}.panel.open{transform:none}.legend{display:none}.hint{display:none}}
+@media(max-width:720px){.hero{max-width:260px}.hero h1{font-size:1.7em}.panel{width:calc(100vw - 32px);right:16px;top:auto;bottom:16px;max-height:55vh;transform:translateY(24px)}.panel.open{transform:none}.legend,.hint{display:none}.lang{top:16px;right:16px}}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
+<div class="lang"><button id="langLT" class="on" onclick="setLang('lt')">LT</button><button id="langEN" onclick="setLang('en')">EN</button></div>
 <div class="hero">
-  <h1>Viskas, ko išmoksta Lietuvos vaikas<span class="dot">.</span></h1>
-  <p class="stats">Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b id="nT">937</b> temos ir <b id="nD">1520</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.</p>
-  <span class="badge">🧪 v0.4 juodraštis: <b>visi 12 dalykų, darželis–6 kl.</b> — 7–12 klasės jau ruošiamos</span><br>
-  <a class="databtn" href="https://github.com/KrisVas333/neuron-ar/tree/main/zemelapis/data" target="_blank" rel="noopener">⬇ Atviri duomenys · ODbL</a>
-  <a class="databtn" href="#" onclick="document.getElementById('about').classList.add('open');return false" style="margin-left:8px">ℹ️ Apie žemėlapį</a>
-  <div class="credit">Kuria Kristijonas Vasiliauskas · v0 juodraštis — ruošiama pedagogų peržiūrai · duomenys: LT BP 2022</div>
+  <h1 id="hTitle">Viskas, ko išmoksta Lietuvos vaikas<span class="dot">.</span></h1>
+  <p class="stats" id="hSub"></p>
+  <span class="badge" id="hBadge"></span><br>
+  <a class="databtn" href="https://github.com/KrisVas333/neuron-ar/tree/main/zemelapis/data" target="_blank" rel="noopener" id="hData"></a>
+  <a class="databtn" href="#" onclick="document.getElementById('about').classList.add('open');return false" style="margin-left:8px" id="hAbout"></a>
+  <div class="credit" id="hCredit"></div>
 </div>
-<div class="legend"><h3>Dalykai · spausk</h3><div id="rows"></div></div>
+<div class="legend"><h3 id="hLegend"></h3><div id="rows"></div></div>
 <div class="panel" id="panel"></div>
-<div class="hint"><b>Tempk</b> — sukti · <b>Dešinys/Shift</b> — stumdyti · <b>Ratukas</b> — priartinti · <b>Dukart</b> — atstatyti · <b>Spausk tašką</b> — kelias</div>
-<div id="about" class="about"><div class="sheet">
-  <span class="close" onclick="document.getElementById('about').classList.remove('open')">✕</span>
-  <h2>Apie žemėlapį</h2>
-  <h4>Kas čia per daiktas?</h4>
-  <p>Pirmas atviras <b>Lietuvos vaiko mokymosi žemėlapis</b>: 937 mikro-temos ir 1 520 „kas turi ateiti pirmiau" ryšių — nuo darželio iki 6 klasės, visi 12 dalykų. Kiekviena tema turi aprašymą tėvų kalba, klausimą vaikui, mokėjimo kriterijus ir tikslų ugdymo programos kodą.</p>
-  <h4>Kaip jis padarytas?</h4>
-  <p>AI agentai perskaitė oficialias <b>2022 m. atnaujintas Bendrąsias programas</b> (emokykla.lt) ir NŠA ikimokyklinio ugdymo pasiekimų aprašą, išskaidė jas į mokomas mikro-temas ir supynė priklausomybių grafą. Dabar vyksta pedagogų peržiūra — todėl v0 „juodraštis". Duomenys atviri (ODbL), klaidas galima pranešti.</p>
-  <h4>Koks originalas?</h4>
-  <p>Idėjos autorius — <a href="https://withmarble.com/curriculum/" target="_blank" rel="noopener">Marble (withmarble.com)</a>: atviras JAV/JK programų žemėlapis su 1 590 temų. Šis — lietuviškas atitikmuo iš mūsų BUP; ateityje abu žemėlapiai jungsis (BUP + Common Core + UK NC).</p>
-  <h4>👨‍👩‍👧 Tėvams</h4>
-  <p>Pasirinkite vaiko amžių akimis — pamatysite, kas natūraliai „dega" dabar. Prie kiekvienos temos rasite <b>klausimą vaikui</b> prie vakarienės stalo ir „moka, kai" požymius. Renkantis būrelį — žiūrėkite, kurias temas jis atrakina toliau.</p>
-  <h4>🧑‍🏫 Mokytojams</h4>
-  <p>„Remiasi" sąrašas = ko mokinys turi jau mokėti prieš jūsų pamoką (spragų diagnostika). Tarppjūviniai ryšiai parodo tarpdalykines jungtis (pvz., matematikos sekos → muzikos ritmas → programavimo ciklai).</p>
-  <h4>🎓 Švietimo ekspertams</h4>
-  <p>Pilnas grafas su BP kodais kiekvienoje temoje — atsisiųskite, cituokite, plėskite. Tai infrastruktūra tyrimams: nuoseklumo analizei, programų lyginimui, mokymosi takų modeliavimui.</p>
-  <h4>🤸 Būrelių teikėjams</h4>
-  <p>Užmap'uokite savo programą ant žemėlapio — parodykite tėvams ir mokykloms, <b>kurias temas jūsų veikla ugdo ir ką atrakina</b>. Norite savo būrelio sluoksnio? Susisiekite.</p>
-  <h4>🔜 Kas bus toliau</h4>
-  <p>Paieška · amžiaus filtras · „Kur mano vaikas?" režimas · būrelių sluoksnis (formalus ↔ neformalus ugdymas) · 7–12 klasės · EN versija.</p>
-  <p class="foot">Kuria <b>Kristijonas Vasiliauskas</b> (Robotikos akademija · BrAIn Club). Kontaktas — LinkedIn: Kristijonas Vasiliauskas.</p>
-</div></div>
+<div class="hint" id="hHint"></div>
+<div id="about" class="about"><div class="sheet" id="aboutSheet"></div></div>
 <script>
 const COLORS={"Matematika":"#5b8def","Lietuvių kalba":"#f4d06f","Gamtos mokslai":"#57c7b8","Informatika":"#a06bff","Pažinimas":"#ff6b8a","Visuomeninis ugdymas":"#e88ab5","Istorija ir geografija":"#d9c7a7","Technologijos":"#7ac74f","Dailė":"#f78fb3","Muzika":"#c9a7eb","Fizinis ugdymas":"#90be6d","Etika":"#b5838d"};
 const FALLBACK="#8fa0cc";
+const SUBJ_EN={"Matematika":"Mathematics","Lietuvių kalba":"Lithuanian","Gamtos mokslai":"Science","Informatika":"Computing","Pažinimas":"Cognition","Visuomeninis ugdymas":"Social studies","Istorija ir geografija":"History & geography","Technologijos":"Technologies","Dailė":"Art","Muzika":"Music","Fizinis ugdymas":"Physical education","Etika":"Ethics"};
+const STR={
+ lt:{title:'Viskas, ko išmoksta Lietuvos vaikas',sub:(t,d)=>`Atviras žemėlapis iš oficialių Lietuvos ugdymo programų (2022). <b>${t}</b> temos ir <b>${d}</b> ryšių — kiekvienas sako, kas turi ateiti pirmiau ir kodėl. <b>Paliesk tašką</b> — pamatysi visą kelią iki jo.`,
+  badge:'🧪 v0.5 juodraštis: <b>visi 12 dalykų, darželis–6 kl.</b> — 7–12 klasės jau ruošiamos',
+  data:'⬇ Atviri duomenys · ODbL',about:'ℹ️ Apie žemėlapį',credit:'Kuria Kristijonas Vasiliauskas · v0 juodraštis — ruošiama pedagogų peržiūrai · duomenys: LT BP 2022',
+  legend:'Dalykai · spausk',hint:'<b>Tempk</b> — sukti · <b>Dešinys/Shift</b> — stumdyti · <b>Ratukas</b> — priartinti · <b>Dukart</b> — atstatyti · <b>Spausk tašką</b> — kelias',
+  steps:'žingsnių atveda iki šios temos',ask:'❓ Klauskite savo vaiko',ev:'✅ Moka, kai',dep:'Remiasi',un:'Atrakina',child:'jūsų vaikas',yrs:'m.',
+  aboutHtml:`<span class="close" onclick="document.getElementById('about').classList.remove('open')">✕</span>
+  <h2>Apie žemėlapį</h2>
+  <h4>Kas čia per daiktas?</h4><p>Pirmas atviras <b>Lietuvos vaiko mokymosi žemėlapis</b>: 937 mikro-temos ir 1 520 „kas turi ateiti pirmiau" ryšių — nuo darželio iki 6 klasės, visi 12 dalykų. Kiekviena tema turi aprašymą tėvų kalba, klausimą vaikui, mokėjimo kriterijus ir tikslų ugdymo programos kodą.</p>
+  <h4>Kaip jis padarytas?</h4><p>AI agentai perskaitė oficialias <b>2022 m. atnaujintas Bendrąsias programas</b> (emokykla.lt) ir NŠA ikimokyklinio ugdymo pasiekimų aprašą, išskaidė jas į mokomas mikro-temas ir supynė priklausomybių grafą. Dabar vyksta pedagogų peržiūra — todėl v0 „juodraštis". Duomenys atviri (ODbL).</p>
+  <h4>Koks originalas?</h4><p>Idėjos autorius — <a href="https://withmarble.com/curriculum/" target="_blank" rel="noopener">Marble (withmarble.com)</a>: atviras JAV/JK programų žemėlapis su 1 590 temų. Šis — lietuviškas atitikmuo iš mūsų BUP.</p>
+  <h4>👨‍👩‍👧 Tėvams</h4><p>Pagal amžių matote, kas natūraliai „dega" dabar; prie kiekvienos temos — <b>klausimas vaikui</b> ir „moka, kai" požymiai.</p>
+  <h4>🧑‍🏫 Mokytojams</h4><p>„Remiasi" = ko mokinys turi jau mokėti (spragų diagnostika); tarppjūviniai ryšiai rodo tarpdalykines jungtis.</p>
+  <h4>🎓 Švietimo ekspertams</h4><p>Pilnas grafas su BP kodais — atsisiųskite, cituokite, plėskite.</p>
+  <h4>🤸 Būrelių teikėjams</h4><p>Užmap'uokite savo programą — parodykite, kurias temas jūsų veikla ugdo ir ką atrakina. Norite savo sluoksnio? Susisiekite.</p>
+  <h4>🔜 Kas bus toliau</h4><p>Paieška · amžiaus filtras · „Kur mano vaikas?" · būrelių sluoksnis · 7–12 klasės · EN duomenys.</p>
+  <p class="foot">Kuria <b>Kristijonas Vasiliauskas</b> (Robotikos akademija · BrAIn Club) · LinkedIn: Kristijonas Vasiliauskas.</p>`},
+ en:{title:'Everything a Lithuanian child learns',sub:(t,d)=>`An open map of Lithuania's official curricula (2022). <b>${t}</b> concepts and <b>${d}</b> prerequisite links — each says what must come first, and why. <b>Tap any dot</b> to trace the full path to it.`,
+  badge:'🧪 v0.5 draft: <b>all 12 subjects, kindergarten–grade 6</b> — grades 7–12 in progress',
+  data:'⬇ Open data · ODbL',about:'ℹ️ About',credit:'Built by Kristijonas Vasiliauskas · v0 draft — pending educator review · data: LT national curricula 2022 · topic content currently in Lithuanian',
+  legend:'Subjects · click',hint:'<b>Drag</b> — spin · <b>Right/Shift</b> — pan · <b>Scroll</b> — zoom · <b>Double-click</b> — reset · <b>Tap a dot</b> — trace',
+  steps:'prerequisites lead to this concept',ask:'❓ Ask your child',ev:'✅ Mastery looks like',dep:'Builds on',un:'Unlocks',child:'your child',yrs:'y.',
+  aboutHtml:`<span class="close" onclick="document.getElementById('about').classList.remove('open')">✕</span>
+  <h2>About this map</h2>
+  <h4>What is this?</h4><p>The first open <b>map of what a Lithuanian child learns</b>: 937 micro-concepts wired by 1,520 prerequisite links — kindergarten to grade 6, all 12 subjects. Every concept carries a parent-friendly description, a question to ask your child, mastery criteria and the exact national-curriculum code.</p>
+  <h4>How was it made?</h4><p>AI agents distilled Lithuania's official <b>2022 national curricula</b> (emokykla.lt) and the NŠA early-childhood framework into teachable micro-concepts and a dependency graph. Educator review is in progress — hence "draft". Data is open (ODbL).</p>
+  <h4>The original</h4><p>Inspired by <a href="https://withmarble.com/curriculum/" target="_blank" rel="noopener">Marble</a> — the open US/UK curriculum map (1,590 concepts). This is its Lithuanian sibling. Note: topic content is currently in Lithuanian.</p>
+  <h4>👨‍👩‍👧 Parents · 🧑‍🏫 Teachers · 🎓 Researchers · 🤸 Activity providers</h4><p>See what's naturally "lighting up" at your child's age · diagnose gaps via "builds on" · download and extend the open graph · map your program onto it — get in touch.</p>
+  <h4>🔜 Next</h4><p>Search · age filter · "Where is my child?" · activity-provider layer · grades 7–12 · English dataset.</p>
+  <p class="foot">Built by <b>Kristijonas Vasiliauskas</b> (Robotikos akademija · BrAIn Club) · LinkedIn: Kristijonas Vasiliauskas.</p>`}
+};
+let LANG=localStorage.getItem('zm-lang')||'lt';
+function hex2rgb(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+const RGB={}; for(const s in COLORS) RGB[s]=hex2rgb(COLORS[s]); const RGBF=hex2rgb(FALLBACK);
+function rgba(s,a){const c=RGB[s]||RGBF;return `rgba(${c[0]},${c[1]},${c[2]},${a})`}
+
 let topics=[],deps=[],byId={},childs={},pars={},on={};
 let sel=null,ancestors=new Set(),descendants=new Set();
+let introStart=0, introMax=0, introDone=false;
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
 addEventListener('resize',resize);resize();
 function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
-
-// ---- 3D camera ----
 const DEF={yaw:0,pitch:-0.10,dist:1500,panX:0,panY:0};
 const cam={...DEF};
 const F=900, WORLD_H=980, R_MAX=460;
-let tween=null, lastInteract=0, autoSpin=true;
-function tweenTo(target,dur=650){const from={...cam};const t0=performance.now();tween={t0,dur,from,to:{...cam,...target}}}
-function stepTween(now){if(!tween)return;let k=Math.min(1,(now-tween.t0)/tween.dur);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
- for(const p of ['yaw','pitch','dist','panX','panY'])cam[p]=tween.from[p]+(tween.to[p]-tween.from[p])*k;
- if(k>=1)tween=null}
+let tween=null,lastInteract=0,drag=null;
+function tweenTo(t,dur=650){tween={t0:performance.now(),dur,from:{...cam},to:{...cam,...t}}}
+function stepTween(now){if(!tween)return;let k=Math.min(1,(now-tween.t0)/tween.dur);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;for(const p of ['yaw','pitch','dist','panX','panY'])cam[p]=tween.from[p]+(tween.to[p]-tween.from[p])*k;if(k>=1)tween=null}
+
+function setLang(l){LANG=l;localStorage.setItem('zm-lang',l);
+ document.getElementById('langLT').classList.toggle('on',l==='lt');
+ document.getElementById('langEN').classList.toggle('on',l==='en');
+ applyLang(); if(sel)select(sel);}
+window.setLang=setLang;
+function subjName(s){return LANG==='en'?(SUBJ_EN[s]||s):s}
+function applyLang(){const S=STR[LANG];
+ document.getElementById('hTitle').innerHTML=S.title+'<span class="dot">.</span>';
+ document.getElementById('hSub').innerHTML=S.sub(topics.length||937,deps.length||1520);
+ document.getElementById('hBadge').innerHTML=S.badge;
+ document.getElementById('hData').textContent=S.data;
+ document.getElementById('hAbout').textContent=S.about;
+ document.getElementById('hCredit').textContent=S.credit;
+ document.getElementById('hLegend').textContent=S.legend;
+ document.getElementById('hHint').innerHTML=S.hint;
+ document.getElementById('aboutSheet').innerHTML=S.aboutHtml;
+ const rows=document.getElementById('rows');
+ [...rows.children].forEach(div=>{const s=div.dataset.s;div.querySelector('.lbl').textContent=subjName(s)});
+}
 
 Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencies.json').then(r=>r.json())]).then(([T,D])=>{
   topics=T.topics;deps=D.dependencies;
@@ -115,31 +153,43 @@ Promise.all([fetch('data/topics.json').then(r=>r.json()),fetch('data/dependencie
     const h=hash(t.id);t.theta=(h%3600)/3600*Math.PI*2;t.rr=.35+((h>>4)%1000)/1000*.65;
     const jit=(((h>>8)%100)-50)/50;
     t.age=(t.ageRangeStart+t.ageRangeEnd)/2;
-    const a=(t.age-3)/10; // 0..1
+    const a=(t.age-3)/10;
     t.y3=(a-0.5)*WORLD_H + jit*30;
     const R=(0.22+0.78*a)*R_MAX*t.rr;
     t.x3=Math.cos(t.theta)*R; t.z3=Math.sin(t.theta)*R;
     t.baseR=1.7+t.centrality*16;});
-  deps.forEach(e=>{childs[e.prerequisiteId].push(e.topicId);pars[e.topicId].push(e.prerequisiteId)});
-  document.getElementById('nT').textContent=topics.length;
-  document.getElementById('nD').textContent=deps.length;
+  deps.forEach(e=>{childs[e.prerequisiteId].push(e.topicId);pars[e.prerequisiteId]&&0;pars[e.topicId].push(e.prerequisiteId)});
+  // ---- neural intro: BFS wave from highest-centrality seed neurons ----
+  const seeds=[...topics].sort((a,b)=>b.centrality-a.centrality).slice(0,7).map(t=>t.id);
+  const depth={}; let frontier=[...seeds]; seeds.forEach(s=>depth[s]=0); let dmax=0;
+  const und={}; topics.forEach(t=>und[t.id]=[]);
+  deps.forEach(e=>{und[e.topicId].push(e.prerequisiteId);und[e.prerequisiteId].push(e.topicId)});
+  while(frontier.length){const nf=[];
+    for(const n of frontier)for(const m of und[n])if(depth[m]===undefined){depth[m]=depth[n]+1;dmax=Math.max(dmax,depth[m]);nf.push(m)}
+    frontier=nf;}
+  topics.forEach(t=>{const d=depth[t.id]!==undefined?depth[t.id]:dmax+1;
+    t.reveal=d*240+((hash(t.id)>>6)%200);introMax=Math.max(introMax,t.reveal);});
+  introStart=performance.now()+400;
+  document.getElementById('rows').innerHTML='';
   const rows=document.getElementById('rows');
   const present=[...new Set(topics.map(t=>t.subject))].sort((a,b)=>topics.filter(t=>t.subject===b).length-topics.filter(t=>t.subject===a).length);
-  present.forEach(s=>{
-    on[s]=1; if(!COLORS[s])COLORS[s]=FALLBACK;
+  present.forEach(s=>{on[s]=1;if(!COLORS[s]){COLORS[s]=FALLBACK;RGB[s]=RGBF}
     const n=topics.filter(t=>t.subject===s).length;
-    const div=document.createElement('div');div.className='row';
-    div.innerHTML=`<span class="swatch" style="background:${COLORS[s]}"></span>${s}<span class="n">${n}</span>`;
+    const div=document.createElement('div');div.className='row';div.dataset.s=s;
+    div.innerHTML=`<span class="swatch" style="background:${COLORS[s]}"></span><span class="lbl">${subjName(s)}</span><span class="n">${n}</span>`;
     div.onclick=()=>{on[s]=!on[s];div.classList.toggle('off',!on[s])};
     rows.appendChild(div);});
+  applyLang();
   requestAnimationFrame(frame);
 });
+applyLang();
+if(LANG==='en'){document.getElementById('langLT').classList.remove('on');document.getElementById('langEN').classList.add('on')}
 
 function project(t,W,H){
   const cy=Math.cos(cam.yaw),sy=Math.sin(cam.yaw);
-  let x=t.x3*cy - t.z3*sy, z=t.x3*sy + t.z3*cy, y=t.y3;
+  let x=t.x3*cy-t.z3*sy, z=t.x3*sy+t.z3*cy, y=t.y3;
   const cp=Math.cos(cam.pitch),sp=Math.sin(cam.pitch);
-  let y2=y*cp - z*sp, z2=y*sp + z*cp;
+  let y2=y*cp-z*sp, z2=y*sp+z*cp;
   const zc=z2+cam.dist, s=F/Math.max(120,zc);
   return {x:W*0.5+120+(x*s)+cam.panX, y:H*0.52-(y2*s)+cam.panY, s, z:zc};
 }
@@ -147,39 +197,55 @@ function frame(now){
   stepTween(now);
   const W=innerWidth,H=innerHeight;
   ctx.clearRect(0,0,W,H);
-  if(autoSpin && !sel && !tween && now-lastInteract>4000) cam.yaw+=0.0015;
+  const it=now-introStart;
+  if(!introDone && it>introMax+900) introDone=true;
+  if(!sel&&!tween&&now-lastInteract>4000)cam.yaw+=0.0015;
   const P={};let zmin=1e9,zmax=-1e9;
   topics.forEach(t=>{const p=project(t,W,H);P[t.id]=p;if(p.z<zmin)zmin=p.z;if(p.z>zmax)zmax=p.z});
   const zr=Math.max(1,zmax-zmin);
-  // edges
+  // edges (grow like synapses during intro; subject-tinted)
   deps.forEach(e=>{
     const a=byId[e.prerequisiteId],b=byId[e.topicId];
     if(!on[a.subject]&&!on[b.subject])return;
+    let grow=1, flash=0;
+    if(!introDone){
+      const born=Math.max(a.reveal,b.reveal)+150;
+      const ea=it-born; if(ea<0)return;
+      grow=Math.min(1,ea/340);
+      if(ea<640)flash=(1-ea/640);
+    }
     const hl=sel&&((ancestors.has(e.topicId)||e.topicId===sel.id)&&(ancestors.has(e.prerequisiteId)||e.prerequisiteId===sel.id));
-    if(sel&&!hl){ctx.strokeStyle='rgba(160,180,240,.028)';ctx.lineWidth=.4}
-    else if(hl){ctx.strokeStyle='rgba(255,158,84,.9)';ctx.lineWidth=1.6}
-    else{ctx.strokeStyle='rgba(160,180,240,.07)';ctx.lineWidth=.5}
-    ctx.beginPath();ctx.moveTo(P[a.id].x,P[a.id].y);ctx.lineTo(P[b.id].x,P[b.id].y);ctx.stroke();});
-  // nodes far→near
+    const pa=P[a.id],pb=P[b.id];
+    const ex=pa.x+(pb.x-pa.x)*grow, ey=pa.y+(pb.y-pa.y)*grow;
+    if(sel&&!hl){ctx.strokeStyle='rgba(160,180,240,.025)';ctx.lineWidth=.4}
+    else if(hl){ctx.strokeStyle=rgba(a.subject,.95);ctx.lineWidth=1.8}
+    else{ctx.strokeStyle=rgba(a.subject,.07+flash*.5);ctx.lineWidth=.5+flash*.9}
+    ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(ex,ey);ctx.stroke();});
+  // nodes far→near (pop + glow during intro; subject-colored selection)
   const order=[...topics].sort((a,b)=>P[b.id].z-P[a.id].z);
   order.forEach(t=>{
     if(!on[t.subject])return;
-    const p=P[t.id], depth=1-(p.z-zmin)/zr; // 1=near
-    let r=Math.max(.8,t.baseR*p.s*1.15), al=.28+.62*depth;
+    let scale=1, glow=0;
+    if(!introDone){
+      const na=it-t.reveal; if(na<0)return;
+      scale=Math.min(1,na/320); scale=1-Math.pow(1-scale,3);
+      if(na<700)glow=1-na/700;
+    }
+    const p=P[t.id], depth=1-(p.z-zmin)/zr;
+    let r=Math.max(.8,t.baseR*p.s*1.15)*scale, al=.28+.62*depth;
     const isSel=sel&&t.id===sel.id, isAnc=sel&&ancestors.has(t.id), isDesc=sel&&descendants.has(t.id);
-    if(sel){ if(isSel){al=1} else if(isAnc){al=1} else if(isDesc){al=Math.min(1,al+.15)} else al*=.12; }
+    if(sel){ if(isSel||isAnc){al=1} else if(isDesc){al=Math.min(1,al+.15)} else al*=.12; }
+    if(glow>0){ctx.globalAlpha=glow*.45;ctx.fillStyle=rgba(t.subject,1);ctx.beginPath();ctx.arc(p.x,p.y,r*(1+glow*2.6),0,7);ctx.fill();}
     ctx.globalAlpha=al;
-    ctx.fillStyle=isSel||isAnc?'#ff8a3d':COLORS[t.subject];
-    ctx.beginPath();ctx.arc(p.x,p.y,isSel?r+2.5:r,0,7);ctx.fill();
-    if(isSel){ctx.globalAlpha=1;ctx.strokeStyle='#fff';ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(p.x,p.y,r+6,0,7);ctx.stroke();}
+    ctx.fillStyle=(isSel||isAnc)?rgba(t.subject,1):COLORS[t.subject];
+    ctx.beginPath();ctx.arc(p.x,p.y,isSel?r+2.5:(isAnc?r+1:r),0,7);ctx.fill();
+    if(isSel||isAnc){ctx.globalAlpha=.35;ctx.strokeStyle=rgba(t.subject,1);ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r+(isSel?7:4),0,7);ctx.stroke();}
+    if(isSel){ctx.globalAlpha=1;ctx.strokeStyle='#fff';ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(p.x,p.y,r+6,0,7);ctx.stroke();}
   });
   ctx.globalAlpha=1;
   requestAnimationFrame(frame);
 }
 function collect(id,map,out){(map[id]||[]).forEach(n=>{if(!out.has(n)){out.add(n);collect(n,map,out)}})}
-
-// ---- interactions ----
-let drag=null;
 cv.addEventListener('contextmenu',e=>e.preventDefault());
 cv.addEventListener('mousedown',e=>{drag={x:e.clientX,y:e.clientY,btn:e.button,shift:e.shiftKey,moved:0};lastInteract=performance.now()});
 addEventListener('mousemove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
@@ -197,7 +263,6 @@ cv.addEventListener('touchmove',e=>{lastInteract=performance.now();
   if(e.touches.length===1&&drag){const dx=e.touches[0].clientX-drag.x,dy=e.touches[0].clientY-drag.y;cam.yaw+=dx*.005;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch-dy*.003));drag.x=e.touches[0].clientX;drag.y=e.touches[0].clientY;drag.moved+=Math.abs(dx)+Math.abs(dy)}
   if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);cam.dist=Math.max(650,Math.min(2800,cam.dist*touches.d/d));touches.d=d}},{passive:true});
 cv.addEventListener('touchend',e=>{const was=drag&&drag.moved>8;const t=e.changedTouches[0];const had=!!drag;drag=null;if(had&&!was)pick(t.clientX,t.clientY)});
-
 function pick(mx,my){
   const W=innerWidth,H=innerHeight;let best=null,bd=20*20;
   topics.forEach(t=>{if(!on[t.subject])return;const p=project(t,W,H);const d=(p.x-mx)**2+(p.y-my)**2;if(d<bd){bd=d;best=t}});
@@ -205,29 +270,29 @@ function pick(mx,my){
   else{sel=null;document.getElementById('panel').classList.remove('open')}
 }
 function select(t){
+  const S=STR[LANG];
   sel=t;ancestors=new Set();descendants=new Set();
   collect(t.id,pars,ancestors);collect(t.id,childs,descendants);
-  // camera slide: bring node to front, gentle zoom
-  let ty=-Math.PI/2 - t.theta; // target yaw
-  while(ty-cam.yaw>Math.PI)ty-=2*Math.PI; while(ty-cam.yaw<-Math.PI)ty+=2*Math.PI;
+  let ty=-Math.PI/2 - t.theta;
+  while(ty-cam.yaw>Math.PI)ty-=2*Math.PI;while(ty-cam.yaw<-Math.PI)ty+=2*Math.PI;
   tweenTo({yaw:ty,dist:Math.max(900,cam.dist*.9),panX:0,panY:0},700);
   const dir=(pars[t.id]||[]).map(id=>byId[id]);
   const un=(childs[t.id]||[]).map(id=>byId[id]);
-  const li=x=>`<li class="link" onclick="select(byId['${x.id}'])">● ${x.name}<span class="age">${x.ageRangeStart}–${x.ageRangeEnd} m.</span></li>`;
+  const li=x=>`<li class="link" onclick="select(byId['${x.id}'])"><span style="color:${COLORS[x.subject]}">●</span> ${x.name}<span class="age">${x.ageRangeStart}–${x.ageRangeEnd} ${S.yrs}</span></li>`;
   const pn=document.getElementById('panel');
   pn.innerHTML=`
     <span class="close" onclick="sel=null;this.parentElement.classList.remove('open')">✕</span>
-    <div class="kicker" style="color:${COLORS[t.subject]}">● ${t.subject} · ${t.domain} · ${t.ageRangeStart}–${t.ageRangeEnd} m.</div>
+    <div class="kicker" style="color:${COLORS[t.subject]}">● ${subjName(t.subject)} · ${t.domain} · ${t.ageRangeStart}–${t.ageRangeEnd} ${S.yrs}</div>
     <h2>${t.name}</h2>
     <div class="desc">${t.description}</div>
-    <div class="big">${ancestors.size}<small>žingsnių atveda iki šios temos</small></div>
-    ${t.assessmentPrompt?`<h4>❓ Klauskite savo vaiko</h4><div class="ask">${t.assessmentPrompt.replaceAll('{{name}}','jūsų vaikas')}</div>`:''}
-    ${t.evidence&&t.evidence.length?`<h4>✅ Moka, kai</h4><ul>${t.evidence.map(e=>`<li>· ${e}</li>`).join('')}</ul>`:''}
-    ${dir.length?`<h4>Remiasi (${dir.length})</h4><ul>${dir.map(li).join('')}</ul>`:''}
-    ${un.length?`<h4>Atrakina (${un.length})</h4><ul>${un.map(li).join('')}</ul>`:''}`;
+    <div class="big" style="color:${COLORS[t.subject]}">${ancestors.size}<small>${S.steps}</small></div>
+    ${t.assessmentPrompt?`<h4>${S.ask}</h4><div class="ask" style="border-color:${COLORS[t.subject]}">${t.assessmentPrompt.replaceAll('{{name}}',S.child)}</div>`:''}
+    ${t.evidence&&t.evidence.length?`<h4>${S.ev}</h4><ul>${t.evidence.map(e=>`<li>· ${e}</li>`).join('')}</ul>`:''}
+    ${dir.length?`<h4>${S.dep} (${dir.length})</h4><ul>${dir.map(li).join('')}</ul>`:''}
+    ${un.length?`<h4>${S.un} (${un.length})</h4><ul>${un.map(li).join('')}</ul>`:''}`;
   pn.classList.add('open');
 }
-window.select=select;window.byId=byId;window.cam=cam;
+window.select=select;window.byId=byId;
 </script>
 </body>
 </html>
