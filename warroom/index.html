@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>⚔️ Kris War Room — Command Center</title>
+<style>
+  :root{
+    --bg:#12151c; --panel:#1a1f2a; --panel2:#171b25; --line:#2a3040;
+    --ink:#e8ebf2; --ink2:#9aa3b5; --ink3:#6b7487;
+    --accent:#4c8dfa; --good:#2eb85c; --warn:#d99a0b; --crit:#ef4444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding-bottom:60px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+  header{padding:28px 0 18px;border-bottom:1px solid var(--line);margin-bottom:24px}
+  h1{font-size:26px;letter-spacing:.5px}
+  .sub{color:var(--ink2);margin-top:6px;font-size:14px}
+  .stamp{color:var(--ink3);font-size:12px;margin-top:4px}
+  .goalbar{background:linear-gradient(90deg,#1c2740,#1a1f2a);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:15px}
+  .goalbar b{color:var(--accent)}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink2);margin:30px 0 12px;display:flex;align-items:center;gap:8px}
+  .grid{display:grid;gap:12px}
+  .g5{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .tile .k{font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.8px}
+  .tile .v{font-size:26px;font-weight:700;margin:4px 0 2px}
+  .tile .n{font-size:12px;color:var(--ink3)}
+  .bar{height:8px;background:#232938;border-radius:4px;margin-top:8px;overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{color:var(--ink3);font-size:11px;text-transform:uppercase;letter-spacing:.8px;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid #202636;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tablewrap{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600}
+  .p-run{background:#16324a;color:#7cc0ff}.p-good{background:#143523;color:#5fe08d}.p-warn{background:#3a2c07;color:#ffce54}.p-crit{background:#3d1414;color:#ff8a8a}.p-idle{background:#242a38;color:#9aa3b5}
+  ul.clean{list-style:none}
+  ul.clean li{padding:8px 0;border-bottom:1px solid #202636;display:flex;gap:10px;align-items:flex-start}
+  ul.clean li:last-child{border-bottom:none}
+  .ic{flex-shrink:0}
+  .funnel{display:flex;flex-direction:column;gap:6px}
+  .fstage{border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:var(--panel2)}
+  .fstage b{font-size:14px}
+  .fstage .fs{color:var(--ink2);font-size:13px;margin-top:2px}
+  .farrow{text-align:center;color:var(--ink3);font-size:12px}
+  .foot{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink3);font-size:12.5px}
+  .foot a{color:var(--accent);text-decoration:none}
+  .note{background:#1c2130;border-left:3px solid var(--warn);border-radius:6px;padding:10px 14px;font-size:13.5px;color:var(--ink2);margin:10px 0}
+  @media(max-width:640px){.tile .v{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>⚔️ KRIS WAR ROOM</h1>
+  <div class="sub">One command center · four ventures · run by Kris + Neuron (AI chief of staff)</div>
+  <div class="stamp">Last updated: <b>2026-07-22 23:50 EEST</b> · Neuron refreshes this page at every evening close · <span style="color:var(--warn)">internal — do not index</span></div>
+</header>
+
+<div class="goalbar">🎯 <b>THE ONE GOAL:</b> build an audience of <b>50,000–100,000 monthly reach</b> that converts into <b>afterschool providers · parents · speaking gigs · partnerships</b>. Everything on this page serves it.</div>
+
+<h2>🎯 Goal tracker</h2>
+<div class="grid g5">
+  <div class="tile"><div class="k">Instagram</div><div class="v">→ 10,000</div><div class="n">baseline TBC ⚠️</div><div class="bar"><i style="width:2%"></i></div></div>
+  <div class="tile"><div class="k">LinkedIn</div><div class="v">→ 5,000</div><div class="n">baseline TBC ⚠️</div><div class="bar"><i style="width:2%"></i></div></div>
+  <div class="tile"><div class="k">YouTube</div><div class="v">→ 100 ⚠️</div><div class="n">confirm: 100 or 1,000?</div><div class="bar"><i style="width:2%"></i></div></div>
+  <div class="tile"><div class="k">Facebook</div><div class="v">→ 3,000</div><div class="n">friends · baseline TBC</div><div class="bar"><i style="width:2%"></i></div></div>
+  <div class="tile"><div class="k">Total reach</div><div class="v">50–100K</div><div class="n">per month, all domains</div><div class="bar"><i style="width:2%"></i></div></div>
+</div>
+<div class="note">⚠️ <b>First action (2 min):</b> Kris reads current follower counts off each app once → Neuron locks baselines → this tracker shows real progress deltas weekly.</div>
+
+<h2>🌪 The funnel (audience → clients)</h2>
+<div class="funnel">
+  <div class="fstage"><b>1 · REACH</b> <span class="pill p-warn">⚠️ under target</span><div class="fs">LI/IG/FB/YT posts (2 live this wk vs 7 target) · 📺 Proto Industrija Jul 29 · LRT pitch opened · Būtent Aug 4 · žemėlapis + games as viral assets</div></div>
+  <div class="farrow">▼</div>
+  <div class="fstage"><b>2 · CAPTURE</b> <span class="pill p-warn">⚠️ half-built</span><div class="fs">būrelių testas quiz (live) · ManyChat „ATEITIS" (live) · žemėlapis email gate (todo) · newsletter (todo)</div></div>
+  <div class="farrow">▼</div>
+  <div class="fstage"><b>3 · NURTURE</b> <span class="pill p-crit">🔴 missing</span><div class="fs">D0/D2/D5 email chains — designed, not shipped · this is the funnel's broken link</div></div>
+  <div class="farrow">▼</div>
+  <div class="fstage"><b>4 · CONVERT</b> <span class="pill p-good">✅ proven</span><div class="fs">🏫 providers → ExoClass demos · 👨‍👩‍👧 parents → BC/RA enrolments · 🎤 speaking (TV momentum) · 🤝 partnerships (Alpha, Būtent, Lituanica X)</div></div>
+</div>
+
+<h2>🔥 Needs Kris NOW</h2>
+<div class="tablewrap"><table>
+  <tr><th></th><th>Item</th><th>Why</th></tr>
+  <tr><td>🔴</td><td><b>Alpha/Brian deck</b></td><td>slipped 3× — gates the August Chicago demo</td></tr>
+  <tr><td>🔴</td><td><b>Goal baselines</b></td><td>read follower counts once → tracker goes live</td></tr>
+  <tr><td>🟡</td><td><b>Employment docs (Rima)</b></td><td>review + confirm — Aug 1 ExoClass shift</td></tr>
+  <tr><td>🟡</td><td><b>Revolut Business invite</b></td><td>accept (Svetlana, MB Brain Club)</td></tr>
+  <tr><td>🟡</td><td><b>LEGO kits → Dublin + Chicago</b></td><td>order 1 each for teacher training</td></tr>
+  <tr><td>🟢</td><td><b>Mon 11:00 BC Jr demo</b></td><td>kit ~70% built — Fri = rehearsal</td></tr>
+</table></div>
+
+<h2>✅ Done — last 7 days (receipts)</h2>
+<ul class="clean">
+  <li><span class="ic">🏛️</span><span><b>Court case WON</b> (written ruling in hand)</span></li>
+  <li><span class="ic">💶</span><span><b>ExoClass €12K gap CLOSED</b> (pro-rata, loan docs signing) · <b>ROIX raise CLOSED</b></span></li>
+  <li><span class="ic">🔓</span><span><b>Juozas unblocked in person</b> — LEGO CS&AI strategy locked (1 kit all ages · RFID · 7→3 robots)</span></li>
+  <li><span class="ic">📣</span><span><b>2 posts published</b> (Jul 17 + Jul 21, IG + LinkedIn — Postiz-verified)</span></li>
+  <li><span class="ic">🛡️</span><span><b>BC Jr „Informacijos Gynėjai" lesson-1 kit built</b> (11 slides + cast + activities)</span></li>
+  <li><span class="ic">🗺️</span><span><b>LT mokymosi žemėlapis v1.0 LIVE</b> + kindergarten page · <b>Daiva BC Jr program</b> agreed (Sept, discount)</span></li>
+</ul>
+
+<h2>📁 Active projects</h2>
+<div class="tablewrap"><table>
+  <tr><th>Project</th><th>Progress</th><th>Next</th><th>Who</th></tr>
+  <tr><td><b>🛡️ BC Jr demo lesson</b> (Mon 11:00)</td><td><div class="bar" style="min-width:90px"><i style="width:70%"></i></div>70%</td><td>digital activity + token + rehearsal</td><td>Kris + Neuron + Gabrielius</td></tr>
+  <tr><td><b>🎓 Alpha Chicago partnership</b></td><td><div class="bar"><i style="width:40%"></i></div>40%</td><td>🔴 send deck + program info</td><td>Kris (5% flip)</td></tr>
+  <tr><td><b>🧱 CS&AI LEGO kits</b> (Sept, 3 markets)</td><td><div class="bar"><i style="width:60%"></i></div>60%</td><td>order kits · LEGO training · slides</td><td>Kris + Juozas + Gabrielius</td></tr>
+  <tr><td><b>📚 ExoClass evangelist ramp</b> (Aug 1)</td><td><div class="bar"><i style="width:50%"></i></div>50%</td><td>DB export → full provider map · content</td><td>Kris + Lukas + Neuron</td></tr>
+  <tr><td><b>📣 Content engine → goals</b></td><td><div class="bar"><i style="width:30%"></i></div>30%</td><td>daily flips · Opus Clip metrics tier · funnel emails</td><td>Titas + Neuron → Kris flips</td></tr>
+  <tr><td><b>⚖️ Legal workstream</b> (private)</td><td><div class="bar"><i style="width:45%"></i></div>—</td><td>content audit (Kris) · hearing Oct–Nov</td><td>Kris + counsel</td></tr>
+</table></div>
+
+<h2>🤖 Agent fleet — who's working right now</h2>
+<div class="tablewrap"><table>
+  <tr><th>Agent / loop</th><th>Status</th><th>Job</th></tr>
+  <tr><td><b>Benchmark fleet (9 agents)</b></td><td><span class="pill p-run">RUNNING overnight</span></td><td>2-month audit vs Karpathy·Priestley·Martell·Gray·Koe → 7am report</td></tr>
+  <tr><td>☀️ Morning brief</td><td><span class="pill p-good">daily</span></td><td>today.md cockpit from Calendar/Gmail/Slack/HubSpot</td></tr>
+  <tr><td>🌙 Evening close</td><td><span class="pill p-good">daily</span></td><td>log receipts · streak · refresh this war room</td></tr>
+  <tr><td>🔄 Weekly sync</td><td><span class="pill p-good">Mon 06:00</span></td><td>sweep Fireflies/Gmail/HubSpot/Slack → file into wiki</td></tr>
+  <tr><td>🎬 Studio</td><td><span class="pill p-good">weekly</span></td><td>draft the week's posts (all DRAFTS — Kris flips)</td></tr>
+  <tr><td>💾 Nightly snapshot · ⏱ power-hour · 🧪 lint · 🚨 deadman</td><td><span class="pill p-good">daily</span></td><td>backup · streak nudge · graph health · failure alarm</td></tr>
+  <tr><td>🔁 Audit-loop counsel</td><td><span class="pill p-idle">Fri, attended</span></td><td>"am I wasting time?" — 5-lens board, ONE change/week</td></tr>
+</table></div>
+
+<h2>📊 Neuron scorecard — this week & 2-month totals</h2>
+<div class="grid g5">
+  <div class="tile"><div class="k">Posts this wk</div><div class="v">2 / 7</div><div class="n">🔴 the gap — vs 3 LI + 4-5 IG target</div></div>
+  <div class="tile"><div class="k">Meetings held</div><div class="v">~11 / wk</div><div class="n">management load, Fireflies-verified</div></div>
+  <div class="tile"><div class="k">Money events</div><div class="v">3</div><div class="n">ROIX ✅ · €12K ✅ · court ✅</div></div>
+  <div class="tile"><div class="k">Live apps/sites</div><div class="v">8+</div><div class="n">4 games · hub · žemėlapis · exc-map · testas</div></div>
+  <div class="tile"><div class="k">Ship streak</div><div class="v">11✅ 8❓</div><div class="n">record 4 consecutive verified</div></div>
+</div>
+<div class="note">⏱ <b>Time invested (est.):</b> ~2 months of Neuron ops · 7 automations running daily · ~10 min/day Kris-side maintenance (librarian rule). <b>Output:</b> input hours ↓, shipped artifacts ↑ — the honest gap is <b>publishing cadence</b>, not production.</div>
+
+<h2>🧭 Improve · research · watch</h2>
+<div class="grid g2">
+  <div class="tile"><div class="k">Improve now</div><div class="n" style="font-size:13.5px;color:var(--ink2)">1. 🔴 Publishing cadence — flip daily (10 min)<br>2. Funnel nurture emails D0/D2/D5 — ship this week<br>3. Goal baselines → tracker live<br>4. G2 glasses → teleprompter + notification workflow</div></div>
+  <div class="tile"><div class="k">Research queue</div><div class="n" style="font-size:13.5px;color:var(--ink2)">1. ✅ Benchmark report DONE (9 agents, 0 errors) — presented 07:00<br>2. Opus Clip Pro metrics tier (hook strength, audiences)<br>3. worldmonitor repo — parked as weekend curiosity 🪤<br>4. YouTube strategy after Proto Industrija airs</div></div>
+</div>
+
+<div class="foot">
+  ⚔️ War Room v1 · built 2026-07-22 · lives at <a href="https://krisvas333.github.io/neuron-ar/warroom/">krisvas333.github.io/neuron-ar/warroom</a> · siblings: <a href="../zemelapis/">žemėlapis</a> · <a href="../exc-zemelapis/">EXC map</a> · <a href="../bureliai/">būreliai</a><br>
+  Maintained by <b>Neuron</b> — refreshed at every evening close. Source of truth: the Kris BrAIn wiki (private).
+</div>
+
+</div>
+</body>
+</html>
