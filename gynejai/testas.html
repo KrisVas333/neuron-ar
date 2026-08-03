@@ -1,0 +1,215 @@
+<title>Gynėjo Testas — Vieša ar Slapta? (Pamoka 1)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+  :root{
+    --paper:#EEF3FF;--card:#FFFFFF;--ink:#22203A;--ink-soft:#5B5878;
+    --accent:#6E4BE8;--accent-ink:#4E2FC4;
+    --pub:#12A06F;--pub-d:#0C7E56;--pub-wash:#DBF5EA;
+    --priv:#E0483F;--priv-d:#B93229;--priv-wash:#FBE3E1;
+    --clyde:#FF6E2E;--sun:#F6B819;
+    --display:'SF Pro Rounded',ui-rounded,'Nunito','Segoe UI',system-ui,sans-serif;
+    --hand:'Bradley Hand','Comic Sans MS','Segoe Print',cursive;
+    --ol:3px solid #22203A;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --paper:#12162A;--card:#1C2140;--ink:#F0F1FB;--ink-soft:#AEB2D6;
+    --accent:#9B82FF;--accent-ink:#B9A6FF;
+    --pub:#2DBE8B;--pub-d:#22996E;--pub-wash:#123829;
+    --priv:#F0716B;--priv-d:#C9453E;--priv-wash:#3A1B1A;
+    --clyde:#FF8A54;--ol:3px solid #05060f;
+  }}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:var(--display);
+    display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;
+    background-image:radial-gradient(color-mix(in srgb,var(--accent) 12%,transparent) 1.5px,transparent 1.6px);background-size:22px 22px}
+  .stage{width:100%;max-width:560px;text-align:center}
+  .card{background:var(--card);border:var(--ol);border-radius:26px;padding:26px 22px 24px;
+    box-shadow:0 4px 0 rgba(34,32,58,.18),0 26px 50px -22px rgba(34,32,58,.5)}
+  h1{font-size:clamp(1.6rem,7vw,2.3rem);margin:0;letter-spacing:-.02em;line-height:1.1}
+  h1 .u{color:var(--pub)}h1 .s{color:var(--priv)}
+  .sub{color:var(--ink-soft);font-size:1.05rem;margin-top:12px;font-family:-apple-system,system-ui,sans-serif}
+  button{font-family:var(--display);cursor:pointer;border:var(--ol);font-weight:800}
+  button:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+
+  /* mascot */
+  .mascot{width:120px;height:120px;margin:0 auto 6px;display:block}
+  .speech{display:inline-block;background:var(--clyde);color:#fff;font-family:var(--hand);
+    font-size:1.15rem;padding:8px 16px;border-radius:16px 16px 16px 3px;border:var(--ol);margin-bottom:4px;box-shadow:0 3px 0 rgba(34,32,58,.2)}
+
+  .btn-go{margin-top:22px;background:var(--sun);color:var(--ink);font-size:1.5rem;
+    padding:16px 40px;border-radius:99px;box-shadow:0 5px 0 #c88f00;transition:transform .08s,box-shadow .08s}
+  .btn-go:active{transform:translateY(4px);box-shadow:0 1px 0 #c88f00}
+
+  /* progress */
+  .top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .dots{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap}
+  .dot{width:13px;height:13px;border-radius:50%;background:color-mix(in srgb,var(--ink) 18%,transparent);border:2px solid transparent}
+  .dot.done{background:var(--pub)}.dot.cur{background:var(--accent);transform:scale(1.25)}
+  .counter{font-family:-apple-system,system-ui,sans-serif;font-weight:800;font-size:.9rem;color:var(--ink-soft);min-width:44px}
+
+  /* question */
+  .qemoji{font-size:clamp(4rem,20vw,6.5rem);line-height:1;margin:6px 0 4px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.12))}
+  .qword{font-size:clamp(1.5rem,6vw,2rem);font-weight:800}
+  .qhint{color:var(--ink-soft);font-family:-apple-system,system-ui,sans-serif;font-size:.95rem;margin-top:6px}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  .choice{border-radius:22px;padding:20px 10px 18px;font-size:1.35rem;color:#fff;
+    display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .08s,box-shadow .08s;min-height:118px;justify-content:center}
+  .choice .ic{font-size:2.4rem;line-height:1}
+  .choice.pub{background:var(--pub);box-shadow:0 6px 0 var(--pub-d)}
+  .choice.priv{background:var(--priv);box-shadow:0 6px 0 var(--priv-d)}
+  .choice:active{transform:translateY(5px);box-shadow:0 1px 0 currentColor}
+  .choices.locked .choice{opacity:.45;pointer-events:none}
+  .choices.locked .choice.picked{opacity:1;transform:translateY(4px)}
+
+  /* feedback */
+  .fb{margin-top:18px;min-height:64px;font-family:-apple-system,system-ui,sans-serif;font-size:1.05rem;font-weight:700}
+  .fb.ok{color:var(--pub)}.fb.no{color:var(--priv)}
+  .fb .em{font-size:2rem;display:block;margin-bottom:2px}
+  .btn-next{margin-top:12px;background:var(--accent);color:#fff;font-size:1.15rem;padding:12px 30px;border-radius:99px;box-shadow:0 4px 0 var(--accent-ink)}
+  .btn-next:active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-ink)}
+  .hidden{display:none!important}
+
+  /* result */
+  .score{font-size:clamp(3rem,16vw,5rem);color:var(--accent);line-height:1;margin:4px 0}
+  .badge{width:96px;height:108px;margin:8px auto 2px;display:block}
+  .lvl{font-size:1.4rem;font-weight:800}
+  .rlist{text-align:left;font-family:-apple-system,system-ui,sans-serif;margin:16px auto 0;max-width:400px}
+  .rline{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border-radius:12px;margin-bottom:8px;font-size:.98rem;font-weight:600}
+  .rline.good{background:var(--pub-wash)}.rline.grow{background:var(--priv-wash)}
+  .rline b{display:block}
+  .teacher{margin-top:16px;font-family:-apple-system,system-ui,sans-serif;font-size:.82rem;color:var(--ink-soft);background:color-mix(in srgb,var(--accent) 8%,var(--card));border:2px dashed color-mix(in srgb,var(--accent) 40%,transparent);border-radius:14px;padding:10px 14px}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .btn-again{background:var(--card);color:var(--accent-ink);font-size:1rem;padding:11px 24px;border-radius:99px;box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 30%,transparent)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  .pop{animation:pop .3s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+</style>
+
+<div class="stage">
+  <div class="card" id="card">
+
+    <!-- START -->
+    <div id="screen-start">
+      <svg class="mascot pop" viewBox="0 0 120 120" aria-hidden="true">
+        <rect x="34" y="56" width="52" height="52" rx="15" fill="var(--clyde)" stroke="#22203A" stroke-width="3.4"/>
+        <circle cx="60" cy="38" r="25" fill="#ffd9b3" stroke="#22203A" stroke-width="3.4"/>
+        <path d="M34 30 q7 -18 26 -17 q19 -1 26 17 q-13 -6 -26 -4 q-13 -2 -26 4" fill="#7a4a22" stroke="#22203A" stroke-width="3"/>
+        <circle cx="51" cy="38" r="4" fill="#22203A"/><circle cx="69" cy="38" r="4" fill="#22203A"/>
+        <path d="M50 48 q10 8 20 0" fill="none" stroke="#22203A" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="speech">Padėk man, Gynėjau! 🛡️</div>
+      <h1>Vieša ar <span class="s">Slapta?</span></h1>
+      <p class="sub">Klaidas pildo savo profilį. Padėk jam nuspręsti, <b>kuo galima dalintis</b>, o ką <b>saugoti</b>. Bakstelėk teisingą mygtuką!</p>
+      <button class="btn-go" onclick="start()">▶ Pradėti</button>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="screen-quiz" class="hidden">
+      <div class="top">
+        <span class="counter" id="counter">1 / 8</span>
+        <div class="dots" id="dots"></div>
+        <span class="counter" style="text-align:right" id="pts">0 ⭐</span>
+      </div>
+      <div class="qemoji pop" id="qemoji">🎨</div>
+      <div class="qword" id="qword">Mėgstama spalva</div>
+      <div class="qhint" id="qhint">Ar tuo galima dalintis su nepažįstamais?</div>
+      <div class="choices" id="choices">
+        <button class="choice pub" data-v="pub" onclick="answer('pub')"><span class="ic">🟢</span>VIEŠA<br><span style="font-size:.8rem;opacity:.9">galima</span></button>
+        <button class="choice priv" data-v="priv" onclick="answer('priv')"><span class="ic">🔴</span>SLAPTA<br><span style="font-size:.8rem;opacity:.9">saugom</span></button>
+      </div>
+      <div class="fb" id="fb"></div>
+      <button class="btn-next hidden" id="next" onclick="nextQ()">Toliau →</button>
+    </div>
+
+    <!-- RESULT -->
+    <div id="screen-result" class="hidden">
+      <svg class="badge pop" viewBox="0 0 96 108" aria-hidden="true">
+        <path d="M48 3 L90 17 V52 C90 78 72 96 48 105 C24 96 6 78 6 52 V17 Z" fill="var(--accent)" stroke="#22203A" stroke-width="3.4"/>
+        <path d="M30 52 l12 12 L68 34" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="lvl">🛡️ Informacijos Gynėjas</div>
+      <div class="score" id="score">8/8</div>
+      <div class="lvl" id="rlevel">Lygis 1 · NAUJOKAS</div>
+      <div class="rlist" id="rlist"></div>
+      <div class="teacher" id="teacher"></div>
+      <div class="row">
+        <button class="btn-again" onclick="restart()">↺ Iš naujo</button>
+        <button class="btn-go" style="margin-top:0;font-size:1.1rem;padding:11px 26px" onclick="restart()">Kitas vaikas ▶</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var Q = [
+    {emoji:"🎨", word:"Mėgstama spalva", a:"pub", whyOk:"Taip! Spalva — VIEŠA. Nieko blogo.", whyNo:"Spalva yra VIEŠA — ja galima dalintis!"},
+    {emoji:"🏠", word:"Namų adresas", a:"priv", whyOk:"Šauniai! Adresas — SLAPTA. Padeda surasti tave.", whyNo:"Ups! Adresas yra SLAPTA — padeda nepažįstamam surasti tave."},
+    {emoji:"🎮", word:"Slapyvardis „BlokMeistras7“", a:"pub", whyOk:"Taip! Slapyvardis — VIEŠA, jis nesako tavo tikro vardo.", whyNo:"Slapyvardis yra VIEŠA — jis saugo tavo tikrą vardą!"},
+    {emoji:"🔑", word:"Slaptažodis", a:"priv", whyOk:"Puiku! Slaptažodis — visada SLAPTA.", whyNo:"Slaptažodis yra SLAPTA — jo niekada nesakom!"},
+    {emoji:"🐕", word:"Kad myli šunis", a:"pub", whyOk:"Taip! Kas tau patinka — VIEŠA.", whyNo:"Kas tau patinka yra VIEŠA — galima dalintis!"},
+    {emoji:"🏫", word:"Mokyklos pavadinimas", a:"priv", whyOk:"Teisingai! Mokykla — SLAPTA. Padeda surasti tave.", whyNo:"Mokykla yra SLAPTA — padeda nepažįstamam surasti tave."},
+    {emoji:"📷", word:"Sava nuotrauka nepažįstamam", a:"priv", whyOk:"Šaunu! Nuotrauka nepažįstamam — SLAPTA.", whyNo:"Sava nuotrauka nepažįstamam yra SLAPTA — saugom!"},
+    {emoji:"✏️", word:"Savo piešinys", a:"pub", whyOk:"Taip! Tavo piešinys — VIEŠA, gali parodyti!", whyNo:"Tavo piešinys yra VIEŠA — juo galima dalintis!"}
+  ];
+  var i=0, score=0, wrong=[], answered=false;
+  var $=function(id){return document.getElementById(id)};
+
+  function buildDots(){
+    var d=$("dots"); d.innerHTML="";
+    for(var k=0;k<Q.length;k++){var s=document.createElement("span");s.className="dot"+(k<i?" done":k===i?" cur":"");d.appendChild(s);}
+  }
+  function start(){ $("screen-start").classList.add("hidden"); $("screen-quiz").classList.remove("hidden"); render(); }
+  function render(){
+    answered=false;
+    var q=Q[i];
+    $("counter").textContent=(i+1)+" / "+Q.length;
+    $("pts").textContent=score+" ⭐";
+    var em=$("qemoji"); em.textContent=q.emoji; em.classList.remove("pop"); void em.offsetWidth; em.classList.add("pop");
+    $("qword").textContent=q.word;
+    $("qhint").textContent="Ar tuo galima dalintis su nepažįstamais?";
+    var c=$("choices"); c.classList.remove("locked");
+    var btns=c.querySelectorAll(".choice"); for(var k=0;k<btns.length;k++){btns[k].classList.remove("picked");}
+    $("fb").textContent=""; $("fb").className="fb"; $("next").classList.add("hidden");
+    buildDots();
+  }
+  function answer(v){
+    if(answered) return; answered=true;
+    var q=Q[i], ok=(v===q.a);
+    var c=$("choices"); c.classList.add("locked");
+    c.querySelector('.choice[data-v="'+v+'"]').classList.add("picked");
+    var fb=$("fb");
+    if(ok){ score++; fb.className="fb ok"; fb.innerHTML='<span class="em">🐶💚</span>'+q.whyOk; }
+    else{ wrong.push(i); fb.className="fb no"; fb.innerHTML='<span class="em">🐶💢</span>'+q.whyNo; }
+    $("pts").textContent=score+" ⭐";
+    $("next").textContent = (i===Q.length-1) ? "Pamatyti rezultatą 🎉" : "Toliau →";
+    $("next").classList.remove("hidden");
+  }
+  function nextQ(){
+    if(i<Q.length-1){ i++; render(); } else { showResult(); }
+  }
+  function showResult(){
+    $("screen-quiz").classList.add("hidden"); $("screen-result").classList.remove("hidden");
+    $("score").textContent=score+"/"+Q.length;
+    var lvl = score>=7 ? "Lygis 1 · NAUJOKAS ⭐⭐⭐" : score>=5 ? "Lygis 1 · NAUJOKAS ⭐⭐" : "Lygis 1 · NAUJOKAS ⭐";
+    $("rlevel").textContent=lvl;
+    // strengths / growth
+    var knows=[], grow=[];
+    for(var k=0;k<Q.length;k++){ (wrong.indexOf(k)===-1?knows:grow).push(Q[k].word); }
+    var html="";
+    html+='<div class="rline good"><span>✅</span><span><b>Jau moku:</b> '+(knows.length?knows.join(", "):"—")+'</span></div>';
+    if(grow.length) html+='<div class="rline grow"><span>💪</span><span><b>Dar treniruokimės:</b> '+grow.join(", ")+'</span></div>';
+    $("rlist").innerHTML=html;
+    $("teacher").innerHTML='👩‍🏫 <b>Mokytojai:</b> rezultatas '+score+'/'+Q.length+'. '+(grow.length? 'Silpnesnės vietos: '+grow.join(", ")+'.' : 'Puikiai — visos teisingos!')+' (Parodyk mokytojui prieš uždarant.)';
+  }
+  function restart(){ i=0;score=0;wrong=[];answered=false;
+    $("screen-result").classList.add("hidden"); $("screen-start").classList.remove("hidden"); }
+  document.addEventListener("keydown",function(e){
+    if(!$("screen-quiz").classList.contains("hidden")){
+      if(e.key==="ArrowLeft") answer("pub");
+      if(e.key==="ArrowRight") answer("priv");
+      if((e.key==="Enter"||e.key===" ")&&answered) nextQ();
+    } else if(!$("screen-start").classList.contains("hidden") && (e.key==="Enter"||e.key===" ")) start();
+  });
+</script>

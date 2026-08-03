@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Popietės patikra — 7 klausimai</title>
+<meta name="description" content="Keturios minutės, septyni klausimai. Pamatysi, kaip iš tikrųjų atrodo tavo vaiko savaitė nuo 15 iki 19.">
+<style>
+  :root{
+    --bg:#070a14; --card:#0f1526; --line:#1e2740;
+    --ink:#f0f3fa; --dim:#98a3bf; --red:#e8452c; --ok:#4fc793; --amber:#e0a545;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:400 17px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 20px}
+  header{padding:52px 0 28px}
+  .eyebrow{
+    font:600 11px/1 ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--red);
+  }
+  h1{
+    font:700 clamp(32px,8vw,46px)/1.04 ui-monospace,"SF Mono",Menlo,monospace;
+    letter-spacing:-.035em; text-transform:uppercase; margin:14px 0 0; text-wrap:balance;
+  }
+  .lede{margin:18px 0 0; color:var(--dim)}
+  .lede b{color:var(--ink)}
+
+  .frame{
+    margin:26px 0 0; padding:18px 20px; background:var(--card);
+    border-left:3px solid var(--red); border-radius:0 6px 6px 0;
+  }
+  .frame p{margin:0 0 10px; font-size:16px; color:var(--dim)}
+  .frame p:last-child{margin:0}
+  .frame b{color:var(--ink)}
+
+  .how{
+    margin:30px 0 0; padding:16px 18px; border:1px dashed var(--line); border-radius:8px;
+    font-size:15px; color:var(--dim);
+  }
+  .how b{color:var(--ink)}
+
+  ol.q{list-style:none; margin:34px 0 0; padding:0; counter-reset:q}
+  ol.q > li{
+    counter-increment:q; border-top:1px solid var(--line); padding:24px 0 22px;
+  }
+  ol.q > li:first-child{border-top:0}
+  .num{
+    font:700 11px/1 ui-monospace,monospace; letter-spacing:.12em; color:var(--red);
+    text-transform:uppercase; margin-bottom:9px;
+  }
+  .q h2{
+    font:700 21px/1.28 ui-sans-serif,system-ui,sans-serif; margin:0 0 10px;
+    letter-spacing:-.015em; text-wrap:balance;
+  }
+  .q > p{margin:0 0 14px; color:var(--dim); font-size:16px}
+  .scale{display:flex; flex-direction:column; gap:7px}
+  .opt{
+    display:grid; grid-template-columns:26px 1fr; gap:11px; align-items:start;
+    padding:10px 13px; border-radius:7px; border:1px solid var(--line); font-size:15.5px;
+  }
+  .opt .pt{
+    font:700 12px/1.5 ui-monospace,monospace; color:var(--dim);
+    font-variant-numeric:tabular-nums;
+  }
+  .opt.g{border-color:rgba(79,199,147,.28); background:rgba(79,199,147,.06)}
+  .opt.g .pt{color:var(--ok)}
+  .opt.a{border-color:rgba(224,165,69,.26); background:rgba(224,165,69,.05)}
+  .opt.a .pt{color:var(--amber)}
+  .opt.r{border-color:rgba(232,69,44,.24); background:rgba(232,69,44,.05)}
+  .opt.r .pt{color:var(--red)}
+  .opt span{color:var(--dim)}
+
+  .score{
+    margin:42px 0 0; padding:26px 22px; border:1px solid var(--line);
+    border-radius:10px; background:var(--card);
+  }
+  .score h2{font:700 22px/1.25 ui-sans-serif,system-ui,sans-serif; margin:0 0 6px; letter-spacing:-.015em}
+  .score > p{margin:0 0 20px; color:var(--dim); font-size:16px}
+  .band{
+    display:grid; grid-template-columns:74px 1fr; gap:14px; padding:14px 0;
+    border-top:1px solid var(--line); align-items:start;
+  }
+  .band .r{
+    font:700 13px/1.5 ui-monospace,monospace; font-variant-numeric:tabular-nums;
+  }
+  .band.g .r{color:var(--ok)} .band.a .r{color:var(--amber)} .band.r2 .r{color:var(--red)}
+  .band h3{font:700 16px/1.35 ui-sans-serif,system-ui,sans-serif; margin:0 0 4px}
+  .band p{margin:0; font-size:15px; color:var(--dim)}
+
+  .last{
+    margin:34px 0 0; padding:24px 22px; border:1px solid var(--red);
+    border-radius:10px; background:rgba(232,69,44,.05);
+  }
+  .last h2{font:700 20px/1.3 ui-sans-serif,system-ui,sans-serif; margin:0 0 10px; letter-spacing:-.015em}
+  .last p{margin:0 0 10px; font-size:16px; color:var(--dim)}
+  .last p:last-child{margin:0}
+  .last b{color:var(--ink)}
+
+  footer{padding:42px 0 60px; margin-top:34px; border-top:1px solid var(--line); color:var(--dim); font-size:15px}
+  footer p{margin:0 0 10px}
+  .sig{font:400 13px/1.5 ui-monospace,monospace; color:#6b7490; margin-top:20px}
+  @media print{ body{background:#fff;color:#000} }
+</style>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js"
+        data-brand="kris" data-artifact="popietes-patikra" data-kind="quiz"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Tėvams · 4 minutės</div>
+  <h1>Popietės patikra</h1>
+  <p class="lede">Septyni klausimai apie <b>vieną praėjusią savaitę</b> — ne apie tai, kaip norėtum, kad būtų.</p>
+
+  <div class="frame">
+    <p>Rytas jau nebe tavo rankose. Programa, tvarkaraštis, pažymiai — tai duota.</p>
+    <p>Bet nuo 15 iki 19 valandos renkiesi tu. <b>Per mokslo metus tų popiečių susidaro apie 180.</b></p>
+    <p>Šis lapas neduoda pažymio vaikui. Jis tik parodo, kur tos 180 popiečių iš tikrųjų nueina.</p>
+  </div>
+
+  <div class="how"><b>Kaip:</b> galvok apie praėjusią savaitę, ne apie gerą savaitę. Prie kiekvieno klausimo pasižymėk taškus. Sudėk gale.</div>
+</header>
+
+<ol class="q">
+
+  <li>
+    <div class="num">Klausimas 1</div>
+    <h2>Per praėjusią savaitę vaikas padarė kažką, ką galėjo parodyti kitam žmogui?</h2>
+    <p>Piešinys, statinys, kodas, receptas, sugrotas gabalas. Kažkas, kas prieš tai neegzistavo.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>Taip — ir pats norėjo parodyti</span></div>
+      <div class="opt a"><span class="pt">1</span><span>Taip, bet tik kai paklausiau</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Ne</span></div>
+    </div>
+  </li>
+
+  <li>
+    <div class="num">Klausimas 2</div>
+    <h2>Kiek popiečių jis pats pasirinko, ką veiks?</h2>
+    <p>Ne „ką žiūrės" — ką <em>veiks</em>. Nuobodulys ir savas sumanymas čia skaitosi.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>3 ir daugiau</span></div>
+      <div class="opt a"><span class="pt">1</span><span>1–2</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Nė vienos — viskas buvo suplanuota arba ekrane</span></div>
+    </div>
+  </li>
+
+  <li>
+    <div class="num">Klausimas 3</div>
+    <h2>Ar jam kas nors nepavyko — ir jis vis tiek pabaigė?</h2>
+    <p>Čia yra visa esmė. Ne sėkmė, o grįžimas prie neveikiančio dalyko.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>Taip, mačiau tai savo akimis</span></div>
+      <div class="opt a"><span class="pt">1</span><span>Nepavyko, bet metė</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Nebuvo nieko pakankamai sunkaus, kad nepavyktų</span></div>
+    </div>
+  </li>
+
+  <li>
+    <div class="num">Klausimas 4</div>
+    <h2>Kiek laiko jis buvo su kitais vaikais gyvai — ne per ekraną?</h2>
+    <p>Bet koks bendras užsiėmimas: būrelis, kiemas, treniruotė, draugas namuose.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>Beveik kasdien</span></div>
+      <div class="opt a"><span class="pt">1</span><span>Porą kartų</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Beveik nebuvo</span></div>
+    </div>
+  </li>
+
+  <li>
+    <div class="num">Klausimas 5</div>
+    <h2>Ar buvo suaugęs žmogus, kuris iš jo kažko tikėjosi?</h2>
+    <p>Ne prižiūrėtojas. Žmogus, kuris pasakė „pabaik" ir palaukė, kol pabaigs.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>Taip — ir vaikas žino jo vardą</span></div>
+      <div class="opt a"><span class="pt">1</span><span>Iš dalies</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Ne</span></div>
+    </div>
+  </li>
+
+  <li>
+    <div class="num">Klausimas 6</div>
+    <h2>Kiek popietės laiko praėjo prie ekrano <em>vartojant</em>?</h2>
+    <p>Žiūrėjimas, scrollinimas, žaidimas be kūrimo. Programavimas, montavimas ar piešimas ekrane čia neskaitomi.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>Mažiau nei valanda per dieną</span></div>
+      <div class="opt a"><span class="pt">1</span><span>1–2 valandos</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Daugiau nei 2 — arba tiksliai nežinau</span></div>
+    </div>
+  </li>
+
+  <li>
+    <div class="num">Klausimas 7</div>
+    <h2>Ar gali įvardinti, kuo jis šią savaitę tapo šiek tiek geresnis?</h2>
+    <p>Konkrečiai. „Buvo linksmas" nesiskaito. „Išmoko surišti batus" — skaitosi.</p>
+    <div class="scale">
+      <div class="opt g"><span class="pt">3</span><span>Taip, ir galiu pasakyti kaip</span></div>
+      <div class="opt a"><span class="pt">1</span><span>Kažkas buvo, bet neįvardinu</span></div>
+      <div class="opt r"><span class="pt">0</span><span>Ne</span></div>
+    </div>
+  </li>
+
+</ol>
+
+<div class="score">
+  <h2>Sudėk taškus</h2>
+  <p>Iš 21 galimo.</p>
+
+  <div class="band g">
+    <span class="r">16–21</span>
+    <div>
+      <h3>Popietė dirba</h3>
+      <p>Nieko nekeisk. Rugsėjį rinkis tai, kas šitą tęsia, o ne tai, kas prideda dar vieną punktą į tvarkaraštį.</p>
+    </div>
+  </div>
+
+  <div class="band a">
+    <span class="r">9–15</span>
+    <div>
+      <h3>Yra vienas silpnas taškas</h3>
+      <p>Pažiūrėk, kur gavai 0. Beveik visada tai vienas klausimas, ne visi septyni. Rugsėjį taisyk tik jį.</p>
+    </div>
+  </div>
+
+  <div class="band r2">
+    <span class="r">0–8</span>
+    <div>
+      <h3>Popietė vyksta be tavęs</h3>
+      <p>Tai nėra kaltinimas — taip nutinka pačioms rūpestingiausioms šeimoms, nes popietė niekada nebūna suplanuota. Ji tiesiog užsipildo pati. Pradėk nuo <b>vieno</b> užsiėmimo per savaitę, kuriame yra suaugęs, kuris kažko tikisi.</p>
+    </div>
+  </div>
+</div>
+
+<div class="last">
+  <h2>Vienintelis dalykas, kurį verta padaryti šiandien</h2>
+  <p>Pasižiūrėk, prie kurio klausimo parašei <b>0</b>.</p>
+  <p>Ne prie visų. Prie vieno. <b>Rugsėjį pakeisk tik jį</b> — ir po mėnesio persiskaityk šitą lapą iš naujo.</p>
+</div>
+
+<footer>
+  <p>Šitą patikrą pasidariau sau. Devynerius metus žiūriu, kaip pro mūsų būrelius kasmet praeina apie 11 000 vaikų, ir kiekvieną kartą tas pats: skirtumą daro ne tvarkaraštis, o ar popietėje kas nors iš vaiko kažko tikisi.</p>
+  <p>Dirbtinis intelektas jau dabar atiduoda vaikams rytą atgal. Mano darbas — pasirūpinti, ką jie darys su popiete.</p>
+  <p class="sig">Kristijonas Vasiliauskas · @kristijonas.vas</p>
+</footer>
+
+</div>
+</body>
+</html>

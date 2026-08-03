@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5 klausimai prieš renkantis būrelį</title>
+<meta name="description" content="Penki klausimai, kuriuos verta užduoti prieš pasirašant. Vienas lapas, telpa į telefoną.">
+<meta name="robots" content="index, follow">
+<style>
+  :root{
+    --bg:#070a14; --card:#0f1526; --line:#1e2740;
+    --ink:#f0f3fa; --dim:#98a3bf; --red:#e8452c; --ok:#4fc793;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:400 17px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 20px}
+  header{padding:52px 0 30px}
+  .eyebrow{
+    font:600 11px/1 ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--red);
+  }
+  h1{
+    font:700 clamp(30px,7.5vw,44px)/1.06 ui-monospace,"SF Mono",Menlo,monospace;
+    letter-spacing:-.035em; text-transform:uppercase; margin:14px 0 0; text-wrap:balance;
+  }
+  .lede{margin:18px 0 0; color:var(--dim); font-size:17px}
+  .lede b{color:var(--ink)}
+
+  .why{
+    margin:26px 0 0; padding:16px 18px; background:var(--card);
+    border-left:3px solid var(--red); border-radius:0 6px 6px 0;
+  }
+  .why p{margin:0; font-size:16px; color:var(--dim)}
+  .why b{color:var(--ink)}
+
+  ol.q{list-style:none; margin:38px 0 0; padding:0; counter-reset:q}
+  ol.q > li{
+    counter-increment:q; background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:22px 20px 20px; margin-bottom:16px; position:relative;
+  }
+  ol.q > li::before{
+    content:counter(q); position:absolute; top:-11px; left:20px;
+    background:var(--red); color:#fff; width:24px; height:24px; border-radius:5px;
+    font:700 13px/24px ui-monospace,monospace; text-align:center;
+  }
+  .q h2{
+    font:700 20px/1.3 ui-sans-serif,system-ui,sans-serif; margin:6px 0 10px;
+    letter-spacing:-.015em; text-wrap:balance;
+  }
+  .q p{margin:0 0 12px; color:var(--dim); font-size:16px}
+  .listen{
+    display:flex; gap:9px; align-items:flex-start; font-size:15px;
+    padding:11px 13px; border-radius:7px; background:rgba(79,199,147,.07);
+    border:1px solid rgba(79,199,147,.2);
+  }
+  .listen .tag{
+    flex:none; font:700 10px/1.6 ui-monospace,monospace; letter-spacing:.08em;
+    color:var(--ok); text-transform:uppercase; padding-top:1px;
+  }
+  .listen span{color:var(--dim)}
+  .bad{background:rgba(232,69,44,.06); border-color:rgba(232,69,44,.22); margin-top:8px}
+  .bad .tag{color:var(--red)}
+
+  .bottom{
+    margin:42px 0 0; padding:26px 22px; border:1px solid var(--line);
+    border-radius:10px; background:var(--card);
+  }
+  .bottom h2{font:700 21px/1.25 ui-sans-serif,system-ui,sans-serif; margin:0 0 12px; letter-spacing:-.015em}
+  .bottom p{margin:0 0 12px; color:var(--dim); font-size:16px}
+  .bottom p:last-child{margin-bottom:0}
+  .bottom b{color:var(--ink)}
+
+  .data{
+    margin:34px 0 0; padding:20px 22px; border:1px dashed var(--line); border-radius:10px;
+  }
+  .data h3{
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--dim); margin:0 0 14px;
+  }
+  .rank{display:flex; flex-direction:column; gap:9px}
+  .rank div{display:grid; grid-template-columns:1fr 46px; gap:12px; align-items:center; font-size:15px}
+  .rank .lbl{color:var(--dim)}
+  .rank .n{
+    font:700 15px/1 ui-monospace,monospace; text-align:right; color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .rank .last .lbl,.rank .last .n{color:var(--red)}
+  .meter{grid-column:1/-1; height:4px; background:var(--line); border-radius:2px; overflow:hidden; margin-top:-4px}
+  .meter i{display:block; height:100%; background:var(--dim)}
+  .rank .last .meter i{background:var(--red)}
+
+  footer{padding:44px 0 60px; margin-top:36px; border-top:1px solid var(--line); color:var(--dim); font-size:15px}
+  footer p{margin:0 0 10px}
+  footer a{color:var(--red)}
+  .sig{font:400 13px/1.5 ui-monospace,monospace; color:#6b7490; margin-top:20px}
+  @media print{ body{background:#fff;color:#000} .why,ol.q>li,.bottom,.data{background:#fff;border-color:#ccc} }
+</style>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js"
+        data-brand="kris" data-artifact="5-klausimai" data-kind="tool"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Tėvams · rugsėjis 2026</div>
+  <h1>5 klausimai prieš renkantis būrelį</h1>
+  <p class="lede">Užduok juos <b>prieš</b> pasirašydamas. Užtrunka penkias minutes ir dažniausiai sutaupo visus metus.</p>
+
+  <div class="why">
+    <p>Klausėme tėvų, kas iš tikrųjų lemia, ar vaikas <b>lieka</b> būrelyje. <b>Kaina buvo paskutinėje vietoje.</b> Pirmoje — ar vaikui ten patinka. Todėl šie klausimai yra ne apie kainą ir ne apie programą. Jie apie tai, kas vyksta su vaiku per tas 90 minučių.</p>
+  </div>
+</header>
+
+<ol class="q">
+
+  <li>
+    <h2>„Ką vaikas parsineš namo — rankose ir galvoje?"</h2>
+    <p>Geriausi būreliai duoda abu: daiktą, kurį galima parodyti, ir istoriją, kurią vaikas pats papasakoja. Dauguma duoda tik daiktą.</p>
+    <div class="listen"><span class="tag">gerai</span><span>„Kas savaitę kažką pasiima. Ir mes visada klausiam, kaip jis tą padarė."</span></div>
+    <div class="listen bad"><span class="tag">blogai</span><span>„Na, mes dirbame pagal programą." — programa nėra atsakymas į šitą klausimą.</span></div>
+  </li>
+
+  <li>
+    <h2>„Kas nutinka, kai vaikui nepavyksta?"</h2>
+    <p>Tai svarbiausias klausimas visame sąraše. Vaikas grįš ten, kur klysti yra saugu, ir mes tą matome kiekvienais metais.</p>
+    <div class="listen"><span class="tag">gerai</span><span>„Neveikiantis darbas yra normali pamokos dalis. Mes jį taisom kartu ir baigiam."</span></div>
+    <div class="listen bad"><span class="tag">blogai</span><span>„Mes pasirūpiname, kad viskas pavyktų." — vadinasi, už vaiką padaro mokytojas.</span></div>
+  </li>
+
+  <li>
+    <h2>„Kiek vaikų vienam mokytojui — ir kas vyksta, kai vienas atsilieka?"</h2>
+    <p>Skaičius pats savaime nieko nesako. Svarbu, ar yra planas atsiliekančiam vaikui, ar jis tiesiog sėdi ir laukia.</p>
+    <div class="listen"><span class="tag">gerai</span><span>Konkretus skaičius + konkretus atsakymas, ką daro su atsiliekančiu.</span></div>
+    <div class="listen bad"><span class="tag">blogai</span><span>„Pas mus visi spėja." — niekada nebūna tiesa.</span></div>
+  </li>
+
+  <li>
+    <h2>„Ar galiu ateiti pasižiūrėti vienos pamokos?"</h2>
+    <p>Ne dėl to, kad būtinai eisi. Dėl atsakymo. Kas neturi ko slėpti — pakviečia iškart.</p>
+    <div class="listen"><span class="tag">gerai</span><span>„Žinoma. Ateik kitą trečiadienį." Be svarstymo.</span></div>
+    <div class="listen bad"><span class="tag">blogai</span><span>Dvejonė, sąlygos, „tai trukdo vaikams". Tai atsakymas apie juos, ne apie vaikus.</span></div>
+  </li>
+
+  <li>
+    <h2>„Ko vaikas išmoks tokio, kas jam pravers ir jei jis niekada prie to negrįš?"</h2>
+    <p>Robotas, gitara ar kamuolys — tik įrankis. Klausk, kas lieka po jo: drąsa pradėti, kantrybė taisyti, mokėjimas dirbti su kitu žmogumi.</p>
+    <div class="listen"><span class="tag">gerai</span><span>Atsakymas apie vaiką — ne apie įrangą, ne apie prizus, ne apie technologijas.</span></div>
+    <div class="listen bad"><span class="tag">blogai</span><span>Visas atsakymas apie tai, kokią įrangą jie turi.</span></div>
+  </li>
+
+</ol>
+
+<div class="data">
+  <h3>Kas iš tikrųjų lemia, ar vaikas lieka</h3>
+  <div class="rank">
+    <div><span class="lbl">Vaiko nuomonė</span><span class="n">81</span><span class="meter"><i style="width:81%"></i></span></div>
+    <div><span class="lbl">Rezultatai</span><span class="n">75</span><span class="meter"><i style="width:75%"></i></span></div>
+    <div><span class="lbl">Saugumas</span><span class="n">74</span><span class="meter"><i style="width:74%"></i></span></div>
+    <div class="last"><span class="lbl">Kaina</span><span class="n">39</span><span class="meter"><i style="width:39%"></i></span></div>
+  </div>
+</div>
+
+<div class="bottom">
+  <h2>Ir vienas dalykas, kurio neklausk</h2>
+  <p><b>Neklausk vaiko „ar tau patiko?"</b> po pirmos pamokos. Šešiametis atsakys tai, ką, jo manymu, nori išgirsti.</p>
+  <p>Klausk: <b>„Ką tu ten padarei?"</b> Jei jis pasakoja tris minutes be sustojimo — atsakymą jau turi.</p>
+</div>
+
+<footer>
+  <p>Šį lapą parašiau po devynerių metų, per kuriuos pro mūsų būrelius kasmet praeina apie 11 000 vaikų. Tai ne rinkodara — tai klausimai, kuriuos pats užduočiau, jei rinkčiausi būrelį savo vaikui.</p>
+  <p>Pastebėjai klaidą arba turi šeštą klausimą? Parašyk — įdėsiu.</p>
+  <p class="sig">Kristijonas Vasiliauskas · @kristijonas.vas</p>
+</footer>
+
+</div>
+</body>
+</html>

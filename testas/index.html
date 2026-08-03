@@ -29,6 +29,8 @@ input::placeholder{color:#8fa0cc}
 .small{font-size:.8em;color:#8fa0cc;margin-top:14px;line-height:1.4}
 .science{font-size:.82em;color:#a8b8e8;background:rgba(255,255,255,.05);border-radius:10px;padding:10px;margin-top:16px}
 </style>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js"
+        data-brand="ra" data-artifact="burelio-testas" data-kind="quiz"></script>
 </head>
 <body>
 <div class="card" id="app"></div>
@@ -82,14 +84,31 @@ function email(){
  <button class="btn ghost" onclick="show()">Praleisti ir tik parodyti rezultatą</button>
  <p class="small">Jokio spamo. Tik ataskaita ir bureliai.lt starto žinia.</p>`;
 }
+// MailerLite embedded form endpoint (patikrinta 2026-07-31 iš share puslapio).
+// Paskyra 2547840 · forma 194516510806377479 · vienintelis laukas: fields[email]
+const MAILERLITE_FORM_URL = "https://dashboard.mailerlite.com/jsonp/2547840/forms/194516510806377479/subscribe";
+
 function submitEmail(){
  const em=document.getElementById('em').value.trim();
  if(em&&em.includes('@')){
    const arch=topArch();
    const data={email:em,archetype:arch,scores:score,meta:meta,ts:new Date().toISOString()};
+   // vietinė atsarginė kopija (lieka — nieko neprarandam, jei tinklas nulūžta)
    let all=JSON.parse(localStorage.getItem('burelio-testas')||'[]');all.push(data);
    localStorage.setItem('burelio-testas',JSON.stringify(all));
-   // TODO: real backend (Formspree ID arba Supabase) — kol kas saugom lokaliai
+
+   if(MAILERLITE_FORM_URL){
+     // no-cors + FormData: veikia iš statinio puslapio, be backend'o, be CORS klaidų.
+     const fd=new FormData();
+     fd.append('fields[email]', em);
+     fd.append('fields[archetype]', arch);      // MailerLite: susikurk custom field "archetype"
+     fd.append('fields[source]', 'burelio-testas');
+     fd.append('ml-submit','1');
+     fetch(MAILERLITE_FORM_URL,{method:'POST',mode:'no-cors',body:fd})
+       .catch(e=>console.warn('MailerLite submit failed, saved locally:',e));
+   } else {
+     console.warn('MAILERLITE_FORM_URL tuščias — el. paštas išsaugotas TIK lokaliai.');
+   }
  }
  show();
 }

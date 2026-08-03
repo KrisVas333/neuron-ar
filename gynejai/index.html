@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informacijos Gynėjai — Pamoka 1 nemokamai</title>
+<meta name="description" content="Pirma pamoka pirmokams apie tai, kaip atskirti tikra nuo netikra. Skaidrės, mentoriaus scenarijus ir testas — nemokamai, veikia be interneto.">
+<style>
+  :root{
+    --bg:#070a14; --card:#0f1526; --line:#1e2740;
+    --ink:#f0f3fa; --dim:#98a3bf; --red:#e8452c; --ok:#4fc793; --amber:#e0a545;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:400 17px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:700px; margin:0 auto; padding:0 20px}
+
+  header{padding:56px 0 30px}
+  .eyebrow{
+    font:600 11px/1 ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--red);
+  }
+  h1{
+    font:700 clamp(30px,7vw,44px)/1.06 ui-monospace,"SF Mono",Menlo,monospace;
+    letter-spacing:-.035em; text-transform:uppercase; margin:14px 0 0; text-wrap:balance;
+  }
+  .lede{margin:18px 0 0; color:var(--dim); font-size:18px}
+  .lede b{color:var(--ink)}
+
+  .facts{
+    display:flex; flex-wrap:wrap; gap:8px; margin:24px 0 0;
+  }
+  .fact{
+    font:600 11px/1 ui-monospace,monospace; letter-spacing:.06em; text-transform:uppercase;
+    padding:8px 11px; border:1px solid var(--line); border-radius:5px; color:var(--dim);
+  }
+  .fact.hi{border-color:var(--ok); color:var(--ok)}
+
+  h2{
+    font:700 22px/1.25 ui-sans-serif,system-ui,sans-serif; letter-spacing:-.018em;
+    margin:48px 0 8px; text-wrap:balance;
+  }
+  .sec-note{margin:0 0 20px; color:var(--dim); font-size:16px}
+
+  .files{display:grid; gap:14px}
+  .file{
+    display:block; text-decoration:none; color:inherit;
+    border:1px solid var(--line); border-radius:10px; padding:20px;
+    background:var(--card); transition:border-color .15s,transform .15s;
+  }
+  .file:hover,.file:focus-visible{border-color:var(--red); transform:translateY(-1px)}
+  .file:focus-visible{outline:2px solid var(--red); outline-offset:3px}
+  .file .top{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px}
+  .file h3{font:700 19px/1.3 ui-sans-serif,system-ui,sans-serif; margin:0; letter-spacing:-.015em}
+  .file .tag{
+    font:600 10px/1 ui-monospace,monospace; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--red); border:1px solid var(--red); padding:4px 7px; border-radius:3px;
+  }
+  .file p{margin:0; color:var(--dim); font-size:15.5px}
+  .file .go{
+    display:inline-block; margin-top:12px; font:600 13px/1 ui-monospace,monospace;
+    color:var(--red);
+  }
+
+  ol.steps{margin:0; padding:0 0 0 4px; list-style:none; counter-reset:s}
+  ol.steps li{
+    counter-increment:s; position:relative; padding-left:38px; margin-bottom:16px;
+    color:var(--dim); font-size:16px;
+  }
+  ol.steps li::before{
+    content:counter(s); position:absolute; left:0; top:0;
+    width:25px; height:25px; border-radius:5px; background:var(--card);
+    border:1px solid var(--line); color:var(--ink);
+    font:700 12px/25px ui-monospace,monospace; text-align:center;
+  }
+  ol.steps b{color:var(--ink)}
+
+  .note{
+    margin:22px 0 0; padding:16px 18px; border-radius:8px;
+    background:rgba(79,199,147,.06); border:1px solid rgba(79,199,147,.22);
+    font-size:15.5px; color:var(--dim);
+  }
+  .note b{color:var(--ok)}
+  .note.amber{background:rgba(224,165,69,.06); border-color:rgba(224,165,69,.24)}
+  .note.amber b{color:var(--amber)}
+
+  .cast{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:6px}
+  .who{border:1px solid var(--line); border-radius:9px; padding:14px; background:var(--card)}
+  .who b{display:block; font-size:16px; margin-bottom:3px}
+  .who span{color:var(--dim); font-size:14px; line-height:1.45; display:block}
+
+  .ask{
+    margin:50px 0 0; padding:26px 22px; border:1px solid var(--red);
+    border-radius:10px; background:rgba(232,69,44,.05);
+  }
+  .ask h2{margin:0 0 10px; font-size:21px}
+  .ask p{margin:0 0 10px; color:var(--dim); font-size:16px}
+  .ask p:last-child{margin:0}
+  .ask b{color:var(--ink)}
+
+  footer{padding:44px 0 64px; margin-top:40px; border-top:1px solid var(--line); color:var(--dim); font-size:15px}
+  footer p{margin:0 0 10px}
+  .sig{font:400 13px/1.5 ui-monospace,monospace; color:#6b7490; margin-top:20px}
+</style>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js"
+        data-brand="brainclub" data-artifact="info-gynejai" data-kind="landing"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Mokytojams · nemokamai · be registracijos</div>
+  <h1>Informacijos Gynėjai<br>Pamoka 1</h1>
+  <p class="lede">Pirma pamoka pirmokams apie tai, kaip atskirti, <b>kas vieša, o kas slapta</b>. Viskas paruošta — vesti gali bet kuris mokytojas, be pasiruošimo.</p>
+
+  <div class="facts">
+    <span class="fact">45 minutės</span>
+    <span class="fact">1–2 klasė</span>
+    <span class="fact">1 mentorius</span>
+    <span class="fact hi">✓ veikia be interneto</span>
+    <span class="fact hi">✓ be spausdinimo</span>
+  </div>
+</header>
+
+<h2>Trys failai. Tai viskas.</h2>
+<p class="sec-note">Atsidaro naršyklėje. Nieko nereikia diegti, nereikia paskyros.</p>
+
+<div class="files">
+
+  <a class="file" href="pamoka.html">
+    <div class="top"><h3>1 · Pamoka</h3><span class="tag">15 skaidrių</span></div>
+    <p>Vedama pamoka su įgarsintu personažu, paveikslėliais ir klausimais. Pirmokas dar beveik neskaito — todėl viskas veikia <b>balsu, ikonomis ir spalvomis</b>, ne tekstu.</p>
+    <span class="go">Atidaryti pamoką →</span>
+  </a>
+
+  <a class="file" href="scenarijus.html">
+    <div class="top"><h3>2 · Mentoriaus scenarijus</h3><span class="tag">45 min planas</span></div>
+    <p>Ką sakyti ir ką daryti, minutė po minutės. Parašyta taip, kad galėtum vesti ir tuo atveju, jei šią pamoką pamatei prieš dešimt minučių.</p>
+    <span class="go">Atidaryti scenarijų →</span>
+  </a>
+
+  <a class="file" href="testas.html">
+    <div class="top"><h3>3 · Gynėjo testas</h3><span class="tag">interaktyvus</span></div>
+    <p>„Vieša ar slapta?" — vaikai sprendžia, kuo galima dalintis, o kuo ne. Atsakymai iškart, be pažymių.</p>
+    <span class="go">Atidaryti testą →</span>
+  </a>
+
+</div>
+
+<h2>Kaip vesti</h2>
+<p class="sec-note">Pirmą kartą — maždaug 15 minučių pasiruošimo.</p>
+
+<ol class="steps">
+  <li><b>Prieš pamoką:</b> atsidaryk visus tris failus atskiruose skirtukuose. Perbėk scenarijų — jo užtenka.</li>
+  <li><b>Patikrink garsą.</b> Pamokoje kalba personažas. Be garso pamoka veikia, bet praranda pusę.</li>
+  <li><b>Vesk pagal scenarijų.</b> Vaikai atsakinėja balsu ir rankomis — skaityti nereikia.</li>
+  <li><b>Užbaik testu.</b> Po jo vaikai gauna <b>Naujoko</b> lygį — ir jie tai priima rimtai.</li>
+</ol>
+
+<div class="note">
+  <b>Mokyklos Wi-Fi.</b> Pamoka sukurta prielaida, kad internetas neveiks. Kai failas atsidarė — jis veikia iki galo, net atjungus tinklą. <b>Patarimas:</b> išsisaugok visus tris failus į kompiuterį (Ctrl/Cmd+S) ir vesk iš jų.
+</div>
+
+<h2>Kas dalyvauja</h2>
+<p class="sec-note">Vaikai su jais susipažįsta per pirmas penkias minutes.</p>
+
+<div class="cast">
+  <div class="who"><b>Klaidas</b><span>Herojus. Smagus, bet daug klysta — vaikų darbas jį pagauti.</span></div>
+  <div class="who"><b>Misty</b><span>Drąsi draugė. Klausia tada, kai kiti bijo paklausti.</span></div>
+  <div class="who"><b>Baitas</b> 🐕<span>Šuo. Kai kažkas negerai — jis loja. Vaikų pirmasis pavojaus signalas.</span></div>
+  <div class="who"><b>Neuron</b><span>Klubo dirbtinis intelektas. Paaiškina, kai reikia.</span></div>
+  <div class="who"><b>Mokytoja Lekta</b><span>Suaugusi, kuri neduoda atsakymo iškart.</span></div>
+</div>
+
+<h2>Kodėl pirmokams, o ne dvyliktokams</h2>
+<p style="color:var(--dim)">Kai laukiame iki 12 metų, jau būna vėlu. Šešiametis jau žiūri turinį, kurio niekas nefiltruoja — jis tiesiog dar nemoka apie tai paklausti. Ši pamoka duoda jam pirmą klausimą.</p>
+<p style="color:var(--dim)">Ir ji nemoko bijoti. Ji moko <b style="color:var(--ink)">pastebėti</b> — o tai visai kitas įgūdis.</p>
+
+<div class="ask">
+  <h2>Kas toliau</h2>
+  <p>Pamoka 1 yra pirma iš <b>devynių lygių</b> — apie 30 pamokų per mokslo metus. Likusios kuriamos.</p>
+  <p><b>Jei vesi šią pamoką — parašyk man.</b> Ne dėl statistikos. Man reikia žinoti, kas sulūžo tikroje klasėje: kur vaikai nuobodžiavo, kur nesuprato, kur laikas nesutapo.</p>
+  <p>Kiekviena tokia žinutė pataiso kitą pamoką. Būtent taip ši atsirado.</p>
+</div>
+
+<footer>
+  <p>Šią programą kuriu, nes per visą mano vaikystę niekas nepaklausė, ar aš <b style="color:var(--ink)">suprantu</b> tai, ką matau. Klausė tik, ar moku perskaityti. Skirtumas tarp tų dviejų klausimų dabar kainuoja daugiau nei bet kada.</p>
+  <p>Naudok laisvai savo klasėje. Nereikia nieko klausti.</p>
+  <p class="sig">Kristijonas Vasiliauskas · BrAIn Club Jr · @kristijonas.vas</p>
+</footer>
+
+</div>
+</body>
+</html>

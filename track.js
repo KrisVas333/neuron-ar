@@ -34,8 +34,8 @@
 (function () {
   'use strict';
 
-  // ⚠️ VIENINTELĖ VIETA, kurią reikia užpildyti po Umami registracijos.
-  var WEBSITE_ID = '__UMAMI_ID__';
+  // Umami Cloud · EU regionas · svetainė „BrAIn artefaktai" (krisvas333.github.io)
+  var WEBSITE_ID = '4052c174-6d2e-40e4-8934-2fe9609ffd06';
   var HOST = 'https://cloud.umami.is';
 
   var me = document.currentScript;
@@ -54,7 +54,10 @@
   s.defer = true;
   s.src = HOST + '/script.js';
   s.setAttribute('data-website-id', WEBSITE_ID);
-  s.setAttribute('data-auto-track', 'false'); // patys valdom, ką siunčiam
+  // auto-track LIEKA ĮJUNGTAS. Išjungus jį Umami nebesiunčia pageview'o, o kartu
+  // dingsta Views · Bounce rate · Visit duration · šalys · įrenginiai (patikrinta
+  // 2026-08-04: su auto-track=false Overview rodė 0, nors event'ai ateidavo).
+  // Auto-track duoda „kiek atidarė / kiek laiko", mūsų 6 įvykiai — „ką darė".
   document.head.appendChild(s);
 
   // --- Bendras siuntėjas: KIEKVIENAS įvykis automatiškai pažymimas brand/artifact/kind ---
