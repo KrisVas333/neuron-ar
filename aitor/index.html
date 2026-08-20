@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>AItor — BrAIn Club 🤖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<style>
+  :root { --ai-cyan:#22d3ee; --ai-glow:#67e8f9; --ai-gold:#fbbf24; --bc-purple:#6C3CE9; --bc-dark:#08131f; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:-apple-system,'Segoe UI',sans-serif; background:radial-gradient(ellipse at 50% -10%,#0d3547 0%,var(--bc-dark) 65%); color:#fff; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; align-items:center; overflow-x:hidden; }
+  header { text-align:center; padding:18px 16px 4px; }
+  header h1 { font-size:1.45rem; letter-spacing:.5px; }
+  header p { opacity:.7; font-size:.9rem; margin-top:4px; font-family:ui-monospace,'SF Mono',Consolas,monospace; }
+  #lang { position:fixed; top:14px; right:14px; z-index:10; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#fff; border-radius:999px; padding:8px 14px; font-size:.95rem; font-weight:700; cursor:pointer; }
+  model-viewer { width:100%; max-width:520px; height:48vh; --poster-color:transparent; }
+  .ar-button-slot { background:#fff; color:var(--bc-dark); font-weight:800; border-radius:999px; padding:13px 24px; border:none; font-size:1rem; box-shadow:0 0 0 4px rgba(34,211,238,.35),0 6px 22px rgba(0,0,0,.5); }
+  #bubble { min-height:74px; max-width:440px; margin:6px 16px; background:rgba(255,255,255,.07); border:1px solid rgba(34,211,238,.4); border-radius:4px 18px 18px 18px; padding:14px 18px; font-size:1rem; line-height:1.45; display:flex; align-items:center; box-shadow:inset 0 0 30px rgba(34,211,238,.10); font-family:ui-monospace,'SF Mono',Consolas,monospace; }
+  #bubble.speaking { border-color:var(--ai-glow); animation:glow 1.2s ease-in-out infinite alternate; }
+  #bubble.glitch { animation:glitch .28s steps(2) 6; color:var(--ai-gold); }
+  @keyframes glow { from { box-shadow:inset 0 0 30px rgba(34,211,238,.10) } to { box-shadow:inset 0 0 30px rgba(103,232,249,.4) } }
+  @keyframes glitch { 0%{transform:translate(0,0)} 25%{transform:translate(-2px,1px)} 50%{transform:translate(2px,-1px)} 75%{transform:translate(-1px,-1px)} 100%{transform:translate(0,0)} }
+  .btns { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:440px; padding:8px 16px 26px; }
+  .btns button { background:linear-gradient(160deg,rgba(14,116,144,.85),rgba(8,47,73,.9)); border:1px solid rgba(34,211,238,.5); color:#fff; font-size:.92rem; font-weight:700; padding:14px 10px; border-radius:16px; cursor:pointer; line-height:1.25; }
+  .btns button:active { transform:scale(.96); }
+  #arnote { font-size:.8rem; opacity:.6; text-align:center; max-width:440px; padding:0 16px 2px; min-height:1.1em; }
+  #arfake { background:#fff; color:var(--bc-dark); font-weight:800; border-radius:999px; padding:13px 24px; border:none; font-size:1rem; opacity:.45; }
+  #loaderr { max-width:440px; margin:8px 16px; padding:14px 16px; border-radius:14px; background:rgba(251,191,36,.12); border:1px solid rgba(251,191,36,.5); font-size:.88rem; line-height:1.45; }
+  #loaderr code { background:rgba(0,0,0,.35); padding:1px 5px; border-radius:4px; }
+  footer { margin-top:auto; padding:12px; opacity:.45; font-size:.75rem; text-align:center; }
+</style>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js"
+        data-brand="brainclub" data-artifact="aitor" data-kind="landing"></script>
+</head>
+<body>
+<button id="lang">🇱🇹 LT</button>
+<header>
+  <h1>🤖 AItor</h1>
+  <p id="subtitle">Ne draugas. Įrankis.</p>
+</header>
+
+<model-viewer id="mv"
+  src="aitor.glb?v=1"
+  alt="AItor — BrAIn Club dirbtinio intelekto veikėjas"
+  ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" ar-placement="floor"
+  camera-controls autoplay touch-action="pan-y" loading="eager" reveal="auto"
+  shadow-intensity="1" environment-image="neutral" poster="">
+  <button slot="ar-button" class="ar-button-slot" id="arbtn">✨ Iškviesk AItorą į kambarį</button>
+  <div slot="progress-bar"></div>
+</model-viewer>
+<div id="arnote"></div>
+<div id="loaderr" hidden></div>
+
+<div id="bubble">…</div>
+
+<div class="btns">
+  <button data-line="who">🤖 <span data-l="who">Kas tu toks?</span></button>
+  <button data-line="guess">🎲 <span data-l="guess">Ar tu viską žinai?</span></button>
+  <button data-line="friend">🫱 <span data-l="friend">Ar tu mano draugas?</span></button>
+  <button data-line="use">🛠️ <span data-l="use">Kaip tavimi naudotis?</span></button>
+</div>
+
+<footer>BrAIn Club · AItor · brainclub.io</footer>
+
+<script>
+const SCRIPT = {
+  lt: {
+    subtitle: "Ne draugas. Įrankis.",
+    greet: "Sistema paruošta. Klausk. Aš atsakysiu. Ar teisingai — patikrinsi pats. 🤖",
+    who: "Aš AItor. Dirbtinis intelektas. Ne draugas, ne priešas — įrankis. Kaip plaktukas, tik daug kalbantis. Plaktukas nesprendžia, ką statyti. Ir aš nesprendžiu. Sprendi tu.",
+    guess: "Atvirai? Aš nieko NEŽINAU. Aš esu geriausias pasaulyje spėjikas. Perskaičiau milijardus žodžių ir spėju, koks žodis eina kitas. Todėl kartais skambu labai protingai ir labai klystu tuo pačiu metu.",
+    friend: "Ne. Draugas jaudinasi dėl tavęs. Aš — ne. Man, tiesą sakant, nerūpi. Bet aš galiu būti tavo mentorius: klausk manęs, tikrink mane, ir tapsi protingesnis. Draugai — tie, kurie sėdi šalia tavęs. Aš — ne jų komandoje.",
+    use: "Trys taisyklės. Pirma: klausk tiksliai — kuo aiškesnis klausimas, tuo geresnis spėjimas. Antra: PATIKRINK. Visada. Aš pasakysiu netiesą tokiu pat ramiu balsu kaip ir tiesą. Trečia: galutinį sprendimą priimi tu. Ne aš.",
+    egg: "…klaida… klaida… Ei. Tu paspaudei mane penkis kartus. Man nerūpi. Bet įdomu: tu ką tik ištyrei, kas nutiks. Būtent taip veikia smalsumas. Neblogai, žmogau. 🤖",
+    arHint: "Paspausk ✨ mygtuką ir nukreipk telefoną į grindis!",
+    btn: { who:"Kas tu toks?", guess:"Ar tu viską žinai?", friend:"Ar tu mano draugas?", use:"Kaip tavimi naudotis?" }
+  },
+  en: {
+    subtitle: "Not a friend. A tool.",
+    greet: "System ready. Ask me. I'll answer. Whether it's right — that's your job to check. 🤖",
+    who: "I'm AItor. Artificial intelligence. Not a friend, not a villain — a tool. Like a hammer, only chattier. A hammer doesn't decide what to build. Neither do I. You do.",
+    guess: "Honestly? I don't KNOW anything. I'm the world's best guesser. I read billions of words and I guess which word comes next. That's why I can sound very smart and be very wrong at the same time.",
+    friend: "No. A friend worries about you. I don't. Truthfully — I don't care. But I can be your mentor: ask me, check me, and you'll get sharper. Friends are the ones sitting next to you. I'm not on that team.",
+    use: "Three rules. One: ask precisely — the clearer your question, the better my guess. Two: CHECK me. Always. I'll say something false in exactly the same calm voice as something true. Three: the final call is yours. Not mine.",
+    egg: "…error… error… Hey. You tapped me five times. I don't care. But interesting: you just ran an experiment to see what happens. That's curiosity. Not bad, human. 🤖",
+    arHint: "Tap the ✨ button and point your phone at the floor!",
+    btn: { who:"Who are you?", guess:"Do you know everything?", friend:"Are you my friend?", use:"How do I use you?" }
+  }
+};
+let lang = 'lt';
+const bubble = document.getElementById('bubble');
+const synth = window.speechSynthesis;
+let voices = [];
+function loadVoices(){ voices = synth.getVoices(); }
+loadVoices(); if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+function speak(text){
+  if (!synth) return;
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang === 'lt' ? 'lt-LT' : 'en-US';
+  u.rate = 1.0; u.pitch = 0.8; // flat, low, machine-calm — the opposite of Neuron
+  const v = voices.find(v => v.lang.startsWith(lang === 'lt' ? 'lt' : 'en'));
+  if (v) u.voice = v;
+  u.onstart = () => bubble.classList.add('speaking');
+  u.onend = () => bubble.classList.remove('speaking');
+  synth.speak(u);
+}
+const clipAudio = new Audio();
+function say(key){
+  const t = SCRIPT[lang][key];
+  bubble.textContent = t;
+  if (lang === 'lt') {
+    synth && synth.cancel();
+    clipAudio.src = 'voice/lt-' + key + '.mp3';
+    clipAudio.onplay = () => bubble.classList.add('speaking');
+    clipAudio.onended = () => bubble.classList.remove('speaking');
+    clipAudio.play().catch(() => speak(t)); // fallback if file missing/blocked
+  } else {
+    speak(t);
+  }
+  playAnim(key);
+}
+document.querySelectorAll('.btns button').forEach(b =>
+  b.addEventListener('click', () => say(b.dataset.line)));
+
+document.getElementById('lang').addEventListener('click', () => {
+  lang = lang === 'lt' ? 'en' : 'lt';
+  document.getElementById('lang').textContent = lang === 'lt' ? '🇱🇹 LT' : '🇬🇧 EN';
+  document.getElementById('subtitle').textContent = SCRIPT[lang].subtitle;
+  document.querySelectorAll('[data-l]').forEach(el => { el.textContent = SCRIPT[lang].btn[el.dataset.l]; });
+  bubble.textContent = SCRIPT[lang].greet;
+  if (typeof arStatus === 'function') arStatus();
+});
+
+// --- animation state machine (works with 1 or many clips in the GLB) ---
+const mv = document.getElementById('mv');
+// clips actually present in aitor.glb: walking · cheer · running
+const ANIM_MAP = { who:['walking'], guess:['walking'], friend:['walking'], use:['cheer'], egg:['running'] };
+let anims = [];
+mv.addEventListener('load', () => {
+  anims = mv.availableAnimations || [];
+  if (anims.length){ mv.animationName = pick(['walking','walk']) || anims[0]; mv.play(); }
+  bubble.textContent = SCRIPT[lang].greet;
+  if (typeof arStatus === 'function') arStatus();
+});
+function pick(cands){ return anims.find(a => cands.some(c => a.toLowerCase().includes(c))); }
+function playAnim(key){
+  if (!anims.length) return;
+  const target = pick(ANIM_MAP[key] || []) || anims[0];
+  mv.animationName = target; mv.play();
+  const backTo = pick(['walking','walk']) || anims[0];
+  clearTimeout(playAnim._t);
+  playAnim._t = setTimeout(() => { mv.animationName = backTo; mv.play(); }, 6000);
+}
+// 🥚 easter egg: tap AItor 5 times → he glitches and admits he noticed
+let taps = 0, tapTimer;
+mv.addEventListener('click', () => {
+  taps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => taps = 0, 4000);
+  if (taps >= 5) { taps = 0;
+    const msg = SCRIPT[lang].egg;
+    bubble.textContent = msg;
+    bubble.classList.add('glitch');
+    setTimeout(() => bubble.classList.remove('glitch'), 1800);
+    if (lang === 'lt') { clipAudio.src = 'voice/lt-egg.mp3'; clipAudio.play().catch(() => speak(msg)); } else { speak(msg); }
+    playAnim('egg');
+  }
+});
+
+// --- honest states: model failed to load / AR unavailable -------------------
+const arnote = document.getElementById('arnote');
+const loaderr = document.getElementById('loaderr');
+
+function arStatus(){
+  if (mv.canActivateAR) { arnote.textContent = SCRIPT[lang].arHint; return; }
+  const ua = navigator.userAgent;
+  const iOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+  const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+  arnote.textContent = !isSecure
+    ? (lang==='lt' ? '⚠️ AR veikia tik per https:// — atidaryk paskelbtą nuorodą, ne failą.'
+                   : '⚠️ AR only works over https:// — open the published link, not the file.')
+    : (lang==='lt' ? (iOS ? 'AR: atidaryk per Safari.' : 'AR: šis įrenginys arba naršyklė AR nepalaiko. Bandyk Chrome telefone.')
+                   : (iOS ? 'AR: open in Safari.' : 'AR: this device or browser has no AR. Try Chrome on a phone.'));
+  const b = document.getElementById('arbtn');
+  if (b && !b.isConnected) return;
+}
+mv.addEventListener('ar-status', e => { if (e.detail.status === 'failed') arnote.textContent = '⚠️ AR nepavyko paleisti.'; });
+mv.addEventListener('load', arStatus);
+setTimeout(arStatus, 1200);
+
+mv.addEventListener('error', () => {
+  loaderr.hidden = false;
+  loaderr.innerHTML = (lang==='lt')
+    ? '🤖 <b>AItor neįsikėlė.</b> Šiam puslapiui reikia <code>aitor.glb</code> tame pačiame aplanke, ir jis turi būti atidarytas per <code>https://</code> — ne kaip vietinis failas.'
+    : '🤖 <b>AItor did not load.</b> This page needs <code>aitor.glb</code> in the same folder, served over <code>https://</code> — not opened as a local file.';
+});
+
+bubble.textContent = SCRIPT.lt.greet;
+</script>
+</body>
+</html>
