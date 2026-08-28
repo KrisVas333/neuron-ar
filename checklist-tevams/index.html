@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>Būrelis Rugsėjui · Tėvų Checklist</title>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="checklist-tevams" data-kind="tool"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --ground:#FFFFFF;
+    --surface:#F7F7F5;
+    --surface-2:#F1EFEA;
+    --ink:#0A0A0A;
+    --muted:#595959;
+    --line:#E5E2DE;
+    --accent:#D90429;
+    --accent-ink:#FFFFFF;
+    --red:#FF0000;
+    --ok:#1D7A3E;
+    --glow:none;
+    --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --r:4px;
+    --shadow:0 1px 2px rgba(10,10,10,.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#080808;
+      --surface:#0D0D0D;
+      --surface-2:#141414;
+      --ink:#FAFAFA;
+      --muted:#9A9A9A;
+      --line:#262626;
+      --accent:#FF0000;
+      --accent-ink:#FFFFFF;
+      --red:#FF0000;
+      --ok:#3FCB74;
+      --glow:0 0 18px rgba(255,0,0,.35);
+      --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#080808;
+    --surface:#0D0D0D;
+    --surface-2:#141414;
+    --ink:#FAFAFA;
+    --muted:#9A9A9A;
+    --line:#262626;
+    --accent:#FF0000;
+    --accent-ink:#FFFFFF;
+    --red:#FF0000;
+    --ok:#3FCB74;
+    --glow:0 0 18px rgba(255,0,0,.35);
+    --shadow:none;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:28px 20px 64px;
+  }
+
+  /* ---------- masthead ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  h1{
+    font-family:var(--mono);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+    font-size:clamp(26px,7vw,36px);
+    line-height:1.12;
+    margin:10px 0 10px;
+    text-wrap:balance;
+  }
+  .subtitle{
+    font-size:16px;
+    color:var(--muted);
+    max-width:56ch;
+    margin:0 0 14px;
+  }
+  .byline{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    padding-bottom:20px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:22px;
+  }
+  .byline b{color:var(--ink)}
+
+  /* ---------- review strip ---------- */
+  details.review{
+    border:1px dashed var(--accent);
+    border-radius:var(--r);
+    background:var(--surface);
+    margin-bottom:28px;
+    padding:0;
+  }
+  details.review summary{
+    list-style:none;
+    cursor:pointer;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  details.review summary::-webkit-details-marker{display:none}
+  details.review summary::before{
+    content:"▸";
+    display:inline-block;
+    transition:transform .15s ease;
+    font-size:11px;
+  }
+  details.review[open] summary::before{transform:rotate(90deg)}
+  .review-badge{
+    margin-left:auto;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--muted);
+    text-transform:none;
+    font-weight:500;
+  }
+  .review-body{
+    padding:2px 16px 16px;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .review-body ol{margin:0 0 10px;padding-left:20px}
+  .review-body li{margin-bottom:6px;color:var(--ink)}
+  .review-body .note{
+    font-size:12px;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  /* ---------- section cards ---------- */
+  section.card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:20px 18px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+  }
+  .card-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .letter{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:14px;
+    color:var(--accent-ink);
+    background:var(--accent);
+    border-radius:var(--r);
+    width:26px;
+    height:26px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+  }
+  .card-title{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .count{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  ul.checklist{list-style:none;margin:0;padding:0}
+  ul.checklist li{
+    border-top:1px solid var(--line);
+  }
+  ul.checklist li:first-child{border-top:none}
+  ul.checklist label{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:13px 2px;
+    cursor:pointer;
+  }
+  ul.checklist input[type="checkbox"]{
+    width:22px;
+    height:22px;
+    flex:none;
+    margin-top:2px;
+    accent-color:var(--accent);
+    cursor:pointer;
+  }
+  .item-text{
+    font-size:18px;
+    line-height:1.42;
+  }
+  .item-text b{font-weight:700}
+  .item-sub{
+    display:block;
+    font-size:14px;
+    color:var(--muted);
+    margin-top:3px;
+    line-height:1.4;
+  }
+  li.checked .item-text{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+
+  .inline-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:8px;
+    padding:8px 14px;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    text-decoration:none;
+    border-radius:var(--r);
+    box-shadow:var(--glow);
+  }
+  .inline-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+  /* stat callout inside B4 */
+  .stat-row{
+    display:grid;
+    grid-template-columns:1.2fr 1fr 1fr;
+    gap:8px;
+    margin:10px 0 4px;
+  }
+  .stat{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat .n{
+    font-family:var(--mono);
+    font-variant-numeric:tabular-nums;
+    font-weight:800;
+    font-size:20px;
+    line-height:1;
+  }
+  .stat.hot .n{color:var(--accent)}
+  .stat .cap{
+    display:block;
+    margin-top:5px;
+    font-size:10.5px;
+    letter-spacing:.03em;
+    color:var(--muted);
+    line-height:1.3;
+  }
+  .stat-source{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  /* ---------- section C: CPIS stepper, urgency ---------- */
+  section.urgent{
+    border-color:var(--accent);
+    background:var(--surface);
+    position:relative;
+  }
+  section.urgent .letter{background:var(--accent)}
+  .steps{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:step;
+  }
+  .steps li{
+    counter-increment:step;
+    display:flex;
+    gap:14px;
+    padding:10px 0;
+    position:relative;
+  }
+  .steps li:not(:last-child)::before{
+    content:"";
+    position:absolute;
+    left:13px;
+    top:34px;
+    bottom:-4px;
+    width:1px;
+    background:var(--line);
+  }
+  .step-num{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:13px;
+    color:var(--accent);
+    background:var(--surface-2);
+    border:1px solid var(--accent);
+    width:27px;
+    height:27px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+  }
+  .step-num::before{content:counter(step)}
+  .step-body{font-size:17px;line-height:1.45;padding-top:2px}
+  .step-body .step-sub{
+    display:block;
+    font-size:13.5px;
+    color:var(--muted);
+    margin-top:3px;
+  }
+  .step-body.deadline{
+    font-weight:700;
+  }
+  .deadline-tag{
+    display:inline-block;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:.03em;
+    padding:2px 8px;
+    border-radius:var(--r);
+    margin:0 2px;
+  }
+  .warn{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:var(--surface-2);
+    border-left:3px solid var(--accent);
+    border-radius:0 var(--r) var(--r) 0;
+    padding:12px 14px;
+    margin-top:16px;
+    font-size:14.5px;
+  }
+  .warn .icon{font-size:16px;flex:none;line-height:1.3}
+  .warn .src{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+
+  /* ---------- D: timeframe eyebrow ---------- */
+  .item-when{
+    display:block;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:3px;
+  }
+
+  /* ---------- science line ---------- */
+  .science{
+    font-size:13.5px;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    padding-top:16px;
+    margin:6px 0 26px;
+    line-height:1.55;
+  }
+  .science b{color:var(--ink)}
+
+  /* ---------- closing CTA ---------- */
+  .closing{
+    background:var(--ink);
+    color:var(--ground);
+    border-radius:var(--r);
+    padding:24px 20px;
+    text-align:center;
+  }
+  .closing p{
+    font-size:17px;
+    line-height:1.5;
+    margin:0 0 16px;
+  }
+  .closing b{color:var(--ground)}
+  .closing .inline-btn{
+    background:var(--accent);
+    color:#fff;
+    font-size:13px;
+    padding:12px 22px;
+  }
+  .url-cap{
+    display:block;
+    margin-top:10px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.02em;
+    color:var(--muted);
+  }
+  :root:not([data-theme="light"]) .closing,
+  :root[data-theme="dark"] .closing{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+  }
+  :root:not([data-theme="light"]) .closing p,
+  :root[data-theme="dark"] .closing p,
+  :root:not([data-theme="light"]) .closing b,
+  :root[data-theme="dark"] .closing b{
+    color:var(--ink);
+  }
+
+  footer.foot{
+    text-align:center;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:24px;
+  }
+
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important}
+  }
+
+  @media print{
+    body{background:#fff;color:#0A0A0A}
+    details.review{display:none}
+    .wrap{max-width:none;padding:0 6mm}
+    section.card{box-shadow:none;break-inside:avoid}
+    .inline-btn{box-shadow:none}
+  }
+
+.audience{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 0 14px}
+.partner-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.socials{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;margin-top:10px}
+.socials a{color:var(--red);text-decoration:none;margin-right:12px}
+details.review.is-hidden{display:none}
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ką patikrinti prieš, ko paklausti vadovo, NVŠ krepšelio 2 sistemos ir 5 dienų langas, pirmas mėnuo.">
+<meta property="og:title" content="Būrelis rugsėjui · Tėvų checklist">
+<meta property="og:description" content="Ką patikrinti prieš, ko paklausti vadovo, NVŠ krepšelio 2 sistemos ir 5 dienų langas, pirmas mėnuo.">
+<meta property="og:url" content="https://krisvas333.github.io/neuron-ar/checklist-tevams/">
+<meta property="og:type" content="website">
+</head>
+<body>
+
+<div class="wrap">
+
+  <p class="eyebrow">Rugsėjis · tėvams</p>
+  <h1>Būrelis rugsėjui: tėvų checklist</h1>
+  <p class="subtitle">Ką patikrinti PRIEŠ, ką paklausti VADOVO, ir kaip nepraleisti NVŠ krepšelio lango.</p>
+  <p class="audience">Kam skirta: tėvams, kurie rugsėjui renka būrelį 5–15 m. vaikui — nepriklausoma informacija, ne reklama</p>
+  <p class="byline"><b>Kris Vasiliauskas</b> × bureliai.lt</p>
+
+  <details class="review">
+    <summary>Peržiūros režimas <span class="review-badge">tik Kris'ui · nespausdinama</span></summary>
+    <div class="review-body">
+      <ol>
+        <li>Ar CPIS žingsniai ir datos teisingi? (Kris patikrina su ExoClass komanda)</li>
+        <li>Ar „ko paklausti vadovo" sąrašas — tie 7 klausimai — teisingi?</li>
+        <li>Ar bureliai.lt kanonas (50+ būrelių · 700+ mokyklų) tinka čia?</li>
+        <li>Tonas — ar skamba kaip Kris?</li>
+      </ol>
+      <p class="note">Palik komentarą tiesiai ant elemento.</p>
+    </div>
+  </details>
+
+  <!-- A -->
+  <section class="card" id="sec-a">
+    <div class="card-head">
+      <span class="letter">A</span>
+      <span class="card-title">Prieš renkantis</span>
+      <span class="count">(5)</span>
+    </div>
+    <ul class="checklist" data-group="a">
+      <li data-id="a1">
+        <label>
+          <input type="checkbox">
+          <span class="item-text"><b>Vaiko tipas</b> — ar žinote, kas jam tinka?
+            <span class="item-sub">2 min testas parodo archetipą ir tiesiogiai rekomenduoja būrelius.</span>
+            <a class="inline-btn" href="https://bureliutestas.lovable.app?utm_source=checklist&utm_medium=pdf&utm_campaign=tevu-checklist" target="_blank" rel="noopener">2 min testas →</a>
+          </span>
+        </label>
+      </li>
+      <li data-id="a2">
+        <label>
+          <input type="checkbox">
+          <span class="item-text"><b>Atstumas ir laikas</b> — ar realiai nuvešite 2× per savaitę?
+            <span class="item-sub">Tėvų klausimas #1 iš tikrųjų yra „ar tai yra PAS MANE".</span>
+          </span>
+        </label>
+      </li>
+      <li data-id="a3">
+        <label>
+          <input type="checkbox">
+          <span class="item-text"><b>Kaina nuo</b> — ir ar priima NVŠ krepšelį?</span>
+        </label>
+      </li>
+      <li data-id="a4">
+        <label>
+          <input type="checkbox">
+          <span class="item-text"><b>Grupės dydis</b> ir amžiaus skirtumas grupėje.</span>
+        </label>
+      </li>
+      <li data-id="a5">
+        <label>
+          <input type="checkbox">
+          <span class="item-text"><b>Bandomoji pamoka</b> — ar yra, ir ar nemokama?</span>
+        </label>
+      </li>
+    </ul>
+  </section>
+
+  <!-- B -->
+  <section class="card" id="sec-b">
+    <div class="card-head">
+      <span class="letter">B</span>
+      <span class="card-title">Ko paklausti vadovo</span>
+      <span class="count">(7)</span>
+    </div>
+    <ul class="checklist" data-group="b">
+      <li data-id="b1">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Ar mentorius nesikeis vidury metų?"
+            <span class="item-sub">Mūsų apklausų klausimas #1.</span>
+          </span>
+        </label>
+      </li>
+      <li data-id="b2">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Kaip ir kada gausiu grįžtamąjį ryšį apie savo vaiką?"
+            <span class="item-sub">Klausimas #2.</span>
+          </span>
+        </label>
+      </li>
+      <li data-id="b3">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Ar vaikas kurs SAVO projektą, ar tik kartos instrukcijas?"</span>
+        </label>
+      </li>
+      <li data-id="b4">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Kas nutinka, jei po 3 savaičių vaikui nuobodu?"</span>
+        </label>
+        <div class="stat-row">
+          <div class="stat hot"><span class="n">37,8%</span><span class="cap">palieka būrelį per 1&nbsp;ciklą</span></div>
+          <div class="stat"><span class="n">26,7%</span><span class="cap">priežastis #1 — nuobodulys</span></div>
+          <div class="stat"><span class="n">1,6%</span><span class="cap">priežastis — kaina</span></div>
+        </div>
+        <p class="stat-source">Mūsų audituoti duomenys.</p>
+      </li>
+      <li data-id="b5">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Kiek vaikų grupėje ir koks amžiaus skirtumas?"</span>
+        </label>
+      </li>
+      <li data-id="b6">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Praleistos pamokos / atšaukimas — kokios sąlygos?"</span>
+        </label>
+      </li>
+      <li data-id="b7">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Ar registruotis ir mokėti galiu telefone?"</span>
+        </label>
+      </li>
+    </ul>
+  </section>
+
+  <!-- C -->
+  <section class="card urgent" id="sec-c">
+    <div class="card-head">
+      <span class="letter">C</span>
+      <span class="card-title">NVŠ krepšelis — 2 sistemos, 5 dienos</span>
+    </div>
+      <p style="margin:8px 0 12px;font-size:16px;color:var(--muted)">Tai galioja tik NVŠ krepšelio (valstybės finansuojamiems) būreliams. Mokant patiems — tik teikėjo registracija.</p>
+    <ol class="steps">
+      <li>
+        <span class="step-num"></span>
+        <span class="step-body">Registruokis <b>PAS TEIKĖJĄ</b> — jo pačio sistemoje.</span>
+      </li>
+      <li>
+        <span class="step-num"></span>
+        <span class="step-body">Tada — <b>mokausi.lt / CPIS</b> per Elektroninius valdžios vartus.
+          <span class="step-sub">Registracija ten NEPAKEIČIA registracijos pas teikėją — abi būtinos.</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num"></span>
+        <span class="step-body">Lauk <b>sutarties</b> CPIS'e.</span>
+      </li>
+      <li>
+        <span class="step-num"></span>
+        <span class="step-body deadline">Pasirašyk per <span class="deadline-tag">5 kalendorines dienas</span> — <span class="deadline-tag">Rugs 16–21</span>
+          <span class="step-sub">Praleidus langą, vaikas lieka be finansavimo.</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num"></span>
+        <span class="step-body">Pasitikrink su teikėju, kad viskas <b>patvirtinta</b>.</span>
+      </li>
+    </ol>
+    <div class="warn">
+      <span class="icon">⚠️</span>
+      <span>Datos ir tvarka skiriasi pagal savivaldybę — pasitikrink savo savivaldybės instrukcijoje.
+        <span class="src">Šaltinis: regioninė spauda, 2026-08-13/14 — dar reikia patvirtinti.</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- D -->
+  <section class="card" id="sec-d">
+    <div class="card-head">
+      <span class="letter">D</span>
+      <span class="card-title">Pirmas mėnuo</span>
+      <span class="count">(3)</span>
+    </div>
+    <ul class="checklist" data-group="d">
+      <li data-id="d1">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">
+            <span class="item-when">Po 1 pamokos</span>
+            Paklausk vaiko VIENO klausimo: „Ką šiandien padarei PATS?"
+          </span>
+        </label>
+      </li>
+      <li data-id="d2">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">
+            <span class="item-when">3–4 savaitę</span>
+            Trumpas pokalbis su mentoriumi — kol dar nenusprendėt išeiti.
+          </span>
+        </label>
+      </li>
+      <li data-id="d3">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">
+            <span class="item-when">Jei nuobodu</span>
+            Keisk BŪRELĮ, ne visus būrelius. Priežastis dažniausiai nuobodulys (26,7%), ne kaina (1,6%).
+          </span>
+        </label>
+      </li>
+    </ul>
+  </section>
+
+  <p class="science">Kokybiška popamokinė veikla: <b>+11 procentilių</b> akademiniuose rezultatuose (Durlak 2011, CASEL) — testo ir patarimų karkasas: CASEL · VIA · OECD.</p>
+
+  <div class="closing">
+    <p class="partner-eyebrow">Partnerio blokas</p>
+    <p>Nerandi tinkamo? <b>bureliai.lt</b> — 50+ būrelių, 700+ mokyklų, viena registracija.</p>
+    <a class="inline-btn" href="https://krisvas.lt/go/bureliai?utm_source=checklist&utm_medium=pdf&utm_campaign=tevu-checklist" target="_blank" rel="noopener">Ieškoti bureliai.lt →</a>
+    <span class="url-cap">krisvas.lt/go/bureliai</span>
+  </div>
+
+  <footer class="foot">Kris Vasiliauskas × bureliai.lt · 2026 · <a href="https://krisvas.lt/go/exoclass?utm_source=checklist&amp;utm_medium=footer&amp;utm_campaign=tevu-checklist" style="color:var(--muted)">Powered by ExoClass.lt</a><p class="socials"><a href="https://krisvas.lt/go/instagram">Instagram</a><a href="https://krisvas.lt/go/linkedin">LinkedIn</a><a href="https://krisvas.lt/go/tiktok">TikTok</a><a href="https://krisvas.lt/go/testas?utm_source=checklist&amp;utm_medium=footer&amp;utm_campaign=tevu-checklist">Būrelių testas (2 min) →</a></p></footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = 'tevu-checklist-2026-08-28';
+  var boxes = document.querySelectorAll('ul.checklist input[type="checkbox"]');
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){ /* ignore */ }
+  }
+
+  var state = loadState();
+
+  boxes.forEach(function(box){
+    var li = box.closest('li');
+    var id = li ? li.getAttribute('data-id') : null;
+    if(!id) return;
+    if(state[id]){
+      box.checked = true;
+      li.classList.add('checked');
+    }
+    box.addEventListener('change', function(){
+      if(box.checked){ li.classList.add('checked'); }
+      else{ li.classList.remove('checked'); }
+      state[id] = box.checked;
+      saveState(state);
+    });
+  });
+})();
+</script>
+
+<script>(function(){try{var d=document.querySelector('details.review');if(d&&!/[?&]review=1/.test(location.search)){d.classList.add('is-hidden');}}catch(e){}})();</script>
+
+</body>
+</html>

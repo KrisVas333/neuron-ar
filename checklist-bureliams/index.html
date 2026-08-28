@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<title>10 Dalykų Sezonui · Tiekėjų Checklist</title>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="checklist-bureliams" data-kind="tool"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#FFFFFF;
+    --surface:#F7F7F5;
+    --ink:#0A0A0A;
+    --muted:#595959;
+    --line:#E5E2DE;
+    --accent:#D90429;      /* text / buttons */
+    --micro:#FF0000;       /* number badges, tiny marks only */
+    --ok:#1E7A34;
+    --review-ink:#7A4A00;  /* internal-only chrome — deliberately NOT the brand red */
+    --review-bg:#FFF6E8;
+    --review-line:#E9C98A;
+    --pill-bg:#FDECEC;
+    --pill-line:#F0B8B8;
+    --pill-ink:#B3122A;
+    --r:4px;
+    --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --shadow:0 1px 0 rgba(10,10,10,.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#080808;
+      --surface:#0D0D0D;
+      --ink:#FAFAFA;
+      --muted:#A3A3A3;
+      --line:#262626;
+      --accent:#FF3B3B;
+      --micro:#FF0000;
+      --ok:#4FBE6C;
+      --review-ink:#E3B15C;
+      --review-bg:#1A1408;
+      --review-line:#4A3714;
+      --pill-bg:#2A1010;
+      --pill-line:#5A1F1F;
+      --pill-ink:#FF8A8A;
+      --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#080808;
+    --surface:#0D0D0D;
+    --ink:#FAFAFA;
+    --muted:#A3A3A3;
+    --line:#262626;
+    --accent:#FF3B3B;
+    --micro:#FF0000;
+    --ok:#4FBE6C;
+    --review-ink:#E3B15C;
+    --review-bg:#1A1408;
+    --review-line:#4A3714;
+    --pill-bg:#2A1010;
+    --pill-line:#5A1F1F;
+    --pill-ink:#FF8A8A;
+    --shadow:none;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:#fff;}
+  a{color:var(--accent);}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  #net{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:.05;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .page{
+    position:relative;
+    z-index:1;
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 80px;
+  }
+  @media (min-width:600px){
+    .page{padding:48px 32px 100px;}
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 14px;
+  }
+
+  h1{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:clamp(26px,5.5vw,38px);
+    line-height:1.14;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+    margin:0 0 12px;
+  }
+
+  .subtitle{
+    font-size:18px;
+    color:var(--muted);
+    margin:0 0 6px;
+    max-width:52ch;
+  }
+
+  .byline{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.06em;
+    color:var(--muted);
+    margin:0 0 24px;
+  }
+
+  .intro{
+    font-size:17px;
+    line-height:1.6;
+    max-width:62ch;
+    border-left:3px solid var(--accent);
+    padding-left:16px;
+    margin:0 0 32px;
+  }
+  .intro strong{color:var(--accent);}
+
+  /* ---- review strip ---- */
+  details.review{
+    background:
+      repeating-linear-gradient(135deg, var(--review-bg) 0 10px, color-mix(in srgb, var(--review-bg) 88%, var(--review-ink)) 10px 11px);
+    border:1.5px dashed var(--review-line);
+    border-radius:var(--r);
+    margin:0 0 36px;
+    overflow:hidden;
+  }
+  details.review summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--review-ink);
+  }
+  details.review summary::-webkit-details-marker{display:none;}
+  details.review summary::before{
+    content:"▸";
+    display:inline-block;
+    transition:transform .15s ease;
+    font-size:11px;
+  }
+  details.review[open] summary::before{transform:rotate(90deg);}
+  .review-body{
+    padding:0 18px 18px 40px;
+    font-size:15px;
+    color:var(--ink);
+    background:var(--ground);
+    margin:0 12px 12px;
+    border-radius:var(--r);
+    border:1px solid var(--review-line);
+  }
+  .review-body p{margin:14px 0 8px;color:var(--muted);}
+  .review-body ol{margin:0 0 6px;padding-left:20px;}
+  .review-body li{margin:0 0 10px;}
+  .review-body li b{color:var(--review-ink);}
+  .review-note{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.02em;
+    color:var(--review-ink);
+    margin:12px 0 4px;
+  }
+
+  /* ---- checklist ---- */
+  .items{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin:0 0 40px;
+  }
+  .item{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:14px;
+    padding:18px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+  }
+  @media (min-width:600px){
+    .item{padding:22px 24px;gap:18px;}
+  }
+  .item-num{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:14px;
+    color:var(--ground);
+    background:var(--micro);
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:var(--r);
+    flex:none;
+  }
+  .item-check{
+    display:flex;
+    align-items:flex-start;
+    padding-top:2px;
+  }
+  .item-check input[type="checkbox"]{
+    appearance:none;
+    -webkit-appearance:none;
+    width:22px;height:22px;
+    border:2px solid var(--accent);
+    border-radius:var(--r);
+    background:var(--ground);
+    cursor:pointer;
+    display:grid;
+    place-content:center;
+    flex:none;
+  }
+  .item-check input[type="checkbox"]::before{
+    content:"";
+    width:11px;height:11px;
+    transform:scale(0);
+    transition:transform .1s ease-in;
+    background:var(--accent);
+    border-radius:1px;
+  }
+  .item-check input[type="checkbox"]:checked::before{transform:scale(1);}
+  .item-check input[type="checkbox"]:checked{background:color-mix(in srgb, var(--accent) 12%, var(--ground));}
+
+  .item-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:0 0 8px;
+  }
+  .item-emoji{font-size:20px;line-height:1;}
+  .item-title{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:-.005em;
+    text-wrap:balance;
+  }
+  .item-body{
+    font-size:17px;
+    line-height:1.6;
+    max-width:64ch;
+    margin:0 0 4px;
+  }
+  .item-body strong{color:var(--ink);}
+  .item-body em.callout{
+    display:block;
+    font-style:normal;
+    margin-top:8px;
+    padding:8px 10px;
+    background:color-mix(in srgb, var(--review-bg) 70%, transparent);
+    border-left:2px solid var(--review-ink);
+    color:var(--review-ink);
+    font-size:14.5px;
+    border-radius:2px;
+  }
+  .sizes{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--muted);
+    margin:10px 0 0;
+    padding-top:10px;
+    border-top:1px dashed var(--line);
+  }
+  .sizes b{
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ink);
+    font-weight:700;
+  }
+
+  .src{
+    display:inline-block;
+    font-size:11px;
+    vertical-align:super;
+    color:var(--pill-ink);
+    cursor:help;
+    margin-left:1px;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:12px;
+    padding:6px 12px;
+    background:var(--pill-bg);
+    border:1.5px dashed var(--pill-line);
+    color:var(--pill-ink);
+    border-radius:999px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.01em;
+  }
+
+  /* ---- bonus ---- */
+  .section-label{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .bonus{
+    margin:0 0 40px;
+    padding:20px 22px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:var(--r);
+  }
+  .bonus ul{margin:0;padding-left:0;list-style:none;}
+  .bonus li{
+    display:flex;
+    gap:10px;
+    font-size:16.5px;
+    line-height:1.55;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .bonus li:last-child{border-bottom:none;padding-bottom:0;}
+  .bonus li:first-child{padding-top:0;}
+  .bonus li::before{
+    content:"→";
+    color:var(--accent);
+    font-weight:700;
+    flex:none;
+  }
+
+  /* ---- table ---- */
+  .segments{margin:0 0 44px;}
+  .table-wrap{
+    overflow-x:auto;
+    border:1px solid var(--line);
+    border-radius:var(--r);
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14.5px;
+    min-width:520px;
+  }
+  th,td{
+    text-align:left;
+    padding:12px 14px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  thead th{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:var(--surface);
+  }
+  thead th:first-child{color:var(--muted);}
+  tbody th{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:13px;
+    color:var(--accent);
+    white-space:nowrap;
+    background:var(--surface);
+  }
+  tbody tr:last-child th,tbody tr:last-child td{border-bottom:none;}
+
+  /* ---- cta ---- */
+  .cta{
+    margin:0 0 44px;
+    padding:28px 24px;
+    background:var(--ink);
+    color:var(--ground);
+    border-radius:var(--r);
+    text-align:left;
+  }
+  .cta h2{
+    font-family:var(--mono);
+    font-size:19px;
+    font-weight:700;
+    margin:0 0 8px;
+    text-wrap:balance;
+  }
+  .cta p{
+    font-size:15.5px;
+    color:color-mix(in srgb, var(--ground) 70%, transparent);
+    margin:0 0 18px;
+    max-width:50ch;
+  }
+  .cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--accent);
+    color:#fff;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:13.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:13px 20px;
+    border-radius:var(--r);
+  }
+  .cta-btn:hover{filter:brightness(1.08);}
+
+  footer{
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.6;
+    border-top:1px solid var(--line);
+    padding-top:18px;
+  }
+  footer .legend{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.02em;
+    color:var(--pill-ink);
+    margin-top:8px;
+  }
+
+  @media print{
+    #net,details.review{display:none !important;}
+    body{background:#fff;color:#000;}
+    .item{break-inside:avoid;box-shadow:none;}
+    .cta{background:#fff;color:#000;border:1.5px solid #000;}
+    .cta p{color:#333;}
+    a{color:#000;text-decoration:underline;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    * {animation:none !important;transition:none !important;}
+  }
+
+.audience{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 0 14px}
+.partner-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.socials{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;margin-top:10px}
+.socials a{color:var(--red);text-decoration:none;margin-right:12px}
+details.review.is-hidden{display:none}
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Checklist prieš rugsėjį — nuo laukiančiųjų sąrašo iki NVŠ instrukcijos tėvams.">
+<meta property="og:title" content="10 dalykų sezonui · Būrelių vadovams">
+<meta property="og:description" content="Checklist prieš rugsėjį — nuo laukiančiųjų sąrašo iki NVŠ instrukcijos tėvams.">
+<meta property="og:url" content="https://krisvas333.github.io/neuron-ar/checklist-bureliams/">
+<meta property="og:type" content="website">
+</head>
+<body>
+
+<canvas id="net" aria-hidden="true"></canvas>
+
+<div class="page">
+
+  <p class="eyebrow">Būrelių sezono čeklistas</p>
+  <h1>10 dalykų, kuriuos būrelis privalo turėti paruoštus sezonui</h1>
+  <p class="subtitle">Čeklistas LT būrelių vadovams prieš rugsėjį.</p>
+  <p class="audience">Kam skirta: būrelių vadovams ir administratoriams, kurie ruošia rugsėjo sezoną — 300 iki 2 000 vaikų</p>
+  <p class="byline">Kris Vasiliauskas × ExoClass · bureliai.lt</p>
+
+  <p class="intro">
+    Registracijos jau vyksta <strong>DABAR</strong>. NVŠ krepšelio sutarčių pasirašymo langas — <strong>rugsėjo 16–21, vos 5 dienos</strong> — vaikas be pasirašytos sutarties lieka be finansavimo. Kas iš šio sąrašo dar nepadaryta, turi būti padaryta šią savaitę, ne rugsėjo pirmą.
+  </p>
+
+  <details class="review">
+    <summary>🔍 Peržiūros režimas — tik Kris'ui</summary>
+    <div class="review-body">
+      <p>Palik komentarą tiesiai ant elemento (Artifact komentaro funkcija). 4 klausimai, į kuriuos reikia atsakymo prieš siunčiant toliau:</p>
+      <ol>
+        <li><b>① Vardai / citatos</b> — kiekviena vieta reikalauja tikro tiekėjo sutikimo prieš spausdinant.</li>
+        <li><b>② ExoClass vs Kris brand</b> — ar co-brand („Kris Vasiliauskas × ExoClass") tinka šiam artefaktui, ar turi būti grynas ExoClass?</li>
+        <li><b>③ CPIS datos</b> — Rugsėjo 16–21 langas patvirtintas prieš spausdinant?</li>
+        <li><b>④ Tarptautiniai skaičiai</b> — pažymėti ⚠️ žemiau lieka artefakte, ar juos reikia išimti / pakeisti tik mūsų duomenimis?</li>
+      </ol>
+      <p class="review-note">Ši juosta ir kanvasas dingsta spausdinant (@media print).</p>
+    </div>
+  </details>
+
+  <section class="items">
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i1" data-persist="i1"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">01</span>
+          <span class="item-emoji">🎟️</span>
+          <span class="item-title">Ankstyva registracija grįžtantiems — prieš atidarant visiems</span>
+        </div>
+        <p class="item-body">Duok esamų vaikų šeimoms pirmumo langą į populiariausius laikus <strong>prieš</strong> viešą registraciją. Tarptautinė praktika — pigiausias būdas užsipildyti be jokios reklamos ir išlyginti rugpjūčio piką.</p>
+        <p class="sizes"><b>Dydžiai:</b> 300–500 — daryk rankiniu laišku · 1 000+ — per sistemą su terminu.</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i2" data-persist="i2"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">02</span>
+          <span class="item-emoji">📱</span>
+          <span class="item-title">Registracija veikia telefone ir naktį</span>
+        </div>
+        <p class="item-body"><strong>Dauguma tėvų</strong> registruoja iš telefono ir <strong>ne darbo valandomis</strong>. Jei registracija = „paskambinkit mums" arba Google Forms be mokėjimo — prarandi tėvus, kurie sprendžia 22:30 iš lovos.<em class="callout">⚠️ LT realybė: turime tiekėjų su 900 vaikų ant Google Form.</em></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i3" data-persist="i3"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">03</span>
+          <span class="item-emoji">🏛️</span>
+          <span class="item-title">NVŠ krepšelio dviguba registracija — instrukcija tėvams paruošta</span>
+        </div>
+        <p class="item-body">🇱🇹 Unikaliai mūsų: tėvai dabar registruojasi <strong>2 sistemose</strong> (tiekėjo + mokausi.lt), o sutarčių pasirašymo langas — <strong>rugsėjo 16–21 (5 dienos!)</strong>. Praleidęs — vaikas be finansavimo. Turėk 1 puslapio instrukciją tėvams su ekrano nuotraukomis ir siųsk ją prieš langą, ne lango dieną.<em class="callout">Šito nė vienas tarptautinis playbook'as neturi — grynas LT alpha.</em></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i4" data-persist="i4"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">04</span>
+          <span class="item-emoji">⏳</span>
+          <span class="item-title">Laukiančiųjų sąrašas su 48–72 h taisykle</span>
+        </div>
+        <p class="item-body">Atsilaisvino vieta → pasiūlymas kitam sąraše su aiškiu terminu atsakyti (48–72&nbsp;h), tada — kitas. Automatinis SMS backfill atgauna <strong>kelis kartus daugiau</strong> vietų nei skambinėjimas ranka. Ir: sąrašas sensta — po 3 mėnesių pasiūlymas beveik nebekonvertuoja.</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i5" data-persist="i5"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">05</span>
+          <span class="item-emoji">🧑‍🏫</span>
+          <span class="item-title">Mentoriai užrakinti iki rugpjūčio vidurio — ir įvardinti</span>
+        </div>
+        <p class="item-body">Naujo mentoriaus patikros / įdarbinimo ciklas — 3–4 savaitės; rugsėjui samdyti rugpjūčio gale = vėlu. Ir svarbiausia: <strong>tėvų klausimas #1</strong> visose mūsų apklausose — „ar mentorius nesikeis?" Grupė su įvardintu mentoriumi parduoda geriau nei grupė su „mentoriumi".</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i6" data-persist="i6"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">06</span>
+          <span class="item-emoji">🔁</span>
+          <span class="item-title">Pirmų 90 dienų planas (ne viltis)</span>
+        </div>
+        <p class="item-body">Mūsų audituoti skaičiai: <strong>37,8&nbsp;%</strong> vaikų palieka per pirmą ciklą, ir pagrindinė priežastis — ne kaina (<strong>1,6&nbsp;%</strong>), o nuobodulys (<strong>26,7&nbsp;%</strong>). Suplanuok privalomus taškus: 1&nbsp;sav. žinutė tėvui „kaip sekėsi pirmą kartą" · 3–4&nbsp;sav. „stay" pokalbis (kol dar nenusprendė išeiti — ne exit apklausa po fakto) · pirmo mėnesio rezultato parodymas. Užsienio kovos menų mokyklos su tokia seka reikšmingai pakėlė išlikimą.</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i7" data-persist="i7"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">07</span>
+          <span class="item-emoji">💬</span>
+          <span class="item-title">Komunikacijos ritmas: tyla praranda vaikus, ne kaina</span>
+        </div>
+        <p class="item-body"><strong>Tėvų klausimas #2:</strong> „kaip sekasi mano vaikui?" Blogiausia — tyla tarp mokėjimų. Standartas: savaitinis / dvisavaitinis ritmas, el. paštas — detalėms, SMS — tos dienos dalykams. Vienas nuoseklus ritmas &gt; sporadiški šedevrai.</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i8" data-persist="i8"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">08</span>
+          <span class="item-emoji">🏫</span>
+          <span class="item-title">Mokyklų santykiai — sąrašas, ne atmintis</span>
+        </div>
+        <p class="item-body">Tyrimai rodo: stiprus santykis su mokyklos vadovu gerina net vaikų rezultatus, ne tik srautą. Turėk lentelę: mokykla · kontaktas · paskutinis pokalbis · kas žadėta. Nuo ~500 vaikų „viskas mano galvoje" nustoja veikti.</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i9" data-persist="i9"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">09</span>
+          <span class="item-emoji">💳</span>
+          <span class="item-title">Mokėjimai automatu — sąskaitos ranka yra #1 laiko rijikas</span>
+        </div>
+        <p class="item-body">Auto-mokėjimai + nepavykusio mokėjimo pakartojimas + priminimas prieš nurašymą. Kiekviena rankinė sąskaita = minutės, kurios rugsėjį virsta valandomis.</p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-check"><input type="checkbox" id="i10" data-persist="i10"></div>
+      <div>
+        <div class="item-head">
+          <span class="item-num">10</span>
+          <span class="item-emoji">📊</span>
+          <span class="item-title">Matuok tris skaičius, ne „jausmą"</span>
+        </div>
+        <p class="item-body">Užpildymas (tikslas ≥80&nbsp;%) · bandymas→atėjo · atėjo→moka (dvi <strong>atskiros</strong> konversijos). Klubas, kuris matuoja tik „jausmą“, metais stovi vietoje; sutvarkytas registracijos piltuvas yra pigiausias augimas.</p>
+      </div>
+    </article>
+
+  </section>
+
+  <p class="section-label">Bonusas</p>
+  <div class="bonus">
+    <h2 style="font-family:var(--mono);font-size:16px;margin:0 0 10px;">Ko nedaro beveik niekas</h2>
+    <ul>
+      <li>Sezonas — 10 mėnesių projektas: UK lyderiai kitą rugsėjį pradeda statyti lapkritį.</li>
+      <li>AI atsakinėja tėvams pirmas: didžiąją dalį rutininių klausimų be žmogaus (rugsėjo klausimų tvanui).</li>
+      <li>Dinaminė kainodara populiariausiems laikams (1 000+ vaikų lygiui).</li>
+    </ul>
+  </div>
+
+  <p class="section-label">Segmentai</p>
+  <div class="segments">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th></th><th>300–500</th><th>500–1 000</th><th>1 000–2 000</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Kas lūžta pirmiausia</th>
+            <td>founderis daro viską pats</td>
+            <td>rankinis backfill + komunikacija</td>
+            <td>„kas kalbėjo su kuria mokykla"</td>
+          </tr>
+          <tr>
+            <th>Svarbiausi punktai</th>
+            <td>#1 #4 #10</td>
+            <td>#4 #7 + dedikuotas administratorius</td>
+            <td>#4 #8 #9 automatizuoti + per-site dashboard'ai</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cta">
+    <p class="partner-eyebrow">Partnerio blokas</p>
+    <h2>Nori, kad tai veiktų automatiškai?</h2>
+    <p>ExoClass — registracija · mokėjimai · komunikacija vienoje vietoje.</p>
+    <a class="cta-btn" href="https://krisvas.lt/go/exoclass?utm_source=checklist&amp;utm_medium=pdf&amp;utm_campaign=10-dalyku-sezonui">Pažiūrėti ExoClass →</a>
+  </div>
+
+  <footer>
+    <p>Šaltiniai: mūsų audituoti duomenys — 13 metų, 1 600+ šeimų (37,8&nbsp;% · 26,7&nbsp;% · 1,6&nbsp;%) · tarptautinė praktika (ACA · Jackrabbit · Afterschool Alliance) be skaičių, kol nepatikrinta · CPIS datos: regioninė spauda 2026-08-13/14.</p><p class="socials"><a href="https://krisvas.lt/go/instagram">Instagram</a><a href="https://krisvas.lt/go/linkedin">LinkedIn</a><a href="https://krisvas.lt/go/tiktok">TikTok</a><a href="https://krisvas.lt/go/testas?utm_source=checklist&amp;utm_medium=footer&amp;utm_campaign=10-dalyku-sezonui">Būrelių testas (2 min) →</a></p>
+    <p class="legend">Kris Vasiliauskas × ExoClass · bureliai.lt · <a href="https://krisvas.lt/go/exoclass?utm_source=checklist&amp;utm_medium=footer&amp;utm_campaign=10-dalyku-sezonui" style="color:var(--muted)">Powered by ExoClass.lt</a></p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  try{
+    var boxes = document.querySelectorAll('input[data-persist]');
+    boxes.forEach(function(b){
+      var key = 'tiekeju-checklist:' + b.dataset.persist;
+      var saved = localStorage.getItem(key);
+      if(saved === '1') b.checked = true;
+      b.addEventListener('change', function(){
+        try{ localStorage.setItem(key, b.checked ? '1' : '0'); }catch(e){}
+      });
+    });
+  }catch(e){}
+})();
+
+(function(){
+  var canvas = document.getElementById('net');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var w, h, nodes = [];
+  var COUNT = 26;
+
+  function isDark(){
+    var attr = document.documentElement.getAttribute('data-theme');
+    if(attr === 'dark') return true;
+    if(attr === 'light') return false;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  function init(){
+    nodes = [];
+    for(var i=0;i<COUNT;i++){
+      nodes.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        vx: (Math.random()-0.5)*0.15,
+        vy: (Math.random()-0.5)*0.15
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    var color = isDark() ? '255,0,0' : '217,4,41';
+    ctx.strokeStyle = 'rgba('+color+',0.5)';
+    ctx.fillStyle = 'rgba('+color+',0.8)';
+    for(var i=0;i<nodes.length;i++){
+      var n = nodes[i];
+      if(!reduced){
+        n.x += n.vx; n.y += n.vy;
+        if(n.x<0||n.x>w) n.vx*=-1;
+        if(n.y<0||n.y>h) n.vy*=-1;
+      }
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 1.6, 0, Math.PI*2);
+      ctx.fill();
+      for(var j=i+1;j<nodes.length;j++){
+        var m = nodes[j];
+        var dx = n.x-m.x, dy = n.y-m.y;
+        var dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 150){
+          ctx.globalAlpha = 1 - dist/150;
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(m.x, m.y);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      }
+    }
+    if(!reduced) requestAnimationFrame(draw);
+  }
+
+  try{
+    resize();
+    init();
+    draw();
+    window.addEventListener('resize', function(){ resize(); init(); });
+  }catch(e){}
+})();
+</script>
+
+<script>(function(){try{var d=document.querySelector('details.review');if(d&&!/[?&]review=1/.test(location.search)){d.classList.add('is-hidden');}}catch(e){}})();</script>
+
+</body>
+</html>
