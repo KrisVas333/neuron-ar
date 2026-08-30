@@ -1,12 +1,19 @@
 <!doctype html>
-<html lang="lt">
+<html lang="lt" data-theme="light">
 <head>
 <meta charset="utf-8">
-<title>Būrelis Rugsėjui · Tėvų Checklist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Ar tikrai pasiruošęs? · Būrelio checklist tėvams</title>
 <script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="checklist-tevams" data-kind="tool"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<meta name="description" content="13 dalykų, kuriuos verta patikrinti prieš registruojant vaiką į būrelį. Pažymėk — gauk pasiruošimo balą. Nemokama, be registracijos.">
+<meta property="og:title" content="Ar tikrai pasiruošęs registruoti vaiką į būrelį?">
+<meta property="og:description" content="13 patikrinimų · 8 klausimai vadovui · NVŠ krepšelio langas. 3 minutės telefone.">
+<meta property="og:url" content="https://krisvas333.github.io/neuron-ar/checklist-tevams/">
+<meta property="og:type" content="website">
 <style>
   :root{
     --ground:#FFFFFF;
@@ -19,45 +26,18 @@
     --accent-ink:#FFFFFF;
     --red:#FF0000;
     --ok:#1D7A3E;
-    --glow:none;
+    --ok-bg:#EAF6EE;
+    --warn:#B45309;
+    --warn-bg:#FDF3E3;
     --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
     --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     --r:4px;
     --shadow:0 1px 2px rgba(10,10,10,.04);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --ground:#080808;
-      --surface:#0D0D0D;
-      --surface-2:#141414;
-      --ink:#FAFAFA;
-      --muted:#9A9A9A;
-      --line:#262626;
-      --accent:#FF0000;
-      --accent-ink:#FFFFFF;
-      --red:#FF0000;
-      --ok:#3FCB74;
-      --glow:0 0 18px rgba(255,0,0,.35);
-      --shadow:none;
-    }
-  }
-  :root[data-theme="dark"]{
-    --ground:#080808;
-    --surface:#0D0D0D;
-    --surface-2:#141414;
-    --ink:#FAFAFA;
-    --muted:#9A9A9A;
-    --line:#262626;
-    --accent:#FF0000;
-    --accent-ink:#FFFFFF;
-    --red:#FF0000;
-    --ok:#3FCB74;
-    --glow:0 0 18px rgba(255,0,0,.35);
-    --shadow:none;
+    --bar-h:52px;
   }
 
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{
     margin:0;
     background:var(--ground);
@@ -67,12 +47,67 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--accent);color:var(--accent-ink)}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
   .wrap{
     max-width:720px;
     margin:0 auto;
-    padding:28px 20px 64px;
+    padding:20px 18px calc(96px + env(safe-area-inset-bottom));
   }
+
+  /* ---------- sticky progress ---------- */
+  .progress-bar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(255,255,255,.94);
+    -webkit-backdrop-filter:saturate(180%) blur(8px);
+    backdrop-filter:saturate(180%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .progress-inner{
+    max-width:720px;
+    margin:0 auto;
+    padding:9px 18px 10px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:var(--bar-h);
+  }
+  .progress-label{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:.04em;
+    font-variant-numeric:tabular-nums;
+    flex:none;
+  }
+  .progress-label .done{color:var(--accent)}
+  .progress-track{
+    flex:1;
+    height:8px;
+    background:var(--surface-2);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:99px;
+    transition:width .25s ease;
+  }
+  .progress-state{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    flex:none;
+  }
+  @media (max-width:420px){ .progress-state{display:none} }
 
   /* ---------- masthead ---------- */
   .eyebrow{
@@ -82,418 +117,364 @@
     letter-spacing:.14em;
     text-transform:uppercase;
     color:var(--accent);
+    margin:14px 0 0;
   }
   h1{
     font-family:var(--mono);
     font-weight:800;
     text-transform:uppercase;
     letter-spacing:.01em;
-    font-size:clamp(26px,7vw,36px);
-    line-height:1.12;
+    font-size:clamp(25px,6.6vw,34px);
+    line-height:1.14;
     margin:10px 0 10px;
     text-wrap:balance;
   }
   .subtitle{
-    font-size:16px;
-    color:var(--muted);
+    font-size:17px;
+    color:var(--ink);
     max-width:56ch;
     margin:0 0 14px;
   }
-  .byline{
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:0 0 16px;
+  }
+  .chip{
     font-family:var(--mono);
-    font-size:12px;
+    font-size:11px;
+    font-weight:700;
     letter-spacing:.06em;
     text-transform:uppercase;
     color:var(--muted);
-    padding-bottom:20px;
-    border-bottom:1px solid var(--line);
-    margin-bottom:22px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:5px 11px;
   }
-  .byline b{color:var(--ink)}
+  .hero-fact{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);
+    padding:14px 15px;font-size:16px;line-height:1.5;margin:0 0 16px;
+  }
+  .hero-fact b{font-weight:700}
+  .honesty{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink);
+    border-radius:0 var(--r) var(--r) 0;
+    padding:12px 14px;
+    font-size:14px;
+    color:var(--muted);
+    margin:0 0 22px;
+    line-height:1.5;
+  }
+  .honesty b{color:var(--ink)}
 
   /* ---------- review strip ---------- */
+  .mission{
+    background:var(--ground);border:1px solid var(--ink);border-radius:var(--r);
+    padding:14px 15px;font-size:15.5px;line-height:1.55;margin:0 0 12px;
+  }
+  .mission b{font-weight:700}
+  .to-provider{
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ok);
+    border-radius:0 var(--r) var(--r) 0;padding:12px 14px;
+    font-size:14.5px;line-height:1.5;color:var(--muted);margin:0 0 22px;
+  }
+  .to-provider b{color:var(--ok)}
   details.review{
     border:1px dashed var(--accent);
     border-radius:var(--r);
     background:var(--surface);
-    margin-bottom:28px;
-    padding:0;
+    margin-bottom:22px;
   }
+  details.review.is-hidden{display:none}
   details.review summary{
-    list-style:none;
-    cursor:pointer;
-    padding:12px 14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-family:var(--mono);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--accent);
+    list-style:none;cursor:pointer;padding:12px 14px;
+    display:flex;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:12px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
   }
   details.review summary::-webkit-details-marker{display:none}
-  details.review summary::before{
-    content:"▸";
-    display:inline-block;
-    transition:transform .15s ease;
-    font-size:11px;
-  }
+  details.review summary::before{content:"▸";transition:transform .15s ease;font-size:11px}
   details.review[open] summary::before{transform:rotate(90deg)}
-  .review-badge{
-    margin-left:auto;
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.08em;
-    color:var(--muted);
-    text-transform:none;
-    font-weight:500;
-  }
-  .review-body{
-    padding:2px 16px 16px;
-    font-size:14px;
-    color:var(--ink);
-  }
+  .review-badge{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:none;font-weight:500}
+  .review-body{padding:2px 16px 16px;font-size:14px}
   .review-body ol{margin:0 0 10px;padding-left:20px}
-  .review-body li{margin-bottom:6px;color:var(--ink)}
-  .review-body .note{
-    font-size:12px;
-    color:var(--muted);
-    font-style:italic;
-  }
+  .review-body li{margin-bottom:6px}
+  .review-body .note{font-size:12px;color:var(--muted);font-style:italic}
 
   /* ---------- section cards ---------- */
   section.card{
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:var(--r);
-    padding:20px 18px;
-    margin-bottom:20px;
+    padding:18px 16px;
+    margin-bottom:18px;
     box-shadow:var(--shadow);
+    scroll-margin-top:calc(var(--bar-h) + 10px);
   }
-  .card-head{
-    display:flex;
-    align-items:baseline;
-    gap:10px;
-    margin-bottom:14px;
-  }
+  .card-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
   .letter{
-    font-family:var(--mono);
-    font-weight:800;
-    font-size:14px;
-    color:var(--accent-ink);
-    background:var(--accent);
-    border-radius:var(--r);
-    width:26px;
-    height:26px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    flex:none;
+    font-family:var(--mono);font-weight:800;font-size:14px;
+    color:var(--accent-ink);background:var(--accent);border-radius:var(--r);
+    width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex:none;
   }
-  .card-title{
-    font-family:var(--mono);
-    font-weight:700;
-    font-size:15px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
+  .card-title{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:.07em;text-transform:uppercase}
+  .card-score{
+    margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:700;
+    font-variant-numeric:tabular-nums;color:var(--muted);
+    background:var(--ground);border:1px solid var(--line);border-radius:99px;padding:3px 9px;
   }
-  .count{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--muted);
-  }
+  .card-score.full{color:var(--ok);border-color:var(--ok)}
+  .card-why{font-size:14px;color:var(--muted);margin:0 0 12px;line-height:1.5}
 
   ul.checklist{list-style:none;margin:0;padding:0}
-  ul.checklist li{
-    border-top:1px solid var(--line);
-  }
+  ul.checklist li{border-top:1px solid var(--line)}
   ul.checklist li:first-child{border-top:none}
   ul.checklist label{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:13px 2px;
-    cursor:pointer;
+    display:flex;align-items:flex-start;gap:13px;
+    padding:14px 2px;cursor:pointer;min-height:48px;
+    -webkit-tap-highlight-color:transparent;
   }
   ul.checklist input[type="checkbox"]{
-    width:22px;
-    height:22px;
-    flex:none;
-    margin-top:2px;
-    accent-color:var(--accent);
-    cursor:pointer;
+    width:24px;height:24px;flex:none;margin-top:1px;
+    accent-color:var(--accent);cursor:pointer;
   }
-  .item-text{
-    font-size:18px;
-    line-height:1.42;
-  }
+  .item-text{font-size:18px;line-height:1.42}
   .item-text b{font-weight:700}
-  .item-sub{
-    display:block;
-    font-size:14px;
-    color:var(--muted);
-    margin-top:3px;
-    line-height:1.4;
+  .item-sub{display:block;font-size:14px;color:var(--muted);margin-top:4px;line-height:1.45}
+  /* „kaip atpažinti gerą atsakymą" — mamų panelė: klausimo neužtenka, reikia matuoklio */
+  .tell{
+    display:block;margin-top:8px;padding:9px 11px;
+    background:var(--ground);border:1px solid var(--line);
+    border-left:3px solid var(--ok);border-radius:0 var(--r) var(--r) 0;
+    font-size:13.5px;line-height:1.5;color:var(--ink);
   }
-  li.checked .item-text{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+  .tell b{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ok);display:block;margin-bottom:3px}
+  .tell i{font-style:normal;color:var(--muted)}
+  .item-sub a{color:var(--accent);text-underline-offset:2px}
+  li.checked .item-text{color:var(--muted)}
+  li.checked .item-text b{text-decoration:line-through;text-decoration-color:var(--line)}
 
-  .inline-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    margin-top:8px;
-    padding:8px 14px;
-    background:var(--accent);
-    color:var(--accent-ink);
-    font-family:var(--mono);
-    font-weight:700;
-    font-size:12px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    text-decoration:none;
-    border-radius:var(--r);
-    box-shadow:var(--glow);
+  /* copy-questions action */
+  .row-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  button.act{
+    font-family:var(--mono);font-weight:700;font-size:12px;
+    letter-spacing:.07em;text-transform:uppercase;
+    padding:11px 15px;min-height:44px;
+    border-radius:var(--r);cursor:pointer;
+    border:1px solid var(--ink);background:var(--ground);color:var(--ink);
   }
-  .inline-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  button.act.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  button.act.ghost{border-color:var(--line);color:var(--muted)}
+  button.act:active{transform:translateY(1px)}
 
-  /* stat callout inside B4 */
-  .stat-row{
-    display:grid;
-    grid-template-columns:1.2fr 1fr 1fr;
-    gap:8px;
-    margin:10px 0 4px;
-  }
-  .stat{
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    padding:10px 8px;
-    text-align:center;
-  }
-  .stat .n{
-    font-family:var(--mono);
-    font-variant-numeric:tabular-nums;
-    font-weight:800;
-    font-size:20px;
-    line-height:1;
-  }
+  /* stat callout */
+  .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:12px 0 4px}
+  .stat{background:var(--ground);border:1px solid var(--line);border-radius:var(--r);padding:10px 8px;text-align:center}
+  .stat .n{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:800;font-size:20px;line-height:1}
   .stat.hot .n{color:var(--accent)}
-  .stat .cap{
-    display:block;
-    margin-top:5px;
-    font-size:10.5px;
-    letter-spacing:.03em;
-    color:var(--muted);
-    line-height:1.3;
+  .stat .cap{display:block;margin-top:5px;font-size:12px;letter-spacing:0;color:var(--muted);line-height:1.35}
+  /* siauruose telefonuose 3 stulpeliai suspaudžia caption'us į 4 eilutes — dedam vieną po kito */
+  @media (max-width:430px){
+    .stat-row{grid-template-columns:1fr;gap:6px}
+    .stat{display:flex;align-items:baseline;gap:10px;text-align:left;padding:11px 12px}
+    .stat .n{font-size:22px;flex:none;min-width:64px}
+    .stat .cap{margin-top:0;font-size:13.5px}
   }
-  .stat-source{
-    font-size:11.5px;
-    color:var(--muted);
-    margin-top:2px;
-  }
+  .stat-source{font-size:11.5px;color:var(--muted);margin-top:6px}
 
-  /* ---------- section C: CPIS stepper, urgency ---------- */
-  section.urgent{
-    border-color:var(--accent);
-    background:var(--surface);
-    position:relative;
-  }
-  section.urgent .letter{background:var(--accent)}
-  .steps{
-    list-style:none;
-    margin:0;
-    padding:0;
-    counter-reset:step;
-  }
-  .steps li{
-    counter-increment:step;
-    display:flex;
-    gap:14px;
-    padding:10px 0;
-    position:relative;
-  }
-  .steps li:not(:last-child)::before{
-    content:"";
-    position:absolute;
-    left:13px;
-    top:34px;
-    bottom:-4px;
-    width:1px;
-    background:var(--line);
-  }
+  /* ---------- section C ---------- */
+  section.urgent{border-color:var(--accent)}
+  .steps{list-style:none;margin:0;padding:0;counter-reset:step}
+  .steps li{counter-increment:step;display:flex;gap:13px;padding:10px 0;position:relative}
+  .steps li:not(:last-child)::before{content:"";position:absolute;left:13px;top:34px;bottom:-4px;width:1px;background:var(--line)}
   .step-num{
-    font-family:var(--mono);
-    font-weight:800;
-    font-size:13px;
-    color:var(--accent);
-    background:var(--surface-2);
-    border:1px solid var(--accent);
-    width:27px;
-    height:27px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:none;
+    font-family:var(--mono);font-weight:800;font-size:13px;color:var(--accent);
+    background:var(--ground);border:1px solid var(--accent);
+    width:27px;height:27px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;flex:none;
   }
   .step-num::before{content:counter(step)}
   .step-body{font-size:17px;line-height:1.45;padding-top:2px}
-  .step-body .step-sub{
-    display:block;
-    font-size:13.5px;
-    color:var(--muted);
-    margin-top:3px;
-  }
-  .step-body.deadline{
-    font-weight:700;
-  }
+  .step-body .step-sub{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+  .step-body.deadline{font-weight:700}
   .deadline-tag{
-    display:inline-block;
-    background:var(--accent);
-    color:var(--accent-ink);
-    font-family:var(--mono);
-    font-weight:800;
-    font-size:13px;
-    letter-spacing:.03em;
-    padding:2px 8px;
-    border-radius:var(--r);
-    margin:0 2px;
+    display:inline-block;background:var(--accent);color:var(--accent-ink);
+    font-family:var(--mono);font-weight:800;font-size:13px;
+    padding:2px 8px;border-radius:var(--r);margin:0 2px;
   }
+  .glossary{
+    background:var(--ground);border:1px solid var(--line);border-radius:var(--r);
+    padding:12px 14px;font-size:14.5px;line-height:1.55;color:var(--muted);margin:0 0 14px;
+  }
+  .glossary b{color:var(--ink)}
   .warn{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    background:var(--surface-2);
-    border-left:3px solid var(--accent);
-    border-radius:0 var(--r) var(--r) 0;
-    padding:12px 14px;
-    margin-top:16px;
-    font-size:14.5px;
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--warn-bg);border-left:3px solid var(--warn);
+    border-radius:0 var(--r) var(--r) 0;padding:12px 14px;margin-top:14px;font-size:14.5px;
   }
   .warn .icon{font-size:16px;flex:none;line-height:1.3}
   .warn .src{display:block;color:var(--muted);font-size:12px;margin-top:4px}
 
-  /* ---------- D: timeframe eyebrow ---------- */
+  /* ---------- D timeframe ---------- */
   .item-when{
-    display:block;
-    font-family:var(--mono);
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--accent);
-    margin-bottom:3px;
+    display:block;font-family:var(--mono);font-size:11px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:3px;
   }
 
-  /* ---------- science line ---------- */
+  /* ---------- RESULT ---------- */
+  section.result{
+    border:2px solid var(--ink);
+    border-radius:var(--r);
+    background:var(--ground);
+    padding:22px 18px;
+    margin:26px 0 18px;
+    scroll-margin-top:calc(var(--bar-h) + 10px);
+  }
+  .result-eyebrow{
+    font-family:var(--mono);font-size:11px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;
+  }
+  .score-big{
+    font-family:var(--mono);font-weight:800;font-variant-numeric:tabular-nums;
+    font-size:clamp(44px,13vw,64px);line-height:1;margin:0;
+  }
+  .score-big .of{font-size:.42em;color:var(--muted);font-weight:700}
+  .score-verdict{
+    font-family:var(--mono);font-weight:800;text-transform:uppercase;
+    letter-spacing:.05em;font-size:clamp(17px,4.6vw,21px);
+    line-height:1.25;margin:10px 0 8px;text-wrap:balance;
+  }
+  .score-verdict.lvl-0{color:var(--accent)}
+  .score-verdict.lvl-1{color:var(--warn)}
+  .score-verdict.lvl-2{color:var(--ink)}
+  .score-verdict.lvl-3{color:var(--ok)}
+  .score-line{font-size:16px;line-height:1.5;margin:0 0 4px}
+  .score-meter{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:14px 0 18px}
+  .score-meter i{display:block;height:100%;width:0%;background:var(--accent);border-radius:99px;transition:width .4s ease}
+  .score-meter.is-ok i{background:var(--ok)}
+
+  .gaps{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--r);padding:14px 15px;margin:0 0 16px;
+  }
+  .gaps h3{
+    font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.09em;
+    text-transform:uppercase;margin:0 0 10px;color:var(--muted);
+  }
+  .gaps ul{margin:0;padding-left:19px}
+  .gaps li{font-size:16px;line-height:1.42;margin-bottom:8px}
+  .gaps li:last-child{margin-bottom:0}
+  .gaps .all-clear{
+    font-size:16px;line-height:1.45;margin:0;color:var(--ok);font-weight:600;
+  }
+  .reassure{
+    background:var(--ok-bg);border:1px solid var(--ok);
+    border-radius:var(--r);padding:13px 15px;font-size:15px;line-height:1.5;margin:0 0 16px;
+  }
+  .reassure b{color:var(--ok)}
+
+  /* ---------- science + footer ---------- */
   .science{
-    font-size:13.5px;
-    color:var(--muted);
-    border-top:1px solid var(--line);
-    padding-top:16px;
-    margin:6px 0 26px;
-    line-height:1.55;
+    font-size:13.5px;color:var(--muted);
+    border-top:1px solid var(--line);padding-top:16px;margin:22px 0 20px;line-height:1.55;
   }
   .science b{color:var(--ink)}
-
-  /* ---------- closing CTA ---------- */
-  .closing{
-    background:var(--ink);
-    color:var(--ground);
-    border-radius:var(--r);
-    padding:24px 20px;
-    text-align:center;
-  }
-  .closing p{
-    font-size:17px;
-    line-height:1.5;
-    margin:0 0 16px;
-  }
-  .closing b{color:var(--ground)}
-  .closing .inline-btn{
-    background:var(--accent);
-    color:#fff;
-    font-size:13px;
-    padding:12px 22px;
-  }
-  .url-cap{
-    display:block;
-    margin-top:10px;
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:.02em;
-    color:var(--muted);
-  }
-  :root:not([data-theme="light"]) .closing,
-  :root[data-theme="dark"] .closing{
-    background:var(--surface-2);
-    border:1px solid var(--line);
-  }
-  :root:not([data-theme="light"]) .closing p,
-  :root[data-theme="dark"] .closing p,
-  :root:not([data-theme="light"]) .closing b,
-  :root[data-theme="dark"] .closing b{
-    color:var(--ink);
-  }
-
   footer.foot{
-    text-align:center;
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-top:24px;
+    border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--muted);line-height:1.55;
   }
+  footer.foot .who{font-size:14px;color:var(--ink);margin:0 0 8px}
+  footer.foot .who b{font-weight:700}
+  .socials{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;margin-top:12px}
+  .socials a{color:var(--accent);text-decoration:none;margin-right:14px;display:inline-block;padding:4px 0}
 
-  a{color:inherit}
-  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important}
+  /* ---------- toast ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));
+    transform:translateX(-50%) translateY(10px);
+    background:var(--ink);color:var(--ground);
+    font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:11px 16px;border-radius:var(--r);
+    opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:80;
+    max-width:calc(100vw - 32px);text-align:center;
   }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ---------- sticky bottom CTA ---------- */
+  .dock{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:rgba(255,255,255,.96);
+    -webkit-backdrop-filter:saturate(180%) blur(8px);
+    backdrop-filter:saturate(180%) blur(8px);
+    border-top:1px solid var(--line);
+    padding:10px 18px calc(10px + env(safe-area-inset-bottom));
+    transform:translateY(120%);transition:transform .25s ease;
+  }
+  .dock.show{transform:translateY(0)}
+  .dock-inner{max-width:720px;margin:0 auto;display:flex;gap:9px;align-items:center}
+  .dock button{flex:1}
+  .dock .dock-note{
+    font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;
+    color:var(--muted);flex:none;font-variant-numeric:tabular-nums;
+  }
+  @media (max-width:430px){ .dock .dock-note{display:none} }
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;scroll-behavior:auto} }
 
   @media print{
-    body{background:#fff;color:#0A0A0A}
-    details.review{display:none}
+    body{background:#fff}
+    .progress-bar,.dock,.toast,details.review,.row-actions{display:none !important}
     .wrap{max-width:none;padding:0 6mm}
-    section.card{box-shadow:none;break-inside:avoid}
-    .inline-btn{box-shadow:none}
+    section.card{box-shadow:none;break-inside:avoid;background:#fff}
+    section.result{break-inside:avoid}
   }
-
-.audience{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 0 14px}
-.partner-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
-.socials{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;margin-top:10px}
-.socials a{color:var(--red);text-decoration:none;margin-right:12px}
-details.review.is-hidden{display:none}
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Ką patikrinti prieš, ko paklausti vadovo, NVŠ krepšelio 2 sistemos ir 5 dienų langas, pirmas mėnuo.">
-<meta property="og:title" content="Būrelis rugsėjui · Tėvų checklist">
-<meta property="og:description" content="Ką patikrinti prieš, ko paklausti vadovo, NVŠ krepšelio 2 sistemos ir 5 dienų langas, pirmas mėnuo.">
-<meta property="og:url" content="https://krisvas333.github.io/neuron-ar/checklist-tevams/">
-<meta property="og:type" content="website">
 </head>
 <body>
 
+<div class="progress-bar" role="region" aria-label="Pasiruošimo eiga">
+  <div class="progress-inner">
+    <span class="progress-label"><span class="done" id="pDone">0</span>/<span id="pTotal">13</span></span>
+    <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="13" aria-valuenow="0" id="pTrack">
+      <i class="progress-fill" id="pFill"></i>
+    </div>
+    <span class="progress-state" id="pState">Pradėk</span>
+  </div>
+</div>
+
 <div class="wrap">
 
-  <p class="eyebrow">Rugsėjis · tėvams</p>
-  <h1>Būrelis rugsėjui: tėvų checklist</h1>
-  <p class="subtitle">Ką patikrinti PRIEŠ, ką paklausti VADOVO, ir kaip nepraleisti NVŠ krepšelio lango.</p>
-  <p class="audience">Kam skirta: tėvams, kurie rugsėjui renka būrelį 5–15 m. vaikui — nepriklausoma informacija, ne reklama</p>
-  <p class="byline"><b>Kris Vasiliauskas</b> × bureliai.lt</p>
+  <p class="eyebrow">Nemokamas įrankis tėvams</p>
+  <h1>Ar tikrai pasiruošęs registruoti vaiką į būrelį?</h1>
+  <p class="subtitle">13 dalykų, kuriuos verta patikrinti PRIEŠ pasirašant. Pažymėk, ką jau žinai — pabaigoje pamatysi, kas dar liko.</p>
+
+  <p class="hero-fact"><b>Vienas faktas, kurį verta žinoti prieš pradedant:</b> iš 378 audituotų atsisakymų <b>37,8&nbsp;%</b> šeimų pasitraukė per pirmą ciklą. Priežastis #1 — <b>vaikui pasidarė nuobodu (26,7&nbsp;%)</b>. Kaina — tik <b>1,6&nbsp;%</b>. Beveik viskas, ko klausiama žemiau, yra apie tai, kaip to išvengti.</p>
+
+  <div class="meta-row">
+    <span class="chip">≈3 min</span>
+    <span class="chip">Telefonui</span>
+    <span class="chip">Be registracijos</span>
+    <span class="chip">5–15 m. vaikams</span>
+  </div>
+
+  <p class="honesty"><b>Atvirai:</b> šitas puslapis nieko neparduoda ir netvarko jokių tavo duomenų — varnelės lieka tik tavo telefone. Tinka <b>bet kuriam</b> būreliui: šokiams, futbolui, dailei, robotikai, muzikai, plaukimui. Kris Vasiliauskas yra būrelių srities verslų bendraįkūrėjis — <b>būtent todėl</b> čia nerasi nė vieno rekomenduojamo pavadinimo. Tik klausimai.</p>
+
+  <p class="mission"><b>Kodėl šitas sąrašas apskritai egzistuoja.</b> Ne tam, kad pasirinktum kokį nors konkretų būrelį. Tam, kad <b>daugiau Lietuvos vaikų patektų į gerus būrelius</b> — kad tėvai žinotų, ko klausti, ir kad geri būrelių vadovai būtų pagaliau pastebėti. Kylantis potvynis kelia visas valtis.</p>
+
+  <p class="to-provider"><b>Jei tu vedi būrelį</b> — šis sąrašas ne prieš tave. Į visus 13 klausimų geras vadovas atsako per tris minutes ir nuo to tik laimi. Imk jį ir siųsk savo tėvams pats — tada pokalbis prasideda nuo pasitikėjimo, ne nuo įtarimo.</p>
 
   <details class="review">
     <summary>Peržiūros režimas <span class="review-badge">tik Kris'ui · nespausdinama</span></summary>
     <div class="review-body">
       <ol>
-        <li>Ar CPIS žingsniai ir datos teisingi? (Kris patikrina su ExoClass komanda)</li>
-        <li>Ar „ko paklausti vadovo" sąrašas — tie 7 klausimai — teisingi?</li>
-        <li>Ar bureliai.lt kanonas (50+ būrelių · 700+ mokyklų) tinka čia?</li>
-        <li>Tonas — ar skamba kaip Kris?</li>
+        <li>Ar CPIS žingsniai ir datos teisingi? (patikrinti su ExoClass komanda)</li>
+        <li>Ar 7 klausimai vadovui — tie? Ar nė vienas nėra nesąžiningas mažam teikėjui?</li>
+        <li>Ar balas /12 ir verdiktų kalba nesukelia kaltės jausmo?</li>
+        <li>Tonas — ar skamba kaip Kris, o ne kaip brošiūra?</li>
       </ol>
       <p class="note">Palik komentarą tiesiai ant elemento.</p>
     </div>
@@ -504,42 +485,49 @@ details.review.is-hidden{display:none}
     <div class="card-head">
       <span class="letter">A</span>
       <span class="card-title">Prieš renkantis</span>
-      <span class="count">(5)</span>
+      <span class="card-score" id="scoreA">0/5</span>
     </div>
+    <p class="card-why">Penki dalykai, dėl kurių būrelis dažniausiai nutrūksta jau spalį — logistika, ne turinys.</p>
     <ul class="checklist" data-group="a">
-      <li data-id="a1">
+      <li data-id="a1" data-gap="Ką vaikas iš tikrųjų mėgsta daryti — ar spėjot apie tai pasikalbėti?">
         <label>
           <input type="checkbox">
-          <span class="item-text"><b>Vaiko tipas</b> — ar žinote, kas jam tinka?
-            <span class="item-sub">2 min testas parodo archetipą ir tiesiogiai rekomenduoja būrelius.</span>
-            <a class="inline-btn" href="https://bureliutestas.lovable.app?utm_source=checklist&utm_medium=pdf&utm_campaign=tevu-checklist" target="_blank" rel="noopener">2 min testas →</a>
+          <span class="item-text"><b>Vaiko interesas</b> — žinai, kas jam tinka, ar renkiesi už jį?
+            <span class="item-sub">Paklausk vaiko: „Ką norėtum išmokti daryti, ko dar nemoki?“ Atsakymas dažnai nustebina.</span>
           </span>
         </label>
       </li>
-      <li data-id="a2">
+      <li data-id="a2" data-gap="Ar tvarkaraštis realiai tinka visą sezoną — ir kada tiksliai baigiasi pamoka?">
         <label>
           <input type="checkbox">
-          <span class="item-text"><b>Atstumas ir laikas</b> — ar realiai nuvešite 2× per savaitę?
-            <span class="item-sub">Tėvų klausimas #1 iš tikrųjų yra „ar tai yra PAS MANE".</span>
+          <span class="item-text"><b>Tvarkaraštis</b> — ar laikas realiai tinka 2× per savaitę visą sezoną?
+            <span class="item-sub">Mokykloje po pamokų, pėsčiomis ar reikės vežti — svarbu ne atstumas, o <b>kada tiksliai baigiasi</b> ir kas vaiką pasiima. Įsivaizduok lapkričio trečiadienį, ne rugsėjo entuziazmą.</span>
           </span>
         </label>
       </li>
-      <li data-id="a3">
+      <li data-id="a3" data-gap="Pilna sezono kaina — ne „nuo“, o su visomis priemonėmis ir įranga.">
         <label>
           <input type="checkbox">
-          <span class="item-text"><b>Kaina nuo</b> — ir ar priima NVŠ krepšelį?</span>
+          <span class="item-text"><b>Pilna kaina</b> — ne „nuo“, o kiek kainuos visas sezonas.
+            <span class="item-sub">Klausk apie priemones, uniformą, varžybas, stovyklas. Ar priima NVŠ krepšelį. Ir ar yra nuolaida antram vaikui — dažnai yra, tik niekas apie ją nerašo.</span>
+            <span class="tell"><b>Su kuo lyginti</b>Vilniaus būrelių mediana — <b>~30 €/mėn.</b> (ketvirtadalis pigiau nei 25 €, ketvirtadalis brangiau nei 40 €). Virš 45 €/mėn. — jau brangiausias dešimtadalis, tad verta klausti, kas į tą kainą įeina. <i>Šaltinis: data.gov.lt atviri duomenys #3875 — 876 veikiančios Vilniaus veiklos. NVŠ krepšelis nuo šios sumos dar atimamas.</i></span>
+          </span>
         </label>
       </li>
-      <li data-id="a4">
+      <li data-id="a4" data-gap="Kiek vaikų grupėje ir koks amžiaus skirtumas.">
         <label>
           <input type="checkbox">
-          <span class="item-text"><b>Grupės dydis</b> ir amžiaus skirtumas grupėje.</span>
+          <span class="item-text"><b>Grupės dydis</b> ir amžiaus skirtumas grupėje.
+            <span class="item-sub">7-metis grupėje su 11-mečiais dažniausiai tyli visą sezoną.</span>
+          </span>
         </label>
       </li>
-      <li data-id="a5">
+      <li data-id="a5" data-gap="Bandomoji pamoka — ar yra, ir ar ateisit į ją PRIEŠ mokėdami.">
         <label>
           <input type="checkbox">
-          <span class="item-text"><b>Bandomoji pamoka</b> — ar yra, ir ar nemokama?</span>
+          <span class="item-text"><b>Bandomoji pamoka</b> — ar yra, ir ar nuėjot į ją?
+            <span class="item-sub">Vienas apsilankymas pasako daugiau nei visa svetainė.</span>
+          </span>
         </label>
       </li>
     </ul>
@@ -550,102 +538,147 @@ details.review.is-hidden{display:none}
     <div class="card-head">
       <span class="letter">B</span>
       <span class="card-title">Ko paklausti vadovo</span>
-      <span class="count">(7)</span>
+      <span class="card-score" id="scoreB">0/8</span>
     </div>
+    <p class="card-why">Septyni klausimai. Geras vadovas į juos atsako per minutę ir nesupyksta — būtent tai ir tikrini.</p>
     <ul class="checklist" data-group="b">
-      <li data-id="b1">
+      <li data-id="b1" data-gap="„Kas ves pamokas ir ar tas žmogus keisis sezono viduryje?“">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Ar mentorius nesikeis vidury metų?"
-            <span class="item-sub">Mūsų apklausų klausimas #1.</span>
+          <span class="item-text">„Kas konkrečiai ves pamokas — ir ar tas žmogus keisis sezono viduryje?“
+            <span class="item-sub">Nereikalauk garantijos, kurios niekas negali duoti. Klausk, ką jie daro, kai mentorius išeina.</span>
+          
+            <span class="tell"><b>Geras atsakymas skamba taip</b>Konkretus vardas ir konkretus planas: „Veda Rūta, o jei ji serga — pavaduoja Tomas, tėvams pranešam iš vakaro.“ <i>Miglota: „Turim komandą, viskas bus gerai.“</i></span>
           </span>
         </label>
       </li>
-      <li data-id="b2">
+      <li data-id="b2" data-gap="„Kaip ir kada sužinosiu, kaip sekasi mano vaikui?“">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Kaip ir kada gausiu grįžtamąjį ryšį apie savo vaiką?"
-            <span class="item-sub">Klausimas #2.</span>
+          <span class="item-text">„Kaip ir kada sužinosiu, kaip sekasi mano vaikui?“
+            <span class="item-sub">Konkretus atsakymas: „kas 6 savaites parašom trumpą žinutę“. Ne „visada galit paklausti“.</span>
+          
+            <span class="tell"><b>Geras atsakymas skamba taip</b>Konkretus ritmas: „Kas 6 savaites parašom trumpą žinutę, o gruodį — pokalbis.“ <i>Miglota: „Visada galit paklausti.“ (reiškia: negausi nieko, kol pats nepradėsi)</i></span>
           </span>
         </label>
       </li>
-      <li data-id="b3">
+      <li data-id="b3" data-gap="„Ar vaikas kurs SAVO darbą, ar kartos tai, ką rodo?“">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Ar vaikas kurs SAVO projektą, ar tik kartos instrukcijas?"</span>
+          <span class="item-text">„Ar vaikas kurs SAVO darbą, ar kartos tai, ką rodo priekyje?“
+            <span class="tell"><b>Geras atsakymas skamba taip</b>„Iki Kalėdų kiekvienas pasidaro savo darbą ir jį parodo.“ <i>Miglota: „Einam pagal programą.“</i></span>
+          </span>
         </label>
       </li>
-      <li data-id="b4">
+      <li data-id="b4" data-gap="„Kas nutinka, jei po 3 savaičių vaikui nuobodu?“ — svarbiausias klausimas visame sąraše.">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Kas nutinka, jei po 3 savaičių vaikui nuobodu?"</span>
+          <span class="item-text">„Kas nutinka, jei po 3 savaičių vaikui nuobodu?“
+            <span class="item-sub">Klausyk, ar atsakymas apie VAIKĄ, ar apie sutartį.</span>
+          
+            <span class="tell"><b>Geras atsakymas skamba taip</b>„Pirmiausia pakalbam su vaiku ir pakeičiam užduotį; jei nepadeda — galit stabdyti.“ <i>Miglota: atsakymas apie sutartį ir mokestį, ne apie vaiką.</i></span>
+          </span>
         </label>
         <div class="stat-row">
-          <div class="stat hot"><span class="n">37,8%</span><span class="cap">palieka būrelį per 1&nbsp;ciklą</span></div>
+          <div class="stat hot"><span class="n">37,8%</span><span class="cap">meta per pirmą ciklą</span></div>
           <div class="stat"><span class="n">26,7%</span><span class="cap">priežastis #1 — nuobodulys</span></div>
           <div class="stat"><span class="n">1,6%</span><span class="cap">priežastis — kaina</span></div>
         </div>
-        <p class="stat-source">Mūsų audituoti duomenys.</p>
+        <p class="stat-source">378 audituoti atsisakymai, Robotikos akademija, 2026. Skelbiam savo pačių skaičius, nes kitų niekas neskelbia.</p>
       </li>
-      <li data-id="b5">
+      <li data-id="b5" data-gap="„Kiek vaikų grupėje ir kiek suaugusiųjų salėje?“">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Kiek vaikų grupėje ir koks amžiaus skirtumas?"</span>
+          <span class="item-text">„Kiek vaikų grupėje ir kiek suaugusiųjų salėje?“
+            <span class="tell"><b>Geras atsakymas skamba taip</b>Skaičius: „12 vaikų, du mentoriai.“ <i>Miglota: „Kiek susirenka.“</i></span>
+          </span>
         </label>
       </li>
-      <li data-id="b6">
+      <li data-id="b6" data-gap="„Praleistos pamokos ir sutarties nutraukimas — kokios sąlygos?“">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Praleistos pamokos / atšaukimas — kokios sąlygos?"</span>
+          <span class="item-text">„Praleistos pamokos, nutraukimas, pinigų grąžinimas — kokios sąlygos?“
+            <span class="item-sub">Gripas ateis. O jei jau sumokėjai ir nepatiko — ar pinigai grąžinami? Sužinok dabar, ne sausį.</span>
+          
+            <span class="tell"><b>Geras atsakymas skamba taip</b>„Praleistas pamokas atidirbam per mėnesį; nutraukti galima įspėjus prieš 2 savaites, sumokat tik už praeitą laiką.“ <i>Miglota: „Pagal sutartį.“ — tada paprašyk parodyti sutartį PRIEŠ mokėdamas.</i></span>
+          </span>
         </label>
       </li>
-      <li data-id="b7">
+      <li data-id="b7" data-gap="„Kaip su jumis susisiekti, kai kas nors atsitiks?“">
         <label>
           <input type="checkbox">
-          <span class="item-text">„Ar registruotis ir mokėti galiu telefone?"</span>
+          <span class="item-text">„Kaip su jumis susisiekti, kai kas nors atsitiks?“
+            <span class="item-sub">Vienas žmogus ir vienas kanalas. Telefonas, žinutė ar sistema — visi variantai geri, svarbu žinoti IŠ ANKSTO.</span>
+          
+            <span class="tell"><b>Geras atsakymas skamba taip</b>„Rašyk man tiesiai, štai numeris, atsakau tą pačią dieną.“ <i>Miglota: „Parašykit Facebook‘e.“</i></span>
+          </span>
+        </label>
+      </li>
+      <li data-id="b8" data-gap="„Kaip patikrinami žmonės, kurie lieka salėje su vaikais?“ — klausimas, kurio bijo klausti dauguma tėvų.">
+        <label>
+          <input type="checkbox">
+          <span class="item-text">„Kaip patikrinami žmonės, kurie lieka salėje su mano vaiku?“
+            <span class="item-sub">Nepatogu klausti. Vis tiek klausk — geras vadovas tik apsidžiaugs, kad kas nors pagaliau paklausė.</span>
+          
+            <span class="tell"><b>Geras atsakymas skamba taip</b>„Visi mentoriai pateikia pažymą, salėje niekada nebūna vienas suaugęs su vienu vaiku, tėvai gali ateiti bet kada.“ <i>Miglota: nustebęs arba įsižeidęs atsakymas. Tai pats svarbiausias signalas visame sąraše.</i></span>
+          </span>
         </label>
       </li>
     </ul>
+    <div class="row-actions">
+      <button class="act" type="button" id="copyQ">📋 Kopijuoti 7 klausimus</button>
+      <button class="act ghost" type="button" id="checkAllB">Pažymėti visus</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="result" id="sec-result" aria-live="polite">
+    <p class="result-eyebrow">Tavo pasiruošimas</p>
+    <p class="score-big"><span id="rScore">0</span><span class="of">/13</span></p>
+    <p class="score-verdict lvl-0" id="rVerdict">Dar nepradėta</p>
+    <p class="score-line" id="rLine">Pažymėk tai, ką jau žinai arba paklausei. Nieko nereikia žinoti iš anksto — tam ir yra šitas sąrašas.</p>
+    <div class="score-meter" id="rMeter"><i id="rMeterFill"></i></div>
+
+    <div class="gaps" id="rGaps">
+      <h3>Kas dar liko</h3>
+      <ul id="rGapList"></ul>
+      <p class="all-clear" id="rAllClear" hidden>✅ Nieko. Perėjai visus 12.</p>
+    </div>
+
+    <div class="reassure" id="rReassure" hidden>
+      <b>Štai kodėl gali būti ramus:</b> daugiausia šeimų pasitraukia ne dėl kainos, o todėl, kad vaikui pasidaro nuobodu ir niekas laiku to nepastebi. Tu ką tik patikrinai būtent tuos dalykus — ir žinai, ko klausti, jei taip nutiks.
+    </div>
+
+    <div class="row-actions">
+      <button class="act primary" type="button" id="copySummary">📤 Kopijuoti santrauką</button>
+      <button class="act ghost" type="button" id="resetAll">Pradėti iš naujo</button>
+    </div>
   </section>
 
   <!-- C -->
   <section class="card urgent" id="sec-c">
     <div class="card-head">
       <span class="letter">C</span>
-      <span class="card-title">NVŠ krepšelis — 2 sistemos, 5 dienos</span>
+      <span class="card-title">NVŠ krepšelis — 2 sistemos</span>
     </div>
-      <p style="margin:8px 0 12px;font-size:16px;color:var(--muted)">Tai galioja tik NVŠ krepšelio (valstybės finansuojamiems) būreliams. Mokant patiems — tik teikėjo registracija.</p>
+    <p class="card-why">Skaityk tik jei renkiesi <b>NVŠ krepšelio</b> būrelį. Mokant savo lėšomis — užtenka registracijos pas teikėją.</p>
+    <p class="glossary"><b>Trys žodžiai paprastai:</b> <b>NVŠ krepšelis</b> — valstybės pinigai (apie 20 €/mėn.), kuriuos ji sumoka už tavo vaiko būrelį. <b>CPIS / mokausi.lt</b> — valstybės svetainė, kurioje tie pinigai paskiriami. <b>Elektroniniai valdžios vartai</b> — prisijungimas per savo banką, kaip prie e-valdžios.</p>
     <ol class="steps">
-      <li>
-        <span class="step-num"></span>
-        <span class="step-body">Registruokis <b>PAS TEIKĖJĄ</b> — jo pačio sistemoje.</span>
-      </li>
-      <li>
-        <span class="step-num"></span>
-        <span class="step-body">Tada — <b>mokausi.lt / CPIS</b> per Elektroninius valdžios vartus.
-          <span class="step-sub">Registracija ten NEPAKEIČIA registracijos pas teikėją — abi būtinos.</span>
-        </span>
-      </li>
-      <li>
-        <span class="step-num"></span>
-        <span class="step-body">Lauk <b>sutarties</b> CPIS'e.</span>
-      </li>
-      <li>
-        <span class="step-num"></span>
-        <span class="step-body deadline">Pasirašyk per <span class="deadline-tag">5 kalendorines dienas</span> — <span class="deadline-tag">Rugs 16–21</span>
-          <span class="step-sub">Praleidus langą, vaikas lieka be finansavimo.</span>
-        </span>
-      </li>
-      <li>
-        <span class="step-num"></span>
-        <span class="step-body">Pasitikrink su teikėju, kad viskas <b>patvirtinta</b>.</span>
-      </li>
+      <li><span class="step-num"></span><span class="step-body">Registruokis <b>PAS TEIKĖJĄ</b> — jo paties sistemoje.</span></li>
+      <li><span class="step-num"></span><span class="step-body">Tada — <b>mokausi.lt / CPIS</b> per Elektroninius valdžios vartus.<span class="step-sub">Registracija ten NEPAKEIČIA registracijos pas teikėją — reikia abiejų.</span></span></li>
+      <li><span class="step-num"></span><span class="step-body">Lauk <b>sutarties</b> CPIS'e.</span></li>
+      <li><span class="step-num"></span><span class="step-body deadline">Pasirašyk per <span class="deadline-tag">5 kalendorines dienas</span><span class="step-sub">Praleidus langą, vaikas lieka be finansavimo tam ciklui.</span></span></li>
+      <li><span class="step-num"></span><span class="step-body">Pasitikrink su teikėju, kad viskas <b>patvirtinta</b>.</span></li>
     </ol>
     <div class="warn">
       <span class="icon">⚠️</span>
-      <span>Datos ir tvarka skiriasi pagal savivaldybę — pasitikrink savo savivaldybės instrukcijoje.
-        <span class="src">Šaltinis: regioninė spauda, 2026-08-13/14 — dar reikia patvirtinti.</span>
+      <span><b>Datos skiriasi pagal savivaldybę.</b> Rugsėjo viduryje minimas langas apie <b>16–21 d.</b>, bet tai ne visur vienodai. Savo tikslią datą rasi dviem būdais: prisijungęs prie <a href="https://mokausi.lt" target="_blank" rel="noopener">mokausi.lt</a> arba tiesiog paklausęs teikėjo — jis savo savivaldybės datas žino mintinai.
+        <span class="src">Šaltinis: regioninė spauda 2026-08-13/14 · oficialiai dar nepatvirtinta, todėl nepasitikėk šia data aklai. Jei radai tikslią savo savivaldybės datą — parašyk, pataisysiu puslapį.</span>
       </span>
+    </div>
+    <div class="warn" style="border-left-color:var(--line);background:var(--surface-2)">
+      <span class="icon">💬</span>
+      <span><b>Vienas dalykas teikėjų naudai.</b> Jei sutartis vėluoja — dažniausiai stringa savivaldybės ar CPIS pusėje, ne pas būrelio vadovą. Verta paklausti, kur stringa, o ne iš karto pykti ant to, kuris moko tavo vaiką.</span>
     </div>
   </section>
 
@@ -654,84 +687,259 @@ details.review.is-hidden{display:none}
     <div class="card-head">
       <span class="letter">D</span>
       <span class="card-title">Pirmas mėnuo</span>
-      <span class="count">(3)</span>
+      <span class="card-score" id="scoreD">0/3</span>
     </div>
-    <ul class="checklist" data-group="d">
+    <p class="card-why">Į balą neįskaičiuota — tai jau po registracijos. Grįžk čia spalį.</p>
+    <ul class="checklist" data-group="d" data-noscore="1">
       <li data-id="d1">
-        <label>
-          <input type="checkbox">
-          <span class="item-text">
-            <span class="item-when">Po 1 pamokos</span>
-            Paklausk vaiko VIENO klausimo: „Ką šiandien padarei PATS?"
-          </span>
-        </label>
+        <label><input type="checkbox"><span class="item-text"><span class="item-when">Po 1 pamokos</span>Paklausk vaiko VIENO klausimo: „Ką šiandien padarei PATS?“</span></label>
       </li>
       <li data-id="d2">
-        <label>
-          <input type="checkbox">
-          <span class="item-text">
-            <span class="item-when">3–4 savaitę</span>
-            Trumpas pokalbis su mentoriumi — kol dar nenusprendėt išeiti.
-          </span>
-        </label>
+        <label><input type="checkbox"><span class="item-text"><span class="item-when">3–4 savaitę</span>Trumpas pokalbis su mentoriumi — kol dar nenusprendėt išeiti.</span></label>
       </li>
       <li data-id="d3">
-        <label>
-          <input type="checkbox">
-          <span class="item-text">
-            <span class="item-when">Jei nuobodu</span>
-            Keisk BŪRELĮ, ne visus būrelius. Priežastis dažniausiai nuobodulys (26,7%), ne kaina (1,6%).
-          </span>
-        </label>
+        <label><input type="checkbox"><span class="item-text"><span class="item-when">Jei nuobodu</span>Keisk BŪRELĮ, ne visus būrelius. Priežastis dažniausiai nuobodulys, ne kaina.</span></label>
       </li>
     </ul>
   </section>
 
-  <p class="science">Kokybiška popamokinė veikla: <b>+11 procentilių</b> akademiniuose rezultatuose (Durlak 2011, CASEL) — testo ir patarimų karkasas: CASEL · VIA · OECD.</p>
+  <p class="science">Kokybiška popamokinė veikla duoda <b>+11 procentilių</b> akademiniuose rezultatuose (Durlak et al., 2011 · CASEL meta-analizė). Esminis žodis — <b>kokybiška</b>. Būtent ją ir tikrini šiame sąraše.</p>
 
-  <div class="closing">
-    <p class="partner-eyebrow">Partnerio blokas</p>
-    <p>Nerandi tinkamo? <b>bureliai.lt</b> — 50+ būrelių, 700+ mokyklų, viena registracija.</p>
-    <a class="inline-btn" href="https://krisvas.lt/go/bureliai?utm_source=checklist&utm_medium=pdf&utm_campaign=tevu-checklist" target="_blank" rel="noopener">Ieškoti bureliai.lt →</a>
-    <span class="url-cap">krisvas.lt/go/bureliai</span>
+  <footer class="foot">
+    <p class="who"><b>Kris Vasiliauskas</b> — dirbu, kad popamokinis ugdymas Lietuvoje būtų geresnis visiems: vaikams, tėvams ir patiems būrelių vadovams. Rašau apie tai, ko tėvams paprastai niekas nepasako.</p>
+    <p>Šis įrankis nemokamas, atviras ir nereklamuoja jokio konkretaus būrelio — nei svetimo, nei savo. Pastebėjai klaidą, ar trūksta klausimo, kurį pats uždavei? Parašyk — įdėsiu ir padėkosiu.</p>
+    <p class="socials">
+      <a href="https://krisvas.lt/go/instagram?utm_source=checklist&utm_medium=footer&utm_campaign=tevu-checklist-v2">Instagram</a>
+      <a href="https://krisvas.lt/go/linkedin?utm_source=checklist&utm_medium=footer&utm_campaign=tevu-checklist-v2">LinkedIn</a>
+      <a href="https://krisvas.lt/go/tiktok?utm_source=checklist&utm_medium=footer&utm_campaign=tevu-checklist-v2">TikTok</a>
+    </p>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="dock" id="dock">
+  <div class="dock-inner">
+    <span class="dock-note" id="dockNote">0/13</span>
+    <button class="act primary" type="button" id="dockBtn">Rodyti mano balą ↓</button>
   </div>
-
-  <footer class="foot">Kris Vasiliauskas × bureliai.lt · 2026 · <a href="https://krisvas.lt/go/exoclass?utm_source=checklist&amp;utm_medium=footer&amp;utm_campaign=tevu-checklist" style="color:var(--muted)">Powered by ExoClass.lt</a><p class="socials"><a href="https://krisvas.lt/go/instagram">Instagram</a><a href="https://krisvas.lt/go/linkedin">LinkedIn</a><a href="https://krisvas.lt/go/tiktok">TikTok</a><a href="https://krisvas.lt/go/testas?utm_source=checklist&amp;utm_medium=footer&amp;utm_campaign=tevu-checklist">Būrelių testas (2 min) →</a></p></footer>
-
 </div>
 
 <script>
 (function(){
-  var KEY = 'tevu-checklist-2026-08-28';
-  var boxes = document.querySelectorAll('ul.checklist input[type="checkbox"]');
+  'use strict';
+  var KEY = 'tevu-checklist-v2';
+  var SCORED = ['a','b'];              // D nedalyvauja bale
+  var TOTAL  = 13;
 
-  function loadState(){
-    try{
-      var raw = localStorage.getItem(KEY);
-      return raw ? JSON.parse(raw) : {};
-    }catch(e){ return {}; }
+  var $  = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  var items = $$('ul.checklist li');
+  var state = load();
+
+  function load(){
+    try{ var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : {}; }
+    catch(e){ return {}; }
   }
-  function saveState(state){
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){ /* ignore */ }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
   }
 
-  var state = loadState();
+  function groupOf(li){ return li.parentNode.getAttribute('data-group'); }
+  function scored(li){ return SCORED.indexOf(groupOf(li)) !== -1; }
 
-  boxes.forEach(function(box){
-    var li = box.closest('li');
-    var id = li ? li.getAttribute('data-id') : null;
-    if(!id) return;
-    if(state[id]){
-      box.checked = true;
-      li.classList.add('checked');
+  function toast(msg){
+    var t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+
+  var VERDICTS = [
+    { min:0,  max:0,  lvl:0, title:'Dar nepradėta',
+      line:'Pažymėk tai, ką jau žinai arba paklausei. Nieko nereikia žinoti iš anksto — tam ir yra šitas sąrašas.' },
+    { min:1,  max:4,  lvl:0, title:'Dar per anksti pasirašyti',
+      line:'Kol kas žinai mažiau nei trečdalį. Tai normalu — bet reiškia, kad kol kas renkiesi spėdamas. Užduok dar kelis klausimus, ir jausmas pasikeis.' },
+    { min:5,  max:8,  lvl:1, title:'Pusiaukelėje',
+      line:'Pagrindą jau turi. Liko tie klausimai, kurie dažniausiai ir nulemia, ar vaikas liks iki pavasario.' },
+    { min:9,  max:12, lvl:2, title:'Beveik pasiruošęs',
+      line:'Tu jau patikrinai daugiau, nei spėja patikrinti dauguma tėvų rugsėjo skubotume. Užduok likusius ir gali registruoti ramiai.' },
+    { min:13, max:13, lvl:3, title:'Pasiruošęs. Registruok ramiai.',
+      line:'Perėjai visus 13. Jei po mėnesio kas nors nesusiklostys — tai nebus todėl, kad nepatikrinai. Žinosi, ko klausti ir ką daryti.' }
+  ];
+
+  function verdictFor(n){
+    for(var i=0;i<VERDICTS.length;i++){
+      if(n >= VERDICTS[i].min && n <= VERDICTS[i].max) return VERDICTS[i];
     }
+    return VERDICTS[0];
+  }
+
+  function render(){
+    var doneScored = 0, gaps = [];
+    var perGroup = { a:0, b:0, d:0 };
+
+    items.forEach(function(li){
+      var id = li.getAttribute('data-id');
+      var g  = groupOf(li);
+      var on = !!state[id];
+      li.classList.toggle('checked', on);
+      if(on){ perGroup[g] = (perGroup[g]||0) + 1; }
+      if(scored(li)){
+        if(on){ doneScored++; }
+        else if(li.getAttribute('data-gap')){ gaps.push(li.getAttribute('data-gap')); }
+      }
+    });
+
+    // sticky bar
+    var pct = Math.round(doneScored / TOTAL * 100);
+    $('#pDone').textContent = doneScored;
+    $('#pFill').style.width = pct + '%';
+    $('#pTrack').setAttribute('aria-valuenow', doneScored);
+    $('#pState').textContent = doneScored === 0 ? 'Pradėk'
+                             : doneScored === TOTAL ? 'Pasiruošęs' : 'Vyksta';
+    $('#dockNote').textContent = doneScored + '/' + TOTAL;
+
+    // per-section
+    setScore('#scoreA', perGroup.a, 5);
+    setScore('#scoreB', perGroup.b, 8);
+    setScore('#scoreD', perGroup.d, 3);
+
+    // result
+    var v = verdictFor(doneScored);
+    $('#rScore').textContent = doneScored;
+    var vd = $('#rVerdict');
+    vd.textContent = v.title;
+    vd.className = 'score-verdict lvl-' + v.lvl;
+    $('#rLine').textContent = v.line;
+    $('#rMeterFill').style.width = pct + '%';
+    $('#rMeter').classList.toggle('is-ok', doneScored === TOTAL);
+
+    var list = $('#rGapList');
+    list.innerHTML = '';
+    if(gaps.length){
+      $('#rAllClear').hidden = true;
+      gaps.slice(0,4).forEach(function(g){
+        var li = document.createElement('li');
+        li.textContent = g;
+        list.appendChild(li);
+      });
+      if(gaps.length > 4){
+        var more = document.createElement('li');
+        more.textContent = '…ir dar ' + (gaps.length - 4) + '. Grįžk aukštyn.';
+        more.style.color = 'var(--muted)';
+        list.appendChild(more);
+      }
+    } else {
+      $('#rAllClear').hidden = false;
+    }
+    $('#rReassure').hidden = doneScored < 9;
+
+    // dock appears once they engage
+    $('#dock').classList.toggle('show', doneScored > 0 && doneScored < TOTAL);
+  }
+
+  function setScore(sel, n, of){
+    var el = $(sel);
+    if(!el) return;
+    el.textContent = n + '/' + of;
+    el.classList.toggle('full', n === of);
+  }
+
+  // wire checkboxes
+  items.forEach(function(li){
+    var box = li.querySelector('input[type="checkbox"]');
+    var id  = li.getAttribute('data-id');
+    if(!box || !id) return;
+    box.checked = !!state[id];
     box.addEventListener('change', function(){
-      if(box.checked){ li.classList.add('checked'); }
-      else{ li.classList.remove('checked'); }
       state[id] = box.checked;
-      saveState(state);
+      save();
+      render();
     });
   });
+
+  // copy the 7 questions
+  function questionsText(){
+    var out = ['Sveiki! Prieš registruodamas vaiką norėčiau paklausti kelių dalykų:', ''];
+    $$('ul.checklist[data-group="b"] li').forEach(function(li, i){
+      var t = li.querySelector('.item-text').cloneNode(true);
+      var sub = t.querySelector('.item-sub'); if(sub) sub.remove();
+      out.push((i+1) + '. ' + t.textContent.trim().replace(/\s+/g,' '));
+    });
+    out.push('', 'Ačiū!');
+    return out.join('\n');
+  }
+
+  function summaryText(){
+    var done = 0, gaps = [];
+    items.forEach(function(li){
+      if(!scored(li)) return;
+      if(state[li.getAttribute('data-id')]) done++;
+      else if(li.getAttribute('data-gap')) gaps.push('— ' + li.getAttribute('data-gap'));
+    });
+    var v = verdictFor(done);
+    var out = ['Būrelio pasiruošimas: ' + done + '/13 — ' + v.title, ''];
+    if(gaps.length){ out.push('Dar reikia išsiaiškinti:'); out = out.concat(gaps); }
+    else{ out.push('Viskas patikrinta.'); }
+    out.push('', 'Sąrašas: krisvas333.github.io/neuron-ar/checklist-tevams/');
+    return out.join('\n');
+  }
+
+  function copy(text, okMsg){
+    var done = function(){ toast(okMsg); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      try{
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done();
+      }catch(e){ toast('Nepavyko nukopijuoti'); }
+    }
+  }
+
+  $('#copyQ').addEventListener('click', function(){
+    copy(questionsText(), '✓ Nukopijuota — įklijuok žinutėje');
+  });
+
+  $('#checkAllB').addEventListener('click', function(){
+    var all = $$('ul.checklist[data-group="b"] li');
+    var every = all.every(function(li){ return state[li.getAttribute('data-id')]; });
+    all.forEach(function(li){
+      var id = li.getAttribute('data-id');
+      state[id] = !every;
+      li.querySelector('input[type="checkbox"]').checked = !every;
+    });
+    save(); render();
+  });
+
+  $('#copySummary').addEventListener('click', function(){
+    copy(summaryText(), '✓ Santrauka nukopijuota');
+  });
+
+  $('#resetAll').addEventListener('click', function(){
+    state = {};
+    save();
+    items.forEach(function(li){ li.querySelector('input[type="checkbox"]').checked = false; });
+    render();
+    toast('Išvalyta');
+    window.scrollTo({ top:0 });
+  });
+
+  $('#dockBtn').addEventListener('click', function(){
+    $('#sec-result').scrollIntoView({ block:'start' });
+  });
+
+  render();
 })();
 </script>
 
