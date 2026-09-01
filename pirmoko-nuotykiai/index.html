@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pirmoko nuotykių čeklistas · Rugsėjo 1 dovana</title>
+<style>
+  :root{--ink:#0A0A0A;--red:#D90429;--paper:#FFFFFF;--soft:#F7F7F5;--line:#E5E5E2}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Inter',Segoe UI,sans-serif;background:var(--soft);color:var(--ink);line-height:1.55}
+  .wrap{max-width:680px;margin:0 auto;padding:24px 18px 60px}
+  header{text-align:center;padding:34px 10px 26px}
+  .kicker{font-family:ui-monospace,'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:700}
+  h1{font-family:ui-monospace,'JetBrains Mono',monospace;font-size:clamp(26px,6vw,40px);line-height:1.15;margin:10px 0 12px}
+  .sub{font-size:17px;color:#444;max-width:520px;margin:0 auto}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:22px 20px;margin:18px 0}
+  h2{font-family:ui-monospace,'JetBrains Mono',monospace;font-size:20px;margin-bottom:14px}
+  h2 .n{color:var(--red)}
+  .rule{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line);font-size:17px}
+  .rule:last-child{border-bottom:none}
+  .rule .e{font-size:24px;line-height:1.2;flex:0 0 32px;text-align:center}
+  .quest{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .quest:last-child{border-bottom:none}
+  .quest input{width:24px;height:24px;accent-color:var(--red);flex:0 0 24px;margin-top:2px}
+  .quest label{font-size:17px;cursor:pointer}
+  .quest .kada{display:block;font-size:13px;color:#777;font-family:ui-monospace,monospace;margin-top:2px}
+  .done label{text-decoration:line-through;color:#999}
+  .progress{font-family:ui-monospace,monospace;font-size:15px;text-align:center;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:4px;position:sticky;top:8px;z-index:5}
+  .progress b{color:var(--red)}
+  .tevams{background:#FFF7F1;border-left:3px solid var(--red)}
+  .tevams p{font-size:16px;margin-bottom:10px}
+  footer{margin-top:34px;font-size:13px;color:#777;text-align:center;line-height:1.7}
+  footer a{color:var(--red)}
+  .print{display:inline-block;margin:14px auto 0;padding:10px 22px;background:var(--red);color:#fff;border:none;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer}
+  @media print{.print,.progress{display:none}body{background:#fff}.card{border:1px solid #ccc;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Rugsėjo 1 · dovana pirmokui (ir ne tik)</div>
+  <h1>Pirmoko nuotykių čeklistas</h1>
+  <p class="sub">Mokykla — ne tik pamokos. Tai metai nuotykių. Tėti, mama — perskaitykit vaikui garsiai. Vaikai — žymėkitės, ką jau patyrėt! 🎒</p>
+  <button class="print" onclick="window.print()">🖨️ Atsispausdinti ir pakabinti ant šaldytuvo</button>
+</header>
+
+<div class="progress">Nuotykių patirta: <b id="cnt">0</b> / 12</div>
+
+<div class="card">
+  <h2><span class="n">01.</span> Drąsos taisyklės (visiems metams)</h2>
+  <div class="rule"><span class="e">🤝</span><span><b>Susirask vieną gerą draugą ar draugę.</b> Vienas tikras draugas vertingesnis už dešimt pažįstamų.</span></div>
+  <div class="rule"><span class="e">⚽</span><span><b>Per pertraukas žaisk.</b> Judėjimas — smegenų kuras.</span></div>
+  <div class="rule"><span class="e">🔍</span><span><b>Būk smalsus — klausinėk klausimų.</b> Nėra kvailų klausimų, yra tik neužduoti.</span></div>
+  <div class="rule"><span class="e">💪</span><span><b>Drąsiai klysk.</b> Kiekvienas čempionas suklydo daugiau kartų, nei kiti iš viso bandė.</span></div>
+  <div class="rule"><span class="e">🙋</span><span><b>Prašyk pagalbos, kai nedrąsu.</b> Stiprieji prašo pagalbos — todėl jie ir stiprūs.</span></div>
+  <div class="rule"><span class="e">🫶</span><span><b>Padėk kitam, kai matai, kad gali.</b> Taip atsiranda draugai.</span></div>
+  <div class="rule"><span class="e">🗣️</span><span><b>Po pamokų papasakok mamai ar tėčiui:</b> ką išmokai · kas patiko · kokį draugą sutikai · kas nepatiko. Ir ko norėtum išmokti daugiau!</span></div>
+</div>
+
+<div class="card">
+  <h2><span class="n">02.</span> 12 nuotykių per mokslo metus</h2>
+  <div class="quest"><input type="checkbox" id="q1"><label for="q1">Išdrįsau pakelti ranką pamokoje ir paklausti<span class="kada">🍂 iki rudens atostogų (spalio pab.)</span></label></div>
+  <div class="quest"><input type="checkbox" id="q2"><label for="q2">Sužinojau naujo draugo vardą ir ką jis mėgsta<span class="kada">🍂 iki rudens atostogų</span></label></div>
+  <div class="quest"><input type="checkbox" id="q3"><label for="q3">Išbandžiau būrelį ar naują veiklą — ir daviau jam bent 5 kartus<span class="kada">🍂 iki lapkričio</span></label></div>
+  <div class="quest"><input type="checkbox" id="q4"><label for="q4">Papasakojau namie apie savo klaidą — ir ką iš jos supratau<span class="kada">🍂 ruduo</span></label></div>
+  <div class="quest"><input type="checkbox" id="q5"><label for="q5">Perskaičiau (ar išklausiau) knygą kartu su mama ar tėčiu<span class="kada">❄️ iki Kalėdų</span></label></div>
+  <div class="quest"><input type="checkbox" id="q6"><label for="q6">Išmokiau draugą ar šeimos narį to, ką pats moku<span class="kada">❄️ žiema</span></label></div>
+  <div class="quest"><input type="checkbox" id="q7"><label for="q7">Padariau gerą darbą taip, kad niekas nepamatytų<span class="kada">❄️ žiema</span></label></div>
+  <div class="quest"><input type="checkbox" id="q8"><label for="q8">Išmokau naują žaidimą pertraukai ir pakviečiau kitus žaisti<span class="kada">🌱 iki pavasario</span></label></div>
+  <div class="quest"><input type="checkbox" id="q9"><label for="q9">Paklausiau mokytojos klausimo, kurio niekas dar nebuvo uždavęs<span class="kada">🌱 pavasaris</span></label></div>
+  <div class="quest"><input type="checkbox" id="q10"><label for="q10">Nupiešiau, kuo noriu būti užaugęs — ir papasakojau kodėl<span class="kada">🌱 pavasaris</span></label></div>
+  <div class="quest"><input type="checkbox" id="q11"><label for="q11">Pabandžiau tai, kas iš pradžių atrodė per sunku<span class="kada">☀️ iki vasaros</span></label></div>
+  <div class="quest"><input type="checkbox" id="q12"><label for="q12">Birželį papasakojau šeimai: 3 dalykai, kuriuos šiemet išmokau, ir 1, kuriuo didžiuojuosi<span class="kada">☀️ birželis — metų finalas!</span></label></div>
+</div>
+
+<div class="card tevams">
+  <h2><span class="n">03.</span> Tėvams (2 minutės)</h2>
+  <p><b>Vienas klausimas kasdien po pamokų</b> veikia geriau už dešimt „kaip sekėsi?". Pabandykit: „Kas šiandien buvo įdomiausia?" arba „Kas nepavyko — ir ką darysi kitaip?"</p>
+  <p><b>Nelyginkite vaiko su kitais.</b> Palyginimas — didžiausias džiaugsmo vagis. Kiekvienas vaikas mokosi savo tempu (žinau iš savęs: iki ketvirtos klasės skaityti nemokėjau — išaugau).</p>
+  <p><b>Prie vakarienės pasidalinkit ir savo nesėkme.</b> Kai suaugę pasakoja, kas jiems nepavyko, vaikai nustoja bijoti klysti.</p>
+</div>
+
+<footer>
+  🎁 Rugsėjo 1 dovana visiems Lietuvos vaikams ir tėvams · jokios reklamos, jokių registracijų<br>
+  Parengė <a href="https://krisvas.lt">Kristijonas Vasiliauskas</a> (būrelių evangelistas) kartu su AI · eksperimentinis įrankis — radę klaidą parašykite, pataisysiu<br>
+  Dalinkitės laisvai — tegul kuo daugiau vaikų turi drąsius metus 💛
+</footer>
+</div>
+<script>
+  const boxes=[...document.querySelectorAll('.quest input')];
+  const KEY='pirmoko-nuotykiai-v1';
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach((b,i)=>{if(s[i]){b.checked=true;b.closest('.quest').classList.add('done')}})}catch(e){}
+  function upd(){const n=boxes.filter(b=>b.checked).length;document.getElementById('cnt').textContent=n;
+    try{localStorage.setItem(KEY,JSON.stringify(boxes.map(b=>b.checked)))}catch(e){}}
+  boxes.forEach(b=>b.addEventListener('change',()=>{b.closest('.quest').classList.toggle('done',b.checked);upd()}));
+  upd();
+</script>
+</body>
+</html>
