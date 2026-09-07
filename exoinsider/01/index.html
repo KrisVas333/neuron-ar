@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ExoInsider #1 · Grupių pildymo checklistas · ExoClass</title>
+<meta name="description" content="Ką padaryti šį rugsėjį, kad grupės užsipildytų. ExoInsider #1 — tik ExoClass partneriams.">
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exoinsider-01" data-kind="tool"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2E2B33;
+    --page:#F4F2F9;
+    --card:#FFFFFF;
+    --accent:#AE4197;
+    --muted:#7A7580;
+    --line:#E9E5F0;
+    --blue:#409cff;
+    --note-bg:#FBF4F9;
+    --font:'Plus Jakarta Sans','Inter',Arial,Helvetica,sans-serif;
+    --r:16px;
+    --r-sm:12px;
+    --shadow:0 2px 10px rgba(46,43,51,.06);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--page);
+    color:var(--ink);
+    font-family:var(--font);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);}
+  a:hover{text-decoration:none;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+
+  .page{
+    max-width:720px;
+    margin:0 auto;
+    padding:20px 16px 64px;
+  }
+  @media (min-width:640px){
+    .page{padding:36px 24px 88px;}
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    padding:24px 20px;
+    margin:0 0 18px;
+  }
+  @media (min-width:640px){
+    .card{padding:30px 32px;}
+  }
+
+  .logo{display:block;width:150px;max-width:60%;height:auto;margin:0 0 20px;}
+
+  .label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 12px;
+  }
+
+  h1{
+    font-size:clamp(27px,6vw,36px);
+    font-weight:800;
+    line-height:1.2;
+    letter-spacing:-.01em;
+    margin:0 0 12px;
+    text-wrap:balance;
+  }
+
+  .subtitle{
+    font-size:18px;
+    color:var(--ink);
+    margin:0 0 18px;
+  }
+
+  .byline{
+    font-size:15px;
+    color:var(--muted);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+
+  .disclosure{
+    font-size:15px;
+    color:var(--muted);
+    margin:0;
+    padding:12px 14px;
+    background:var(--note-bg);
+    border-radius:var(--r-sm);
+  }
+
+  /* progress */
+  .progress-card{
+    background:var(--card);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    padding:18px 20px;
+    margin:0 0 18px;
+    position:sticky;
+    top:0;
+    z-index:5;
+  }
+  @media (min-width:640px){
+    .progress-card{padding:18px 32px;}
+  }
+  .progress-top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin:0 0 10px;
+  }
+  .progress-text{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0;
+  }
+  .progress-hint{font-size:13px;color:var(--muted);}
+  .bar{
+    height:8px;
+    background:var(--line);
+    border-radius:60px;
+    overflow:hidden;
+  }
+  .bar span{
+    display:block;
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:60px;
+    transition:width .2s ease;
+  }
+
+  /* sections */
+  .section-head{
+    margin:30px 0 14px;
+    padding:0 4px;
+  }
+  .section-head .label{margin:0 0 4px;}
+  .section-head p{
+    margin:0;
+    font-size:15px;
+    color:var(--muted);
+  }
+
+  .item{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:14px;
+    background:var(--card);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    padding:20px 18px;
+    margin:0 0 12px;
+  }
+  @media (min-width:640px){
+    .item{padding:24px 28px;gap:18px;}
+  }
+
+  .item input[type="checkbox"]{
+    appearance:none;
+    -webkit-appearance:none;
+    margin:2px 0 0;
+    width:26px;height:26px;
+    flex:none;
+    border:2px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    display:grid;
+    place-content:center;
+  }
+  .item input[type="checkbox"]::before{
+    content:"";
+    width:12px;height:12px;
+    border-radius:3px;
+    background:var(--accent);
+    transform:scale(0);
+    transition:transform .12s ease-in;
+  }
+  .item input[type="checkbox"]:checked{border-color:var(--accent);background:var(--note-bg);}
+  .item input[type="checkbox"]:checked::before{transform:scale(1);}
+
+  .item-num{
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    color:var(--accent);
+    display:block;
+    margin:0 0 4px;
+  }
+  .item h3{
+    font-size:19px;
+    font-weight:700;
+    line-height:1.35;
+    margin:0 0 10px;
+    text-wrap:balance;
+  }
+  .item ul{
+    margin:0 0 12px;
+    padding:0;
+    list-style:none;
+  }
+  .item ul li{
+    position:relative;
+    padding-left:20px;
+    margin:0 0 8px;
+  }
+  .item ul li::before{
+    content:"→";
+    position:absolute;
+    left:0;
+    color:var(--accent);
+    font-weight:700;
+  }
+  .why{
+    margin:0;
+    padding:12px 14px;
+    background:var(--note-bg);
+    border-radius:var(--r-sm);
+    font-size:16px;
+  }
+  .why b{color:var(--accent);}
+  .flag{
+    display:block;
+    margin-top:10px;
+    font-size:14px;
+    color:var(--muted);
+  }
+
+  /* info section F */
+  .info li{
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .info ul{margin:0;padding:0;list-style:none;}
+  .info li:last-child{border-bottom:none;padding-bottom:0;}
+  .info li b{display:block;font-size:18px;margin:0 0 4px;}
+
+  /* CTA */
+  .btn{
+    display:inline-block;
+    background:var(--ink);
+    color:#FFFFFF;
+    text-decoration:none;
+    font-weight:700;
+    font-size:17px;
+    padding:14px 26px;
+    border-radius:60px;
+    margin:6px 0 0;
+  }
+  .btn:hover{opacity:.9;}
+  .btn-secondary{background:var(--blue);}
+
+  .choices{
+    margin:0 0 16px;
+    padding:0;
+    list-style:none;
+  }
+  .choices li{
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .choices li:last-child{border-bottom:none;}
+  .choices li b{color:var(--accent);}
+
+  .tease{
+    font-size:16px;
+    color:var(--muted);
+    margin:16px 0 0;
+  }
+
+  .sign{
+    font-size:16px;
+    margin:16px 0 0;
+    line-height:1.7;
+  }
+  .sign b{display:block;font-size:18px;}
+
+  footer{
+    margin-top:26px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--muted);
+  }
+  footer p{margin:0 0 12px;}
+  footer .ai-disclaimer{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-sm);
+    padding:14px 16px;
+    color:var(--ink);
+  }
+
+  @media print{
+    .btn,.progress-card{display:none !important;}
+    body{background:#fff;}
+    .card,.item{box-shadow:none;border:1px solid #ddd;break-inside:avoid;}
+    a{color:#000;text-decoration:underline;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="card">
+    <img class="logo" src="exoclass-logo.png" alt="ExoClass" width="400" height="73">
+    <p class="label">ExoInsider #1 · Tik partneriams</p>
+    <h1>Grupių pildymo checklistas 2026–27</h1>
+    <p class="subtitle">Ką padaryti šį rugsėjį, kad grupės užsipildytų, pinigai ateitų greičiau ir tėvai liktų antram mėnesiui.</p>
+    <p class="byline">Kristijonas Vasiliauskas · ExoClass bendraįkūrėjas</p>
+    <p class="disclosure">Esu ExoClass bendraįkūrėjas — sakau iš karto. Checklistas veikia ir be ExoClass.</p>
+  </header>
+
+  <div class="progress-card">
+    <div class="progress-top">
+      <p class="progress-text" id="counter">Pažymėta 0 iš 18</p>
+      <span class="progress-hint">Išsaugoma jūsų naršyklėje</span>
+    </div>
+    <div class="bar"><span id="bar"></span></div>
+  </div>
+
+  <!-- A -->
+  <div class="section-head">
+    <p class="label">A · 📝 Registracija</p>
+    <p>Svarbiausia šį sezoną. Čia prarandama daugiausiai vaikų.</p>
+  </div>
+
+  <article class="item">
+    <input type="checkbox" id="c1" data-persist="c1" aria-labelledby="t1">
+    <div>
+      <span class="item-num">01</span>
+      <h3 id="t1">Registracija tiesiai jūsų svetainėje (ExoClass „embed“)</h3>
+      <ul>
+        <li>ExoClass paskyra → Nustatymai → Registracijos forma → nukopijuokite kodą.</li>
+        <li>Įklijuokite jį į savo svetainę. Nedarote to patys — persiųskite kodą savo svetainės žmogui, jam užtruks 10 minučių.</li>
+        <li>Nežinote, nuo ko pradėti — atrašykite man vienu žodžiu „embed“. Padedam per savaitę.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> registraciją savo svetainėje turi tik apie 1 iš 10 partnerių (⚠️ pagal mūsų vidinius duomenis, 2026-09). Tėvas, kuris turi rašyti laišką ar skambinti, dažnai neparašo.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c2" data-persist="c2" aria-labelledby="t2">
+    <div>
+      <span class="item-num">02</span>
+      <h3 id="t2">Svetainė per 10 sekundžių pasako penkis dalykus</h3>
+      <ul>
+        <li>Kam (amžius) · kada (diena ir valanda) · kur · kiek kainuoja · kaip registruotis.</li>
+        <li>Testas: atidarykite savo svetainę telefone kaip tėvas ir suskaičiuokite, per kiek sekundžių randate visus penkis.</li>
+        <li>Ko neradote per 10 sekundžių — iškelkite į viršų šiandien.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> tėvas renkasi vakare, per porą minučių, tarp kitų darbų.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c3" data-persist="c3" aria-labelledby="t3">
+    <div>
+      <span class="item-num">03</span>
+      <h3 id="t3">Tvarkaraštis ir kaina matomi PRIEŠ mokėjimą</h3>
+      <ul>
+        <li>Pereikite savo registracijos kelią iki galo: ar diena, valanda ir kaina matomos dar prieš mokėjimo langą?</li>
+        <li>Jei ne — perkelkite jas vienu žingsniu aukščiau.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> tėvas, kuris nemato „kada“, dingsta prieš mokėjimą (iš pokalbių su partneriais, 2026-09).</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c4" data-persist="c4" aria-labelledby="t4">
+    <div>
+      <span class="item-num">04</span>
+      <h3 id="t4">NVŠ krepšelis paaiškintas tėvams paprastai</h3>
+      <ul>
+        <li>Parašykite vieną sakinį: kas tai yra, kiek dengia, ką tėvas turi padaryti.</li>
+        <li>Įdėkite jį į svetainę IR į registracijos patvirtinimo laišką — ir nurodykite, kur registruotis: <b>Mokausi.lt / CPIS</b> (savivaldybės sistema).</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> vis daugiau savivaldybių registruoja per CPIS, o nuo sausio — visa Lietuva (exopulse, 2026-08). Tėvas, kuris nesupranta krepšelio, atideda sprendimą.
+      <span class="flag">⚠️ antros sistemos pavadinimą patikslinsim #2</span></p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c5" data-persist="c5" aria-labelledby="t5">
+    <div>
+      <span class="item-num">05</span>
+      <h3 id="t5">Registracija veikia telefone ir vakare</h3>
+      <ul>
+        <li>Užregistruokite patys save iš telefono 21:00 — iki galo.</li>
+        <li>Jei kur nors reikia paskambinti darbo valandomis — ten prarandate tėvus.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> dauguma tėvų registruoja iš telefono ne darbo valandomis.</p>
+    </div>
+  </article>
+
+  <!-- B -->
+  <div class="section-head">
+    <p class="label">B · 🏫 Mokyklos ir tėvai</p>
+    <p>Pigiausias srautas, kurį galite turėti.</p>
+  </div>
+
+  <article class="item">
+    <input type="checkbox" id="c6" data-persist="c6" aria-labelledby="t6">
+    <div>
+      <span class="item-num">06</span>
+      <h3 id="t6">Pristatymai mokyklose</h3>
+      <ul>
+        <li>Susitarkite su direktoriumi, pavaduotoju arba socialiniu pedagogu dėl 10 minučių per klases arba per pertrauką; salė — jei duoda.</li>
+        <li>Įsirašykite kalendoriuje priminimą pasikalbėti su ta pačia mokykla lapkritį ir vasarį.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> santykis, kurį palaikote visus metus, o ne tik rugsėjį, kitą sezoną atveda vaikus be reklamos.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c7" data-persist="c7" aria-labelledby="t7">
+    <div>
+      <span class="item-num">07</span>
+      <h3 id="t7">Tėvų susirinkimai su lankstinukais</h3>
+      <ul>
+        <li>Lankstinuke BŪTINAI: savaitės diena, valanda, vieta, kaina ir QR kodas (arba trumpa nuoroda) į registraciją.</li>
+        <li>QR kodą nuveskite tiesiai į registracijos puslapį, ne į titulinį.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> be QR lankstinukas neveikia — tėvas jį pameta anksčiau, nei prisėda prie kompiuterio.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c8" data-persist="c8" aria-labelledby="t8">
+    <div>
+      <span class="item-num">08</span>
+      <h3 id="t8">Mokyklos tvarkaraštis tėvams</h3>
+      <ul>
+        <li>Padarykite vieną puslapį arba vieną įrašą, kuriame surašyti visi jūsų laikai toje mokykloje.</li>
+        <li>Duokite nuorodą mokyklai ir įdėkite ją į lankstinuką.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> tėvui sunku rasti mokyklos svetainėje, kada ir kur vyksta jūsų būrelis. Bendrą sprendimą statom — žr. skyrių „Ką statom mes“.</p>
+    </div>
+  </article>
+
+  <!-- C -->
+  <div class="section-head">
+    <p class="label">C · 📣 Reklama ir socialiniai</p>
+    <p>Vienas principas: nuoroda visada į registraciją.</p>
+  </div>
+
+  <article class="item">
+    <input type="checkbox" id="c9" data-persist="c9" aria-labelledby="t9">
+    <div>
+      <span class="item-num">09</span>
+      <h3 id="t9">Facebook ir Instagram reklama į registracijos puslapį</h3>
+      <ul>
+        <li>Nuoroda — į registracijos puslapį, ne į profilį.</li>
+        <li>Vienas skelbimas vienai grupei: amžius + miestas + laikas.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> paspaudimas į profilį baigiasi niekuo; paspaudimas į registraciją baigiasi vaiku grupėje.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c10" data-persist="c10" aria-labelledby="t10">
+    <div>
+      <span class="item-num">10</span>
+      <h3 id="t10">Google reklama pagal užklausas</h3>
+      <ul>
+        <li>Raktažodžiai: „būrelis + miestas + amžius“ (pvz. „šokių būrelis Kaune 7 metų“).</li>
+        <li>Nukreipimas — į to būrelio puslapį, ne į pradinį.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> tėvas, kuris jau ieško, yra arčiausiai registracijos.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c11" data-persist="c11" aria-labelledby="t11">
+    <div>
+      <span class="item-num">11</span>
+      <h3 id="t11">TikTok reklama</h3>
+      <ul>
+        <li>30 sekundžių video iš realaus užsiėmimo, be montažo triukų.</li>
+        <li>Pirmos 3 sekundės — vaikas daro tai, ką tėvas nori pamatyti.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> mūsų patirtis 2026 rudenį — šiuo metu veikia labai gerai. Tai <b>mūsų rekomendacija, ne tyrimas.</b></p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c12" data-persist="c12" aria-labelledby="t12">
+    <div>
+      <span class="item-num">12</span>
+      <h3 id="t12">Kas savaitę vienas įrašas iš realaus užsiėmimo</h3>
+      <ul>
+        <li>Nufilmuokite telefonu 20 sekundžių per užsiėmimą.</li>
+        <li>Pabaigoje — nuoroda į registraciją.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> vienas įrašas kas savaitę duoda daugiau nei penki iš karto, kai prisiminėte.</p>
+    </div>
+  </article>
+
+  <!-- D -->
+  <div class="section-head">
+    <p class="label">D · 👥 Grupės, mentoriai, pinigai</p>
+    <p>Rugsėjį sprendimą reikia priimti per dvi dienas, ne per dvi savaites.</p>
+  </div>
+
+  <article class="item">
+    <input type="checkbox" id="c13" data-persist="c13" aria-labelledby="t13">
+    <div>
+      <span class="item-num">13</span>
+      <h3 id="t13">Kasdien sekti pardavimus kiekvienoje lokacijoje</h3>
+      <ul>
+        <li>Viena lentelė: lokacija · laisvos vietos · registracijos šiandien.</li>
+        <li>Peržiūrėkite ją kiekvieną rytą 5 minutes.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> matote tuščią lokaciją antrą dieną, o ne trečią savaitę, kai jau nebespėsite.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c14" data-persist="c14" aria-labelledby="t14">
+    <div>
+      <span class="item-num">14</span>
+      <h3 id="t14">Pakankamai mentorių</h3>
+      <ul>
+        <li>Užrašykite, kas priima vaikus pirmą dieną kiekvienoje lokacijoje.</li>
+        <li>Turėkite planą B ligos atveju — konkretų vardą, ne viltį.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> pirma diena be šeimininko yra brangiausia diena visame sezone.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c15" data-persist="c15" aria-labelledby="t15">
+    <div>
+      <span class="item-num">15</span>
+      <h3 id="t15">Sekti vidutinį grupės dydį ir pelningumą per grupę</h3>
+      <ul>
+        <li>Nusistatykite ribą: kiek vaikų grupė turi turėti, kad apsimokėtų.</li>
+        <li>Grupė, kuri iki nustatytos datos nepasiekia tos ribos, sujungiama arba perkeliama.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> dvi pusiau tuščios grupės kainuoja daugiau nei viena pilna.</p>
+    </div>
+  </article>
+
+  <!-- E -->
+  <div class="section-head">
+    <p class="label">E · 💬 Tėvų informavimas</p>
+    <p>Viskas, kas vyksta prieš antro mėnesio sąskaitą.</p>
+  </div>
+
+  <article class="item">
+    <input type="checkbox" id="c16" data-persist="c16" aria-labelledby="t16">
+    <div>
+      <span class="item-num">16</span>
+      <h3 id="t16">Prieš pirmą užsiėmimą</h3>
+      <ul>
+        <li>Viena žinutė: kas, kur, ką atsinešti ir kas bus vadovas — vardu.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> tėvas, kuris žino vadovo vardą, atveda vaiką ramus.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c17" data-persist="c17" aria-labelledby="t17">
+    <div>
+      <span class="item-num">17</span>
+      <h3 id="t17">Po 2 savaičių</h3>
+      <ul>
+        <li>Viena nuotrauka arba vienas sakinys: ką vaikas jau padarė.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> tai pirmas įrodymas tėvui, kad pinigai ne veltui.</p>
+    </div>
+  </article>
+
+  <article class="item">
+    <input type="checkbox" id="c18" data-persist="c18" aria-labelledby="t18">
+    <div>
+      <span class="item-num">18</span>
+      <h3 id="t18">Mėnesio pabaigoje, PRIEŠ antro mėnesio sąskaitą</h3>
+      <ul>
+        <li>Trumpa žinutė: kas padaryta, ką vaikas pasiekė, ko išmoko.</li>
+        <li>Išsiųskite ją prieš sąskaitą, ne po jos.</li>
+      </ul>
+      <p class="why"><b>Kodėl:</b> 37,8 % vaikų palieka būrelį per pirmą ciklą. Priežastis #1 — „vaikui nuobodu“ (26,7 %), o kaina — tik 1,6 % (mūsų audituoti RA duomenys, n=1 600+ šeimų).</p>
+    </div>
+  </article>
+
+  <!-- F -->
+  <div class="section-head">
+    <p class="label">F · 🚀 Ką statom mes</p>
+    <p>Ne checklistas — informacija jums.</p>
+  </div>
+
+  <div class="card info">
+    <ul>
+      <li>
+        <b>ExoSend</b>
+        Laiškai ir SMS tėvams tiesiai iš ExoClass. Įjungiama pakopomis nuo 2026 m. rugsėjo.
+      </li>
+      <li>
+        <b>ExoSign</b>
+        Elektroninis NVŠ sutarčių pasirašymas be popieriaus. Veikia — testuojam su pirmais partneriais.
+      </li>
+      <li>
+        <b>Mokyklų tvarkaraščiai ir būrelių paieška tėvams</b>
+        Kad tėvas rastų, kada ir kur mokykloje vyksta būrelis. Statom. Kol kas: Vilniaus m. savivaldybė turi savo NVŠ žemėlapį — <a href="https://neformalusugdymas.vilnius.lt/" target="_blank" rel="noopener">neformalusugdymas.vilnius.lt</a> — patikrinkite, ar jūsų būrelis jame yra ir ar duomenys tikslūs.
+      </li>
+      <li>
+        <b>Skaičiai</b>
+        ExoClass sistemoje šiandien apie 30 000 vaikų. Tikslas iki metų pabaigos — 50 000 (šaltinis: įkūrėjų KPI, 2026-09-02). Augam, kad jūs augtumėt.
+      </li>
+    </ul>
+  </div>
+
+  <!-- G -->
+  <div class="section-head">
+    <p class="label">G · ✉️ Kitas ExoInsider</p>
+    <p>Temą renkate jūs.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:21px;font-weight:700;margin:0 0 12px;">Apie ką norite sužinoti daugiau?</h3>
+    <ul class="choices">
+      <li><b>Pardavimai</b> — kaip kalbėti su tėvu, kuris dvejoja</li>
+      <li><b>Grupių pildymas</b> — ką daryti su grupe, kurioje 4 vaikai</li>
+      <li><b>Reklama</b> — Facebook, Google, YouTube, TikTok: kuo skiriasi, kaip padaryti 30 s ir 1 min video, asmeninis prekės ženklas</li>
+      <li><b>ExoSend ir ExoSign</b> — kaip įsijungti ir ką tai keičia</li>
+      <li><b>Kas toliau</b> — ką statom ir kada</li>
+    </ul>
+    <a class="btn" href="mailto:krisvas@exoclass.lt?subject=ExoInsider%20%231%3A%20noriu%20daugiau%20apie%E2%80%A6">Atsakyti vienu žodžiu →</a>
+    <p class="tease">Kitas numeris — <b>#2: reklama.</b></p>
+  </div>
+
+  <div class="card">
+    <p style="margin:0 0 6px;font-size:18px;">Ačiū, kad pasirinkote ExoClass.</p>
+    <p style="margin:0;font-size:18px;color:var(--accent);font-weight:700;">ExoClass — būrelis būrelių vadovams.</p>
+    <p class="sign">
+      <b>Kristijonas</b>
+      <a href="tel:+37069952417">+370 699 52417</a><br>
+      <a href="mailto:krisvas@exoclass.lt">krisvas@exoclass.lt</a>
+    </p>
+  </div>
+
+  <footer>
+    <p>Nuoroda skirta ExoInsider skaitytojams — ExoClass partneriams. Pažymėjimai išsaugomi jūsų naršyklėje.</p>
+    <p>Šaltiniai: RA churn auditas, n=1 600+ šeimų (37,8 % · 26,7 % · 1,6 %) · exopulse 2026-08 (CPIS) · įkūrėjų KPI 2026-09-02 (30 000 / 50 000) · pokalbiai su partneriais 2026-09 · registracijos svetainėje dalis — mūsų vidiniai duomenys 2026-09.</p>
+    <p>Kris Vasiliauskas × ExoClass</p>
+    <p class="ai-disclaimer"><b>⚗️ Eksperimentinis prototipas.</b> Šį įrankį sukūriau su dirbtiniu intelektu — jis nuolat keičiasi, gali klysti arba pateikti netikslių duomenų. Naudokite jį kaip pokalbio pradžią, ne kaip galutinę tiesą, o svarbius dalykus pasitikrinkite patys. Įrankiai nemokami: noriu, kad augtų <b>visų</b> Lietuvos būrelių kokybė ir pasiūla — ne tik mano. Radote klaidą ar netikslumą? Parašykite — <a href="mailto:krisvas@exoclass.lt">krisvas@exoclass.lt</a> — taisau greitai.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  try{
+    var boxes = document.querySelectorAll('input[data-persist]');
+    var counter = document.getElementById('counter');
+    var bar = document.getElementById('bar');
+    var total = boxes.length;
+
+    function update(){
+      var done = 0;
+      boxes.forEach(function(b){ if(b.checked) done++; });
+      if(counter) counter.textContent = 'Pažymėta ' + done + ' iš ' + total;
+      if(bar) bar.style.width = (total ? Math.round(done/total*100) : 0) + '%';
+    }
+
+    boxes.forEach(function(b){
+      var key = 'exoinsider-01:' + b.dataset.persist;
+      try{ if(localStorage.getItem(key) === '1') b.checked = true; }catch(e){}
+      b.addEventListener('change', function(){
+        try{ localStorage.setItem(key, b.checked ? '1' : '0'); }catch(e){}
+        update();
+      });
+    });
+
+    update();
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
