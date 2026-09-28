@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ar jūsų būreliui jau laikas ExoClass? · Testas</title>
 <meta name="description" content="10 klausimų, 5 minutės, rezultatas iš karto. Sužinokite, ar ExoClass jūsų būreliui reikalinga dabar, kiek laiko galėtumėte sutaupyti ir kiek tai kainuotų.">
-<meta name="robots" content="noindex">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ar jūsų būreliui jau laikas ExoClass?">
 <meta property="og:description" content="10 klausimų · 5 min · rezultatas iš karto. Mažiau administravimo, daugiau ugdymo.">
@@ -19,10 +18,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
-<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas-v2" data-kind="quiz"></script>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas-v3" data-kind="quiz"></script>
 <!-- Microsoft Clarity: tas pats projektas kaip krisvas.lt (y4gk0je1j0); įvesties laukai maskuojami -->
-<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas-v2");}catch(e){}</script>
+<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas-v3");}catch(e){}</script>
 <style>
 /* ExoClass DNA (as on exopus / exoclass.lt): Plus Jakarta Sans, blue #3097D7 to magenta #AE4197, ink #2E2B33.
    Light only. Dyslexia-first: 18px body, 1.55 line height, short lines, left aligned, no justified text. */
@@ -262,6 +260,41 @@ footer p + p{margin-top:8px}
 .stat2{display:flex;gap:18px}
 .stat2 div b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em}
 .stat2 div span{font-size:14px;color:var(--muted)}
+.intro h1{font-size:clamp(30px,8.4vw,44px);margin-bottom:10px}
+.intro .sub{margin-bottom:16px}
+#start{margin-bottom:22px}
+.tv{margin:0 0 26px}
+.tv-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.tv-head h2{font-size:20px}
+.tv-badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:800;color:#fff;background:var(--ink);border-radius:999px;padding:5px 10px;flex:none}
+.tv-badge i{color:#F2A9DD;font-size:16px}
+.tv-frame{position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:#1d1b21;box-shadow:var(--shadow)}
+.tv-slide{position:absolute;inset:0;display:block;color:#fff;text-decoration:none;opacity:0;transition:opacity .7s ease}
+.tv-slide.on{opacity:1;z-index:1}
+.tv-slide img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;transform:scale(1.04);transition:transform 3.2s ease}
+.tv-slide.on img{transform:scale(1)}
+.tv-cap{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 14px;background:linear-gradient(180deg,transparent,rgba(20,18,24,.88) 55%)}
+.tv-cap b{display:block;font-size:19px;font-weight:800;line-height:1.2}
+.tv-cap span{display:block;font-size:14.5px;font-weight:600;opacity:.92;margin-top:2px}
+.tv-cap q{display:block;font-size:14.5px;font-weight:500;margin-top:6px;line-height:1.4;quotes:"„" "“"}
+.tv-play{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--p);display:grid;place-items:center;font-size:20px}
+.tv-ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.tv-dots{display:flex;gap:6px}
+.tv-dots button{width:44px;height:44px;border:0;background:transparent;display:grid;place-items:center;padding:0}
+.tv-dots button::before{content:"";width:24px;height:6px;border-radius:999px;background:var(--line);transition:background .3s,width .3s}
+.tv-dots button[aria-selected="true"]::before{background:var(--p);width:32px}
+.tv-pp{width:44px;height:44px;border-radius:999px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;font-size:18px;color:var(--ink-2)}
+.founders{margin:0 0 22px}
+.founders h2{font-size:20px;margin-bottom:10px}
+.founders img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:20px;display:block;box-shadow:var(--shadow-sm)}
+.cap-t{font-size:16px;margin:10px 0 4px;color:var(--ink-2)}
+.cap-t b{color:var(--ink)}
+.founders .coi{margin-top:12px}
+.prod{margin:4px 0 12px}
+.prod img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block}
+.prod figcaption{font-size:13.5px;color:var(--muted);margin-top:6px}
+@media (min-width:720px){ .tv-frame{aspect-ratio:16/9} }
+@media (prefers-reduced-motion:reduce){ .tv-slide img{transform:none!important} }
 @media (max-width:480px){ .trust{grid-template-columns:1fr 1fr} .trust div:last-child{grid-column:1/-1} }
 @media (min-width:720px){ body{font-size:18.5px} .opts.two{grid-template-columns:1fr 1fr} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
@@ -281,56 +314,29 @@ footer p + p{margin-top:8px}
 
   <!-- INTRO -->
   <section class="screen intro fade-in" id="s-intro" aria-labelledby="t-intro">
-    <svg class="hero-art" viewBox="0 0 420 250" role="img" aria-label="Iliustracija: būrelio grupių, sąskaitų ir priminimų kortelės">
-      <defs>
-        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3097D7"/><stop offset="1" stop-color="#AE4197"/></linearGradient>
-        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3097D7" stop-opacity=".18"/><stop offset="1" stop-color="#AE4197" stop-opacity=".18"/></linearGradient>
-        <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#2E2B33" flood-opacity=".14"/></filter>
-      </defs>
-      <circle cx="300" cy="118" r="104" fill="url(#g2)"/>
-      <circle cx="96" cy="196" r="46" fill="#CCE0F0" opacity=".6"/>
-      <!-- main card: group -->
-      <g filter="url(#sh)">
-        <rect x="118" y="34" width="190" height="178" rx="20" fill="#fff"/>
-      </g>
-      <rect x="134" y="50" width="96" height="12" rx="6" fill="#2E2B33"/>
-      <rect x="134" y="70" width="64" height="9" rx="4.5" fill="#C9C6D0"/>
-      <rect x="252" y="48" width="42" height="24" rx="12" fill="#F6E7F2"/>
-      <text x="273" y="65" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#8E2F7A">12/14</text>
-      <g font-family="Plus Jakarta Sans,sans-serif">
-        <g transform="translate(134 94)"><circle cx="11" cy="11" r="11" fill="#EAF3FA"/><rect x="30" y="6" width="90" height="10" rx="5" fill="#E4E9F0"/><circle cx="152" cy="11" r="11" fill="#2F8F5B"/><path d="M146 11l4 4 8-8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
-        <g transform="translate(134 124)"><circle cx="11" cy="11" r="11" fill="#EAF3FA"/><rect x="30" y="6" width="74" height="10" rx="5" fill="#E4E9F0"/><circle cx="152" cy="11" r="11" fill="#2F8F5B"/><path d="M146 11l4 4 8-8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
-        <g transform="translate(134 154)"><circle cx="11" cy="11" r="11" fill="#EAF3FA"/><rect x="30" y="6" width="98" height="10" rx="5" fill="#E4E9F0"/><circle cx="152" cy="11" r="11" fill="url(#g1)"/><path d="M146 11l4 4 8-8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
-        <rect x="134" y="186" width="158" height="12" rx="6" fill="url(#g2)"/>
-        <rect x="134" y="186" width="120" height="12" rx="6" fill="url(#g1)"/>
-      </g>
-      <!-- invoice chip -->
-      <g filter="url(#sh)"><rect x="276" y="148" width="130" height="54" rx="16" fill="#fff"/></g>
-      <circle cx="300" cy="175" r="14" fill="#E8F5EE"/>
-      <text x="300" y="180" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="14" font-weight="800" fill="#2F8F5B">€</text>
-      <rect x="322" y="164" width="68" height="9" rx="4.5" fill="#2E2B33"/>
-      <rect x="322" y="179" width="46" height="8" rx="4" fill="#9EA3AE"/>
-      <!-- bell chip -->
-      <g filter="url(#sh)"><rect x="20" y="58" width="118" height="50" rx="16" fill="#fff"/></g>
-      <circle cx="44" cy="83" r="14" fill="url(#g1)"/>
-      <path d="M44 74c-4 0-6 3-6 6v4l-2 3h16l-2-3v-4c0-3-2-6-6-6zM41 89a3 3 0 006 0" fill="#fff"/>
-      <rect x="64" y="76" width="58" height="8" rx="4" fill="#2E2B33"/>
-      <rect x="64" y="89" width="38" height="7" rx="3.5" fill="#C9C6D0"/>
-      <!-- clock -->
-      <g filter="url(#sh)"><circle cx="352" cy="58" r="30" fill="#fff"/></g>
-      <circle cx="352" cy="58" r="20" fill="none" stroke="url(#g1)" stroke-width="5"/>
-      <path d="M352 47v11l8 5" stroke="#2E2B33" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-    </svg>
-
     <span class="kicker">Testas būrelių teikėjams</span>
     <h1 id="t-intro">Ar jūsų būreliui jau laikas <span class="grad-text">ExoClass</span>?</h1>
     <p class="sub">10 klausimų · 5 min · rezultatas iš karto</p>
-    <p class="tagline" style="margin:-10px 0 20px">Mažiau administravimo, daugiau ugdymo.</p>
-    <div class="meta-row" aria-label="Ką gausite">
-      <span><i class="ph ph-gauge" aria-hidden="true"></i>Tinkamumo %</span>
-      <span><i class="ph ph-clock" aria-hidden="true"></i>Kiek laiko sutaupytumėte</span>
-      <span><i class="ph ph-receipt" aria-hidden="true"></i>Kainos be slėpimo</span>
-    </div>
+    <button class="btn pri block" id="start" type="button">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+
+    <section class="tv" aria-labelledby="tv-h">
+      <div class="tv-head"><h2 id="tv-h">Tikri žmonės, tikri būreliai</h2><span class="tv-badge"><i class="ph ph-play-circle" aria-hidden="true"></i>ExoClass TV</span></div>
+      <div class="tv-frame" id="tv" aria-roledescription="karuselė" aria-live="off"></div>
+      <div class="tv-ctrl"><div class="tv-dots" id="tv-dots" role="tablist" aria-label="Pasirinkite partnerį"></div><button class="tv-pp" id="tv-pp" type="button" aria-pressed="false" aria-label="Sustabdyti"><i class="ph ph-pause" aria-hidden="true"></i></button></div>
+      <p class="src-line" style="margin-top:6px">Video ir nuotraukos: <a href="https://www.youtube.com/@exoclass_lt" target="_blank" rel="noopener">ExoClass YouTube</a>, 2025. Paspaudę atidarysite partnerio video.</p>
+    </section>
+
+    <section class="founders" aria-labelledby="f-h">
+      <h2 id="f-h">Kas kuria ExoClass</h2>
+      <img src="media/founders.webp" alt="Kris Vasiliauskas, Linas Kiguolis ir Lukas D. Eidukas pokalbio metu" width="1400" height="787" loading="lazy" decoding="async">
+      <p class="cap-t"><b>Kris, Linas ir Lukas, ExoClass įkūrėjai</b><br>Iš kairės: Kris Vasiliauskas, Linas Kiguolis, Lukas D. Eidukas.</p>
+      <p class="src-line">Nuotrauka: kadras iš ExoClass įkūrėjų interviu, 2026 m. rugpjūtis.</p>
+      <div class="coi" role="note">
+      <i class="ph ph-hand-heart" aria-hidden="true"></i>
+      <p>Esu ExoClass bendraįkūrėjas, todėl šis testas nėra nepriklausomas. Jis gali parodyti ir tai, kad ExoClass jums dar nereikia.<br><span class="muted small">Kristijonas Vasiliauskas</span></p>
+      </div>
+    </section>
+
     <div class="trust" id="trust" aria-label="ExoClass skaičiais">
       <div><b data-count="70" data-suf="+">70+</b><span>partnerių būrelių</span></div>
       <div><b data-count="10" data-pre="€" data-suf="M+">€10M+</b><span>mokėjimų per platformą</span></div>
@@ -340,8 +346,9 @@ footer p + p{margin-top:8px}
     <p class="mq-h">Su ExoClass jau dirba, pavyzdžiui:</p>
     <div class="marquee" id="marquee"><div class="mq-track" id="mq-track"></div></div>
     <p class="src-line">Dalis partnerių, abėcėlės tvarka. Robotikos Akademijos bendraįkūrėjas esu aš. <button class="mq-btn" id="mq-toggle" type="button" aria-pressed="false">Sustabdyti</button></p>
+    <figure class="prod"><img src="media/product-form.webp" alt="ExoClass registracijos forma: vardas, pavardė, gimimo data" width="516" height="321" loading="lazy" decoding="async"><figcaption>Registracijos forma ExoClass sistemoje</figcaption></figure>
     <details class="pains">
-      <summary><i class="ph ph-list-bullets" aria-hidden="true"></i>8 problemos, kurias sprendžia ExoClass</summary>
+      <summary><i class="ph ph-list-bullets" aria-hidden="true"></i>Ką sprendžiame: 8 problemos</summary>
       <ol>
         <li>Pinigų vaikymasis ir skolų sekimas rankomis.</li>
         <li>Registracija, kurioje tėvai „dingsta“ tarp žinutės ir apmokėjimo.</li>
@@ -354,12 +361,7 @@ footer p + p{margin-top:8px}
       </ol>
       <p class="muted small">Iš ExoClass pokalbių su teikėjais, 2026 m.</p>
     </details>
-    <button class="btn pri block" id="start" type="button">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
-
-    <div class="coi" role="note">
-      <i class="ph ph-hand-heart" aria-hidden="true"></i>
-      <p>Esu ExoClass bendraįkūrėjas, todėl šis testas nėra nepriklausomas. Jis gali parodyti ir tai, kad ExoClass jums dar nereikia.<br><span class="muted small">Kristijonas Vasiliauskas</span></p>
-    </div>
+    <button class="btn sec block" id="start2" type="button" style="margin:4px 0 18px">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
     <p class="disc">⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti, svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt" target="_blank" rel="noopener">krisvas.lt</a></p>
   </section>
 
@@ -371,7 +373,7 @@ footer p + p{margin-top:8px}
     </div>
     <div id="q-body">
       <div class="q-peer" id="q-peer" hidden role="note"><div class="qp-t"><span id="q-peer-t"></span><span class="qp-logos" id="q-peer-l"></span></div><button class="qp-x" id="q-peer-x" type="button" aria-label="Uždaryti">×</button></div>
-      <p class="q-fact" id="q-fact" hidden><i class="ph-fill ph-lightbulb" aria-hidden="true"></i><span id="q-fact-t"></span></p>
+      <p class="q-fact" id="q-fact" hidden><i class="ph ph-lightbulb" aria-hidden="true"></i><span id="q-fact-t"></span></p>
       <h2 id="q-title" tabindex="-1"></h2>
       <p class="hint" id="q-hint"></p>
       <div class="opts" id="q-opts"></div>
@@ -560,7 +562,7 @@ footer p + p{margin-top:8px}
 
   <!-- THANKS -->
   <section class="screen" id="s-done" hidden aria-labelledby="d-title" style="text-align:center">
-    <div class="done-ic" aria-hidden="true"><i class="ph-fill ph-check-fat"></i></div>
+    <div class="done-ic" aria-hidden="true"><i class="ph ph-check-fat"></i></div>
     <h2 id="d-title" tabindex="-1" style="font-size:clamp(26px,7vw,34px);margin-bottom:10px">Ačiū! Gavome.</h2>
     <div id="d-demo">
       <p style="max-width:34ch;margin:0 auto 10px">Susisieksime dėl trumpo demo ir sukursime jums demo paskyrą.</p>
@@ -747,6 +749,7 @@ function show(id){ document.body.classList.toggle('on-intro',id==='s-intro'); ['
   window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
 
+$('start2').addEventListener('click',function(){ $('start').click(); });
 $('start').addEventListener('click',function(){ audio(); sfx.next(); track('exo_test_start',params); cur=0; renderQ(); show('s-q'); focusQ(); });
 
 function focusQ(){ setTimeout(function(){ $('q-title').focus({preventScroll:true}); },60); }
@@ -833,6 +836,31 @@ var VERT=[
 
 function logoFig(k,small){ var L=LOGOS[k]; return '<figure><span class="logo-tile"'+(small?' style="width:112px;height:58px"':'')+'><img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async"></span>'+(L.coi?'<figcaption>esu bendraįkūrėjas</figcaption>':'')+'</figure>'; }
 
+/* ExoClass TV: real partners from ExoClass YouTube (sources: wiki 10-v3-media.md).
+   Quote only when verbatim public (Ligita: exoclass.lt/kainodara). */
+var TV=[
+  {img:'media/face-gero-vejo-klubas.webp',n:'Liepa, trenerė',o:'Gero Vėjo Klubas',t:'buriavimas',yt:'YZO5VNsQsuw'},
+  {img:'media/face-isminties-kristalas.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'GrFWaswixEg'},
+  {img:'media/face-detektyvu-klubas.webp',n:'Ligita Pareigienė, įkūrėja',o:'Detektyvų klubas (Laikas Kartu)',t:'loginis mąstymas',yt:'yrYXZMUjzas',q:'Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.'},
+  {img:'media/face-duo-kidz.webp',n:'Dovilė Viršilaitė, bendraįkūrėja',o:'Duo Kidz',t:'modelių ir mados mokykla',yt:'EuPrcZ55J-k'}
+];
+(function(){
+  var fr=$('tv'), dots=$('tv-dots'), pp=$('tv-pp'); if(!fr) return;
+  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><img src="'+x.img+'" alt="" width="480" height="480"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async"><span class="tv-play" aria-hidden="true"><i class="ph ph-play"></i></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q>':'')+'</span></a>'; }).join('');
+  dots.innerHTML=TV.map(function(x,i){ return '<button type="button" role="tab" aria-selected="'+(i===0)+'" aria-label="'+esc(x.o)+'"></button>'; }).join('');
+  var cur=0, timer=null, paused=reduce, hover=false;
+  function go(i){ var sl=fr.children, db=dots.children; sl[cur].classList.remove('on'); sl[cur].setAttribute('aria-hidden','true'); sl[cur].tabIndex=-1; db[cur].setAttribute('aria-selected','false');
+    cur=(i+TV.length)%TV.length; sl[cur].classList.add('on'); sl[cur].removeAttribute('aria-hidden'); sl[cur].tabIndex=0; db[cur].setAttribute('aria-selected','true'); }
+  function tick(){ clearTimeout(timer); if(!paused && !hover) timer=setTimeout(function(){ go(cur+1); tick(); },2500); }
+  function setPaused(v){ paused=v; pp.setAttribute('aria-pressed',v?'true':'false'); pp.setAttribute('aria-label',v?'Paleisti':'Sustabdyti'); pp.innerHTML='<i class="ph '+(v?'ph-play':'ph-pause')+'" aria-hidden="true"></i>'; tick(); }
+  [].forEach.call(dots.children,function(b,i){ b.addEventListener('click',function(){ go(i); setPaused(true); }); });
+  pp.addEventListener('click',function(){ setPaused(!paused); });
+  fr.addEventListener('mouseenter',function(){ hover=true; tick(); }); fr.addEventListener('mouseleave',function(){ hover=false; tick(); });
+  fr.addEventListener('focusin',function(){ hover=true; tick(); }); fr.addEventListener('focusout',function(){ hover=false; tick(); });
+  fr.addEventListener('click',function(e){ var a=e.target.closest('a'); if(a){ track('exo_tv_click',{i:+a.dataset.i}); try{ if(window.clarity) clarity('event','exo_tv_click'); }catch(x){} } });
+  setPaused(paused);
+})();
+
 /* marquee */
 (function(){
   var tr=$('mq-track'); if(!tr) return;
@@ -850,7 +878,7 @@ function logoFig(k,small){ var L=LOGOS[k]; return '<figure><span class="logo-til
   function fin(el){ el.textContent=(el.dataset.pre||'')+el.dataset.count+(el.dataset.suf||''); }
   function run(el){ if(reduce){ fin(el); return; } var T=+el.dataset.count, t0=null;
     (function step(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/1100); el.textContent=(el.dataset.pre||'')+Math.round(T*(1-Math.pow(1-k,3)))+(el.dataset.suf||''); if(k<1) requestAnimationFrame(step); else fin(el); })(performance.now()); }
-  if(!('IntersectionObserver' in window)){ els.forEach(fin); return; }
+  if(reduce || !('IntersectionObserver' in window)){ els.forEach(fin); return; }
   els.forEach(function(el){ el.textContent=(el.dataset.pre||'')+'0'+(el.dataset.suf||''); });
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); run(e.target); } }); },{threshold:.4});
   els.forEach(function(el){ io.observe(el); });
@@ -1034,7 +1062,7 @@ function resultPayload(){
 }
 function buildMessage(org,phone,demo){
   var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
-  var lines=['ExoClass testas v2', 'Nori demo: '+(demo?'TAIP':'ne (tik el. paštas)'),
+  var lines=['ExoClass testas v3', 'Nori demo: '+(demo?'TAIP':'ne (tik el. paštas)'),
     'Organizacija: '+(org||'-'),
     'Telefonas: '+(phone||'-'),
     'Rezultatas: '+(r.pct!=null?r.pct+' %':'-')+' · '+(COPY[r.key]?COPY[r.key].v:'-')+(r.guards&&r.guards.length?' (apribota: '+r.guards.join(',')+')':''),

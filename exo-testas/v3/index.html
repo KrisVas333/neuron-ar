@@ -19,7 +19,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas-v3" data-kind="quiz"></script>
 <!-- Microsoft Clarity: tas pats projektas kaip krisvas.lt (y4gk0je1j0); įvesties laukai maskuojami -->
 <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas-v3");}catch(e){}</script>
@@ -322,7 +321,7 @@ footer p + p{margin-top:8px}
     <button class="btn pri block" id="start" type="button">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
 
     <section class="tv" aria-labelledby="tv-h">
-      <div class="tv-head"><h2 id="tv-h">Tikri žmonės, tikri būreliai</h2><span class="tv-badge"><i class="ph-fill ph-play-circle" aria-hidden="true"></i>ExoClass TV</span></div>
+      <div class="tv-head"><h2 id="tv-h">Tikri žmonės, tikri būreliai</h2><span class="tv-badge"><i class="ph ph-play-circle" aria-hidden="true"></i>ExoClass TV</span></div>
       <div class="tv-frame" id="tv" aria-roledescription="karuselė" aria-live="off"></div>
       <div class="tv-ctrl"><div class="tv-dots" id="tv-dots" role="tablist" aria-label="Pasirinkite partnerį"></div><button class="tv-pp" id="tv-pp" type="button" aria-pressed="false" aria-label="Sustabdyti"><i class="ph ph-pause" aria-hidden="true"></i></button></div>
       <p class="src-line" style="margin-top:6px">Video ir nuotraukos: <a href="https://www.youtube.com/@exoclass_lt" target="_blank" rel="noopener">ExoClass YouTube</a>, 2025. Paspaudę atidarysite partnerio video.</p>
@@ -375,7 +374,7 @@ footer p + p{margin-top:8px}
     </div>
     <div id="q-body">
       <div class="q-peer" id="q-peer" hidden role="note"><div class="qp-t"><span id="q-peer-t"></span><span class="qp-logos" id="q-peer-l"></span></div><button class="qp-x" id="q-peer-x" type="button" aria-label="Uždaryti">×</button></div>
-      <p class="q-fact" id="q-fact" hidden><i class="ph-fill ph-lightbulb" aria-hidden="true"></i><span id="q-fact-t"></span></p>
+      <p class="q-fact" id="q-fact" hidden><i class="ph ph-lightbulb" aria-hidden="true"></i><span id="q-fact-t"></span></p>
       <h2 id="q-title" tabindex="-1"></h2>
       <p class="hint" id="q-hint"></p>
       <div class="opts" id="q-opts"></div>
@@ -564,7 +563,7 @@ footer p + p{margin-top:8px}
 
   <!-- THANKS -->
   <section class="screen" id="s-done" hidden aria-labelledby="d-title" style="text-align:center">
-    <div class="done-ic" aria-hidden="true"><i class="ph-fill ph-check-fat"></i></div>
+    <div class="done-ic" aria-hidden="true"><i class="ph ph-check-fat"></i></div>
     <h2 id="d-title" tabindex="-1" style="font-size:clamp(26px,7vw,34px);margin-bottom:10px">Ačiū! Gavome.</h2>
     <div id="d-demo">
       <p style="max-width:34ch;margin:0 auto 10px">Susisieksime dėl trumpo demo ir sukursime jums demo paskyrą.</p>
@@ -848,7 +847,7 @@ var TV=[
 ];
 (function(){
   var fr=$('tv'), dots=$('tv-dots'), pp=$('tv-pp'); if(!fr) return;
-  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><img src="'+x.img+'" alt="" width="480" height="480"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async"><span class="tv-play" aria-hidden="true"><i class="ph-fill ph-play"></i></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q>':'')+'</span></a>'; }).join('');
+  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><img src="'+x.img+'" alt="" width="480" height="480"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async"><span class="tv-play" aria-hidden="true"><i class="ph ph-play"></i></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q>':'')+'</span></a>'; }).join('');
   dots.innerHTML=TV.map(function(x,i){ return '<button type="button" role="tab" aria-selected="'+(i===0)+'" aria-label="'+esc(x.o)+'"></button>'; }).join('');
   var cur=0, timer=null, paused=reduce, hover=false;
   function go(i){ var sl=fr.children, db=dots.children; sl[cur].classList.remove('on'); sl[cur].setAttribute('aria-hidden','true'); sl[cur].tabIndex=-1; db[cur].setAttribute('aria-selected','false');
