@@ -775,6 +775,14 @@ function answersText(){
   return Q.map(function(q,i){ var a=A[i]; var v = a==null ? '-' : (q.type==='single' ? q.opts[a].t+(q.opts[a].s?' ('+q.opts[a].s+')':'') : a.map(function(j){ return q.opts[j].t; }).join('; '));
     return (i+1)+'. '+q.t+' '+v; }).join('\n');
 }
+/* Result for the submit-inquiry auto-reply (the function ignores unknown fields until it is extended). */
+function resultPayload(){
+  var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
+  return { score:(r.pct!=null?r.pct:null), verdict:(COPY[r.key]?COPY[r.key].v:null),
+    tier:(tp.rec && tp.shown ? TIERS[tp.rec].n+' (€'+TIERS[tp.rec].p+' + PVM)' : null),
+    hoursMin:(hs.lo!=null?hs.lo:null), hoursMax:(hs.hi!=null?hs.hi:null),
+    reasons:(r.key?reasons(A,r).slice(0,3):[]) };
+}
 function buildMessage(org,phone,demo){
   var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
   var lines=['ExoClass testas v1', 'Nori demo: '+(demo?'TAIP':'ne (tik el. paštas)'),
@@ -802,7 +810,7 @@ $('lead').addEventListener('submit',function(e){
   if(!nm) nm=em.split('@')[0];
   if(!consent.checked){ err.textContent='Pažymėkite sutikimą, kad galėtume susisiekti.'; consent.focus(); return; }
   var hp=$('f-company').value;
-  var body={ name:nm.slice(0,120), email:em.slice(0,200), intent:demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(demo?$('f-org').value.trim().slice(0,160):'', demo?$('f-phone').value.trim().slice(0,40):'', demo), company:hp };
+  var body={ name:nm.slice(0,120), email:em.slice(0,200), intent:demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(demo?$('f-org').value.trim().slice(0,160):'', demo?$('f-phone').value.trim().slice(0,40):'', demo), company:hp, autoreply:true, result:resultPayload() };
   btn.disabled=true; btn.innerHTML='<span class="spin" aria-hidden="true"></span> Siunčiama…';
   var ctrl = window.AbortController ? new AbortController() : null;
   var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 15000);
