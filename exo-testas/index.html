@@ -21,6 +21,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas" data-kind="quiz"></script>
+<!-- Microsoft Clarity: tas pats projektas kaip krisvas.lt (y4gk0je1j0); įvesties laukai maskuojami -->
+<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas");}catch(e){}</script>
 <style>
 /* ExoClass DNA (as on exopus / exoclass.lt): Plus Jakarta Sans, blue #3097D7 to magenta #AE4197, ink #2E2B33.
    Light only. Dyslexia-first: 18px body, 1.55 line height, short lines, left aligned, no justified text. */
@@ -399,7 +401,7 @@ footer p + p{margin-top:8px}
     <button class="btn ghost" id="f-back" type="button" style="padding-left:0"><i class="ph ph-arrow-left" aria-hidden="true"></i> Grįžti į rezultatą</button>
     <h2 id="f-title" tabindex="-1">Palikite el. paštą</h2>
     <p class="muted">Užtenka el. pašto. Demo pasirinkite tik jei norite.</p>
-    <form id="lead" novalidate>
+    <form id="lead" novalidate data-clarity-mask="true">
       <div class="field"><label for="f-email">El. paštas</label><input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required></div>
       <label class="check demo-check"><input id="f-demo" type="checkbox" aria-controls="demo-fields" aria-expanded="false"><span><b>Noriu trumpo demo ir demo paskyros</b></span></label>
       <div id="demo-fields" hidden>
@@ -423,8 +425,10 @@ footer p + p{margin-top:8px}
     <div id="d-demo">
       <p style="max-width:34ch;margin:0 auto 10px">Susisieksime dėl trumpo demo ir sukursime jums demo paskyrą.</p>
       <p style="max-width:34ch;margin:0 auto 10px"><b>Susisieksime per 1–2 darbo dienas.</b> Rašys Kris arba ExoClass komanda.</p>
+      <p style="margin:16px 0 4px"><a class="btn" id="d-book" href="https://calendar.app.google/q3UA1VBDoaDDK1dr5" target="_blank" rel="noopener">Pasirinkite laiką demo iškart →</a></p>
+      <p style="max-width:34ch;margin:0 auto;font-size:14px;opacity:.75">Arba palaukite, parašysime patys.</p>
     </div>
-    <p id="d-mail" style="max-width:34ch;margin:0 auto 10px" hidden>Rezultatą gavote ekrane; papildomą informaciją atsiųsime el. paštu.</p>
+    <p id="d-mail" style="max-width:34ch;margin:0 auto 10px" hidden>Rezultatą gavote ekrane; papildomą informaciją atsiųsime el. paštu. Norite pasikalbėti? <a id="d-book2" href="https://calendar.app.google/q3UA1VBDoaDDK1dr5" target="_blank" rel="noopener">Pasirinkite laiką</a>.</p>
     <p class="tagline">Susitelkite į tai, kas svarbiausia: vaikus.</p>
     <p style="margin-top:22px"><button class="btn sec" id="d-back" type="button">Peržiūrėti rezultatą dar kartą</button></p>
   </section>
@@ -588,7 +592,7 @@ paintMute();
 /* ================================================================
    4. TRACKING (track.js, no personal data, no answers)
    ================================================================ */
-function track(n,p){ try{ if(window.bt) window.bt(n,p||{}); }catch(e){} }
+function track(n,p){ try{ if(window.bt) window.bt(n,p||{}); }catch(e){} try{ if(window.clarity) window.clarity('event',n); }catch(e){} }
 var params=(function(){ var o={}; try{ var u=new URLSearchParams(location.search); u.forEach(function(v,k){ if(k==='src'||k.indexOf('utm_')===0) o[k]=v.slice(0,80); }); }catch(e){} return o; })();
 
 /* ================================================================
@@ -819,5 +823,6 @@ $('lead').addEventListener('submit',function(e){
 window.__exo={ Q:Q, MODEL:MODEL, run:function(ans){ A=ans.slice(); finish(); }, form:function(){ show('s-form'); }, done:function(demo){ $('d-demo').hidden=!demo; $('d-mail').hidden=!!demo; show('s-done'); }, msg:function(){ return buildMessage('Org','+370',true); } };
 })();
 </script>
+<script>['d-book','d-book2'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('click',function(){try{if(window.bt)window.bt('exo_booking_click',{from:id});}catch(x){} try{if(window.clarity)window.clarity('event','exo_booking_click');}catch(x){}});});</script>
 </body>
 </html>
