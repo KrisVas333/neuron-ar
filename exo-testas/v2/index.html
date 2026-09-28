@@ -412,7 +412,7 @@ footer p + p{margin-top:8px}
       <h3><i class="ph ph-envelope-simple" aria-hidden="true"></i>Gauti rezultatą el. paštu</h3>
       <div class="field" style="margin-top:6px"><label for="c-email" class="sr">El. paštas</label><input id="c-email" type="email" autocomplete="email" inputmode="email" placeholder="jusu@pastas.lt" required></div>
       <div class="hp" aria-hidden="true"><label for="c-company">Įmonė</label><input id="c-company" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="check"><input id="c-consent" type="checkbox" required><span>Sutinku gauti rezultatą ir, jei pažymėsiu, būti pakviestas į demo. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></span></label>
+      <label class="check"><input id="c-consent" type="checkbox" required><span>Sutinku gauti rezultatą ir, jei pažymėsiu, būti pakviesta(-s) į demo. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></span></label>
       <p class="err" id="c-err" role="alert" aria-live="polite"></p>
       <button class="btn pri block" id="c-submit" type="submit" style="margin-top:10px"></button>
       <label class="check"><input id="c-demo" type="checkbox"><span>Noriu trumpo demo ir demo paskyros</span></label>
@@ -852,7 +852,7 @@ function peerBanner(){
   var el=$('q-peer'); if(cur!==QI.size || peerClosed || A[QI.type]==null){ el.hidden=true; return; }
   var v=VERT[A[QI.type]]||VERT[9];
   $('q-peer-t').textContent = v.n ? 'Jūs ne vieni: bent '+v.n+' '+v.cap+'.' : 'Tarp mūsų partnerių dar mažai jūsų tipo būrelių, jūsų atsiliepimas būtų vertingas.';
-  $('q-peer-l').innerHTML=v.logos.slice(0,3).map(function(k){ var L=LOGOS[k]; return '<img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async">'; }).join('');
+  $('q-peer-l').innerHTML=v.logos.filter(function(k){return !LOGOS[k].coi;}).slice(0,3).map(function(k){ var L=LOGOS[k]; return '<img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async">'; }).join('');
   el.hidden=false; track('exo_peer_banner',{type:A[QI.type]});
 }
 $('q-peer-x').addEventListener('click',function(){ peerClosed=true; $('q-peer').hidden=true; });
