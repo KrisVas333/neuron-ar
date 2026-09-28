@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
+<base href="../">
+<meta name="robots" content="noindex">
+<!-- ARCHYVAS: v1.1, pakeista v2.1 2026-09-28 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ar jūsų būreliui jau laikas ExoClass? · Testas</title>
@@ -20,9 +23,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
-<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas-v2" data-kind="quiz"></script>
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas" data-kind="quiz"></script>
 <!-- Microsoft Clarity: tas pats projektas kaip krisvas.lt (y4gk0je1j0); įvesties laukai maskuojami -->
-<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas-v2");}catch(e){}</script>
+<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas");}catch(e){}</script>
 <style>
 /* ExoClass DNA (as on exopus / exoclass.lt): Plus Jakarta Sans, blue #3097D7 to magenta #AE4197, ink #2E2B33.
    Light only. Dyslexia-first: 18px body, 1.55 line height, short lines, left aligned, no justified text. */
@@ -112,7 +115,7 @@ p{margin:0}
 
 /* result */
 .res-head{text-align:center;padding-top:6px}
-.gauge{width:150px;height:150px;margin:4px auto 10px;position:relative}
+.gauge{width:190px;height:190px;margin:4px auto 10px;position:relative}
 .gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
 .gauge .num{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
 .gauge .num b{font-size:48px;font-weight:800;letter-spacing:-.03em;line-height:1}
@@ -165,12 +168,6 @@ details li{margin-bottom:6px}
 .sci li{border-left:4px solid var(--sky);padding-left:12px}
 .sci li.own{border-left-color:var(--p-soft)}
 .sci .src{display:block;font-size:14.5px;color:var(--muted);margin-top:4px}
-.more{margin-top:16px}
-.more>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;padding:0 18px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface);font-weight:800;font-size:18px;color:var(--ink)}
-.more>summary::-webkit-details-marker{display:none}
-.more[open]>summary i{transform:rotate(180deg)}
-.cap h3{margin-bottom:4px}
-.cap .check{margin-top:12px}
 .cta-box{margin-top:22px;text-align:center;background:var(--grad);color:#fff;border-radius:var(--r);padding:24px 18px}
 .cta-box h3{font-size:24px;margin-bottom:8px}
 .cta-box p{opacity:.95;margin-bottom:16px}
@@ -198,71 +195,6 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:14.5px;col
 footer p + p{margin-top:8px}
 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-/* v2: trust strip, marquee, interstitial, charts */
-.trust{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 10px}
-.trust div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center}
-.trust b{display:block;font-size:clamp(22px,6.4vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
-.trust span{hyphens:auto;display:block;font-size:13.5px;font-weight:600;color:var(--ink-2);line-height:1.3;margin-top:4px}
-.src-line{font-size:13.5px;color:var(--muted);margin:0 0 16px;line-height:1.45}
-.mq-h{font-size:14px;font-weight:700;color:var(--muted);margin:4px 0 8px}
-.marquee{position:relative;overflow:hidden;border-block:1px solid var(--line);padding:10px 0;margin-bottom:6px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.mq-track{display:flex;width:max-content;animation:mq 38s linear infinite}
-.marquee.paused .mq-track,.marquee:hover .mq-track,.marquee:focus-within .mq-track{animation-play-state:paused}
-.mq-set{display:flex;gap:10px;padding-right:10px}
-.logo-tile{flex:none;width:128px;height:64px;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;place-items:center;padding:8px}
-.logo-tile{overflow:hidden}
-.logo-tile img{max-width:96px;max-height:42px;width:auto;height:auto;display:block;object-fit:contain}
-@keyframes mq{to{transform:translateX(-50%)}}
-.mq-btn{background:none;border:0;color:var(--p-ink);font-weight:700;font-size:14px;min-height:44px;padding:0 4px;text-decoration:underline;text-underline-offset:3px}
-@media (prefers-reduced-motion:reduce){ .marquee{-webkit-mask-image:none;mask-image:none} .mq-track{width:auto;flex-wrap:wrap} .mq-set{flex-wrap:wrap;justify-content:center;width:100%} .mq-set[aria-hidden="true"]{display:none} .mq-btn{display:none} }
-.inter{text-align:center;padding-top:18px}
-.inter .eyebrow{display:inline-block;font-size:14px;font-weight:700;color:var(--blue-ink);background:var(--sky-soft);border-radius:999px;padding:6px 14px;margin-bottom:14px}
-.inter .num{font-size:clamp(64px,20vw,96px);font-weight:800;letter-spacing:-.04em;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.inter h2{font-size:clamp(22px,6vw,28px);margin:10px auto 10px;max-width:22ch}
-.inter .line{color:var(--ink-2);max-width:32ch;margin:0 auto 14px}
-.peer-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:8px 0 12px}
-.peer-logos figure{margin:0;display:grid;justify-items:center;gap:4px}
-.peer-logos figcaption{font-size:12.5px;color:var(--muted)}
-.inter .src-line{margin:6px auto 18px;max-width:34ch}
-.ring{position:relative;width:52px;height:52px;margin:0 auto 12px}
-.ring svg{width:52px;height:52px;transform:rotate(-90deg)}
-.ring circle{fill:none;stroke-width:4}
-.ring .trk{stroke:var(--line)} .ring .bar{stroke:var(--p);stroke-linecap:round}
-.q-peer{display:flex;gap:8px;align-items:center;background:var(--sky-soft);border:1px solid var(--sky);border-radius:14px;padding:8px 8px 8px 14px;margin:-6px 0 14px}
-.qp-t{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:15px;font-weight:600;line-height:1.35}
-.qp-logos{display:flex;gap:6px}
-.qp-logos img{height:26px;width:auto;max-width:64px;object-fit:contain;background:#fff;border-radius:6px;padding:2px 4px;border:1px solid var(--line)}
-.qp-x{flex:none;width:44px;height:44px;border:0;background:transparent;font-size:24px;line-height:1;color:var(--muted);border-radius:10px}
-.q-fact{display:flex;gap:10px;align-items:flex-start;background:var(--ok-bg);border-radius:14px;padding:10px 14px;font-size:15.5px;margin:-6px 0 16px;color:var(--ink)}
-.q-fact i{color:var(--ok);font-size:20px;margin-top:2px;flex:none}
-.scale{position:relative;margin:40px 0 24px}
-.scale .segs{display:flex;height:14px;border-radius:999px;overflow:hidden}
-.scale .segs span{display:block;height:100%}
-.scale .labels{display:flex;font-size:13px;font-weight:700;color:var(--muted);margin-top:6px}
-.scale .labels span{text-align:center}
-.scale .mark{position:absolute;top:-8px;left:0;width:4px;height:30px;background:var(--ink);border-radius:4px;transform:translateX(-2px);transition:left 1.1s cubic-bezier(.16,1,.3,1)}
-.scale .mark b{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:13px;white-space:nowrap;background:var(--ink);color:#fff;border-radius:999px;padding:2px 8px}
-.bands{display:grid;gap:8px;margin-top:8px}
-.band{display:grid;grid-template-columns:78px 1fr 24px;gap:10px;align-items:center;font-size:15px}
-.band .bt{height:14px;background:var(--sunk);border-radius:999px;overflow:hidden}
-.band .bf{display:block;height:100%;width:0;background:var(--sky);border-radius:999px;transition:width .9s cubic-bezier(.16,1,.3,1)}
-.band.me{font-weight:800}
-.band.me .bf{background:var(--grad)}
-.band .n{text-align:right;font-weight:700;color:var(--ink-2)}
-.me-chip{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;background:var(--p);border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:2px}
-.grow{display:grid;gap:12px;margin-top:6px}
-.gcase{border:1px solid var(--line);border-radius:16px;padding:14px}
-.gcase .ghead{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.gcase .ghead img{max-height:44px;max-width:96px;width:auto;height:auto}
-.gcase .ghead b{font-size:17px}
-.gbar{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center;font-size:14.5px;margin-top:6px}
-.gbar .bt{height:18px;background:var(--sunk);border-radius:6px;overflow:hidden}
-.gbar .bf{display:flex;align-items:center;justify-content:flex-end;height:100%;width:0;background:var(--sky);border-radius:6px;transition:width 1s cubic-bezier(.16,1,.3,1);font-size:12.5px;font-weight:800;padding-right:6px;color:var(--ink)}
-.gbar.after .bf{background:var(--grad);color:#fff}
-.stat2{display:flex;gap:18px}
-.stat2 div b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em}
-.stat2 div span{font-size:14px;color:var(--muted)}
-@media (max-width:480px){ .trust{grid-template-columns:1fr 1fr} .trust div:last-child{grid-column:1/-1} }
 @media (min-width:720px){ body{font-size:18.5px} .opts.two{grid-template-columns:1fr 1fr} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
 </style>
@@ -331,15 +263,6 @@ footer p + p{margin-top:8px}
       <span><i class="ph ph-clock" aria-hidden="true"></i>Kiek laiko sutaupytumėte</span>
       <span><i class="ph ph-receipt" aria-hidden="true"></i>Kainos be slėpimo</span>
     </div>
-    <div class="trust" id="trust" aria-label="ExoClass skaičiais">
-      <div><b data-count="70" data-suf="+">70+</b><span>partnerių būrelių</span></div>
-      <div><b data-count="10" data-pre="€" data-suf="M+">€10M+</b><span>mokėjimų per platformą</span></div>
-      <div><b data-count="80" data-suf=" %">80 %</b><span>klientų apmoka sąskaitą per pirmą savaitę*</span></div>
-    </div>
-    <p class="src-line">Šaltiniai: ExoClass partnerių sąrašas, 2026 m. rugsėjis · <a href="https://www.philomaths.tech/interviews/linas-kiguolis-lukas-d-eidukas-kris-vasiliauskas" target="_blank" rel="noopener">Tech Philomaths interviu, 2026-08-14</a> · *<a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a>, įmonės teiginys.</p>
-    <p class="mq-h">Su ExoClass jau dirba, pavyzdžiui:</p>
-    <div class="marquee" id="marquee"><div class="mq-track" id="mq-track"></div></div>
-    <p class="src-line">Dalis partnerių, abėcėlės tvarka. Robotikos Akademijos bendraįkūrėjas esu aš. <button class="mq-btn" id="mq-toggle" type="button" aria-pressed="false">Sustabdyti</button></p>
     <details class="pains">
       <summary><i class="ph ph-list-bullets" aria-hidden="true"></i>8 problemos, kurias sprendžia ExoClass</summary>
       <ol>
@@ -370,8 +293,6 @@ footer p + p{margin-top:8px}
       <span class="count" id="q-count" aria-live="polite">1/10</span>
     </div>
     <div id="q-body">
-      <div class="q-peer" id="q-peer" hidden role="note"><div class="qp-t"><span id="q-peer-t"></span><span class="qp-logos" id="q-peer-l"></span></div><button class="qp-x" id="q-peer-x" type="button" aria-label="Uždaryti">×</button></div>
-      <p class="q-fact" id="q-fact" hidden><i class="ph-fill ph-lightbulb" aria-hidden="true"></i><span id="q-fact-t"></span></p>
       <h2 id="q-title" tabindex="-1"></h2>
       <p class="hint" id="q-hint"></p>
       <div class="opts" id="q-opts"></div>
@@ -394,44 +315,12 @@ footer p + p{margin-top:8px}
       <span class="verdict" id="r-verdict"></span>
       <h2 id="r-title" tabindex="-1"></h2>
       <p class="lead" id="r-lead"></p>
-      <div class="scale" aria-hidden="true" style="text-align:left">
-        <div class="segs"><span style="width:40%;background:#CCE0F0"></span><span style="width:30%;background:#E3BCD9"></span><span style="width:30%;background:#FBE3BD"></span></div>
-        <div class="labels"><span style="width:40%">Dar anksti</span><span style="width:30%">Pats laikas</span><span style="width:30%">Jau vėluojate</span></div>
-        <div class="mark" id="r-mark"><b id="r-mark-t">Jūs</b></div>
-      </div>
-      <p class="sr" id="r-scale-sr"></p>
     </div>
 
     <div class="card">
       <h3><i class="ph ph-list-checks" aria-hidden="true"></i>Kodėl toks rezultatas</h3>
       <ul class="reasons" id="r-reasons"></ul>
       <p class="muted small" style="margin-top:12px">Esu ExoClass bendraįkūrėjas. Todėl skaičiavimo taisykles rodome atvirai, žr. „Kaip skaičiuojame“ žemiau.</p>
-    </div>
-
-    <form class="card cap" id="cap" novalidate data-clarity-mask="true">
-      <h3><i class="ph ph-envelope-simple" aria-hidden="true"></i>Gauti rezultatą el. paštu</h3>
-      <div class="field" style="margin-top:6px"><label for="c-email" class="sr">El. paštas</label><input id="c-email" type="email" autocomplete="email" inputmode="email" placeholder="jusu@pastas.lt" required></div>
-      <div class="hp" aria-hidden="true"><label for="c-company">Įmonė</label><input id="c-company" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="check"><input id="c-consent" type="checkbox" required><span>Sutinku gauti rezultatą ir, jei pažymėsiu, būti pakviesta(-s) į demo. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></span></label>
-      <p class="err" id="c-err" role="alert" aria-live="polite"></p>
-      <button class="btn pri block" id="c-submit" type="submit" style="margin-top:10px"></button>
-      <label class="check"><input id="c-demo" type="checkbox"><span>Noriu trumpo demo ir demo paskyros</span></label>
-      <p class="muted small" style="margin-top:10px">Duomenis gauna Kristijonas Vasiliauskas ir ExoClass komanda. Nenaudosime kitiems tikslams, ištrinsime paprašius: <a href="mailto:kristijonas.vasiliauskas@gmail.com">kristijonas.vasiliauskas@gmail.com</a>.</p>
-    </form>
-
-    <details class="more" id="r-more">
-      <summary><span>Daugiau apie rezultatą</span><i class="ph ph-caret-down" aria-hidden="true"></i></summary>
-      <p class="muted small" style="margin:4px 2px 0">Laikas, kainos, įsidiegimas, panašūs partneriai ir šaltiniai.</p>
-
-    <div class="card" id="r-peers-card">
-      <h3><i class="ph ph-users-three" aria-hidden="true"></i>Panašūs į jus</h3>
-      <div id="r-peers"></div>
-    </div>
-
-    <div class="card">
-      <h3><i class="ph ph-calendar-check" aria-hidden="true"></i><span id="r-after-h">Kas vyksta po 3 mėnesių</span></h3>
-      <ul class="gains" id="r-after"></ul>
-      <p class="muted small" id="r-after-note" style="margin-top:12px"></p>
     </div>
 
     <div class="card">
@@ -472,25 +361,6 @@ footer p + p{margin-top:8px}
       <p class="tagline" style="margin-top:14px">Mažiau administravimo, daugiau ugdymo.</p>
     </div>
 
-    <div class="card" id="r-grow">
-      <h3><i class="ph ph-trend-up" aria-hidden="true"></i>Partneriai skaičiais</h3>
-      <div class="grow">
-        <div class="gcase">
-          <div class="ghead"><img src="assets/laikas-kartu.webp" alt="Laikas Kartu logotipas" width="46" height="44"><b>Laikas Kartu</b></div>
-          <div class="stat2"><div><b>1 100+</b><span>mokinių</span></div><div><b>60+</b><span>mokytojų</span></div></div>
-        </div>
-        <div class="gcase">
-          <div class="ghead"><img src="assets/snaiperis.webp" alt="Snaiperis krepšinio akademijos logotipas" width="44" height="44"><b>Snaiperis krepšinio akademija</b></div>
-          <div class="stat2"><div><b>900+</b><span>mokinių</span></div><div><b>25+</b><span>mokytojų</span></div></div>
-        </div>
-        <div class="gcase">
-          <div class="ghead"><img src="assets/duokidz.svg" alt="Duo Kidz logotipas" width="96" height="31"><b>Duo Kidz</b></div>
-          <p style="font-weight:600">„Su studentų skaičiaus padvigubėjimu, Exoclass tapo didžiuliu laiko taupymo sprendimu…“</p>
-        </div>
-      </div>
-      <p class="muted small" style="margin-top:12px">Dydis šiandien (mokiniai ir mokytojai) ir Duo Kidz citata iš viešo <a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a> puslapio. Tai partnerių pasiekimai, ne mūsų pažadas jums.</p>
-    </div>
-
     <div class="card">
       <h3><i class="ph ph-chats-circle" aria-hidden="true"></i>Ką sako partneriai</h3>
       <div class="case">
@@ -499,7 +369,7 @@ footer p + p{margin-top:8px}
         <p class="who">Diana Balaišytė, DuoKidz savininkė</p>
       </div>
       <div class="case">
-        <div class="logos"><img src="assets/detektyvu-klubas.webp" alt="Detektyvų klubas logotipas" width="120" height="63"><img src="assets/laikas-kartu.webp" alt="Laikas Kartu logotipas" width="56" height="56" style="border-radius:12px"></div>
+        <div class="logos"><img src="assets/detektyvu-klubas.png" alt="Detektyvų klubas logotipas" width="120" height="63"><img src="assets/laikas-kartu.png" alt="Laikas Kartu logotipas" width="56" height="56" style="border-radius:12px"></div>
         <blockquote>„Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.“</blockquote>
         <p class="who">Ligita Pareigienė, Laikas Kartu savininkė (Detektyvų klubas)</p>
       </div>
@@ -521,8 +391,11 @@ footer p + p{margin-top:8px}
       </ul>
     </div>
 
-    </details>
-
+    <div class="cta-box">
+      <h3 id="r-cta-h"></h3>
+      <p id="r-cta-p"></p>
+      <button class="btn pri block" id="to-form" type="button"></button>
+    </div>
     <p style="text-align:center;margin-top:14px"><button class="btn ghost" id="restart" type="button"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i> Pradėti iš naujo</button></p>
   </section>
 
@@ -558,7 +431,7 @@ footer p + p{margin-top:8px}
       <p style="margin:16px 0 4px"><a class="btn" id="d-book" href="https://calendar.app.google/q3UA1VBDoaDDK1dr5" target="_blank" rel="noopener">Pasirinkite laiką demo iškart →</a></p>
       <p style="max-width:34ch;margin:0 auto;font-size:14px;opacity:.75">Arba palaukite, parašysime patys.</p>
     </div>
-    <p id="d-mail" style="max-width:34ch;margin:0 auto 10px" hidden>Rezultatą išsiuntėme el. paštu. Norite pasikalbėti? <a id="d-book2" href="https://calendar.app.google/q3UA1VBDoaDDK1dr5" target="_blank" rel="noopener">Pasirinkite laiką</a>.</p>
+    <p id="d-mail" style="max-width:34ch;margin:0 auto 10px" hidden>Rezultatą gavote ekrane; papildomą informaciją atsiųsime el. paštu. Norite pasikalbėti? <a id="d-book2" href="https://calendar.app.google/q3UA1VBDoaDDK1dr5" target="_blank" rel="noopener">Pasirinkite laiką</a>.</p>
     <p class="tagline">Susitelkite į tai, kas svarbiausia: vaikus.</p>
     <p style="margin-top:22px"><button class="btn sec" id="d-back" type="button">Peržiūrėti rezultatą dar kartą</button></p>
   </section>
@@ -582,9 +455,8 @@ footer p + p{margin-top:8px}
    ================================================================ */
 var Q = [
  { id:'type', t:'Kokia jūsų būrelio veikla?', h:'Pasirinkite vieną.', type:'single', two:true, scored:false, opts:[
-   {t:'Šokiai',ic:'ph-music-notes'},{t:'Sportas',ic:'ph-soccer-ball'},{t:'Gimnastika ir akrobatika',ic:'ph-person-simple-tai-chi'},
-   {t:'Kovos menai',ic:'ph-hand-fist'},{t:'Kalbos',ic:'ph-translate'},{t:'Dailė ir menai',ic:'ph-palette'},
-   {t:'Muzika',ic:'ph-guitar'},{t:'STEAM ir robotika',ic:'ph-robot'},{t:'Keli skirtingi tipai',ic:'ph-squares-four'},{t:'Kita',ic:'ph-dots-three'} ]},
+   {t:'Šokiai',ic:'ph-music-notes'},{t:'Sportas',ic:'ph-soccer-ball'},{t:'Kalbos',ic:'ph-translate'},
+   {t:'Menai ir muzika',ic:'ph-palette'},{t:'STEAM ir robotika',ic:'ph-robot'},{t:'Keli skirtingi tipai',ic:'ph-squares-four'},{t:'Kita',ic:'ph-dots-three'} ]},
  { id:'size', t:'Kiek vaikų lanko jūsų būrelius?', h:'Apytiksliai, šį sezoną.', type:'single', two:true, opts:[
    {t:'Iki 50',ic:'ph-user',w:2},{t:'51–100',ic:'ph-users',w:8},{t:'101–200',ic:'ph-users-three',w:14},
    {t:'201–300',ic:'ph-users-three',w:18},{t:'301–500',ic:'ph-buildings',w:20},{t:'Daugiau nei 500',ic:'ph-buildings',w:20} ]},
@@ -746,7 +618,6 @@ function renderQ(){
   $('q-count').textContent=(cur+1)+'/'+Q.length;
   $('q-fill').style.width=Math.max(4,cur/Q.length*100)+'%';
   document.querySelector('.prog .bar').setAttribute('aria-valuenow',cur+1);
-  questionFact(); peerBanner();
   $('q-title').textContent=q.t; $('q-hint').textContent=q.h||'';
   var box=$('q-opts'); box.className='opts'+(q.two?' two':''); box.innerHTML='';
   box.setAttribute('role','group'); box.setAttribute('aria-labelledby','q-title');
@@ -788,113 +659,6 @@ function next(){
 $('q-next').addEventListener('click',function(){ if(A[cur]&&A[cur].length) next(); });
 $('q-back').addEventListener('click',function(){ sfx.back(); if(cur===0){ show('s-intro'); return; } cur--; renderQ(); focusQ(); });
 
-
-/* ================================================================
-   V2 DATA: every number and logo is sourced in
-   wiki/research/exoclass-testas-teikejams/08-duomenu-paketas-v2.md
-   ================================================================ */
-var LOGOS={ /* public logos only: krisvas.lt bundle, exoclass.lt, detektyvuklubas.lt (v1) */
-  demo:{src:'assets/demo-studija.webp',n:'Demo Studija'},
-  dk:{src:'assets/detektyvu-klubas.webp',n:'Detektyvų klubas'},
-  duo:{src:'assets/duokidz.svg',n:'Duo Kidz'},
-  lk:{src:'assets/laikas-kartu.webp',n:'Laikas Kartu'},
-  mg:{src:'assets/mg-sokiu.webp',n:'MG šokių studija'},
-  ra:{src:'assets/robotikos-akademija.webp',n:'Robotikos Akademija',coi:true},
-  snp:{src:'assets/snaiperis.webp',n:'Snaiperis'},
-  sok:{src:'assets/soksok.webp',n:'Šok Šok'},
-  sh:{src:'assets/sokio-harmonija.webp',n:'Šokio harmonija'}
-};
-var MARQUEE=['demo','dk','duo','lk','mg','ra','snp','sok','sh']; /* alphabetical, no favourite */
-/* Verified named partners per Q1 option ("bent"). one consent-blocked partner excluded, see data pack §2. */
-var VERT=[
-  {n:'11',cap:'šokių studijų jau dirba su ExoClass',logos:['demo','mg','sh','sok']},
-  {n:'9',cap:'sporto klubai ir akademijos jau dirba su ExoClass',logos:['snp']},
-  {n:null,cap:'',logos:[]},
-  {n:'2',cap:'kovos menų klubai jau dirba su ExoClass',logos:[]},
-  {n:'2',cap:'kalbų mokyklos jau dirba su ExoClass',logos:[]},
-  {n:'4',cap:'dailės, keramikos ir modelių mokyklos jau dirba su ExoClass',logos:['duo']},
-  {n:null,cap:'',logos:[]},
-  {n:'4',cap:'STEAM ir robotikos organizacijos jau dirba su ExoClass',logos:['dk','lk','ra']},
-  {n:'70+',cap:'įvairių sričių būrelių jau dirba su ExoClass',logos:['demo','duo','lk','snp']},
-  {n:'70+',cap:'įvairių sričių būrelių jau dirba su ExoClass',logos:['demo','duo','lk','snp']}
-];
-/* Partners with a known kids count, n=9, per size band (Q2 order). */
-
-
-function logoFig(k,small){ var L=LOGOS[k]; return '<figure><span class="logo-tile"'+(small?' style="width:112px;height:58px"':'')+'><img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async"></span>'+(L.coi?'<figcaption>esu bendraįkūrėjas</figcaption>':'')+'</figure>'; }
-
-/* marquee */
-(function(){
-  var tr=$('mq-track'); if(!tr) return;
-  var set=MARQUEE.map(function(k){ var L=LOGOS[k]; return '<span class="logo-tile"><img src="'+L.src+'" alt="'+esc(L.n)+'" decoding="async"></span>'; }).join('');
-  tr.innerHTML='<div class="mq-set">'+set+'</div><div class="mq-set" aria-hidden="true">'+set.replace(/alt="[^"]*"/g,'alt=""')+'</div>';
-  var mq=$('marquee'), btn=$('mq-toggle');
-  function toggle(){ var p=!mq.classList.contains('paused'); mq.classList.toggle('paused',p); btn.setAttribute('aria-pressed',p?'true':'false'); btn.textContent=p?'Paleisti':'Sustabdyti'; }
-  btn.addEventListener('click',toggle);
-  mq.addEventListener('click',toggle);
-})();
-
-/* count-up on view */
-(function(){
-  var els=[].slice.call(document.querySelectorAll('[data-count]'));
-  function fin(el){ el.textContent=(el.dataset.pre||'')+el.dataset.count+(el.dataset.suf||''); }
-  function run(el){ if(reduce){ fin(el); return; } var T=+el.dataset.count, t0=null;
-    (function step(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/1100); el.textContent=(el.dataset.pre||'')+Math.round(T*(1-Math.pow(1-k,3)))+(el.dataset.suf||''); if(k<1) requestAnimationFrame(step); else fin(el); })(performance.now()); }
-  if(!('IntersectionObserver' in window)){ els.forEach(fin); return; }
-  els.forEach(function(el){ el.textContent=(el.dataset.pre||'')+'0'+(el.dataset.suf||''); });
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); run(e.target); } }); },{threshold:.4});
-  els.forEach(function(el){ io.observe(el); });
-})();
-
-/* "Jūs ne vieni": inline, dismissible banner above Q2 (no timer, no extra tap) */
-var peerClosed=false;
-function peerBanner(){
-  var el=$('q-peer'); if(cur!==QI.size || peerClosed || A[QI.type]==null){ el.hidden=true; return; }
-  var v=VERT[A[QI.type]]||VERT[9];
-  $('q-peer-t').textContent = v.n ? 'Jūs ne vieni: bent '+v.n+' '+v.cap+'.' : 'Tarp mūsų partnerių dar mažai jūsų tipo būrelių, jūsų atsiliepimas būtų vertingas.';
-  $('q-peer-l').innerHTML=v.logos.filter(function(k){return !LOGOS[k].coi;}).slice(0,3).map(function(k){ var L=LOGOS[k]; return '<img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async">'; }).join('');
-  el.hidden=false; track('exo_peer_banner',{type:A[QI.type]});
-}
-$('q-peer-x').addEventListener('click',function(){ peerClosed=true; $('q-peer').hidden=true; });
-
-/* instant micro-feedback banners on the next question */
-function questionFact(){
-  var t='';
-  if(cur===QI.att && (A[QI.pay]===0||A[QI.pay]===1)) t='ExoClass duomenimis, 80 % klientų apmoka sąskaitą per pirmą savaitę (įmonės teiginys).';
-  if(cur===QI.growth && A[QI.hours]!=null){ var h=Q[QI.hours].opts[A[QI.hours]]; t='Jūsų '+h.lo+'–'+h.hi+' val. per savaitę per mokslo metus yra apie '+(h.lo*36)+'–'+(h.hi*36)+' val.'; }
-  $('q-fact').hidden=!t; $('q-fact-t').textContent=t;
-}
-
-/* result visuals */
-function renderWhere(){
-  var pct=result.pct, mark=$('r-mark');
-  mark.style.left='0%'; $('r-mark-t').textContent='Jūs · '+pct+'%';
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ mark.style.left=Math.max(1,Math.min(99,pct))+'%'; }); });
-  $('r-scale-sr').textContent='Jūsų rezultatas '+pct+' % skalėje: iki 39 dar anksti, 40–69 pats laikas, 70 ir daugiau jau vėluojate.';
-  var v=VERT[A[QI.type]]||VERT[9];
-  $('r-peers').innerHTML = v.n
-    ? '<p style="font-weight:700">Bent '+esc(v.n)+' '+esc(v.cap)+'.</p>'+(v.logos.length?'<div class="peer-logos" style="justify-content:flex-start">'+v.logos.map(function(k){ return logoFig(k,true); }).join('')+'</div>':'<p class="muted small">Jų logotipų viešai dar nerodome.</p>')
-    : '<p class="muted small">Tarp mūsų partnerių dar mažai jūsų tipo būrelių, jūsų atsiliepimas būtų vertingas.</p>';
-  setTimeout(function(){ [].forEach.call(document.querySelectorAll('#r-grow .bf'),function(el){ el.style.width=el.dataset.w+'%'; }); }, reduce?0:250);
-}
-function renderAfter(){
-  var auto=A[QI.auto]||[], items;
-  if(result.key==='anksti'){
-    $('r-after-h').textContent='Kada verta grįžti prie šio klausimo';
-    items=[['ph-clock','Kai administravimas viršija kelias valandas per savaitę','Tada automatika pradeda atsipirkti.'],
-           ['ph-hand-coins','Kai tenka vis dažniau priminti apie mokėjimus','Automatiniai priminimai ir skolininkų sąrašas tai perima.'],
-           ['ph-users-three','Kai atsiranda kelios grupės ar vietos','Viena registracijos nuoroda visoms grupėms.']];
-    $('r-after-note').textContent='Testą galite pakartoti bet kada, jis užtrunka 5 minutes.';
-  } else {
-    $('r-after-h').textContent='Kas vyksta po 3 mėnesių';
-    items=[['ph-link','Registracija per vieną nuorodą','Tėvai užsiregistruoja patys, jūs matote grupių užpildymą.'],
-           ['ph-receipt','Sąskaitos ir priminimai išeina patys','Skolininkų sąrašas ir automatiniai priminimai vietoje rankinio sekimo.'],
-           ['ph-chart-line-up','Matote pajamas ir registracijas realiu laiku','Ir galite spręsti, kur pildyti grupes.']];
-    if(auto.indexOf(3)>-1||auto.indexOf(2)>-1) items.splice(2,0,['ph-signature','Sutartys pasirašomos internetu','NVŠ sutartys generuojamos, krepšelis pritaikomas sąskaitose.']);
-    $('r-after-note').textContent='Tai sistemos galimybės, ne pažadėti skaičiai. ExoClass duomenimis, 80 % klientų apmoka sąskaitą per pirmą savaitę (įmonės teiginys).';
-  }
-  $('r-after').innerHTML=items.map(function(g){ return '<li><i class="ph '+g[0]+'" aria-hidden="true"></i><div><b>'+esc(g[1])+'</b><br><span class="muted small">'+esc(g[2])+'</span></div></li>'; }).join('');
-}
 /* ================================================================
    6. RESULT
    ================================================================ */
@@ -983,11 +747,12 @@ function finish(){
     return '<div class="tier'+(rec?' rec':'')+'"><div><div class="nm">'+t.n+'</div>'+(rec?'<span class="badge">Tiktų jums</span>':'')+(low?'<span class="label-chip" style="margin-top:4px">Mažiausias</span>':'')+'</div><div class="pr">€'+t.p+' <small>/ mėn. + PVM</small></div></div>'; }).join('');
   // gains
   $('r-gains').innerHTML=gains(A,result.key).map(function(g){ return '<li><i class="ph '+g[0]+'" aria-hidden="true"></i><div><b>'+esc(g[1])+'</b><br><span class="muted small">'+esc(g[2])+'</span></div></li>'; }).join('');
-  $('r-more').open=false; syncCap();
+  $('r-cta-h').textContent=c.ctaH; $('r-cta-p').textContent=c.ctaP;
+  $('to-form').innerHTML=esc(c.ctaB)+' <i class="ph ph-arrow-right" aria-hidden="true"></i>';
   result.hours=hs; result.tiers=tp;
   track('exo_result_'+result.key,{pct:result.pct});
   track('value',{verdict:result.key});
-  show('s-res'); sfx.result(); renderWhere(); renderAfter();
+  show('s-res'); sfx.result();
   // animate gauge
   var pct=result.pct, arc=$('r-arc'), num=$('r-pct');
   arc.style.strokeDashoffset=314.16;
@@ -999,7 +764,7 @@ function finish(){
 function fmt(x){ return String(x).replace('.',','); }
 
 $('restart').addEventListener('click',function(){ A=new Array(Q.length).fill(null); cur=0; sfx.back(); show('s-intro'); });
-
+$('to-form').addEventListener('click',function(){ sfx.next(); track('cta',{verdict:result&&result.key}); show('s-form'); setTimeout(function(){ $('f-email').focus(); },80); });
 $('f-back').addEventListener('click',function(){ sfx.back(); show('s-res'); });
 $('d-back').addEventListener('click',function(){ show('s-res'); });
 
@@ -1023,7 +788,7 @@ function resultPayload(){
 }
 function buildMessage(org,phone,demo){
   var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
-  var lines=['ExoClass testas v2', 'Nori demo: '+(demo?'TAIP':'ne (tik el. paštas)'),
+  var lines=['ExoClass testas v1', 'Nori demo: '+(demo?'TAIP':'ne (tik el. paštas)'),
     'Organizacija: '+(org||'-'),
     'Telefonas: '+(phone||'-'),
     'Rezultatas: '+(r.pct!=null?r.pct+' %':'-')+' · '+(COPY[r.key]?COPY[r.key].v:'-')+(r.guards&&r.guards.length?' (apribota: '+r.guards.join(',')+')':''),
@@ -1039,53 +804,31 @@ function btnLabel(){ return ($('f-demo').checked?BTN_DEMO:BTN_MAIL)+' <i class="
 function syncDemo(){ var on=$('f-demo').checked; $('demo-fields').hidden=!on; $('f-demo').setAttribute('aria-expanded',on?'true':'false'); $('f-submit').innerHTML=btnLabel(); }
 $('f-demo').addEventListener('change',function(){ sfx.select(); syncDemo(); if($('f-demo').checked) setTimeout(function(){ $('f-name').focus(); },50); });
 syncDemo();
-function sendLead(o, ui){
-  var body={ name:o.nm.slice(0,120), email:o.em.slice(0,200), intent:o.demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(o.org||'', o.phone||'', o.demo), company:o.hp||'', autoreply:true, result:resultPayload() };
-  ui.btn.disabled=true; ui.btn.innerHTML='<span class="spin" aria-hidden="true"></span> Siunčiama…';
+$('lead').addEventListener('submit',function(e){
+  e.preventDefault();
+  var email=$('f-email'), name=$('f-name'), consent=$('f-consent'), err=$('f-err'), btn=$('f-submit');
+  err.textContent=''; [email,name].forEach(function(x){ x.removeAttribute('aria-invalid'); });
+  var demo=$('f-demo').checked, em=email.value.trim(), nm=demo?name.value.trim():'';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ email.setAttribute('aria-invalid','true'); err.textContent='Įrašykite teisingą el. pašto adresą.'; email.focus(); return; }
+  if(!nm) nm=em.split('@')[0];
+  if(!consent.checked){ err.textContent='Pažymėkite sutikimą, kad galėtume susisiekti.'; consent.focus(); return; }
+  var hp=$('f-company').value;
+  var body={ name:nm.slice(0,120), email:em.slice(0,200), intent:demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(demo?$('f-org').value.trim().slice(0,160):'', demo?$('f-phone').value.trim().slice(0,40):'', demo), company:hp, autoreply:true, result:resultPayload() };
+  btn.disabled=true; btn.innerHTML='<span class="spin" aria-hidden="true"></span> Siunčiama…';
   var ctrl = window.AbortController ? new AbortController() : null;
   var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 15000);
-  function reset(){ ui.btn.disabled=false; ui.btn.innerHTML=ui.label(); }
   fetch(SUPABASE_URL+'/functions/v1/submit-inquiry',{ method:'POST', headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON}, body:JSON.stringify(body), signal: ctrl?ctrl.signal:undefined })
    .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(j){ return {status:res.status,j:j}; }); })
    .then(function(r){
      clearTimeout(timer);
-     if(r.status===200 && r.j && r.j.ok){ track('exo_lead_submit',{verdict:result&&result.key,demo:o.demo?1:0,from:ui.from}); track('cta',{step:'lead'}); sfx.sent(); $('d-demo').hidden=!o.demo; $('d-mail').hidden=o.demo; show('s-done'); setTimeout(function(){ $('d-title').focus({preventScroll:true}); },80); reset(); return; }
-     if(r.status===429) ui.err.textContent='Per daug bandymų iš eilės. Pabandykite po 10 minučių arba parašykite per krisvas.lt.';
-     else if(r.status===400) ui.err.textContent='Patikrinkite el. paštą ir pabandykite dar kartą.';
-     else ui.err.textContent='Nepavyko išsiųsti. Pabandykite dar kartą arba parašykite per krisvas.lt.';
-     reset();
+     if(r.status===200 && r.j && r.j.ok){ track('exo_lead_submit',{verdict:result&&result.key,demo:demo?1:0}); track('cta',{step:'lead'}); sfx.sent(); $('d-demo').hidden=!demo; $('d-mail').hidden=demo; show('s-done'); setTimeout(function(){ $('d-title').focus({preventScroll:true}); },80); return; }
+     if(r.status===429) err.textContent='Per daug bandymų iš eilės. Pabandykite po 10 minučių arba parašykite per krisvas.lt.';
+     else if(r.status===400) err.textContent='Patikrinkite el. paštą ir vardą, ir pabandykite dar kartą.';
+     else err.textContent='Nepavyko išsiųsti. Pabandykite dar kartą arba parašykite per krisvas.lt.';
+     btn.disabled=false; btn.innerHTML=btnLabel();
    })
-   .catch(function(x){ clearTimeout(timer); ui.err.textContent = (x && x.name==='AbortError') ? 'Siuntimas užtrunka per ilgai. Užklausa galėjo ir nueiti. Jei negausite laiško, parašykite kristijonas.vasiliauskas@gmail.com.' : 'Nėra ryšio. Patikrinkite internetą ir pabandykite dar kartą.'; reset(); });
-}
-var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-/* demo branch: separate form screen */
-$('lead').addEventListener('submit',function(e){
-  e.preventDefault();
-  var email=$('f-email'), name=$('f-name'), consent=$('f-consent'), err=$('f-err');
-  err.textContent=''; [email,name].forEach(function(x){ x.removeAttribute('aria-invalid'); });
-  var demo=$('f-demo').checked, em=email.value.trim(), nm=demo?name.value.trim():'';
-  if(!EMAIL_RE.test(em)){ email.setAttribute('aria-invalid','true'); err.textContent='Įrašykite teisingą el. pašto adresą.'; email.focus(); return; }
-  if(!nm) nm=em.split('@')[0];
-  if(!consent.checked){ err.textContent='Pažymėkite sutikimą, kad galėtume susisiekti.'; consent.focus(); return; }
-  sendLead({em:em,nm:nm,demo:demo,org:demo?$('f-org').value.trim().slice(0,160):'',phone:demo?$('f-phone').value.trim().slice(0,40):'',hp:$('f-company').value},{btn:$('f-submit'),err:err,label:btnLabel,from:'form'});
+   .catch(function(x){ clearTimeout(timer); err.textContent = (x && x.name==='AbortError') ? 'Siuntimas užtrunka per ilgai. Užklausa galėjo ir nueiti. Jei per 1–2 darbo dienas negausite atsakymo, parašykite kristijonas.vasiliauskas@gmail.com.' : 'Nėra ryšio. Patikrinkite internetą ir pabandykite dar kartą.'; btn.disabled=false; btn.innerHTML=btnLabel(); });
 });
-/* inline one-field capture on the result screen */
-function capLabel(){ return ($('c-demo').checked?'Toliau: susitarti dėl demo':'Atsiųsti rezultatą el. paštu')+' <i class="ph '+($('c-demo').checked?'ph-arrow-right':'ph-paper-plane-tilt')+'" aria-hidden="true"></i>'; }
-function syncCap(){ $('c-submit').innerHTML=capLabel(); $('c-err').textContent=''; }
-$('c-demo').addEventListener('change',function(){ sfx.select(); syncCap(); });
-$('cap').addEventListener('submit',function(e){
-  e.preventDefault();
-  var email=$('c-email'), err=$('c-err'); err.textContent=''; email.removeAttribute('aria-invalid');
-  var em=email.value.trim();
-  if(!EMAIL_RE.test(em)){ email.setAttribute('aria-invalid','true'); err.textContent='Įrašykite teisingą el. pašto adresą.'; email.focus(); return; }
-  if(!$('c-consent').checked){ err.textContent='Pažymėkite sutikimą, kad galėtume atsiųsti rezultatą.'; $('c-consent').focus(); return; }
-  if($('c-demo').checked){
-    $('f-email').value=em; $('f-demo').checked=true; $('f-consent').checked=true; syncDemo();
-    track('cta',{verdict:result&&result.key,step:'demo'}); sfx.next(); show('s-form'); setTimeout(function(){ $('f-name').focus(); },80); return;
-  }
-  sendLead({em:em,nm:em.split('@')[0],demo:false,hp:$('c-company').value},{btn:$('c-submit'),err:err,label:capLabel,from:'inline'});
-});
-syncCap();
 
 /* test hook for QA only: window.__exo.run([answers]) renders a result without clicking. */
 window.__exo={ Q:Q, MODEL:MODEL, run:function(ans){ A=ans.slice(); finish(); }, form:function(){ show('s-form'); }, done:function(demo){ $('d-demo').hidden=!demo; $('d-mail').hidden=!!demo; show('s-done'); }, msg:function(){ return buildMessage('Org','+370',true); } };
