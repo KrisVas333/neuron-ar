@@ -302,7 +302,15 @@ footer p + p{margin-top:8px}
 .ic-flow li.on span{border-color:var(--p);background:var(--p);color:#fff}
 .thx{margin:22px 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
 .thx video{display:block;width:100%;height:auto;background:#111}
-.thx p{margin:0;padding:12px 16px 14px;font-size:16px;font-weight:600}
+.thx{margin:0 0 22px}
+.thx video{aspect-ratio:16/9;object-fit:cover}
+.thx-b{padding:12px 16px 14px}
+.thx-b p{margin:0}
+.thx-t{font-size:17px;font-weight:700}
+.thx-n{font-size:15px;color:var(--ink-2);margin-top:2px!important}
+.thx-s{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px!important}
+.thx-s a{display:inline-flex;align-items:center;gap:5px;font-size:14.5px;font-weight:600;color:var(--p-ink);text-decoration:none;min-height:32px}
+.thx-s a:hover{text-decoration:underline} .thx-s i{font-size:18px}
 @media (max-width:420px){ .ic-flow li{font-size:11px} .ic-tiles i{font-size:12px} .ic-card{padding:18px 14px 16px} }
 @media (prefers-reduced-motion:reduce){ .ic-quotes li,.ic-check li,.ic-m .f,.ic-flow .fl{transition:none} }
 .vid{margin:22px 0 26px}
@@ -451,6 +459,20 @@ footer p + p{margin-top:8px}
   </section>
 
   <section class="screen" id="s-res" hidden aria-labelledby="r-title">
+    <div class="thx" id="r-thx" hidden>
+      <video id="r-thx-v" controls playsinline preload="metadata" poster="media/kris-aciu-poster.webp" width="1280" height="720" aria-label="Kristijono Vasiliausko padėka už atliktą testą"><track kind="captions" src="media/kris-aciu.lt.vtt" srclang="lt" label="Lietuvių" default></video>
+      <div class="thx-b">
+        <p class="thx-t">Ačiū, kad atlikote testą. Iki pasimatymo demo!</p>
+        <p class="thx-n"><b>Kristijonas Vasiliauskas</b> · ExoClass bendraįkūrėjas</p>
+        <p class="thx-s">
+          <a href="https://www.instagram.com/kristijonas.vas/" target="_blank" rel="noopener"><i class="ph ph-instagram-logo" aria-hidden="true"></i>Instagram</a>
+          <a href="https://www.linkedin.com/in/kristijonasvasiliauskas/" target="_blank" rel="noopener"><i class="ph ph-linkedin-logo" aria-hidden="true"></i>LinkedIn</a>
+          <a href="https://www.tiktok.com/@krisvas369" target="_blank" rel="noopener"><i class="ph ph-tiktok-logo" aria-hidden="true"></i>TikTok</a>
+          <a href="https://www.youtube.com/@KristijonasVasiliauskas" target="_blank" rel="noopener"><i class="ph ph-youtube-logo" aria-hidden="true"></i>YouTube</a>
+          <a href="https://www.facebook.com/profile.php?id=61565637250303" target="_blank" rel="noopener"><i class="ph ph-facebook-logo" aria-hidden="true"></i>Facebook</a>
+        </p>
+      </div>
+    </div>
     <div class="res-head">
       <div class="gauge" aria-hidden="true">
         <svg viewBox="0 0 120 120"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3097D7"/><stop offset="1" stop-color="#AE4197"/></linearGradient></defs>
@@ -600,10 +622,6 @@ footer p + p{margin-top:8px}
 
     </details>
 
-    <div class="thx" id="r-thx" hidden>
-      <video id="r-thx-v" controls playsinline preload="none"></video>
-      <p>Ačiū, kad skyrėte laiko. Iki pasimatymo demo! <span style="font-weight:500;color:var(--muted)">Kris</span></p>
-    </div>
     <p style="text-align:center;margin-top:14px"><button class="btn ghost" id="restart" type="button"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i> Pradėti iš naujo</button></p>
   </section>
 
@@ -1061,8 +1079,8 @@ function showInter(id){
 }
 
 /* Personal thank-you video (Titas uploads). Set THANKS_VIDEO to the file path to switch it on. */
-var THANKS_VIDEO='';
-function renderThanks(){ if(!THANKS_VIDEO) return; var v=$('r-thx-v'); if(!v.src){ v.src=THANKS_VIDEO; } $('r-thx').hidden=false; }
+var THANKS_VIDEO='media/kris-aciu.mp4';
+function renderThanks(){ if(!THANKS_VIDEO) return; var v=$('r-thx-v'); if(!v.dataset.set){ v.dataset.set=1; v.insertAdjacentHTML('afterbegin','<source src="'+THANKS_VIDEO+'" type="video/mp4">'); v.load(); v.addEventListener('play',function(){ track('exo_thanks_play',{}); },{once:true}); [].forEach.call(document.querySelectorAll('.thx-s a'),function(a){ a.addEventListener('click',function(){ track('exo_social_click',{to:a.textContent.trim()}); }); }); } $('r-thx').hidden=false; }
 
 /* instant micro-feedback banners on the next question */
 function questionFact(){
