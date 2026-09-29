@@ -263,6 +263,9 @@ footer p + p{margin-top:8px}
 .intro h1{font-size:clamp(30px,8.4vw,44px);margin-bottom:10px}
 .intro .sub{margin-bottom:16px}
 #start{margin-bottom:22px}
+.vid{margin:22px 0 26px}
+.vid video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:20px;background:#e9dccb;box-shadow:var(--shadow);border:1px solid var(--line)}
+.vid .src-line{margin-top:8px}
 .tv{margin:0 0 26px}
 .tv-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
 .tv-head h2{font-size:20px}
@@ -320,6 +323,15 @@ footer p + p{margin-top:8px}
     <h1 id="t-intro">Ar jūsų būreliui jau laikas <span class="grad-text">ExoClass</span>?</h1>
     <p class="sub">10 klausimų · 5 min · rezultatas iš karto</p>
     <button class="btn pri block" id="start" type="button">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+
+    <section class="vid" aria-labelledby="vid-h">
+      <div class="tv-head"><h2 id="vid-h">Aštuoni darbai. Viena sistema.</h2><span class="tv-badge"><i class="ph ph-play-circle" aria-hidden="true"></i>1 min</span></div>
+      <video id="vid-c" controls playsinline preload="none" poster="media/exoclass-c-poster.webp" width="1280" height="720" aria-label="ExoClass per 1 minutę: aštuoni būrelio administravimo darbai vienoje sistemoje">
+        <source src="media/exoclass-c-8-darbai.mp4" type="video/mp4">
+        <track kind="captions" src="media/exoclass-c-8-darbai.lt.vtt" srclang="lt" label="Lietuvių" default>
+      </video>
+      <p class="src-line">Video: ExoClass komanda, 2026. Subtitrai lietuviškai.</p>
+    </section>
 
     <section class="tv" aria-labelledby="tv-h">
       <div class="tv-head"><h2 id="tv-h">Tikri žmonės, tikri būreliai</h2><span class="tv-badge"><i class="ph ph-play-circle" aria-hidden="true"></i>ExoClass TV</span></div>
@@ -861,6 +873,12 @@ var TV=[
   fr.addEventListener('focusin',function(){ hover=true; tick(); }); fr.addEventListener('focusout',function(){ hover=false; tick(); });
   fr.addEventListener('click',function(e){ var a=e.target.closest('a'); if(a){ track('exo_tv_click',{i:+a.dataset.i}); try{ if(window.clarity) clarity('event','exo_tv_click'); }catch(x){} } });
   setPaused(paused);
+})();
+
+/* ExoClass C video: count plays and completes */
+(function(){ var v=$('vid-c'); if(!v) return; var q=0;
+  v.addEventListener('play',function(){ if(!v.dataset.p){ v.dataset.p=1; track('exo_video_c_play',{}); } });
+  v.addEventListener('timeupdate',function(){ if(!q && v.duration && v.currentTime/v.duration>0.9){ q=1; track('exo_video_c_complete',{}); } });
 })();
 
 /* marquee */
