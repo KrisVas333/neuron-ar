@@ -983,37 +983,44 @@ $('q-peer-x').addEventListener('click',function(){ peerClosed=true; $('q-peer').
 var INTER_AT={2:'time',5:'parents',8:'money'}, INTER_S=12, icTimer=null;
 var IC={
   time:{eye:'Trumpa pauzė · partnerių patirtis', t:'Kur dingsta būrelio vadovo laikas',
-    big:'−1', unit:'darbuotojas', cap:'Išminties Kristalas po ExoClass: „reikia vienu darbuotoju mažiau“.',
+    big:'−1', unit:'darbuotojas', cap:'Vienam partneriui, Išminties Kristalui, po ExoClass „reikia vienu darbuotoju mažiau“.',
     body:function(){ var q=[
       ['Anksčiau praleisdavome kelias papildomas valandas administraciniams darbams.','Diana Balaišytė, Duo Kidz · exoclass.lt'],
       ['Sistema mums atlieka buhalterinę pusę.','Lina Stonytė-Lapienė, Išminties Kristalas · ExoClass YouTube'],
       ['Palengvina treneriams, kad jie gali susikoncentruoti į savo darbą.','Liepa, Gero Vėjo Klubas · ExoClass YouTube'] ];
-      var ul=document.createElement('ul'); ul.className='ic-quotes';
-      q.forEach(function(x,i){ var li=document.createElement('li'); li.innerHTML='<q>'+esc(x[0])+'</q><span>'+esc(x[1])+'</span>'; ul.appendChild(li); icLater(function(){ li.classList.add('on'); },150+i*650); });
-      return ul; },
+      var box=document.createElement('div');
+      var g=document.createElement('div'); g.className='ic-meters';
+      g.innerHTML='<p class="ic-cap" style="margin:0"><b>Duo Kidz augimas:</b> mokinių padvigubėjo, o ExoClass, Dianos žodžiais, „tapo didžiuliu laiko taupymo sprendimu“.</p>';
+      [['Prieš',50,'1×'],['Dabar',100,'2×']].forEach(function(x,i){ var r=document.createElement('div'); r.className='ic-m';
+        r.innerHTML='<span class="l">'+x[0]+'</span><span class="n">'+x[2]+'</span><span class="t"><span class="f"></span></span>'; g.appendChild(r);
+        var f=r.querySelector('.f'); icLater(function(){ void f.offsetWidth; f.style.width=x[1]+'%'; },150+i*350); });
+      box.appendChild(g);
+      var ul=document.createElement('ul'); ul.className='ic-quotes'; ul.style.marginTop='16px';
+      q.forEach(function(x,i){ var li=document.createElement('li'); li.innerHTML='<q>'+esc(x[0])+'</q><span>'+esc(x[1])+'</span>'; ul.appendChild(li); icLater(function(){ li.classList.add('on'); },700+i*650); });
+      box.appendChild(ul); return box; },
     line:'Kuo daugiau grupių ir vietų, tuo daugiau rankinio darbo: registracija, sąskaitos, priminimai.',
-    src:'Šaltiniai: partnerių atsiliepimai exoclass.lt ir jų ExoClass YouTube video (2025).'},
-  parents:{eye:'Trumpa pauzė · tėvų įpročiai', t:'Tėvai nenori laukti atsakymo',
-    big:'42 %', unit:'', cap:'tėvų registruoja vaiką ne darbo valandomis: vakare, naktį, savaitgalį (JAV tyrimas).',
+    src:'Šaltiniai: partnerių atsiliepimai exoclass.lt („Su studentų skaičiaus padvigubėjimu…“, Diana Balaišytė) ir partnerių ExoClass YouTube video.'},
+  parents:{eye:'Trumpa pauzė · tėvų įpročiai', t:'Kada ir iš ko tėvai registruoja',
+    big:'42 %', unit:'', cap:'tėvų JAV registruoja vaiką ne 9–17 val. (stovyklų duomenys).',
     body:function(){ var box=document.createElement('div');
       var m=document.createElement('div'); m.className='ic-meters';
-      [['Registruojasi telefonu',71],['Ne darbo valandomis',42]].forEach(function(x,i){
+      [['Telefonu ar planšete',71],['Ne 9–17 val.',42]].forEach(function(x,i){
         var r=document.createElement('div'); r.className='ic-m';
         r.innerHTML='<span class="l">'+x[0]+'</span><span class="n">'+x[1]+' %</span><span class="t"><span class="f"></span></span>';
         m.appendChild(r); var f=r.querySelector('.f'); icLater(function(){ void f.offsetWidth; f.style.width=x[1]+'%'; },120+i*250); });
       box.appendChild(m);
-      var p=document.createElement('p'); p.className='ic-cap'; p.style.margin='16px 0 0'; p.innerHTML='<b>Prieš registruodami tėvai nori matyti:</b>'; box.appendChild(p);
+      var p=document.createElement('p'); p.className='ic-cap'; p.style.margin='16px 0 0'; p.innerHTML='<b>Ką verta parodyti tėvams prieš registraciją:</b>'; box.appendChild(p);
       var ul=document.createElement('ul'); ul.className='ic-check';
       [['ph-users-three','Laisvas vietas grupėje'],['ph-currency-eur','Visą kainą, be staigmenų'],['ph-chalkboard-teacher','Kas bus mokytojas ar treneris'],['ph-browser','Registraciją jūsų svetainėje, bet kuriuo paros metu']].forEach(function(x,i){
         var li=document.createElement('li'); li.innerHTML='<i class="ph '+x[0]+'" aria-hidden="true"></i>'+esc(x[1]); ul.appendChild(li); icLater(function(){ li.classList.add('on'); },900+i*450); });
       box.appendChild(ul); return box; },
-    line:'50-ies Vilniaus mokyklų svetainėse kainą rodo tik 129 iš 1 536 būrelių (8 %). Kas rodo viską, tas laimi tėvų pasitikėjimą.',
-    src:'71 % ir 42 %: American Camp Association (JAV), Lietuvos duomenų dar neturime. 8 %: mūsų 50-ies Vilniaus mokyklų svetainių patikra, 2026 m. rugsėjis.'},
-  money:{eye:'Trumpa pauzė · automatika', t:'Pinigai ateina patys',
-    big:'80 %', unit:'', cap:'ExoClass klientų apmoka sąskaitą per pirmą savaitę.',
+    line:'50-ies Vilniaus mokyklų svetainėse kainą rodo tik 129 iš 1 536 būrelių (8 %).',
+    src:'71 % ir 42 %: rėmėjo įrašas American Camp Association svetainėje, JAV stovyklos, 2026. Lietuvos duomenų dar neturime. 8 %: mūsų 50-ies Vilniaus mokyklų svetainių patikra, 2026 m. rugsėjis.'},
+  money:{eye:'Trumpa pauzė · automatika', t:'Sąskaitos ir priminimai be rankų darbo',
+    big:'80 %', unit:'', cap:'„80 % klientų sąskaitas apmoka per pirmąją savaitę“, sako exoclass.lt.',
     body:function(){ var box=document.createElement('div');
       var tiles=document.createElement('div'); tiles.className='ic-tiles';
-      [['€10M+','mokėjimų per platformą'],['70+','būrelių partnerių'],['5+ val.','per savaitę sutaupo komanda (exoclass.lt)']].forEach(function(x){ tiles.insertAdjacentHTML('beforeend','<div><b>'+esc(x[0])+'</b><i>'+esc(x[1])+'</i></div>'); });
+      [['€10M+','mokėjimų per platformą'],['70+','būrelių partnerių'],['5+ val.','per savaitę žada exoclass.lt']].forEach(function(x){ tiles.insertAdjacentHTML('beforeend','<div><b>'+esc(x[0])+'</b><i>'+esc(x[1])+'</i></div>'); });
       box.appendChild(tiles);
       var ul=document.createElement('ul'); ul.className='ic-flow'; ul.setAttribute('aria-label','Automatinis kelias: registracija, sutartis, sąskaita, priminimas, apmokėta');
       var fl=document.createElement('span'); fl.className='fl'; ul.appendChild(fl);
@@ -1060,7 +1067,7 @@ function renderThanks(){ if(!THANKS_VIDEO) return; var v=$('r-thx-v'); if(!v.src
 /* instant micro-feedback banners on the next question */
 function questionFact(){
   var t='';
-  if(cur===QI.att && (A[QI.pay]===0||A[QI.pay]===1)) t='ExoClass duomenimis, 80 % klientų apmoka sąskaitą per pirmą savaitę (įmonės teiginys).';
+  if(cur===QI.att && (A[QI.pay]===0||A[QI.pay]===1)) t='exoclass.lt duomenimis, 80 % klientų sąskaitas apmoka per pirmąją savaitę (įmonės teiginys).';
   if(cur===QI.growth && A[QI.hours]!=null){ var h=Q[QI.hours].opts[A[QI.hours]]; t='Jūsų '+h.lo+'–'+h.hi+' val. per savaitę per mokslo metus yra apie '+(h.lo*36)+'–'+(h.hi*36)+' val.'; }
   $('q-fact').hidden=!t; $('q-fact-t').textContent=t;
 }
@@ -1091,7 +1098,7 @@ function renderAfter(){
            ['ph-receipt','Sąskaitos ir priminimai išeina patys','Skolininkų sąrašas ir automatiniai priminimai vietoje rankinio sekimo.'],
            ['ph-chart-line-up','Matote pajamas ir registracijas realiu laiku','Ir galite spręsti, kur pildyti grupes.']];
     if(auto.indexOf(3)>-1||auto.indexOf(2)>-1) items.splice(2,0,['ph-signature','Sutartys pasirašomos internetu','NVŠ sutartys generuojamos, krepšelis pritaikomas sąskaitose.']);
-    $('r-after-note').textContent='Tai sistemos galimybės, ne pažadėti skaičiai. ExoClass duomenimis, 80 % klientų apmoka sąskaitą per pirmą savaitę (įmonės teiginys).';
+    $('r-after-note').textContent='Tai sistemos galimybės, ne pažadėti skaičiai. exoclass.lt duomenimis, 80 % klientų sąskaitas apmoka per pirmąją savaitę (įmonės teiginys).';
   }
   $('r-after').innerHTML=items.map(function(g){ return '<li><i class="ph '+g[0]+'" aria-hidden="true"></i><div><b>'+esc(g[1])+'</b><br><span class="muted small">'+esc(g[2])+'</span></div></li>'; }).join('');
 }
