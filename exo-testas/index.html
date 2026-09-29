@@ -19,8 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="exoclass" data-artifact="exo-testas-v3" data-kind="quiz"></script>
-<!-- Microsoft Clarity: tas pats projektas kaip krisvas.lt (y4gk0je1j0); įvesties laukai maskuojami -->
-<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");try{clarity("set","artifact","exo-testas-v3");}catch(e){}</script>
+<!-- Microsoft Clarity (y4gk0je1j0, same project as krisvas.lt): loaded only after consent, see the consent module before </head> -->
 <style>
 /* ExoClass DNA (as on exopus / exoclass.lt): Plus Jakarta Sans, blue #3097D7 to magenta #AE4197, ink #2E2B33.
    Light only. Dyslexia-first: 18px body, 1.55 line height, short lines, left aligned, no justified text. */
@@ -361,12 +360,12 @@ footer p + p{margin-top:8px}
 <script>
 /* ================================================================
    META PIXEL (ExoClass) with consent. Nothing loads or fires until the
-   visitor presses "Leisti". No advanced matching, no PII, no answers:
+   visitor presses "Leisti" (Meta Pixel AND Microsoft Clarity). No advanced matching, no PII, no answers to Meta:
    only the 4 event names below + content_name. Set PIXEL_ID to switch on.
    Test Events: open this URL from Events Manager > Test events > Test browser events.
    ================================================================ */
 (function(){
-  var PIXEL_ID='';
+  var PIXEL_ID='603578189315693';
   var KEY='exo-meta-consent', loaded=false, fired={};
   var MAP={ exo_test_start:['trackCustom','ExoTestStart',null],
             exo_result:['track','CompleteRegistration',{content_name:'exo-testas'}],
@@ -393,11 +392,16 @@ footer p + p{margin-top:8px}
     var m=MAP[k]; if(!m) return;
     send(m[0],m[1],m[2],k);
   };
-  window.exoMetaConsent=function(v){ set(v); var b=document.getElementById('mc'); if(b) b.hidden=true; if(v==='grant') load(); };
+  var clarityOn=false;
+  function loadClarity(){
+    if(clarityOn) return; clarityOn=true;
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y4gk0je1j0");
+    try{ clarity("set","artifact","exo-testas-v3"); clarity("consent"); }catch(e){}
+  }
+  window.exoMetaConsent=function(v){ set(v); var b=document.getElementById('mc'); if(b) b.hidden=true; if(v==='grant'){ load(); loadClarity(); } };
   window.exoMetaBoot=function(){
-    if(!PIXEL_ID) return;
     var c=get();
-    if(c==='grant') load();
+    if(c==='grant'){ load(); loadClarity(); }
     else if(c!=='deny'){ var b=document.getElementById('mc'); if(b) b.hidden=false; }
   };
 })();
@@ -711,13 +715,13 @@ footer p + p{margin-top:8px}
 </main>
 
 <div class="mc" id="mc" hidden role="dialog" aria-live="polite" aria-label="Slapukų sutikimas">
-  <p>Ar leidžiate naudoti Meta slapukus? Jie padeda matuoti, ar ExoClass reklama pasiekia tinkamus būrelių vadovus. Jūsų el. pašto, vardo ir atsakymų Meta negauna.</p>
+  <p>Ar leidžiate naudoti slapukus? <b>Meta</b> padeda matuoti, ar ExoClass reklama pasiekia tinkamus būrelių vadovus. <b>Microsoft Clarity</b> parodo, kur puslapis nepatogus. Meta negauna jūsų el. pašto, vardo ir atsakymų, o Clarity įrašuose įvesti duomenys paslėpti.</p>
   <div class="row"><button class="btn pri" type="button" onclick="exoMetaConsent('grant')">Leisti</button><button class="btn sec" type="button" onclick="exoMetaConsent('deny')">Nesutinku</button></div>
 </div>
 <footer>
   <div class="wrap">
     <p class="f-disc">⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti, svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt" target="_blank" rel="noopener">krisvas.lt</a></p>
-    <p>Interesų konfliktas: testą sukūrė ExoClass bendraįkūrėjas Kristijonas Vasiliauskas. Kainos iš <a href="https://exoclass.lt/kainodara/" target="_blank" rel="noopener">exoclass.lt/kainodara</a>, tikrinta 2026-09-28. Meta Pixel įjungiamas tik jums paspaudus „Leisti“, reklamos matavimui. Jūsų el. pašto, vardo, telefono ir atsakymų Meta negauna.</p>
+    <p>Interesų konfliktas: testą sukūrė ExoClass bendraįkūrėjas Kristijonas Vasiliauskas. Kainos iš <a href="https://exoclass.lt/kainodara/" target="_blank" rel="noopener">exoclass.lt/kainodara</a>, tikrinta 2026-09-28. Meta Pixel ir Microsoft Clarity įjungiami tik jums paspaudus „Leisti“: reklamos matavimui ir puslapio tobulinimui. Meta negauna jūsų el. pašto, vardo, telefono ir atsakymų; Clarity įrašuose įvesti duomenys paslėpti.</p>
   </div>
 </footer>
 
