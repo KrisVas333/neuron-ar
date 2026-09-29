@@ -313,6 +313,9 @@ footer p + p{margin-top:8px}
 .thx-s a:hover{text-decoration:underline} .thx-s i{font-size:18px}
 @media (max-width:420px){ .ic-flow li{font-size:11px} .ic-tiles i{font-size:12px} .ic-card{padding:18px 14px 16px} }
 @media (prefers-reduced-motion:reduce){ .ic-quotes li,.ic-check li,.ic-m .f,.ic-flow .fl{transition:none} }
+.mc{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;max-width:560px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px 16px;font-size:15px;line-height:1.45}
+.mc p{margin:0 0 10px} .mc .row{display:flex;gap:10px;flex-wrap:wrap}
+.mc .btn{min-height:44px;padding:8px 18px;font-size:15px}
 .vid{margin:22px 0 26px}
 .vid video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:20px;background:#e9dccb;box-shadow:var(--shadow);border:1px solid var(--line)}
 .vid .src-line{margin-top:8px}
@@ -355,6 +358,50 @@ footer p + p{margin-top:8px}
 @media (min-width:720px){ body{font-size:18.5px} .opts.two{grid-template-columns:1fr 1fr} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
 </style>
+<script>
+/* ================================================================
+   META PIXEL (ExoClass) with consent. Nothing loads or fires until the
+   visitor presses "Leisti". No advanced matching, no PII, no answers:
+   only the 4 event names below + content_name. Set PIXEL_ID to switch on.
+   Test Events: open this URL from Events Manager > Test events > Test browser events.
+   ================================================================ */
+(function(){
+  var PIXEL_ID='';
+  var KEY='exo-meta-consent', loaded=false, fired={};
+  var MAP={ exo_test_start:['trackCustom','ExoTestStart',null],
+            exo_result:['track','CompleteRegistration',{content_name:'exo-testas'}],
+            exo_lead_submit:['track','Lead',{content_name:'exo-testas'}],
+            exo_booking_click:['track','Schedule',{content_name:'exo-testas'}] };
+  function get(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+  function set(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+  function once(k){ if(fired[k]) return false; try{ if(sessionStorage.getItem('exo-meta-'+k)) return false; sessionStorage.setItem('exo-meta-'+k,'1'); }catch(e){} fired[k]=1; return true; }
+  function load(){
+    if(loaded || !PIXEL_ID) return; loaded=true;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('consent','grant');
+    fbq('init',PIXEL_ID);
+    send('track','PageView',null,null);
+  }
+  function send(kind,name,params,key){
+    if(!loaded || !window.fbq) return;
+    if(key && !once(key)) return;
+    try{ if(params) fbq(kind,name,params); else fbq(kind,name); }catch(e){}
+  }
+  window.exoMeta=function(ev){
+    if(get()!=='grant') return;
+    var k = ev.indexOf('exo_result_')===0 ? 'exo_result' : ev;
+    var m=MAP[k]; if(!m) return;
+    send(m[0],m[1],m[2],k);
+  };
+  window.exoMetaConsent=function(v){ set(v); var b=document.getElementById('mc'); if(b) b.hidden=true; if(v==='grant') load(); };
+  window.exoMetaBoot=function(){
+    if(!PIXEL_ID) return;
+    var c=get();
+    if(c==='grant') load();
+    else if(c!=='deny'){ var b=document.getElementById('mc'); if(b) b.hidden=false; }
+  };
+})();
+</script>
 </head>
 <body class="on-intro">
 <div class="bg-blobs" aria-hidden="true"></div>
@@ -663,10 +710,14 @@ footer p + p{margin-top:8px}
   </section>
 </main>
 
+<div class="mc" id="mc" hidden role="dialog" aria-live="polite" aria-label="Slapukų sutikimas">
+  <p>Ar leidžiate naudoti Meta slapukus? Jie padeda matuoti, ar ExoClass reklama pasiekia tinkamus būrelių vadovus. Jūsų el. pašto, vardo ir atsakymų Meta negauna.</p>
+  <div class="row"><button class="btn pri" type="button" onclick="exoMetaConsent('grant')">Leisti</button><button class="btn sec" type="button" onclick="exoMetaConsent('deny')">Nesutinku</button></div>
+</div>
 <footer>
   <div class="wrap">
     <p class="f-disc">⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti, svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt" target="_blank" rel="noopener">krisvas.lt</a></p>
-    <p>Interesų konfliktas: testą sukūrė ExoClass bendraįkūrėjas Kristijonas Vasiliauskas. Kainos iš <a href="https://exoclass.lt/kainodara/" target="_blank" rel="noopener">exoclass.lt/kainodara</a>, tikrinta 2026-09-28.</p>
+    <p>Interesų konfliktas: testą sukūrė ExoClass bendraįkūrėjas Kristijonas Vasiliauskas. Kainos iš <a href="https://exoclass.lt/kainodara/" target="_blank" rel="noopener">exoclass.lt/kainodara</a>, tikrinta 2026-09-28. Meta Pixel įjungiamas tik jums paspaudus „Leisti“, reklamos matavimui. Jūsų el. pašto, vardo, telefono ir atsakymų Meta negauna.</p>
   </div>
 </footer>
 
@@ -822,7 +873,7 @@ paintMute();
 /* ================================================================
    4. TRACKING (track.js, no personal data, no answers)
    ================================================================ */
-function track(n,p){ try{ if(window.bt) window.bt(n,p||{}); }catch(e){} try{ if(window.clarity) window.clarity('event',n); }catch(e){} }
+function track(n,p){ try{ if(window.exoMeta) window.exoMeta(n); }catch(e){} try{ if(window.bt) window.bt(n,p||{}); }catch(e){} try{ if(window.clarity) window.clarity('event',n); }catch(e){} }
 var params=(function(){ var o={}; try{ var u=new URLSearchParams(location.search); u.forEach(function(v,k){ if(k==='src'||k.indexOf('utm_')===0) o[k]=v.slice(0,80); }); }catch(e){} return o; })();
 
 /* ================================================================
@@ -1317,6 +1368,7 @@ syncCap();
 window.__exo={ Q:Q, MODEL:MODEL, run:function(ans){ A=ans.slice(); finish(); }, form:function(){ show('s-form'); }, done:function(demo){ $('d-demo').hidden=!demo; $('d-mail').hidden=!!demo; show('s-done'); }, msg:function(){ return buildMessage('Org','+370',true); } };
 })();
 </script>
-<script>['d-book','d-book2'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('click',function(){try{if(window.bt)window.bt('exo_booking_click',{from:id});}catch(x){} try{if(window.clarity)window.clarity('event','exo_booking_click');}catch(x){}});});</script>
+<script>try{exoMetaBoot();}catch(e){}</script>
+<script>['d-book','d-book2'].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('click',function(){try{if(window.exoMeta)window.exoMeta('exo_booking_click');}catch(x){} try{if(window.bt)window.bt('exo_booking_click',{from:id});}catch(x){} try{if(window.clarity)window.clarity('event','exo_booking_click');}catch(x){}});});</script>
 </body>
 </html>
