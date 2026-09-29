@@ -263,6 +263,48 @@ footer p + p{margin-top:8px}
 .intro h1{font-size:clamp(30px,8.4vw,44px);margin-bottom:10px}
 .intro .sub{margin-bottom:16px}
 #start{margin-bottom:22px}
+.sub-meta{font-size:16px;font-weight:600;color:var(--muted)}
+/* pause cards every 3 questions */
+.ic-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:22px 20px 18px;margin-top:6px}
+.ic-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ic-eye{font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--p);margin:0 0 4px}
+.ic-card h2{font-size:clamp(22px,5.6vw,28px);line-height:1.2;margin:0}
+.ic-ring{position:relative;width:46px;height:46px;flex:none}
+.ic-ring svg{transform:rotate(-90deg)} .ic-ring .trk{stroke:var(--line)} .ic-ring .bar{stroke:var(--p);transition:stroke-dashoffset .1s linear}
+.ic-ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;color:var(--ink-2)}
+.ic-big{font-size:clamp(44px,12vw,60px);font-weight:800;line-height:1;letter-spacing:-.03em;margin:18px 0 2px;color:var(--ink)}
+.ic-big small{font-size:.42em;font-weight:700;letter-spacing:0;color:var(--muted);margin-left:6px}
+.ic-cap{font-size:16px;color:var(--ink-2);margin:0 0 14px}
+.ic-line{font-size:17px;font-weight:700;margin:16px 0 4px}
+.ic-src{font-size:12.5px;color:var(--muted);margin:0}
+.ic-act{display:flex;gap:10px;align-items:center;margin-top:16px}
+.ic-act .skip{background:none;border:0;color:var(--muted);font:inherit;font-size:15px;text-decoration:underline;cursor:pointer;min-height:44px}
+.ic-quotes{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:10px}
+.ic-quotes li{border-left:3px solid var(--p);padding:6px 0 6px 12px;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
+.ic-quotes li.on{opacity:1;transform:none}
+.ic-quotes q{display:block;font-size:16px;line-height:1.45;quotes:"„" "“"} .ic-quotes span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.ic-meters{display:grid;gap:12px;margin:6px 0 4px}
+.ic-m{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:baseline}
+.ic-m .l{font-size:15.5px;font-weight:600} .ic-m .n{font-size:22px;font-weight:800}
+.ic-m .t{grid-column:1/-1;height:10px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.ic-m .f{display:block;height:100%;width:0;border-radius:999px;background:var(--p);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.ic-check{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.ic-check li{display:flex;gap:10px;align-items:center;font-size:16px;opacity:.25;transition:opacity .4s}
+.ic-check li.on{opacity:1} .ic-check i{color:var(--p);font-size:20px}
+.ic-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 4px}
+.ic-tiles div{background:var(--sunk);border-radius:14px;padding:12px 10px}
+.ic-tiles b{display:block;font-size:clamp(22px,6vw,28px);font-weight:800;line-height:1.1} .ic-tiles i{display:block;font-style:normal;font-size:13px;color:var(--ink-2);margin-top:4px;line-height:1.3}
+.ic-flow{list-style:none;padding:0;margin:16px 0 4px;display:flex;justify-content:space-between;position:relative}
+.ic-flow::before{content:"";position:absolute;left:18px;right:18px;top:17px;height:3px;background:var(--line)}
+.ic-flow .fl{position:absolute;left:18px;top:17px;height:3px;width:0;background:var(--p);transition:width 2.4s ease}
+.ic-flow li{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;width:20%;text-align:center;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.ic-flow li span{width:36px;height:36px;border-radius:999px;background:var(--surface);border:2px solid var(--line);display:grid;place-items:center;font-size:17px;color:var(--muted);transition:all .3s}
+.ic-flow li.on span{border-color:var(--p);background:var(--p);color:#fff}
+.thx{margin:22px 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
+.thx video{display:block;width:100%;height:auto;background:#111}
+.thx p{margin:0;padding:12px 16px 14px;font-size:16px;font-weight:600}
+@media (max-width:420px){ .ic-flow li{font-size:11px} .ic-tiles i{font-size:12px} .ic-card{padding:18px 14px 16px} }
+@media (prefers-reduced-motion:reduce){ .ic-quotes li,.ic-check li,.ic-m .f,.ic-flow .fl{transition:none} }
 .vid{margin:22px 0 26px}
 .vid video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:20px;background:#e9dccb;box-shadow:var(--shadow);border:1px solid var(--line)}
 .vid .src-line{margin-top:8px}
@@ -322,7 +364,7 @@ footer p + p{margin-top:8px}
   <section class="screen intro fade-in" id="s-intro" aria-labelledby="t-intro">
     <span class="kicker">Testas būrelių teikėjams</span>
     <h1 id="t-intro">Ar jūsų būreliui jau laikas <span class="grad-text">ExoClass</span>?</h1>
-    <p class="sub">10 klausimų · 5 min · rezultatas iš karto</p>
+    <p class="sub">Perkelkite savo būrelį į ateitį.<br><span class="sub-meta">10 klausimų · 5 min · rezultatas iš karto</span></p>
     <button class="btn pri block" id="start" type="button">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
 
     <section class="vid" aria-labelledby="vid-h">
@@ -400,6 +442,14 @@ footer p + p{margin-top:8px}
   </section>
 
   <!-- RESULT -->
+  <section class="screen" id="s-inter" hidden aria-labelledby="ic-title">
+    <div class="prog">
+      <div class="bar" aria-hidden="true"><div class="fill" id="ic-fill"></div></div>
+      <span class="count" id="ic-count"></span>
+    </div>
+    <div class="ic-card" id="ic-card"></div>
+  </section>
+
   <section class="screen" id="s-res" hidden aria-labelledby="r-title">
     <div class="res-head">
       <div class="gauge" aria-hidden="true">
@@ -550,6 +600,10 @@ footer p + p{margin-top:8px}
 
     </details>
 
+    <div class="thx" id="r-thx" hidden>
+      <video id="r-thx-v" controls playsinline preload="none"></video>
+      <p>Ačiū, kad skyrėte laiko. Iki pasimatymo demo! <span style="font-weight:500;color:var(--muted)">Kris</span></p>
+    </div>
     <p style="text-align:center;margin-top:14px"><button class="btn ghost" id="restart" type="button"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i> Pradėti iš naujo</button></p>
   </section>
 
@@ -759,7 +813,7 @@ var params=(function(){ var o={}; try{ var u=new URLSearchParams(location.search
 var A=new Array(Q.length).fill(null), cur=0, result=null;
 var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function $(id){ return document.getElementById(id); }
-function show(id){ document.body.classList.toggle('on-intro',id==='s-intro'); ['s-intro','s-q','s-res','s-form','s-done'].forEach(function(s){ $(s).hidden=(s!==id); });
+function show(id){ document.body.classList.toggle('on-intro',id==='s-intro'); ['s-intro','s-q','s-inter','s-res','s-form','s-done'].forEach(function(s){ $(s).hidden=(s!==id); });
   var el=$(id); el.classList.remove('fade-in'); void el.offsetWidth; el.classList.add('fade-in');
   window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
@@ -810,6 +864,7 @@ function pick(j,btn){
 }
 function next(){
   track('exo_q_'+(cur+1));
+  if(INTER_AT[cur] && cur<Q.length-1){ showInter(INTER_AT[cur]); return; }
   if(cur<Q.length-1){ cur++; sfx.next(); renderQ(); focusQ(); }
   else finish();
 }
@@ -918,6 +973,89 @@ function peerBanner(){
   el.hidden=false; track('exo_peer_banner',{type:A[QI.type]});
 }
 $('q-peer-x').addEventListener('click',function(){ peerClosed=true; $('q-peer').hidden=true; });
+
+/* ================================================================
+   PAUSE CARDS after Q3, Q6, Q9 (pattern from krisvas333.github.io/bureliu-testas).
+   Every number is public and sourced on the card. Not used on purpose:
+   "10–20 h saved" (no source: wiki/research/exoclass-testas-teikejams/01-ziniu-paketas.md:103),
+   internal call quotes (no consent), Atrask Sportą numbers (consent pending).
+   ================================================================ */
+var INTER_AT={2:'time',5:'parents',8:'money'}, INTER_S=12, icTimer=null;
+var IC={
+  time:{eye:'Trumpa pauzė · partnerių patirtis', t:'Kur dingsta būrelio vadovo laikas',
+    big:'−1', unit:'darbuotojas', cap:'Išminties Kristalas po ExoClass: „reikia vienu darbuotoju mažiau“.',
+    body:function(){ var q=[
+      ['Anksčiau praleisdavome kelias papildomas valandas administraciniams darbams.','Diana Balaišytė, Duo Kidz · exoclass.lt'],
+      ['Sistema mums atlieka buhalterinę pusę.','Lina Stonytė-Lapienė, Išminties Kristalas · ExoClass YouTube'],
+      ['Palengvina treneriams, kad jie gali susikoncentruoti į savo darbą.','Liepa, Gero Vėjo Klubas · ExoClass YouTube'] ];
+      var ul=document.createElement('ul'); ul.className='ic-quotes';
+      q.forEach(function(x,i){ var li=document.createElement('li'); li.innerHTML='<q>'+esc(x[0])+'</q><span>'+esc(x[1])+'</span>'; ul.appendChild(li); icLater(function(){ li.classList.add('on'); },150+i*650); });
+      return ul; },
+    line:'Kuo daugiau grupių ir vietų, tuo daugiau rankinio darbo: registracija, sąskaitos, priminimai.',
+    src:'Šaltiniai: partnerių atsiliepimai exoclass.lt ir jų ExoClass YouTube video (2025).'},
+  parents:{eye:'Trumpa pauzė · tėvų įpročiai', t:'Tėvai nenori laukti atsakymo',
+    big:'42 %', unit:'', cap:'tėvų registruoja vaiką ne darbo valandomis: vakare, naktį, savaitgalį (JAV tyrimas).',
+    body:function(){ var box=document.createElement('div');
+      var m=document.createElement('div'); m.className='ic-meters';
+      [['Registruojasi telefonu',71],['Ne darbo valandomis',42]].forEach(function(x,i){
+        var r=document.createElement('div'); r.className='ic-m';
+        r.innerHTML='<span class="l">'+x[0]+'</span><span class="n">'+x[1]+' %</span><span class="t"><span class="f"></span></span>';
+        m.appendChild(r); var f=r.querySelector('.f'); icLater(function(){ void f.offsetWidth; f.style.width=x[1]+'%'; },120+i*250); });
+      box.appendChild(m);
+      var p=document.createElement('p'); p.className='ic-cap'; p.style.margin='16px 0 0'; p.innerHTML='<b>Prieš registruodami tėvai nori matyti:</b>'; box.appendChild(p);
+      var ul=document.createElement('ul'); ul.className='ic-check';
+      [['ph-users-three','Laisvas vietas grupėje'],['ph-currency-eur','Visą kainą, be staigmenų'],['ph-chalkboard-teacher','Kas bus mokytojas ar treneris'],['ph-browser','Registraciją jūsų svetainėje, bet kuriuo paros metu']].forEach(function(x,i){
+        var li=document.createElement('li'); li.innerHTML='<i class="ph '+x[0]+'" aria-hidden="true"></i>'+esc(x[1]); ul.appendChild(li); icLater(function(){ li.classList.add('on'); },900+i*450); });
+      box.appendChild(ul); return box; },
+    line:'50-ies Vilniaus mokyklų svetainėse kainą rodo tik 129 iš 1 536 būrelių (8 %). Kas rodo viską, tas laimi tėvų pasitikėjimą.',
+    src:'71 % ir 42 %: American Camp Association (JAV), Lietuvos duomenų dar neturime. 8 %: mūsų 50-ies Vilniaus mokyklų svetainių patikra, 2026 m. rugsėjis.'},
+  money:{eye:'Trumpa pauzė · automatika', t:'Pinigai ateina patys',
+    big:'80 %', unit:'', cap:'ExoClass klientų apmoka sąskaitą per pirmą savaitę.',
+    body:function(){ var box=document.createElement('div');
+      var tiles=document.createElement('div'); tiles.className='ic-tiles';
+      [['€10M+','mokėjimų per platformą'],['70+','būrelių partnerių'],['5+ val.','per savaitę sutaupo komanda (exoclass.lt)']].forEach(function(x){ tiles.insertAdjacentHTML('beforeend','<div><b>'+esc(x[0])+'</b><i>'+esc(x[1])+'</i></div>'); });
+      box.appendChild(tiles);
+      var ul=document.createElement('ul'); ul.className='ic-flow'; ul.setAttribute('aria-label','Automatinis kelias: registracija, sutartis, sąskaita, priminimas, apmokėta');
+      var fl=document.createElement('span'); fl.className='fl'; ul.appendChild(fl);
+      var st=[['ph-user-plus','Registracija'],['ph-signature','Sutartis'],['ph-receipt','Sąskaita'],['ph-bell-ringing','Priminimas'],['ph-check','Apmokėta']], lis=[];
+      st.forEach(function(x){ var li=document.createElement('li'); li.innerHTML='<span><i class="ph '+x[0]+'" aria-hidden="true"></i></span>'+esc(x[1]); ul.appendChild(li); lis.push(li); });
+      icLater(function(){ void fl.offsetWidth; fl.style.width='calc(100% - 36px)'; },200);
+      lis.forEach(function(li,i){ icLater(function(){ li.classList.add('on'); },200+i*560); });
+      box.appendChild(ul); return box; },
+    line:'Perkelkite savo būrelį į ateitį: jūs mokote vaikus, sistema tvarko popierius.',
+    src:'80 % ir €10M+: exoclass.lt ir įkūrėjų interviu Tech Philomaths (2026), įmonės duomenys. 70+: ExoClass partnerių sąrašas. 5+ val.: exoclass.lt teiginys, nepriklausomai nematuota.'}
+};
+var icTimers=[]; function icLater(f,ms){ icTimers.push(setTimeout(f,reduce?0:ms)); }
+function icClear(){ icTimers.forEach(clearTimeout); icTimers=[]; if(icTimer){ clearInterval(icTimer); icTimer=null; } }
+function showInter(id){
+  icClear(); var D=IC[id], c=$('ic-card');
+  var R=2*Math.PI*19;
+  c.innerHTML='<div class="ic-head"><div><p class="ic-eye">'+esc(D.eye)+'</p><h2 id="ic-title" tabindex="-1">'+esc(D.t)+'</h2></div>'
+    +'<div class="ic-ring" role="timer" aria-label="Tęsiama automatiškai po '+INTER_S+' sek."><svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"><circle class="trk" cx="23" cy="23" r="19" fill="none" stroke-width="3"/><circle class="bar" id="ic-bar" cx="23" cy="23" r="19" fill="none" stroke-width="3" stroke-dasharray="'+R.toFixed(2)+'" stroke-dashoffset="0"/></svg><b id="ic-left">'+INTER_S+'</b></div></div>'
+    +'<p class="ic-big">'+esc(D.big)+(D.unit?'<small>'+esc(D.unit)+'</small>':'')+'</p><p class="ic-cap">'+esc(D.cap)+'</p>';
+  c.appendChild(D.body());
+  c.insertAdjacentHTML('beforeend','<p class="ic-line">'+esc(D.line)+'</p><p class="ic-src">'+esc(D.src)+'</p>'
+    +'<div class="ic-act"><button class="btn pri" id="ic-next" type="button">Toliau <i class="ph ph-arrow-right" aria-hidden="true"></i></button><button class="skip" id="ic-skip" type="button">Praleisti</button></div>');
+  $('ic-count').textContent=(cur+1)+'/'+Q.length; $('ic-fill').style.width=((cur+1)/Q.length*100)+'%';
+  function go(via){ icClear(); track('exo_pause_next',{id:id,via:via}); cur++; sfx.next(); show('s-q'); renderQ(); focusQ(); }
+  $('ic-next').addEventListener('click',function(){ go('toliau'); });
+  $('ic-skip').addEventListener('click',function(){ go('praleisti'); });
+  var t0=Date.now(), hold=false;
+  c.onmouseenter=function(){ hold=true; }; c.onmouseleave=function(){ hold=false; };
+  c.onfocusin=function(){ hold=true; };
+  if(!reduce) icTimer=setInterval(function(){
+    if(hold){ t0+=250; return; }
+    var left=Math.max(0,INTER_S-(Date.now()-t0)/1000);
+    $('ic-left').textContent=Math.ceil(left); $('ic-bar').setAttribute('stroke-dashoffset',(R*(1-left/INTER_S)).toFixed(2));
+    if(left<=0) go('auto');
+  },250);
+  show('s-inter'); track('exo_pause_view',{id:id}); try{ $('ic-title').focus({preventScroll:true}); }catch(e){}
+  window.scrollTo(0,0);
+}
+
+/* Personal thank-you video (Titas uploads). Set THANKS_VIDEO to the file path to switch it on. */
+var THANKS_VIDEO='';
+function renderThanks(){ if(!THANKS_VIDEO) return; var v=$('r-thx-v'); if(!v.src){ v.src=THANKS_VIDEO; } $('r-thx').hidden=false; }
 
 /* instant micro-feedback banners on the next question */
 function questionFact(){
@@ -1050,7 +1188,7 @@ function finish(){
   result.hours=hs; result.tiers=tp;
   track('exo_result_'+result.key,{pct:result.pct});
   track('value',{verdict:result.key});
-  show('s-res'); sfx.result(); renderWhere(); renderAfter();
+  show('s-res'); sfx.result(); renderWhere(); renderAfter(); renderThanks();
   // animate gauge
   var pct=result.pct, arc=$('r-arc'), num=$('r-pct');
   arc.style.strokeDashoffset=314.16;
