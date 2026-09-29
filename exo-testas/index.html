@@ -338,7 +338,7 @@ footer p + p{margin-top:8px}
       <div class="tv-head"><h2 id="tv-h">Tikri žmonės, tikri būreliai</h2><span class="tv-badge"><i class="ph ph-play-circle" aria-hidden="true"></i>ExoClass TV</span></div>
       <div class="tv-frame" id="tv" aria-roledescription="karuselė" aria-live="off"></div>
       <div class="tv-ctrl"><div class="tv-dots" id="tv-dots" role="tablist" aria-label="Pasirinkite partnerį"></div><button class="tv-pp" id="tv-pp" type="button" aria-pressed="false" aria-label="Sustabdyti"><i class="ph ph-pause" aria-hidden="true"></i></button></div>
-      <p class="src-line" style="margin-top:6px">Video ir nuotraukos: <a href="https://www.youtube.com/@exoclass_lt" target="_blank" rel="noopener">ExoClass YouTube</a>, 2025. Citatos: <a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a>. Paspaudę atidarysite partnerio video.</p>
+      <p class="src-line" style="margin-top:6px">Video ir nuotraukos: <a href="https://www.youtube.com/@exoclass_lt" target="_blank" rel="noopener">ExoClass YouTube</a>, 2025. Citatos: <a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a> ir partnerių ExoClass YouTube video. Paspaudę atidarysite partnerio video.</p>
     </section>
 
     <section class="founders" aria-labelledby="f-h">
@@ -852,13 +852,15 @@ var VERT=[
 function logoFig(k,small){ var L=LOGOS[k]; return '<figure><span class="logo-tile"'+(small?' style="width:112px;height:58px"':'')+'><img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async"></span>'+(L.coi?'<figcaption>esu bendraįkūrėjas</figcaption>':'')+'</figure>'; }
 
 /* ExoClass TV: real partners from ExoClass YouTube (sources: wiki 10-v3-media.md).
-   Quote only when verbatim public: Diana + Ligita = exoclass.lt testimonials, checked 2026-09-29.
-   Liepa + Milda: no public quote exists (their videos talk to parents), so none shown. */
+   Quote only when verbatim public (checked 2026-09-29): Diana + Ligita = exoclass.lt testimonials;
+   Lina, Liepa, Vaida, Milda = their ExoClass YouTube Shorts, words read from the video's own burned-in captions. yt = the Short with the quote. */
 var TV=[
   {img:'media/tv-dovile-duokidz.webp',n:'Dovilė Viršilaitė ir Diana Balaišytė, bendraįkūrėjos',o:'Duo Kidz',t:'modelių ir mados mokykla',yt:'EuPrcZ55J-k',q:'Anksčiau praleisdavome kelias papildomas valandas administraciniams darbams. […] Dabar galiu sutelkti dėmesį į kitus svarbius darbus.',qa:'Diana Balaišytė, exoclass.lt'},
   {img:'media/tv-ligita-detektyvu.webp',n:'Ligita Pareigienė, įkūrėja',o:'Detektyvų klubas (Laikas Kartu)',t:'loginis mąstymas',yt:'yrYXZMUjzas',q:'Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.',qa:'Ligita Pareigienė, exoclass.lt'},
-  {img:'media/tv-liepa-gvk.webp',n:'Liepa, trenerė',o:'Gero Vėjo Klubas',t:'buriavimas',yt:'YZO5VNsQsuw'},
-  {img:'media/tv-milda-isminties.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'GrFWaswixEg'}
+  {img:'media/tv-lina-isminties.webp',n:'Lina Stonytė-Lapienė, įkūrėja',o:'Išminties Kristalas',t:'anglų kalba',yt:'rDdt3bon29Y',q:'Sistema mums atlieka buhalterinę pusę. […] Šiuo metu mums reikia vienu darbuotoju mažiau.',qa:'Lina Stonytė-Lapienė, ExoClass YouTube'},
+  {img:'media/tv-liepa-gvk.webp',n:'Liepa, administratorė',o:'Gero Vėjo Klubas',t:'buriavimas',yt:'2HMFe5SM1t8',q:'Palengvina treneriams, kad jie gali susikoncentruoti į savo darbą. […] Nebeapsikrauna tais papildomais popierizmais, dokumentais.',qa:'Liepa, ExoClass YouTube'},
+  {img:'media/tv-vaida-eiq.webp',n:'Vaida, įkūrėja',o:'EIQ Akademija',t:'matematika',yt:'G0VZDOknJuA',q:'Rankinis tvarkymas ir tas administracinis triukšmas labai kenkia augimui. […] O čia yra viskas vienoj vietoj.',qa:'Vaida, ExoClass YouTube'},
+  {img:'media/tv-milda-isminties.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'5sKkzlPE9tM',q:'Dabar perėjome prie ExoClass, tai tikrai yra daug, daug patogiau. Yra labai viskas aišku, labai aiški sistema.',qa:'Milda, ExoClass YouTube'}
 ];
 (function(){
   var fr=$('tv'), dots=$('tv-dots'), pp=$('tv-pp'); if(!fr) return;
