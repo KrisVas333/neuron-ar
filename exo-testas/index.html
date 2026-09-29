@@ -278,6 +278,7 @@ footer p + p{margin-top:8px}
 .tv-slide img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block;transform:scale(1.03);transition:transform 4.5s ease}
 .tv-slide.on img{transform:scale(1)}
 .tv-cap{display:flex;flex-direction:column;padding:14px 16px 14px;flex:1}
+.tv-cap .tv-qa{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;padding-left:13px}
 .tv-cap .tv-go{margin-top:auto;padding-top:10px;font-size:14px;font-weight:700;color:var(--p);opacity:1}
 .tv-cap b{display:block;font-size:19px;font-weight:800;line-height:1.2}
 .tv-cap span{display:block;font-size:14.5px;font-weight:600;color:var(--muted);margin-top:2px}
@@ -337,7 +338,7 @@ footer p + p{margin-top:8px}
       <div class="tv-head"><h2 id="tv-h">Tikri žmonės, tikri būreliai</h2><span class="tv-badge"><i class="ph ph-play-circle" aria-hidden="true"></i>ExoClass TV</span></div>
       <div class="tv-frame" id="tv" aria-roledescription="karuselė" aria-live="off"></div>
       <div class="tv-ctrl"><div class="tv-dots" id="tv-dots" role="tablist" aria-label="Pasirinkite partnerį"></div><button class="tv-pp" id="tv-pp" type="button" aria-pressed="false" aria-label="Sustabdyti"><i class="ph ph-pause" aria-hidden="true"></i></button></div>
-      <p class="src-line" style="margin-top:6px">Video ir nuotraukos: <a href="https://www.youtube.com/@exoclass_lt" target="_blank" rel="noopener">ExoClass YouTube</a>, 2025. Paspaudę atidarysite partnerio video.</p>
+      <p class="src-line" style="margin-top:6px">Video ir nuotraukos: <a href="https://www.youtube.com/@exoclass_lt" target="_blank" rel="noopener">ExoClass YouTube</a>, 2025. Citatos: <a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a>. Paspaudę atidarysite partnerio video.</p>
     </section>
 
     <section class="founders" aria-labelledby="f-h">
@@ -851,16 +852,17 @@ var VERT=[
 function logoFig(k,small){ var L=LOGOS[k]; return '<figure><span class="logo-tile"'+(small?' style="width:112px;height:58px"':'')+'><img src="'+L.src+'" alt="'+esc(L.n)+'" loading="lazy" decoding="async"></span>'+(L.coi?'<figcaption>esu bendraįkūrėjas</figcaption>':'')+'</figure>'; }
 
 /* ExoClass TV: real partners from ExoClass YouTube (sources: wiki 10-v3-media.md).
-   Quote only when verbatim public (Ligita: exoclass.lt/kainodara). */
+   Quote only when verbatim public: Diana + Ligita = exoclass.lt testimonials, checked 2026-09-29.
+   Liepa + Milda: no public quote exists (their videos talk to parents), so none shown. */
 var TV=[
+  {img:'media/tv-dovile-duokidz.webp',n:'Dovilė Viršilaitė ir Diana Balaišytė, bendraįkūrėjos',o:'Duo Kidz',t:'modelių ir mados mokykla',yt:'EuPrcZ55J-k',q:'Anksčiau praleisdavome kelias papildomas valandas administraciniams darbams. […] Dabar galiu sutelkti dėmesį į kitus svarbius darbus.',qa:'Diana Balaišytė, exoclass.lt'},
+  {img:'media/tv-ligita-detektyvu.webp',n:'Ligita Pareigienė, įkūrėja',o:'Detektyvų klubas (Laikas Kartu)',t:'loginis mąstymas',yt:'yrYXZMUjzas',q:'Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.',qa:'Ligita Pareigienė, exoclass.lt'},
   {img:'media/tv-liepa-gvk.webp',n:'Liepa, trenerė',o:'Gero Vėjo Klubas',t:'buriavimas',yt:'YZO5VNsQsuw'},
-  {img:'media/tv-milda-isminties.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'GrFWaswixEg'},
-  {img:'media/tv-ligita-detektyvu.webp',n:'Ligita Pareigienė, įkūrėja',o:'Detektyvų klubas (Laikas Kartu)',t:'loginis mąstymas',yt:'yrYXZMUjzas',q:'Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.'},
-  {img:'media/tv-dovile-duokidz.webp',n:'Dovilė Viršilaitė ir Diana Balaišytė, bendraįkūrėjos',o:'Duo Kidz',t:'modelių ir mados mokykla',yt:'EuPrcZ55J-k'}
+  {img:'media/tv-milda-isminties.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'GrFWaswixEg'}
 ];
 (function(){
   var fr=$('tv'), dots=$('tv-dots'), pp=$('tv-pp'); if(!fr) return;
-  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><span class="tv-media"><img src="'+x.img+'" alt="" width="1440" height="810"'+(i?' fetchpriority="low"':' fetchpriority="high"')+'><span class="tv-play" aria-hidden="true"><i class="ph ph-play"></i></span></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q>':'')+'<span class="tv-go">Žiūrėti jų istoriją →</span></span></a>'; }).join('');
+  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><span class="tv-media"><img src="'+x.img+'" alt="" width="1440" height="810"'+(i?' fetchpriority="low"':' fetchpriority="high"')+'><span class="tv-play" aria-hidden="true"><i class="ph ph-play"></i></span></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q><small class="tv-qa">'+esc(x.qa)+'</small>':'')+'<span class="tv-go">Žiūrėti jų istoriją →</span></span></a>'; }).join('');
   dots.innerHTML=TV.map(function(x,i){ return '<button type="button" role="tab" aria-selected="'+(i===0)+'" aria-label="'+esc(x.o)+'"></button>'; }).join('');
   var cur=0, timer=null, paused=reduce, hover=false;
   function go(i){ var sl=fr.children, db=dots.children; sl[cur].classList.remove('on'); sl[cur].setAttribute('aria-hidden','true'); sl[cur].tabIndex=-1; db[cur].setAttribute('aria-selected','false');
