@@ -268,15 +268,17 @@ footer p + p{margin-top:8px}
 .tv-head h2{font-size:20px}
 .tv-badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:800;color:#fff;background:var(--ink);border-radius:999px;padding:5px 10px;flex:none}
 .tv-badge i{color:#F2A9DD;font-size:16px}
-.tv-frame{position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:#1d1b21;box-shadow:var(--shadow)}
-.tv-slide{position:absolute;inset:0;display:block;color:#fff;text-decoration:none;opacity:0;transition:opacity .7s ease}
-.tv-slide.on{opacity:1;z-index:1}
-.tv-slide img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;transform:scale(1.04);transition:transform 3.2s ease}
+.tv-frame{display:grid;border-radius:20px;overflow:hidden;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.tv-slide{grid-area:1/1;display:flex;flex-direction:column;color:var(--ink);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .7s ease}
+.tv-media{position:relative;aspect-ratio:16/9;overflow:hidden;background:#e9e7ee}
+.tv-slide.on{opacity:1;pointer-events:auto;z-index:1}
+.tv-slide img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block;transform:scale(1.03);transition:transform 4.5s ease}
 .tv-slide.on img{transform:scale(1)}
-.tv-cap{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 14px;background:linear-gradient(180deg,transparent,rgba(20,18,24,.88) 55%)}
+.tv-cap{display:flex;flex-direction:column;padding:14px 16px 14px;flex:1}
+.tv-cap .tv-go{margin-top:auto;padding-top:10px;font-size:14px;font-weight:700;color:var(--p);opacity:1}
 .tv-cap b{display:block;font-size:19px;font-weight:800;line-height:1.2}
-.tv-cap span{display:block;font-size:14.5px;font-weight:600;opacity:.92;margin-top:2px}
-.tv-cap q{display:block;font-size:14.5px;font-weight:500;margin-top:6px;line-height:1.4;quotes:"„" "“"}
+.tv-cap span{display:block;font-size:14.5px;font-weight:600;color:var(--muted);margin-top:2px}
+.tv-cap q{display:block;font-size:15px;font-weight:500;margin-top:8px;line-height:1.45;quotes:"„" "“";color:var(--ink-2);border-left:3px solid var(--p);padding-left:10px}
 .tv-play{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--p);display:grid;place-items:center;font-size:20px}
 .tv-ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
 .tv-dots{display:flex;gap:6px}
@@ -293,7 +295,7 @@ footer p + p{margin-top:8px}
 .prod{margin:4px 0 12px}
 .prod img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block}
 .prod figcaption{font-size:13.5px;color:var(--muted);margin-top:6px}
-@media (min-width:720px){ .tv-frame{aspect-ratio:16/9} }
+@media (min-width:720px){ .tv-cap{padding:16px 20px 18px} }
 @media (prefers-reduced-motion:reduce){ .tv-slide img{transform:none!important} }
 @media (max-width:480px){ .trust{grid-template-columns:1fr 1fr} .trust div:last-child{grid-column:1/-1} }
 @media (min-width:720px){ body{font-size:18.5px} .opts.two{grid-template-columns:1fr 1fr} }
@@ -328,7 +330,7 @@ footer p + p{margin-top:8px}
 
     <section class="founders" aria-labelledby="f-h">
       <h2 id="f-h">Kas kuria ExoClass</h2>
-      <img src="media/founders.webp" alt="Kris Vasiliauskas, Linas Kiguolis ir Lukas D. Eidukas pokalbio metu" width="1400" height="787" loading="lazy" decoding="async">
+      <img src="media/founders.webp" alt="Kris Vasiliauskas, Linas Kiguolis ir Lukas D. Eidukas pokalbio metu" width="1400" height="787" loading="lazy">
       <p class="cap-t"><b>Kris, Linas ir Lukas, ExoClass įkūrėjai</b><br>Iš kairės: Kris Vasiliauskas, Linas Kiguolis, Lukas D. Eidukas.</p>
       <p class="src-line">Nuotrauka: kadras iš ExoClass įkūrėjų interviu, 2026 m. rugpjūtis.</p>
       <div class="coi" role="note">
@@ -346,7 +348,7 @@ footer p + p{margin-top:8px}
     <p class="mq-h">Su ExoClass jau dirba, pavyzdžiui:</p>
     <div class="marquee" id="marquee"><div class="mq-track" id="mq-track"></div></div>
     <p class="src-line">Dalis partnerių, abėcėlės tvarka. Robotikos Akademijos bendraįkūrėjas esu aš. <button class="mq-btn" id="mq-toggle" type="button" aria-pressed="false">Sustabdyti</button></p>
-    <figure class="prod"><img src="media/product-form.webp" alt="ExoClass registracijos forma: vardas, pavardė, gimimo data" width="516" height="321" loading="lazy" decoding="async"><figcaption>Registracijos forma ExoClass sistemoje</figcaption></figure>
+    <figure class="prod"><img src="media/product-form-hd.webp" alt="ExoClass registracijos forma: vardas, pavardė, gimimo data" width="1084" height="665" loading="lazy"><figcaption>Registracijos forma ExoClass sistemoje</figcaption></figure>
     <details class="pains">
       <summary><i class="ph ph-list-bullets" aria-hidden="true"></i>Ką sprendžiame: 8 problemos</summary>
       <ol>
@@ -839,19 +841,19 @@ function logoFig(k,small){ var L=LOGOS[k]; return '<figure><span class="logo-til
 /* ExoClass TV: real partners from ExoClass YouTube (sources: wiki 10-v3-media.md).
    Quote only when verbatim public (Ligita: exoclass.lt/kainodara). */
 var TV=[
-  {img:'media/face-gero-vejo-klubas.webp',n:'Liepa, trenerė',o:'Gero Vėjo Klubas',t:'buriavimas',yt:'YZO5VNsQsuw'},
-  {img:'media/face-isminties-kristalas.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'GrFWaswixEg'},
-  {img:'media/face-detektyvu-klubas.webp',n:'Ligita Pareigienė, įkūrėja',o:'Detektyvų klubas (Laikas Kartu)',t:'loginis mąstymas',yt:'yrYXZMUjzas',q:'Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.'},
-  {img:'media/face-duo-kidz.webp',n:'Dovilė Viršilaitė, bendraįkūrėja',o:'Duo Kidz',t:'modelių ir mados mokykla',yt:'EuPrcZ55J-k'}
+  {img:'media/tv-liepa-gvk.webp',n:'Liepa, trenerė',o:'Gero Vėjo Klubas',t:'buriavimas',yt:'YZO5VNsQsuw'},
+  {img:'media/tv-milda-isminties.webp',n:'Milda, mokytoja',o:'Išminties Kristalas',t:'anglų kalba',yt:'GrFWaswixEg'},
+  {img:'media/tv-ligita-detektyvu.webp',n:'Ligita Pareigienė, įkūrėja',o:'Detektyvų klubas (Laikas Kartu)',t:'loginis mąstymas',yt:'yrYXZMUjzas',q:'Exoclass sistema ne tik palengvino mūsų organizacijos veiklų administravimo darbą, tačiau ir pagerino klientų aptarnavimo kokybę.'},
+  {img:'media/tv-dovile-duokidz.webp',n:'Dovilė Viršilaitė ir Diana Balaišytė, bendraįkūrėjos',o:'Duo Kidz',t:'modelių ir mados mokykla',yt:'EuPrcZ55J-k'}
 ];
 (function(){
   var fr=$('tv'), dots=$('tv-dots'), pp=$('tv-pp'); if(!fr) return;
-  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><img src="'+x.img+'" alt="" width="480" height="480"'+(i?' loading="lazy"':' fetchpriority="high"')+' decoding="async"><span class="tv-play" aria-hidden="true"><i class="ph ph-play"></i></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q>':'')+'</span></a>'; }).join('');
+  fr.innerHTML=TV.map(function(x,i){ return '<a class="tv-slide'+(i===0?' on':'')+'" href="https://www.youtube.com/watch?v='+x.yt+'" target="_blank" rel="noopener" aria-label="'+esc(x.n+', '+x.o+': žiūrėti video YouTube')+'"'+(i?' tabindex="-1" aria-hidden="true"':'')+' data-i="'+i+'"><span class="tv-media"><img src="'+x.img+'" alt="" width="1440" height="810"'+(i?' fetchpriority="low"':' fetchpriority="high"')+'><span class="tv-play" aria-hidden="true"><i class="ph ph-play"></i></span></span><span class="tv-cap"><b>'+esc(x.n)+'</b><span>'+esc(x.o)+' · '+esc(x.t)+'</span>'+(x.q?'<q>'+esc(x.q)+'</q>':'')+'<span class="tv-go">Žiūrėti jų istoriją →</span></span></a>'; }).join('');
   dots.innerHTML=TV.map(function(x,i){ return '<button type="button" role="tab" aria-selected="'+(i===0)+'" aria-label="'+esc(x.o)+'"></button>'; }).join('');
   var cur=0, timer=null, paused=reduce, hover=false;
   function go(i){ var sl=fr.children, db=dots.children; sl[cur].classList.remove('on'); sl[cur].setAttribute('aria-hidden','true'); sl[cur].tabIndex=-1; db[cur].setAttribute('aria-selected','false');
     cur=(i+TV.length)%TV.length; sl[cur].classList.add('on'); sl[cur].removeAttribute('aria-hidden'); sl[cur].tabIndex=0; db[cur].setAttribute('aria-selected','true'); }
-  function tick(){ clearTimeout(timer); if(!paused && !hover) timer=setTimeout(function(){ go(cur+1); tick(); },2500); }
+  function tick(){ clearTimeout(timer); if(!paused && !hover) timer=setTimeout(function(){ go(cur+1); tick(); },4500); }
   function setPaused(v){ paused=v; pp.setAttribute('aria-pressed',v?'true':'false'); pp.setAttribute('aria-label',v?'Paleisti':'Sustabdyti'); pp.innerHTML='<i class="ph '+(v?'ph-play':'ph-pause')+'" aria-hidden="true"></i>'; tick(); }
   [].forEach.call(dots.children,function(b,i){ b.addEventListener('click',function(){ go(i); setPaused(true); }); });
   pp.addEventListener('click',function(){ setPaused(!paused); });
