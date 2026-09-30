@@ -43,4 +43,5 @@ const max=Math.max(...D.byField.map(f=>f.programmes));
 document.getElementById('fields').innerHTML=D.byField.map(f=>`<div class="bar ${f.ocean}"><div class="lb">${f.field}${f.ocean==='blue'?'<span class="tag blue">gap</span>':(f.ocean==='red'?'<span class="tag red">raud.</span>':'')}</div><div class="track"><div class="fill" style="width:${Math.max(2,100*f.programmes/max)}%">${f.pct}%</div></div><div class="pv">${f.programmes} pr · ${f.providers} tiek.</div></div>`).join('');
 const rmax=Math.max(...D.byRegion.map(r=>r.programmes));
 document.getElementById('regions').innerHTML=D.byRegion.filter(r=>r.region!=='—').map(r=>`<div class="bar neutral"><div class="lb">${r.region}</div><div class="track"><div class="fill" style="width:${Math.max(2,100*r.programmes/rmax)}%">${r.pct}%</div></div><div class="pv">${r.programmes} pr</div></div>`).join('');
-</script></body></html>
+</script><script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body></html>
