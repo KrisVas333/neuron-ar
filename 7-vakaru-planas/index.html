@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7 vakarų planas be ekrano</title>
+<meta name="description" content="7 vakarai, po 15–30 min. šeimai: pilkas ekranas, telefono susitarimas, judesys, miego ritualas, vakarienės klausimas, būrelio paieška, savaitės apžvalga.">
+<style>
+:root{--bg:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--dim:#5a5a57;--line:#E3E3DF;--red:#D90429}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 48px}
+h1,h2,.day{font-family:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+h1{font-size:clamp(28px,7vw,44px);line-height:1.1;letter-spacing:-.03em;margin:40px 0 14px}
+.intro{font-size:19px;margin:0 0 8px;max-width:34em}
+.intro strong{color:var(--red)}
+.progress{margin:22px 0 6px;font:600 14px/1 "JetBrains Mono",ui-monospace,monospace;color:var(--dim)}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin:8px 0 22px}
+.bar i{display:block;height:100%;width:0;background:var(--red);transition:width .2s}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px 18px 16px;margin:0 0 14px}
+.card.done{border-color:var(--red)}
+.day{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:0 0 4px}
+h2{font-size:21px;line-height:1.25;margin:0 0 8px;letter-spacing:-.02em}
+.time{font:600 13px/1 "JetBrains Mono",ui-monospace,monospace;color:var(--dim);margin:0 0 10px}
+.card p{margin:0 0 10px}
+.sci{font-size:15px;color:var(--dim);border-top:1px solid var(--line);padding-top:10px;margin-top:12px}
+.sci a,.more a,footer a{color:var(--red)}
+.tick{display:flex;gap:12px;align-items:center;margin-top:12px;min-height:44px;cursor:pointer;font-weight:600;font-size:16px}
+.tick input{width:26px;height:26px;accent-color:var(--red);flex:none;cursor:pointer}
+.promise{width:100%;font:inherit;font-size:16px;border:1px solid var(--ink);border-radius:4px;padding:10px;background:#fff;color:var(--ink)}
+.more{background:var(--ink);color:#fff;border-radius:4px;padding:22px 18px;margin:26px 0 0}
+.more h2{margin:0 0 8px}
+.more a{color:#fff}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{display:inline-block;background:var(--red);color:#fff!important;text-decoration:none;font-weight:600;border-radius:4px;padding:12px 16px;min-height:44px;border:0;font-size:16px;font-family:inherit;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid #fff}
+footer{margin-top:28px;font-size:14px;color:var(--dim)}
+footer p{margin:0 0 10px}
+.print{background:var(--ink)}
+@media print{
+  @page{size:A4;margin:10mm}
+  body{font-size:10.5px;line-height:1.35}
+  .wrap{max-width:none;padding:0}
+  h1{font-size:20px;margin:0 0 4px}
+  .intro{font-size:11px;margin:0 0 6px}
+  .progress,.bar,.more,.btns,.print,.sci a:after{display:none}
+  .card{break-inside:avoid;margin:0 0 4px;padding:5px 8px;background:#fff}
+  .card p{margin:0 0 2px}
+  h2{font-size:12px;margin:0 0 2px}
+  .day{font-size:8px;margin:0}
+  .time{margin:0 0 2px;font-size:9px}
+  .sci{font-size:8.5px;margin-top:3px;padding-top:3px}
+  .tick{min-height:0;margin-top:3px;font-size:10px}
+  .tick input{width:12px;height:12px}
+  .promise{font-size:10px;padding:3px}
+  footer{margin-top:6px;font-size:8.5px}
+  footer p{margin:0 0 2px}
+  .printonly{display:block}
+}
+.printonly{display:none}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>7 vakarų planas be ekrano</h1>
+<p class="intro">Pilkas ekranas vienas laikosi pora dienų. Todėl sudėjau <strong>7 vakarus</strong>, ką veikti vietoj ekrano.</p>
+<p class="intro">Be draudimų. Po 15–30 minučių, kartu su vaiku. Pažymėk, ką padarėte.</p>
+<div class="progress" id="prog">0 / 7 vakarai</div>
+<div class="bar"><i id="bar"></i></div>
+
+<section class="card" data-d="1">
+  <p class="day">Pirmadienis</p>
+  <h2>Pilkas ekranas</h2>
+  <p class="time">20 min.</p>
+  <p>Abu su vaiku perjunkite telefonus į nespalvotą. Tėvas pirmas. Pažiūrėkite, kuri programa nusibosta pirma.</p>
+  <p>iPhone: Nustatymai › Prieinamumas › Ekranas ir teksto dydis › Spalvų filtrai › Nespalvotas. Samsung: Nustatymai › Prieiga neįgaliesiems › Regos patobulinimai › Spalvų korekcija › Pilki tonai.</p>
+  <p class="sci">Mokslas: mažuose tyrimuose su studentais nespalvotas ekranas sumažino naudojimą apie 20–50 min. per dieną (pvz. Zimmermann ir Sobolev 2023, 112 žmonių). Su vaikais tyrimų beveik nėra, tai šeimos eksperimentas. Šaltinio nuorodos šiame puslapyje dar neįdėjau.</p>
+  <label class="tick"><input type="checkbox" data-k="1"> Padarėme</label>
+</section>
+
+<section class="card" data-d="2">
+  <p class="day">Antradienis</p>
+  <h2>Šeimos telefono susitarimas</h2>
+  <p class="time">25 min.</p>
+  <p>Ant vieno lapo atsakykite visi, ir tėvai: kur telefonas miega? Kada prie stalo be telefonų? Ką darome, kai nusibosta? Surašykite 3 taisykles ir pasirašykite. Lapą pakabinkite ant šaldytuvo.</p>
+  <p class="sci">Mokslo eilutės čia nėra: šaltinio dar neperskaičiau, o neperskaityto necituoju.</p>
+  <label class="tick"><input type="checkbox" data-k="2"> Padarėme</label>
+</section>
+
+<section class="card" data-d="3">
+  <p class="day">Trečiadienis</p>
+  <h2>Judesys be telefono</h2>
+  <p class="time">20 min.</p>
+  <p>Eikite laukan be telefonų. Žaiskite: kas pirmas suranda 5 skirtingus lapus, paskui šokinėjimo estafetė iki medžio ir atgal. Vaikas sugalvoja taisykles.</p>
+  <p class="sci">Mokslas: <a href="https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit/physical-activity" rel="noopener">EEF apžvalga</a> rodo nedidelę naudą mokymuisi, sveikatai ir lankomumui.</p>
+  <label class="tick"><input type="checkbox" data-k="3"> Padarėme</label>
+</section>
+
+<section class="card" data-d="4">
+  <p class="day">Ketvirtadienis</p>
+  <h2>Miego ritualas</h2>
+  <p class="time">20 min.</p>
+  <p>Visų telefonai krauna virtuvėje, ne miegamajame. Pritemdykite šviesą, 10 min. paskaitykite garsiai, tada pasakykite vieną gerą dalyką, kuris šiandien nutiko.</p>
+  <p class="sci">Mokslas: didelėje apžvalgoje telefonas prie lovos siejosi su trumpesniu vaikų miegu (<a href="https://pubmed.ncbi.nlm.nih.gov/27802500/" rel="noopener">Carter ir kt., JAMA Pediatrics 2016</a>). Tai sąsaja, ne įrodyta priežastis.</p>
+  <label class="tick"><input type="checkbox" data-k="4"> Padarėme</label>
+</section>
+
+<section class="card" data-d="5">
+  <p class="day">Penktadienis</p>
+  <h2>„Ką šiandien sukūrei?"</h2>
+  <p class="time">15 min.</p>
+  <p>Per vakarienę vietoj „kaip sekėsi mokykloje" paklauskite: <strong>„Ką šiandien sukūrei?"</strong> Gali būti piešinys, istorija, statinys iš kaladėlių ar išspręstas galvosūkis. Atsako visi, ir tėvas.</p>
+  <p class="sci">Mokslo eilutės čia nėra. Tai pokalbio įprotis, išbandykite ir pasakykite, ar veikia.</p>
+  <label class="tick"><input type="checkbox" data-k="5"> Padarėme</label>
+</section>
+
+<section class="card" data-d="6">
+  <p class="day">Šeštadienis</p>
+  <h2>Būrelio paieška kartu</h2>
+  <p class="time">30 min.</p>
+  <p>Atsisėskite su vaiku prie <a href="https://krisvas.lt/go/testas?src=7vp" rel="noopener" style="color:var(--red)">2 min. testo</a>. Atsakinėja vaikas, jūs tik klausotės. Išsirinkite 2 būrelius, kuriuos norite išbandyti.</p>
+  <p class="sci">Mano interesas: esu Robotikos akademijos bendraįkūrėjas. Pažiūrėkite ir kitus būrelius, ne tik robotiką. Svarbiausia, kad vaikui įdomu.</p>
+  <label class="tick"><input type="checkbox" data-k="6"> Padarėme</label>
+</section>
+
+<section class="card" data-d="7">
+  <p class="day">Sekmadienis</p>
+  <h2>Savaitės apžvalga ir vienas pažadas</h2>
+  <p class="time">15 min.</p>
+  <p>Pasidalinkite: kas buvo smagiausia, kas nusibodo, kas pasilieka. Tada vienas pažadas šeimai kitai savaitei.</p>
+  <input class="promise" id="promise" type="text" maxlength="140" placeholder="Mūsų pažadas: ..." aria-label="Mūsų pažadas">
+  <p class="printonly">Pažadas: ______________________________________________</p>
+  <label class="tick"><input type="checkbox" data-k="7"> Padarėme</label>
+</section>
+
+<section class="more" id="testi">
+  <h2>Jei norisi tęsti</h2>
+  <p>Kiekvieną savaitę rašau vieną patarimą tėvams. Be šlamšto, atsisakyti galima vienu paspaudimu.</p>
+  <div class="btns">
+    <a class="btn" href="https://krisvas.lt/?src=7vp#naujienlaiskis" rel="noopener">Gauti savaitinį laišką</a>
+    <a class="btn ghost" href="https://krisvas.lt/go/testas?src=7vp" rel="noopener">Būrelių testas</a>
+  </div>
+</section>
+
+<footer>
+  <p>⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti, svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt">krisvas.lt</a></p>
+  <p>Kris Vas · ExoClass ir Robotikos akademijos bendraįkūrėjas.</p>
+  <button class="btn print" type="button" id="print">Spausdinti</button>
+</footer>
+</main>
+<script>
+(function(){
+  var KEY='7vp-v1',st={};
+  try{st=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){st={};}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+  var boxes=document.querySelectorAll('input[data-k]');
+  function paint(){
+    var n=0;
+    boxes.forEach(function(b){
+      var on=!!st[b.dataset.k];b.checked=on;if(on)n++;
+      b.closest('.card').classList.toggle('done',on);
+    });
+    document.getElementById('prog').textContent=n+' / 7 vakarai';
+    document.getElementById('bar').style.width=(n/7*100)+'%';
+  }
+  boxes.forEach(function(b){b.addEventListener('change',function(){st[b.dataset.k]=b.checked;save();paint();});});
+  var p=document.getElementById('promise');
+  if(st.promise)p.value=st.promise;
+  p.addEventListener('input',function(){st.promise=p.value;save();});
+  document.getElementById('print').addEventListener('click',function(){window.print();});
+  paint();
+})();
+</script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body>
+</html>
