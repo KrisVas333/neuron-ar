@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ar jūsų būreliui jau laikas ExoClass? · Testas</title>
-<meta name="description" content="10 klausimų, 5 minutės, rezultatas iš karto. Sužinokite, ar ExoClass jūsų būreliui reikalinga dabar, kiek laiko galėtumėte sutaupyti ir kiek tai kainuotų.">
+<meta name="description" content="10 klausimų, 5 minutės, rezultatas ekrane ir el. paštu. Sužinokite, ar ExoClass jūsų būreliui reikalinga dabar ir kiek laiko galėtumėte sutaupyti.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ar jūsų būreliui jau laikas ExoClass?">
-<meta property="og:description" content="10 klausimų · 5 min · rezultatas iš karto. Mažiau administravimo, daugiau ugdymo.">
+<meta property="og:description" content="10 klausimų · 5 min · rezultatas ekrane ir el. paštu. Mažiau administravimo, daugiau ugdymo.">
 <meta property="og:image" content="https://krisvas333.github.io/neuron-ar/exo-testas/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -356,6 +356,15 @@ footer p + p{margin-top:8px}
 @media (max-width:480px){ .trust{grid-template-columns:1fr 1fr} .trust div:last-child{grid-column:1/-1} }
 @media (min-width:720px){ body{font-size:18.5px} .opts.two{grid-template-columns:1fr 1fr} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+/* v3.1: contact gate + band CTAs */
+.gate .field{margin-top:14px}
+.gate .field label small{font-weight:400;color:var(--muted)}
+.gate-promise{display:flex;gap:8px;align-items:flex-start;font-size:15.5px;line-height:1.5;margin:12px 0 0;color:var(--ink-2)}
+.gate-promise i{font-size:20px;flex:0 0 auto;margin-top:1px}
+.cta-row{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.coi-line{font-size:14.5px;line-height:1.5;color:var(--muted);margin:12px 0 0}
+.sent-line{font-size:14.5px;color:var(--muted);margin:10px 0 0;text-align:center}
+.change-list{margin:10px 0 0;padding-left:20px;line-height:1.6}
 </style>
 <script>
 /* ================================================================
@@ -424,7 +433,7 @@ footer p + p{margin-top:8px}
   <section class="screen intro fade-in" id="s-intro" aria-labelledby="t-intro">
     <span class="kicker">Testas būrelių teikėjams</span>
     <h1 id="t-intro">Ar jūsų būreliui jau laikas <span class="grad-text">ExoClass</span>?</h1>
-    <p class="sub">Perkelkite savo būrelį į ateitį.<br><span class="sub-meta">10 klausimų · 5 min · rezultatas iš karto</span></p>
+    <p class="sub">Perkelkite savo būrelį į ateitį.<br><span class="sub-meta">10 klausimų · 5 min · rezultatas ekrane ir el. paštu</span></p>
     <button class="btn pri block" id="start" type="button">Pradėti testą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
 
     <section class="vid" aria-labelledby="vid-h">
@@ -510,6 +519,27 @@ footer p + p{margin-top:8px}
     <div class="ic-card" id="ic-card"></div>
   </section>
 
+  <!-- V3.1 CONTACT GATE: after the last question, before the result -->
+  <section class="screen gate" id="s-gate" hidden aria-labelledby="g-title">
+    <div class="prog">
+      <div class="bar" aria-hidden="true"><div class="fill" style="width:100%"></div></div>
+      <span class="count">10/10</span>
+    </div>
+    <h2 id="g-title" tabindex="-1">Kur atsiųsti rezultatą?</h2>
+    <p class="muted">Rezultatą parodysime iškart po to, kai paspausite mygtuką. Tą patį rezultatą atsiųsime ir el. paštu.</p>
+    <form id="gate" novalidate data-clarity-mask="true">
+      <div class="field"><label for="g-email">El. paštas</label><input id="g-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="jusu@pastas.lt" required aria-describedby="g-err"></div>
+      <div class="field"><label for="g-phone">Telefonas <small>(nebūtina)</small></label><input id="g-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+370"></div>
+      <div class="hp" aria-hidden="true"><label for="g-company">Įmonė</label><input id="g-company" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="check"><input id="g-demo" type="checkbox"><span>Noriu 20 min demo su Indre</span></label>
+      <p class="gate-promise"><i class="ph ph-envelope-simple" aria-hidden="true"></i><span>1 laiškas su rezultatu, jokio spam'o.</span></p>
+      <p class="err" id="g-err" role="alert" aria-live="polite"></p>
+      <button class="btn pri block" id="g-submit" type="submit" style="margin-top:12px">Rodyti mano rezultatą <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+      <p class="muted small" style="margin-top:12px">Duomenis gauna Kristijonas Vasiliauskas ir ExoClass komanda: rezultatui išsiųsti ir, jei pažymėjote, demo laikui suderinti. Kitiems tikslams nenaudosime, ištrinsime paprašius: <a href="mailto:kristijonas.vasiliauskas@gmail.com">kristijonas.vasiliauskas@gmail.com</a>. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></p>
+    </form>
+    <div class="qnav"><button class="btn ghost" id="g-back" type="button"><i class="ph ph-arrow-left" aria-hidden="true"></i> Atgal</button></div>
+  </section>
+
   <section class="screen" id="s-res" hidden aria-labelledby="r-title">
     <div class="thx" id="r-thx" hidden>
       <video id="r-thx-v" controls playsinline preload="metadata" poster="media/kris-aciu-poster.webp" width="1280" height="720" aria-label="Kristijono Vasiliausko padėka už atliktą testą"><track kind="captions" src="media/kris-aciu.lt.vtt" srclang="lt" label="Lietuvių" default></video>
@@ -537,13 +567,21 @@ footer p + p{margin-top:8px}
       <p class="lead" id="r-lead"></p>
       <div class="scale" aria-hidden="true" style="text-align:left">
         <div class="segs"><span style="width:40%;background:#CCE0F0"></span><span style="width:30%;background:#E3BCD9"></span><span style="width:30%;background:#FBE3BD"></span></div>
-        <div class="labels"><span style="width:40%">Dar anksti</span><span style="width:30%">Pats laikas</span><span style="width:30%">Jau vėluojate</span></div>
+        <div class="labels"><span style="width:40%">Dar ne laikas</span><span style="width:30%">Verta išbandyti</span><span style="width:30%">Pats laikas</span></div>
         <div class="mark" id="r-mark"><b id="r-mark-t">Jūs</b></div>
       </div>
       <p class="sr" id="r-scale-sr"></p>
     </div>
 
-    <div class="card">
+    <div class="card" id="r-cta">
+      <h3 id="r-cta-h"></h3>
+      <div id="r-cta-body"></div>
+      <div class="cta-row" id="r-cta-btns"></div>
+      <p class="coi-line">Skaidriai: ExoClass bendraįkūrėjas rekomenduoja ExoClass. Šį testą sukūriau aš, Kristijonas Vasiliauskas, todėl jis nėra nepriklausomas.</p>
+      <p class="sent-line" id="r-sent" aria-live="polite"></p>
+    </div>
+
+    <div class="card" id="r-why">
       <h3><i class="ph ph-list-checks" aria-hidden="true"></i>Kodėl toks rezultatas</h3>
       <ul class="reasons" id="r-reasons"></ul>
       <p class="muted small" style="margin-top:12px">Esu ExoClass bendraįkūrėjas. Todėl skaičiavimo taisykles rodome atvirai, žr. „Kaip skaičiuojame“ žemiau.</p>
@@ -554,25 +592,14 @@ footer p + p{margin-top:8px}
       <ul class="reasons">
         <li><i class="ph ph-arrow-circle-right" aria-hidden="true"></i><span><b>Nereikia perkelti visos organizacijos.</b> Pradėkite nuo vienos lokacijos arba vienos bandomosios grupės.</span></li>
         <li><i class="ph ph-arrow-circle-right" aria-hidden="true"></i><span>Pamatysite skirtumą patys: kaip registruojasi tėvai ir kaip surenkami mokėjimai.</span></li>
-        <li><i class="ph ph-arrow-circle-right" aria-hidden="true"></i><span><b>3 mėnesių pinigų grąžinimo garantija</b> (pagal <a href="https://exoclass.lt/kainodara" target="_blank" rel="noopener">exoclass.lt/kainodara</a>).</span></li>
       </ul>
       <p class="muted small" style="margin-top:12px">Keli partneriai pradėjo nuo vienos lokacijos (mūsų komandos patirtis).</p>
     </div>
 
-    <form class="card cap" id="cap" novalidate data-clarity-mask="true">
-      <h3><i class="ph ph-envelope-simple" aria-hidden="true"></i>Gauti rezultatą el. paštu</h3>
-      <div class="field" style="margin-top:6px"><label for="c-email" class="sr">El. paštas</label><input id="c-email" type="email" autocomplete="email" inputmode="email" placeholder="jusu@pastas.lt" required></div>
-      <div class="hp" aria-hidden="true"><label for="c-company">Įmonė</label><input id="c-company" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="check"><input id="c-consent" type="checkbox" required><span>Sutinku gauti rezultatą ir, jei pažymėsiu, būti pakviesta(-s) į demo. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></span></label>
-      <p class="err" id="c-err" role="alert" aria-live="polite"></p>
-      <button class="btn pri block" id="c-submit" type="submit" style="margin-top:10px"></button>
-      <label class="check"><input id="c-demo" type="checkbox"><span>Noriu trumpo demo ir demo paskyros</span></label>
-      <p class="muted small" style="margin-top:10px">Duomenis gauna Kristijonas Vasiliauskas ir ExoClass komanda. Nenaudosime kitiems tikslams, ištrinsime paprašius: <a href="mailto:kristijonas.vasiliauskas@gmail.com">kristijonas.vasiliauskas@gmail.com</a>.</p>
-    </form>
 
     <details class="more" id="r-more">
       <summary><span>Daugiau apie rezultatą</span><i class="ph ph-caret-down" aria-hidden="true"></i></summary>
-      <p class="muted small" style="margin:4px 2px 0">Laikas, kainos, įsidiegimas, panašūs partneriai ir šaltiniai.</p>
+      <p class="muted small" style="margin:4px 2px 0">Laikas, įsidiegimas, panašūs partneriai ir šaltiniai.</p>
 
     <div class="card" id="r-peers-card">
       <h3><i class="ph ph-users-three" aria-hidden="true"></i>Panašūs į jus</h3>
@@ -606,12 +633,6 @@ footer p + p{margin-top:8px}
       </ol>
     </div>
 
-    <div class="card">
-      <h3><i class="ph ph-receipt" aria-hidden="true"></i>Kainos</h3>
-      <p class="muted small" id="r-tier-note"></p>
-      <div class="tiers" id="r-tiers"></div>
-      <p class="muted small" style="margin-top:12px">Visos kainos nurodytos per mėnesį + PVM. Tėvams mokant taikomas platformos aptarnavimo mokestis, kaip nurodyta <a href="https://exoclass.lt/kainodara/" target="_blank" rel="noopener">kainodaros puslapyje</a>. Tikslų planą parenkame per pokalbį.</p>
-    </div>
 
     <div class="card alt" role="note">
       <p class="small"><b>Alternatyvos:</b> valstybinė NVŠ sistema (<a href="https://www.mokausi.lt/" target="_blank" rel="noopener">mokausi.lt</a> / CPIS) registracijai ir krepšeliui, kitos būrelių sistemos, arba gerai sutvarkyta lentelė, jei būrelis mažas. Šis testas vertina tik ExoClass.</p>
@@ -722,7 +743,7 @@ footer p + p{margin-top:8px}
 <footer>
   <div class="wrap">
     <p class="f-disc">⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti, svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt" target="_blank" rel="noopener">krisvas.lt</a></p>
-    <p>Interesų konfliktas: testą sukūrė ExoClass bendraįkūrėjas Kristijonas Vasiliauskas. Kainos iš <a href="https://exoclass.lt/kainodara/" target="_blank" rel="noopener">exoclass.lt/kainodara</a>, tikrinta 2026-09-28. Meta Pixel ir Microsoft Clarity įjungiami tik jums paspaudus „Leisti“: reklamos matavimui ir puslapio tobulinimui. Meta negauna jūsų el. pašto, vardo, telefono ir atsakymų; Clarity įrašuose įvesti duomenys paslėpti.</p>
+    <p>Interesų konfliktas: testą sukūrė ExoClass bendraįkūrėjas Kristijonas Vasiliauskas. Kainų ir garantijų testas nerodo: tikslias sąlygas pasakome per pokalbį. Meta Pixel ir Microsoft Clarity įjungiami tik jums paspaudus „Leisti“: reklamos matavimui ir puslapio tobulinimui. Meta negauna jūsų el. pašto, vardo, telefono ir atsakymų; Clarity įrašuose įvesti duomenys paslėpti.</p>
   </div>
 </footer>
 
@@ -787,12 +808,19 @@ var QI = {}; Q.forEach(function(q,i){ QI[q.id]=i; });
    2. SCORING MODEL (transparent, one place)
    Max points: size 20 + groups 10 + reg 10* + pay 20 + att 8 + hours 18 + growth 8 + auto 6 = 100.
    (*reg max used is 8, so the real ceiling is 98; we clamp to 0..100.)
-   Verdict bands: <40 "Dar anksti", 40–69 "Pats laikas", >=70 "Jau vėluojate".
+   Bands (v3.1): <=39 LOW "Dar ne laikas" · 40–69 MEDIUM "Verta išbandyti" · >=70 HIGH "Pats laikas".
+   (internal keys stay anksti / laikas / veluojate so the e-mail auto-reply keeps working.)
    Honesty guards (so the model CAN say "you don't need us"):
     G1: <=50 kids AND <=2 admin h/week AND no payment chasing -> capped at 35 (Dar anksti).
     G2: own system or paid system for registration AND payments already automatic -> capped at 65.
-    G3: "Jau vėluojate" requires >=6 admin h/week AND payment chasing; otherwise capped at 69.
+    G3: HIGH requires >=6 admin h/week AND payment chasing; otherwise capped at 69.
     G4: estimated hours saved < 2/week -> capped at 39 (Dar anksti). No paid tier is highlighted below 2 h.
+   v3.1 rule 14 fix (audit 2026-10-04: "no growth + nothing to automate + just curious" scored 47 % "Pats laikas"):
+    G5: "Kol kas augti neplanuojame" AND "Nieko, dabartinio būdo užtenka" -> capped at 39 (LOW).
+        The provider told us the current way is enough; the test believes them.
+    G6: HIGH (>=70) also needs at least one real automation wish (Q9 not "Nieko"); otherwise capped at 69.
+        Together with G3: HIGH = >=70 points AND >=6 admin h/week AND payment chasing AND a stated automation wish.
+    Q10 timing is still NOT scored (intent, not fit), so "Tik domiuosi" alone never lowers or raises the band.
    ================================================================ */
 var MODEL = {
   bands:[ {max:39,key:'anksti'}, {max:69,key:'laikas'}, {max:100,key:'veluojate'} ],
@@ -812,6 +840,10 @@ var MODEL = {
     if(!(hours>=2 && chasing) && s>69){ s=69; guards.push('G3'); }
     // G4 (critic 07): if the model estimates <2 h/week saved, a paid plan does not pay back -> "Dar anksti".
     if(this.hours(A).hi<2 && s>39){ s=39; guards.push('G4'); }
+    var noneOf=function(id){ var a=A[QI[id]]||[]; return a.length>0 && a.every(function(j){ return Q[QI[id]].opts[j].none; }); };
+    var noGrowth=noneOf('growth'), noAuto=noneOf('auto');
+    if(noGrowth && noAuto && s>39){ s=39; guards.push('G5'); }
+    if(noAuto && s>69){ s=69; guards.push('G6'); }
     s=Math.max(0,Math.min(100,Math.round(s)));
     var key='veluojate'; for(var b=0;b<this.bands.length;b++){ if(s<=this.bands[b].max){ key=this.bands[b].key; break; } }
     return {pct:s,key:key,guards:guards};
@@ -887,7 +919,7 @@ var params=(function(){ var o={}; try{ var u=new URLSearchParams(location.search
 var A=new Array(Q.length).fill(null), cur=0, result=null;
 var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function $(id){ return document.getElementById(id); }
-function show(id){ document.body.classList.toggle('on-intro',id==='s-intro'); ['s-intro','s-q','s-inter','s-res','s-form','s-done'].forEach(function(s){ $(s).hidden=(s!==id); });
+function show(id){ document.body.classList.toggle('on-intro',id==='s-intro'); ['s-intro','s-q','s-inter','s-gate','s-res','s-form','s-done'].forEach(function(s){ $(s).hidden=(s!==id); });
   var el=$(id); el.classList.remove('fade-in'); void el.offsetWidth; el.classList.add('fade-in');
   window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
@@ -940,7 +972,7 @@ function next(){
   track('exo_q_'+(cur+1));
   if(INTER_AT[cur] && cur<Q.length-1){ showInter(INTER_AT[cur]); return; }
   if(cur<Q.length-1){ cur++; sfx.next(); renderQ(); focusQ(); }
-  else finish();
+  else toGate();
 }
 $('q-next').addEventListener('click',function(){ if(A[cur]&&A[cur].length) next(); });
 $('q-back').addEventListener('click',function(){ sfx.back(); if(cur===0){ show('s-intro'); return; } cur--; renderQ(); focusQ(); });
@@ -1151,7 +1183,7 @@ function renderWhere(){
   var pct=result.pct, mark=$('r-mark');
   mark.style.left='0%'; $('r-mark-t').textContent='Jūs · '+pct+'%';
   requestAnimationFrame(function(){ requestAnimationFrame(function(){ mark.style.left=Math.max(1,Math.min(99,pct))+'%'; }); });
-  $('r-scale-sr').textContent='Jūsų rezultatas '+pct+' % skalėje: iki 39 dar anksti, 40–69 pats laikas, 70 ir daugiau jau vėluojate.';
+  $('r-scale-sr').textContent='Jūsų rezultatas '+pct+' % skalėje: iki 39 dar ne laikas, 40–69 verta išbandyti, 70 ir daugiau pats laikas.';
   var v=VERT[A[QI.type]]||VERT[9];
   $('r-peers').innerHTML = v.n
     ? '<p style="font-weight:700">Bent '+esc(v.n)+' '+esc(v.cap)+'.</p>'+(v.logos.length?'<div class="peer-logos" style="justify-content:flex-start">'+v.logos.map(function(k){ return logoFig(k,true); }).join('')+'</div>':'<p class="muted small">Jų logotipų viešai dar nerodome.</p>')
@@ -1180,14 +1212,14 @@ function renderAfter(){
    6. RESULT
    ================================================================ */
 var COPY={
-  anksti:{v:'Dar anksti',cls:'v-anksti',h:'Kol kas ExoClass jums greičiausiai nereikia',
+  anksti:{v:'Dar ne laikas',cls:'v-anksti',h:'Dar ne laikas sistemai',
     lead:'Jūsų dydžiui gera lentelė ir aiški tvarka dažnai pakanka. Tai sąžiningas atsakymas.',
     ctaH:'Norite pasikalbėti vis tiek?',ctaP:'Galite palikti el. paštą. Parašysime, kai augsite, arba parodysime sistemą be jokio spaudimo.',ctaB:'Palikti el. paštą'},
-  laikas:{v:'Pats laikas',cls:'v-laikas',h:'Pats laikas pabandyti ExoClass',
-    lead:'Administravimas jau ima laiką, kurį galėtumėte skirti vaikams ir grupėms.',
+  laikas:{v:'Verta išbandyti',cls:'v-laikas',h:'Verta išbandyti nuo vieno žingsnio',
+    lead:'Dalį administravimo sistema jau perimtų. Visko keisti iš karto nereikia.',
     ctaH:'Pažiūrėkime kartu',ctaP:'Palikite el. paštą. Jei norite, pažymėkite demo: susisieksime ir sukursime jums demo paskyrą.',ctaB:'Toliau'},
-  veluojate:{v:'Jau vėluojate',cls:'v-veluojate',h:'Jau dabar prarandate valandas ir pinigus',
-    lead:'Priminimai, lentelės ir rankinis darbas kas savaitę kainuoja jūsų komandai daugiau, nei atrodo.',
+  veluojate:{v:'Pats laikas',cls:'v-veluojate',h:'Pats laikas sistemai',
+    lead:'Priminimai, lentelės ir rankinis darbas jau kas savaitę ima daug jūsų komandos laiko.',
     ctaH:'Pradėkime šį mėnesį',ctaP:'Palikite el. paštą. Jei norite, pažymėkite demo: susisieksime ir sukursime jums demo paskyrą.',ctaB:'Toliau'}
 };
 
@@ -1238,8 +1270,82 @@ function gains(A,key){
   return g.slice(0,4);
 }
 
+/* ================================================================
+   V3.1 CONTACT GATE + BAND CTAs
+   ================================================================ */
+var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+var BAND={anksti:'low',laikas:'medium',veluojate:'high'};
+var SRC=(params.src||params.utm_source||'direct').slice(0,40);
+var REG_URL='https://exoclass.lt/registracija/?src='+encodeURIComponent(SRC);
+var CAL_URL='https://calendar.app.google/q3UA1VBDoaDDK1dr5';
+var LOW_URL='https://krisvas.lt/?src=exo-testas-low'; /* placeholder: Kris Vas provider newsletter / ExoInsider sign-up */
+var lead={sent:false};
+function computeResult(){ result=MODEL.score(A); result.band=BAND[result.key]; return result; }
+function toGate(){
+  computeResult();
+  sfx.next(); show('s-gate'); track('exo_gate_view',{band:result.band});
+  setTimeout(function(){ $('g-title').focus({preventScroll:true}); },60);
+}
+$('g-back').addEventListener('click',function(){ sfx.back(); cur=Q.length-1; show('s-q'); renderQ(); focusQ(); });
+$('gate').addEventListener('submit',function(e){
+  e.preventDefault();
+  var email=$('g-email'), err=$('g-err'); err.textContent=''; email.removeAttribute('aria-invalid');
+  var em=email.value.trim();
+  if(!EMAIL_RE.test(em)){ email.setAttribute('aria-invalid','true'); err.textContent='Įrašykite el. paštą, kad galėtume atsiųsti rezultatą.'; email.focus(); track('exo_gate_block',{}); return; }
+  var phone=$('g-phone').value.trim().slice(0,40), demo=$('g-demo').checked;
+  lead={sent:false,em:em,phone:phone,demo:demo};
+  if(!result) computeResult();
+  /* anonymous completion event (no e-mail, no answers): src + band + score */
+  track('exo_test_complete',{repo:'neuron-ar',path:'/exo-testas/',src:SRC,mode:'full',band:result.band,score:result.pct,demo:demo?1:0});
+  finish();
+  sendLead({em:em,nm:em.split('@')[0],demo:demo,phone:phone,org:'',hp:$('g-company').value},
+    {btn:null,err:null,label:null,from:'gate'});
+});
+
+function renderCTA(){
+  var k=result.key, A_=A, body='', btns='', h='';
+  var reg='<a class="btn pri block" id="r-reg" href="'+esc(REG_URL)+'" target="_blank" rel="noopener">Registracija <i class="ph ph-arrow-right" aria-hidden="true"></i></a>';
+  var cal=function(pri){ return '<a class="btn '+(pri?'pri':'sec')+' block" id="r-cal" href="'+CAL_URL+'" target="_blank" rel="noopener">20 min su Indre <i class="ph ph-calendar-check" aria-hidden="true"></i></a>'; };
+  if(k==='veluojate'){
+    h='3 priežastys iš jūsų atsakymų';
+    body='<ul class="reasons">'+reasons(A_,result).map(function(t){ return '<li><i class="ph ph-arrow-circle-right" aria-hidden="true"></i><span>'+esc(t)+'</span></li>'; }).join('')+'</ul>';
+    btns=reg+cal(false);
+  } else if(k==='laikas'){
+    h='Pradėkim nuo…';
+    body='<p>'+esc(startFrom(A_))+'</p><p class="muted small" style="margin-top:8px">Per 20 min Indrė parodys būtent tą dalį su jūsų būrelio pavyzdžiu. Jei netiks, tiesiog pasakykite.</p>';
+    btns=cal(true)+reg.replace('btn pri block','btn sec block');
+  } else {
+    h='Kas pakeistų šį atsakymą';
+    body='<ul class="change-list">'+lowChanges(A_).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('')+'</ul><p class="muted small" style="margin-top:10px">Kol kas sistemos jums nesiūlome. Jei norite kartą per savaitę gauti praktinių patarimų būrelių vadovams, užsiprenumeruokite laišką.</p>';
+    btns='<a class="btn sec block" id="r-low" href="'+LOW_URL+'" target="_blank" rel="noopener">Laiškas būrelių vadovams <i class="ph ph-envelope-simple" aria-hidden="true"></i></a>';
+  }
+  $('r-cta-h').textContent=h; $('r-cta-body').innerHTML=body; $('r-cta-btns').innerHTML=btns;
+  [].forEach.call($('r-cta-btns').querySelectorAll('a'),function(a){ a.addEventListener('click',function(){
+    track(a.id==='r-cal'?'exo_booking_click':'exo_cta_click',{to:a.id,band:result.band,src:SRC}); }); });
+}
+/* MEDIUM: the one place to start, picked from their biggest pain */
+function startFrom(A){
+  var pay=A[QI.pay], reg=A[QI.reg], auto=A[QI.auto]||[], att=A[QI.att];
+  if(pay===0||pay===1) return 'Mokėjimų priminimų: sąskaitos ir priminimai tėvams išeina patys, jūs matote, kas dar nesumokėjo.';
+  if(reg<=2) return 'Registracijos nuorodos: tėvai užsiregistruoja patys, o jūs matote, kiek vietų liko grupėse.';
+  if(auto.indexOf(2)>-1||auto.indexOf(3)>-1) return 'Sutarčių internetu: NVŠ sutartys sugeneruojamos ir pasirašomos be popieriaus.';
+  if(att>=1&&att<=3) return 'Lankomumo žymėjimo: mokytojas pažymi telefone, jums nereikia rinkti lentelių.';
+  return 'Vienos bandomosios grupės: pamatysite, kaip registruojasi tėvai ir kaip surenkami mokėjimai.';
+}
+/* LOW: what would change the verdict, from their own answers */
+function lowChanges(A){
+  var out=[], hours=A[QI.hours], pay=A[QI.pay], size=A[QI.size], growth=A[QI.growth]||[], auto=A[QI.auto]||[];
+  if(hours<=1) out.push('Administravimas išauga iki 6 ir daugiau valandų per savaitę.');
+  if(!(pay===0||pay===1)) out.push('Tenka vis dažniau priminti tėvams apie mokėjimus.');
+  if(size<=1) out.push('Vaikų skaičius perkopia 100 arba atsiranda kelios vietos.');
+  if(growth.length && Q[QI.growth].opts[growth[0]].none) out.push('Nusprendžiate augti: naujos grupės, vietos ar stovyklos.');
+  if(auto.length && Q[QI.auto].opts[auto[0]].none) out.push('Atsiranda darbas, kurį norėtųsi atiduoti automatikai.');
+  if(!out.length) out.push('Pagal jūsų atsakymus sutaupytas laikas dabar per mažas. Grįžkite, kai darbo padaugės.');
+  return out.slice(0,3);
+}
+
 function finish(){
-  result=MODEL.score(A); var c=COPY[result.key]; var hs=MODEL.hours(A); var tp=pickTiers(A,hs); tp.shown=(result.key!=='anksti' && hs.hi>=2);
+  if(!result) computeResult(); var c=COPY[result.key]; var hs=MODEL.hours(A); var tp=pickTiers(A,hs); tp.shown=(result.key!=='anksti' && hs.hi>=2);
   $('r-verdict').textContent=c.v; $('r-verdict').className='verdict '+c.cls;
   $('r-title').textContent=c.h; $('r-lead').textContent=(result.key==='anksti' ? anktiLead(A) : c.lead);
   (function(){ var show=(result.key!=='anksti' && A[QI.size]>=2); $('r-risk').hidden=!show; if(show) track('exo_risk_card',{size:A[QI.size]}); })();
@@ -1254,22 +1360,13 @@ function finish(){
   how.push('Procentai yra mūsų darbinės prielaidos, ne išmatuotas tyrimas. Jų niekas nepatikrino su jūsų duomenimis.');
   how.push('Nesutaupoma: mokymai, pokalbiai su tėvais, sprendimai. Jie lieka jums.');
   $('r-how').innerHTML=how.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('');
-  // tiers
-  var note = result.key==='anksti'
-    ? (A[QI.size]<=1 ? 'Sąžiningai: jūsų dydžiui mokamas planas dabar greičiausiai per brangus. Rodome kainas, kad žinotumėte ateičiai.'
-                     : 'Sąžiningai: pagal jūsų atsakymus sutaupytas laikas per mažas, kad mokamas planas atsipirktų. Kainas rodome, kad žinotumėte.')
-    : 'Pagal jūsų atsakymus labiausiai tiktų pažymėtas planas.';
-  if(tp.nvsNote) note+=' NVŠ krepšelio funkcijos yra NVŠ plane; jei krepšelio vaikų daug, verta palyginti.';
-  $('r-tier-note').textContent = note;
-  $('r-tiers').innerHTML=tp.set.map(function(k){ var t=TIERS[k], rec=(k===tp.rec && tp.shown), low=(k===tp.set[0] && result.key==='anksti');
-    return '<div class="tier'+(rec?' rec':'')+'"><div><div class="nm">'+t.n+'</div>'+(rec?'<span class="badge">Tiktų jums</span>':'')+(low?'<span class="label-chip" style="margin-top:4px">Mažiausias</span>':'')+'</div><div class="pr">€'+t.p+' <small>/ mėn. + PVM</small></div></div>'; }).join('');
   // gains
   $('r-gains').innerHTML=gains(A,result.key).map(function(g){ return '<li><i class="ph '+g[0]+'" aria-hidden="true"></i><div><b>'+esc(g[1])+'</b><br><span class="muted small">'+esc(g[2])+'</span></div></li>'; }).join('');
-  $('r-more').open=false; syncCap();
+  $('r-more').open=false; renderCTA(); $('r-why').hidden=(result.key==='veluojate'); /* HIGH already shows the 3 reasons in the CTA card */
   result.hours=hs; result.tiers=tp;
   track('exo_result_'+result.key,{pct:result.pct});
   track('value',{verdict:result.key});
-  show('s-res'); sfx.result(); renderWhere(); renderAfter(); renderThanks();
+  show('s-res'); sfx.result(); renderWhere(); renderAfter(); if(result.key!=='anksti') renderThanks(); else $('r-thx').hidden=true;
   // animate gauge
   var pct=result.pct, arc=$('r-arc'), num=$('r-pct');
   arc.style.strokeDashoffset=314.16;
@@ -1280,7 +1377,7 @@ function finish(){
 }
 function fmt(x){ return String(x).replace('.',','); }
 
-$('restart').addEventListener('click',function(){ A=new Array(Q.length).fill(null); cur=0; sfx.back(); show('s-intro'); });
+$('restart').addEventListener('click',function(){ A=new Array(Q.length).fill(null); cur=0; result=null; sfx.back(); show('s-intro'); });
 
 $('f-back').addEventListener('click',function(){ sfx.back(); show('s-res'); });
 $('d-back').addEventListener('click',function(){ show('s-res'); });
@@ -1298,18 +1395,21 @@ function answersText(){
 /* Result for the submit-inquiry auto-reply (the function ignores unknown fields until it is extended). */
 function resultPayload(){
   var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
-  return { score:(r.pct!=null?r.pct:null), verdict:(COPY[r.key]?COPY[r.key].v:null),
-    tier:(tp.rec && tp.shown ? TIERS[tp.rec].n+' (€'+TIERS[tp.rec].p+' + PVM)' : null),
+  /* submit-inquiry only accepts 'Dar anksti' | 'Pats laikas' | 'Jau vėluojate'. LOW never gets 'Pats laikas'. */
+  var EMAIL_VERDICT={anksti:'Dar anksti',laikas:'Pats laikas',veluojate:'Pats laikas'};
+  return { score:(r.pct!=null?r.pct:null), verdict:(EMAIL_VERDICT[r.key]||null),
+    tier:'', /* no prices or plan names in the e-mail (exo-voice: no prices) */
     hoursMin:(hs.lo!=null?hs.lo:null), hoursMax:(hs.hi!=null?hs.hi:null),
     reasons:(r.key?reasons(A,r).slice(0,3):[]) };
 }
 function buildMessage(org,phone,demo){
   var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
-  var lines=['ExoClass testas v3', 'Nori demo: '+(demo?'TAIP':'ne (tik el. paštas)'),
+  var lines=['ExoClass testas v3.1', 'DATA: src='+SRC+' | band='+(r.band||'-')+' | score='+(r.pct!=null?r.pct:'-')+' | wants_demo='+(demo?'true':'false')+' | phone='+(phone||'-'),
+    'Nori demo su Indre: '+(demo?'TAIP':'ne'),
     'Organizacija: '+(org||'-'),
     'Telefonas: '+(phone||'-'),
     'Rezultatas: '+(r.pct!=null?r.pct+' %':'-')+' · '+(COPY[r.key]?COPY[r.key].v:'-')+(r.guards&&r.guards.length?' (apribota: '+r.guards.join(',')+')':''),
-    'Rekomenduojamas planas: '+(tp.rec?TIERS[tp.rec].n+' (€'+TIERS[tp.rec].p+' + PVM)'+(tp.shown?'':' (testas jo NErekomendavo viešai: '+(r.key==='anksti'?'dar anksti':'maža laiko nauda')+')'):'-'),
+    'Planas (vidinis, puslapyje nerodomas): '+(tp.rec?TIERS[tp.rec].n+(tp.shown?'':' (testas nerekomendavo: '+(r.key==='anksti'?'dar ne laikas':'maža laiko nauda')+')'):'-'),
     'Sutaupymo įvertis: '+(hs.lo!=null?fmt(hs.lo)+'–'+fmt(hs.hi)+' val./sav.':'-'),
     '', 'Atsakymai:', answersText(), '',
     'Šaltinis: '+(Object.keys(params).length?Object.keys(params).map(function(k){return k+'='+params[k];}).join(', '):'-'),
@@ -1322,7 +1422,24 @@ function syncDemo(){ var on=$('f-demo').checked; $('demo-fields').hidden=!on; $(
 $('f-demo').addEventListener('change',function(){ sfx.select(); syncDemo(); if($('f-demo').checked) setTimeout(function(){ $('f-name').focus(); },50); });
 syncDemo();
 function sendLead(o, ui){
-  var body={ name:o.nm.slice(0,120), email:o.em.slice(0,200), intent:o.demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(o.org||'', o.phone||'', o.demo), company:o.hp||'', autoreply:true, result:resultPayload() };
+  /* src/band/score/wants_demo/phone go top-level too: submit-inquiry ignores them until the v3.1 migration
+     + function update land (wiki/meta/exo-testas-v3.1-migration.sql); until then they live in message line 2. */
+  var r_=result||{};
+  var body={ name:o.nm.slice(0,120), email:o.em.slice(0,200), intent:o.demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(o.org||'', o.phone||'', o.demo), company:o.hp||'', autoreply:true, result:resultPayload(),
+    src:SRC, band:r_.band||null, score:(r_.pct!=null?r_.pct:null), wants_demo:!!o.demo, phone:(o.phone||'').slice(0,40)||null };
+  if(!ui.btn){ /* gate mode: result is already on screen, send quietly, report in one line */
+    var line=$('r-sent'); if(line) line.textContent='Siunčiame rezultatą į '+o.em+'…';
+    var ok=function(){ lead.sent=true; track('exo_lead_submit',{verdict:r_.key,band:r_.band,demo:o.demo?1:0,from:'gate'}); track('cta',{step:'lead'}); if(line) line.textContent='Rezultatą išsiuntėme į '+o.em+'. Jei laiško nėra, pažiūrėkite „Reklamos“ ar „Šlamšto“ aplanke.'; };
+    var bad=function(msg){ track('exo_lead_fail',{band:r_.band}); if(line) line.textContent=msg; };
+    var c2 = window.AbortController ? new AbortController() : null; var t2=setTimeout(function(){ if(c2) c2.abort(); },15000);
+    try{
+      fetch(SUPABASE_URL+'/functions/v1/submit-inquiry',{ method:'POST', headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON}, body:JSON.stringify(body), signal:c2?c2.signal:undefined })
+       .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(j){ return {status:res.status,j:j}; }); })
+       .then(function(r){ clearTimeout(t2); if(r.status===200 && r.j && r.j.ok) ok(); else bad(r.status===429?'Per daug bandymų. Rezultatas ekrane, laišką atsiųsime vėliau, jei parašysite per krisvas.lt.':'Laiško išsiųsti nepavyko. Rezultatas ekrane jūsų. Parašykite kristijonas.vasiliauskas@gmail.com, jei norite jo el. paštu.'); })
+       .catch(function(){ clearTimeout(t2); bad('Nėra ryšio, laiško išsiųsti nepavyko. Rezultatas ekrane jūsų.'); });
+    }catch(x){ bad('Laiško išsiųsti nepavyko. Rezultatas ekrane jūsų.'); }
+    return;
+  }
   ui.btn.disabled=true; ui.btn.innerHTML='<span class="spin" aria-hidden="true"></span> Siunčiama…';
   var ctrl = window.AbortController ? new AbortController() : null;
   var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 15000);
@@ -1339,7 +1456,6 @@ function sendLead(o, ui){
    })
    .catch(function(x){ clearTimeout(timer); ui.err.textContent = (x && x.name==='AbortError') ? 'Siuntimas užtrunka per ilgai. Užklausa galėjo ir nueiti. Jei negausite laiško, parašykite kristijonas.vasiliauskas@gmail.com.' : 'Nėra ryšio. Patikrinkite internetą ir pabandykite dar kartą.'; reset(); });
 }
-var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 /* demo branch: separate form screen */
 $('lead').addEventListener('submit',function(e){
   e.preventDefault();
@@ -1351,26 +1467,9 @@ $('lead').addEventListener('submit',function(e){
   if(!consent.checked){ err.textContent='Pažymėkite sutikimą, kad galėtume susisiekti.'; consent.focus(); return; }
   sendLead({em:em,nm:nm,demo:demo,org:demo?$('f-org').value.trim().slice(0,160):'',phone:demo?$('f-phone').value.trim().slice(0,40):'',hp:$('f-company').value},{btn:$('f-submit'),err:err,label:btnLabel,from:'form'});
 });
-/* inline one-field capture on the result screen */
-function capLabel(){ return ($('c-demo').checked?'Toliau: susitarti dėl demo':'Atsiųsti rezultatą el. paštu')+' <i class="ph '+($('c-demo').checked?'ph-arrow-right':'ph-paper-plane-tilt')+'" aria-hidden="true"></i>'; }
-function syncCap(){ $('c-submit').innerHTML=capLabel(); $('c-err').textContent=''; }
-$('c-demo').addEventListener('change',function(){ sfx.select(); syncCap(); });
-$('cap').addEventListener('submit',function(e){
-  e.preventDefault();
-  var email=$('c-email'), err=$('c-err'); err.textContent=''; email.removeAttribute('aria-invalid');
-  var em=email.value.trim();
-  if(!EMAIL_RE.test(em)){ email.setAttribute('aria-invalid','true'); err.textContent='Įrašykite teisingą el. pašto adresą.'; email.focus(); return; }
-  if(!$('c-consent').checked){ err.textContent='Pažymėkite sutikimą, kad galėtume atsiųsti rezultatą.'; $('c-consent').focus(); return; }
-  if($('c-demo').checked){
-    $('f-email').value=em; $('f-demo').checked=true; $('f-consent').checked=true; syncDemo();
-    track('cta',{verdict:result&&result.key,step:'demo'}); sfx.next(); show('s-form'); setTimeout(function(){ $('f-name').focus(); },80); return;
-  }
-  sendLead({em:em,nm:em.split('@')[0],demo:false,hp:$('c-company').value},{btn:$('c-submit'),err:err,label:capLabel,from:'inline'});
-});
-syncCap();
 
 /* test hook for QA only: window.__exo.run([answers]) renders a result without clicking. */
-window.__exo={ Q:Q, MODEL:MODEL, run:function(ans){ A=ans.slice(); finish(); }, form:function(){ show('s-form'); }, done:function(demo){ $('d-demo').hidden=!demo; $('d-mail').hidden=!!demo; show('s-done'); }, msg:function(){ return buildMessage('Org','+370',true); } };
+window.__exo={ Q:Q, MODEL:MODEL, run:function(ans){ A=ans.slice(); result=null; computeResult(); finish(); }, score:function(ans){ var r=MODEL.score(ans); r.band=BAND[r.key]; return r; }, gate:function(ans){ A=ans.slice(); toGate(); }, form:function(){ show('s-form'); }, done:function(demo){ $('d-demo').hidden=!demo; $('d-mail').hidden=!!demo; show('s-done'); }, msg:function(){ return buildMessage('Org','+370',true); } };
 })();
 </script>
 <script>try{exoMetaBoot();}catch(e){}</script>
