@@ -464,11 +464,11 @@ footer p + p{margin-top:8px}
     </section>
 
     <div class="trust" id="trust" aria-label="ExoClass skaičiais">
+      <div><b data-count="20" data-suf=" 000+">20 000+</b><span>vaikų užsiėmimai tvarkomi per ExoClass</span></div>
+      <div><b data-count="700" data-suf="+">700+</b><span>lokacijų</span></div>
       <div><b data-count="70" data-suf="+">70+</b><span>partnerių būrelių</span></div>
-      <div><b data-count="10" data-pre="€" data-suf="M+">€10M+</b><span>mokėjimų per platformą</span></div>
-      <div><b data-count="80" data-suf=" %">80 %</b><span>klientų apmoka sąskaitą per pirmą savaitę*</span></div>
     </div>
-    <p class="src-line">Šaltiniai: ExoClass partnerių sąrašas, 2026 m. rugsėjis · <a href="https://www.philomaths.tech/interviews/linas-kiguolis-lukas-d-eidukas-kris-vasiliauskas" target="_blank" rel="noopener">Tech Philomaths interviu, 2026-08-14</a> · *<a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a>, įmonės teiginys.</p>
+    <p class="src-line">Šaltinis: ExoClass duomenys, 2026-09-28.</p>
     <p class="mq-h">Su ExoClass jau dirba, pavyzdžiui:</p>
     <div class="marquee" id="marquee"><div class="mq-track" id="mq-track"></div></div>
     <p class="src-line">Dalis partnerių, abėcėlės tvarka. Robotikos Akademijos bendraįkūrėjas esu aš. <button class="mq-btn" id="mq-toggle" type="button" aria-pressed="false">Sustabdyti</button></p>
@@ -563,15 +563,29 @@ footer p + p{margin-top:8px}
         <div class="num"><div><b id="r-pct">0%</b><span>tinkamumas</span></div></div>
       </div>
       <span class="verdict" id="r-verdict"></span>
+      <p class="coi-line" id="r-disc" style="margin:8px auto 4px;text-align:center">Veikia ir be ExoClass. Esu ExoClass bendraįkūrėjas, sakau iš karto. Kris</p>
       <h2 id="r-title" tabindex="-1"></h2>
       <p class="lead" id="r-lead"></p>
       <div class="scale" aria-hidden="true" style="text-align:left">
         <div class="segs"><span style="width:40%;background:#CCE0F0"></span><span style="width:30%;background:#E3BCD9"></span><span style="width:30%;background:#FBE3BD"></span></div>
-        <div class="labels"><span style="width:40%">Dar ne laikas</span><span style="width:30%">Verta išbandyti</span><span style="width:30%">Pats laikas</span></div>
+        <div class="labels"><span style="width:40%">Dar ne laikas</span><span style="width:30%">Verta išbandyti</span><span style="width:30%">Laikas jau dabar</span></div>
         <div class="mark" id="r-mark"><b id="r-mark-t">Jūs</b></div>
       </div>
       <p class="sr" id="r-scale-sr"></p>
     </div>
+
+    <form class="card" id="r-mail" hidden novalidate data-clarity-mask="true">
+      <h3><i class="ph ph-envelope-simple" aria-hidden="true"></i>Atsiųsti rezultatą el. paštu</h3>
+      <p class="muted small">Nebūtina. 1 laiškas su rezultatu, jokio spam'o.</p>
+      <div class="field" style="margin-top:10px"><label for="m-email">El. paštas</label><input id="m-email" type="email" autocomplete="email" inputmode="email" placeholder="jusu@pastas.lt"></div>
+      <div class="field" style="margin-top:10px"><label for="m-phone">Telefonas <small>(nebūtina)</small></label><input id="m-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+370"></div>
+      <div class="hp" aria-hidden="true"><label for="m-company">Įmonė</label><input id="m-company" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="check"><input id="m-demo" type="checkbox"><span>Noriu 20 min demo su Indre</span></label>
+      <p class="err" id="m-err" role="alert" aria-live="polite"></p>
+      <button class="btn pri block" id="m-submit" type="submit" style="margin-top:10px">Atsiųsti rezultatą <i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></button>
+      <p class="sent-line" id="m-sent" aria-live="polite"></p>
+      <p class="muted small" style="margin-top:10px">Duomenis gauna Kristijonas Vasiliauskas ir ExoClass komanda: rezultatui išsiųsti ir, jei pažymėjote, demo laikui suderinti. Ištrinsime paprašius: <a href="mailto:kristijonas.vasiliauskas@gmail.com">kristijonas.vasiliauskas@gmail.com</a>.</p>
+    </form>
 
     <div class="card" id="r-cta">
       <h3 id="r-cta-h"></h3>
@@ -688,8 +702,6 @@ footer p + p{margin-top:8px}
           <span class="src"><a href="https://abcfitness.com/abc-articles/payment-failure-rate/" target="_blank" rel="noopener">ABC Fitness</a>, savo klientų duomenys. <a href="https://gymdesk.com/tools/gym-billing-leakage-calculator" target="_blank" rel="noopener">Gymdesk</a> skaičiuoklė naudoja 8–12 % (tiekėjo teiginys be šaltinio). JAV sporto klubų duomenys, ne Lietuvos.</span></li>
         <li>Vaikų veiklų centruose vidutiniškai per mėnesį nubyra (laikinai ar visam) <b>apie 15 % (šokiai) iki 23 % (plaukimas)</b> mokinių, o naujų mokinių pritraukimas per metus krito 11–16 %.
           <span class="src"><a href="https://www.iclasspro.com/iclasspro-blog/2025-youth-activity-industry-trends" target="_blank" rel="noopener">iClassPro 2025 tyrimas</a>, JAV klientų duomenys, imties dydis neskelbiamas.</span></li>
-        <li class="own">ExoClass pati teigia: <b>„Kasdien sutaupykite iki 5 valandų“</b>.
-          <span class="src">Įmonės teiginys iš <a href="https://exoclass.lt" target="_blank" rel="noopener">exoclass.lt</a>, nepriklausomai nepatikrintas.</span></li>
       </ul>
     </div>
 
@@ -808,7 +820,7 @@ var QI = {}; Q.forEach(function(q,i){ QI[q.id]=i; });
    2. SCORING MODEL (transparent, one place)
    Max points: size 20 + groups 10 + reg 10* + pay 20 + att 8 + hours 18 + growth 8 + auto 6 = 100.
    (*reg max used is 8, so the real ceiling is 98; we clamp to 0..100.)
-   Bands (v3.1): <=39 LOW "Dar ne laikas" · 40–69 MEDIUM "Verta išbandyti" · >=70 HIGH "Pats laikas".
+   Bands (v3.1): <=39 LOW "Dar ne laikas" · 40–69 MEDIUM "Verta išbandyti" · >=70 HIGH "Laikas jau dabar".
    (internal keys stay anksti / laikas / veluojate so the e-mail auto-reply keeps working.)
    Honesty guards (so the model CAN say "you don't need us"):
     G1: <=50 kids AND <=2 admin h/week AND no payment chasing -> capped at 35 (Dar anksti).
@@ -1123,11 +1135,8 @@ var IC={
     line:'50-ies Vilniaus mokyklų svetainėse kainą rodo tik 129 iš 1 536 būrelių (8 %).',
     src:'71 % ir 42 %: rėmėjo įrašas American Camp Association svetainėje, JAV stovyklos, 2026. Lietuvos duomenų dar neturime. 8 %: mūsų 50-ies Vilniaus mokyklų svetainių patikra, 2026 m. rugsėjis.'},
   money:{eye:'Trumpa pauzė · automatika', t:'Sąskaitos ir priminimai be rankų darbo',
-    big:'80 %', unit:'', cap:'„80 % klientų sąskaitas apmoka per pirmąją savaitę“, sako exoclass.lt.',
+    big:'20 000+', unit:'vaikų', cap:'20 000+ vaikų užsiėmimai tvarkomi per ExoClass.',
     body:function(){ var box=document.createElement('div');
-      var tiles=document.createElement('div'); tiles.className='ic-tiles';
-      [['€10M+','mokėjimų per platformą'],['70+','būrelių partnerių'],['5+ val.','per savaitę žada exoclass.lt']].forEach(function(x){ tiles.insertAdjacentHTML('beforeend','<div><b>'+esc(x[0])+'</b><i>'+esc(x[1])+'</i></div>'); });
-      box.appendChild(tiles);
       var ul=document.createElement('ul'); ul.className='ic-flow'; ul.setAttribute('aria-label','Automatinis kelias: registracija, sutartis, sąskaita, priminimas, apmokėta');
       var fl=document.createElement('span'); fl.className='fl'; ul.appendChild(fl);
       var st=[['ph-user-plus','Registracija'],['ph-signature','Sutartis'],['ph-receipt','Sąskaita'],['ph-bell-ringing','Priminimas'],['ph-check','Apmokėta']], lis=[];
@@ -1136,7 +1145,7 @@ var IC={
       lis.forEach(function(li,i){ icLater(function(){ li.classList.add('on'); },200+i*560); });
       box.appendChild(ul); return box; },
     line:'Perkelkite savo būrelį į ateitį: jūs mokote vaikus, sistema tvarko popierius.',
-    src:'80 % ir €10M+: exoclass.lt ir įkūrėjų interviu Tech Philomaths (2026), įmonės duomenys. 70+: ExoClass partnerių sąrašas. 5+ val.: exoclass.lt teiginys, nepriklausomai nematuota.'}
+    src:'Šaltinis: ExoClass duomenys, 2026-09-28.'}
 };
 var icTimers=[]; function icLater(f,ms){ icTimers.push(setTimeout(f,reduce?0:ms)); }
 function icClear(){ icTimers.forEach(clearTimeout); icTimers=[]; if(icTimer){ clearInterval(icTimer); icTimer=null; } }
@@ -1173,7 +1182,6 @@ function renderThanks(){ if(!THANKS_VIDEO) return; var v=$('r-thx-v'); if(!v.dat
 /* instant micro-feedback banners on the next question */
 function questionFact(){
   var t='';
-  if(cur===QI.att && (A[QI.pay]===0||A[QI.pay]===1)) t='exoclass.lt duomenimis, 80 % klientų sąskaitas apmoka per pirmąją savaitę (įmonės teiginys).';
   if(cur===QI.growth && A[QI.hours]!=null){ var h=Q[QI.hours].opts[A[QI.hours]]; t='Jūsų '+h.lo+'–'+h.hi+' val. per savaitę per mokslo metus yra apie '+(h.lo*36)+'–'+(h.hi*36)+' val.'; }
   $('q-fact').hidden=!t; $('q-fact-t').textContent=t;
 }
@@ -1183,7 +1191,7 @@ function renderWhere(){
   var pct=result.pct, mark=$('r-mark');
   mark.style.left='0%'; $('r-mark-t').textContent='Jūs · '+pct+'%';
   requestAnimationFrame(function(){ requestAnimationFrame(function(){ mark.style.left=Math.max(1,Math.min(99,pct))+'%'; }); });
-  $('r-scale-sr').textContent='Jūsų rezultatas '+pct+' % skalėje: iki 39 dar ne laikas, 40–69 verta išbandyti, 70 ir daugiau pats laikas.';
+  $('r-scale-sr').textContent='Jūsų rezultatas '+pct+' % skalėje: iki 39 dar ne laikas, 40–69 verta išbandyti, 70 ir daugiau laikas jau dabar.';
   var v=VERT[A[QI.type]]||VERT[9];
   $('r-peers').innerHTML = v.n
     ? '<p style="font-weight:700">Bent '+esc(v.n)+' '+esc(v.cap)+'.</p>'+(v.logos.length?'<div class="peer-logos" style="justify-content:flex-start">'+v.logos.map(function(k){ return logoFig(k,true); }).join('')+'</div>':'<p class="muted small">Jų logotipų viešai dar nerodome.</p>')
@@ -1204,7 +1212,7 @@ function renderAfter(){
            ['ph-receipt','Sąskaitos ir priminimai išeina patys','Skolininkų sąrašas ir automatiniai priminimai vietoje rankinio sekimo.'],
            ['ph-chart-line-up','Matote pajamas ir registracijas realiu laiku','Ir galite spręsti, kur pildyti grupes.']];
     if(auto.indexOf(3)>-1||auto.indexOf(2)>-1) items.splice(2,0,['ph-signature','Sutartys pasirašomos internetu','NVŠ sutartys generuojamos, krepšelis pritaikomas sąskaitose.']);
-    $('r-after-note').textContent='Tai sistemos galimybės, ne pažadėti skaičiai. exoclass.lt duomenimis, 80 % klientų sąskaitas apmoka per pirmąją savaitę (įmonės teiginys).';
+    $('r-after-note').textContent='Tai sistemos galimybės, ne pažadėti skaičiai.';
   }
   $('r-after').innerHTML=items.map(function(g){ return '<li><i class="ph '+g[0]+'" aria-hidden="true"></i><div><b>'+esc(g[1])+'</b><br><span class="muted small">'+esc(g[2])+'</span></div></li>'; }).join('');
 }
@@ -1218,8 +1226,8 @@ var COPY={
   laikas:{v:'Verta išbandyti',cls:'v-laikas',h:'Verta išbandyti nuo vieno žingsnio',
     lead:'Dalį administravimo sistema jau perimtų. Visko keisti iš karto nereikia.',
     ctaH:'Pažiūrėkime kartu',ctaP:'Palikite el. paštą. Jei norite, pažymėkite demo: susisieksime ir sukursime jums demo paskyrą.',ctaB:'Toliau'},
-  veluojate:{v:'Pats laikas',cls:'v-veluojate',h:'Pats laikas sistemai',
-    lead:'Priminimai, lentelės ir rankinis darbas jau kas savaitę ima daug jūsų komandos laiko.',
+  veluojate:{v:'Laikas jau dabar',cls:'v-veluojate',h:'Kas savaitę apie {hi} val. atiduodate lentelėms ir priminimams.',
+    lead:'Taip rodo jūsų atsakymai. Tai jūsų skaičius, ne mūsų pažadas. ExoClass tėvų registraciją ir mokėjimus perima nuo pirmos grupės.',
     ctaH:'Pradėkime šį mėnesį',ctaP:'Palikite el. paštą. Jei norite, pažymėkite demo: susisieksime ir sukursime jums demo paskyrą.',ctaB:'Toliau'}
 };
 
@@ -1280,9 +1288,17 @@ var REG_URL='https://exoclass.lt/registracija/?src='+encodeURIComponent(SRC);
 var CAL_URL='https://calendar.app.google/q3UA1VBDoaDDK1dr5';
 var LOW_URL='https://krisvas.lt/?src=exo-testas-low'; /* placeholder: Kris Vas provider newsletter / ExoInsider sign-up */
 var lead={sent:false};
+/* {hi} in the HIGH title = upper end of their own Q7 admin-hours answer (20+ shown as "20+") */
+function adminHi(A){ var o=Q[QI.hours].opts[A[QI.hours]]; return o.lo>=20 ? '20+' : String(o.hi); }
+/* 14-day A/B: ?gate=0 skips the contact gate (result first, optional email card under it). Default gate ON. */
+var GATE=(function(){ try{ return new URLSearchParams(location.search).get('gate')==='0' ? 0 : 1; }catch(e){ return 1; } })();
 function computeResult(){ result=MODEL.score(A); result.band=BAND[result.key]; return result; }
 function toGate(){
   computeResult();
+  if(!GATE){ /* variant B: no gate */
+    track('exo_test_complete',{repo:'neuron-ar',path:'/exo-testas/',src:SRC,mode:'full',band:result.band,score:result.pct,demo:0,gate:0});
+    finish(); return;
+  }
   sfx.next(); show('s-gate'); track('exo_gate_view',{band:result.band});
   setTimeout(function(){ $('g-title').focus({preventScroll:true}); },60);
 }
@@ -1296,20 +1312,30 @@ $('gate').addEventListener('submit',function(e){
   lead={sent:false,em:em,phone:phone,demo:demo};
   if(!result) computeResult();
   /* anonymous completion event (no e-mail, no answers): src + band + score */
-  track('exo_test_complete',{repo:'neuron-ar',path:'/exo-testas/',src:SRC,mode:'full',band:result.band,score:result.pct,demo:demo?1:0});
+  track('exo_test_complete',{repo:'neuron-ar',path:'/exo-testas/',src:SRC,mode:'full',band:result.band,score:result.pct,demo:demo?1:0,gate:1});
   finish();
   sendLead({em:em,nm:em.split('@')[0],demo:demo,phone:phone,org:'',hp:$('g-company').value},
     {btn:null,err:null,label:null,from:'gate'});
 });
 
+$('r-mail').addEventListener('submit',function(e){
+  e.preventDefault();
+  var email=$('m-email'), err=$('m-err'); err.textContent=''; email.removeAttribute('aria-invalid');
+  var em=email.value.trim();
+  if(!EMAIL_RE.test(em)){ email.setAttribute('aria-invalid','true'); err.textContent='Įrašykite el. paštą, kad galėtume atsiųsti rezultatą.'; email.focus(); return; }
+  if(lead.sent){ return; }
+  var phone=$('m-phone').value.trim().slice(0,40), demo=$('m-demo').checked;
+  lead={sent:false,em:em,phone:phone,demo:demo}; $('m-submit').disabled=true;
+  sendLead({em:em,nm:em.split('@')[0],demo:demo,phone:phone,org:'',hp:$('m-company').value},{btn:null,err:null,label:null,from:'card'});
+});
 function renderCTA(){
   var k=result.key, A_=A, body='', btns='', h='';
   var reg='<a class="btn pri block" id="r-reg" href="'+esc(REG_URL)+'" target="_blank" rel="noopener">Registracija <i class="ph ph-arrow-right" aria-hidden="true"></i></a>';
-  var cal=function(pri){ return '<a class="btn '+(pri?'pri':'sec')+' block" id="r-cal" href="'+CAL_URL+'" target="_blank" rel="noopener">20 min su Indre <i class="ph ph-calendar-check" aria-hidden="true"></i></a>'; };
+  var cal=function(pri,label){ return '<a class="btn '+(pri?'pri':'sec')+' block" id="r-cal" href="'+CAL_URL+'" target="_blank" rel="noopener">'+(label||'20 min su Indre')+' <i class="ph ph-calendar-check" aria-hidden="true"></i></a>'; };
   if(k==='veluojate'){
     h='3 priežastys iš jūsų atsakymų';
     body='<ul class="reasons">'+reasons(A_,result).map(function(t){ return '<li><i class="ph ph-arrow-circle-right" aria-hidden="true"></i><span>'+esc(t)+'</span></li>'; }).join('')+'</ul>';
-    btns=reg+cal(false);
+    btns=cal(true,'Pasirinkti 20 min. laiką su Indre')+reg.replace('btn pri block','btn sec block')+'<p class="muted small" style="margin:4px 0 0;text-align:center">Indrė parodys sistemą su jūsų grupe. Jei netiks, pasakys tiesiai.</p>';
   } else if(k==='laikas'){
     h='Pradėkim nuo…';
     body='<p>'+esc(startFrom(A_))+'</p><p class="muted small" style="margin-top:8px">Per 20 min Indrė parodys būtent tą dalį su jūsų būrelio pavyzdžiu. Jei netiks, tiesiog pasakykite.</p>';
@@ -1347,7 +1373,7 @@ function lowChanges(A){
 function finish(){
   if(!result) computeResult(); var c=COPY[result.key]; var hs=MODEL.hours(A); var tp=pickTiers(A,hs); tp.shown=(result.key!=='anksti' && hs.hi>=2);
   $('r-verdict').textContent=c.v; $('r-verdict').className='verdict '+c.cls;
-  $('r-title').textContent=c.h; $('r-lead').textContent=(result.key==='anksti' ? anktiLead(A) : c.lead);
+  $('r-title').textContent=c.h.replace('{hi}', adminHi(A)); $('r-lead').textContent=(result.key==='anksti' ? anktiLead(A) : c.lead);
   (function(){ var show=(result.key!=='anksti' && A[QI.size]>=2); $('r-risk').hidden=!show; if(show) track('exo_risk_card',{size:A[QI.size]}); })();
   $('r-reasons').innerHTML=reasons(A,result).map(function(t){ return '<li><i class="ph ph-arrow-circle-right" aria-hidden="true"></i><span>'+esc(t)+'</span></li>'; }).join('');
   // hours
@@ -1362,7 +1388,7 @@ function finish(){
   $('r-how').innerHTML=how.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('');
   // gains
   $('r-gains').innerHTML=gains(A,result.key).map(function(g){ return '<li><i class="ph '+g[0]+'" aria-hidden="true"></i><div><b>'+esc(g[1])+'</b><br><span class="muted small">'+esc(g[2])+'</span></div></li>'; }).join('');
-  $('r-more').open=false; renderCTA(); $('r-why').hidden=(result.key==='veluojate'); /* HIGH already shows the 3 reasons in the CTA card */
+  $('r-more').open=false; renderCTA(); $('r-mail').hidden=!!GATE; if(!GATE){ $('r-sent').textContent=''; } $('r-why').hidden=(result.key==='veluojate'); /* HIGH already shows the 3 reasons in the CTA card */
   result.hours=hs; result.tiers=tp;
   track('exo_result_'+result.key,{pct:result.pct});
   track('value',{verdict:result.key});
@@ -1377,7 +1403,7 @@ function finish(){
 }
 function fmt(x){ return String(x).replace('.',','); }
 
-$('restart').addEventListener('click',function(){ A=new Array(Q.length).fill(null); cur=0; result=null; sfx.back(); show('s-intro'); });
+$('restart').addEventListener('click',function(){ A=new Array(Q.length).fill(null); cur=0; result=null; lead={sent:false}; try{ $('m-submit').disabled=false; $('m-sent').textContent=''; }catch(x){} sfx.back(); show('s-intro'); });
 
 $('f-back').addEventListener('click',function(){ sfx.back(); show('s-res'); });
 $('d-back').addEventListener('click',function(){ show('s-res'); });
@@ -1404,7 +1430,7 @@ function resultPayload(){
 }
 function buildMessage(org,phone,demo){
   var r=result||{}, tp=r.tiers||{}, hs=r.hours||{};
-  var lines=['ExoClass testas v3.1', 'DATA: src='+SRC+' | band='+(r.band||'-')+' | score='+(r.pct!=null?r.pct:'-')+' | wants_demo='+(demo?'true':'false')+' | phone='+(phone||'-'),
+  var lines=['ExoClass testas v3.1', 'DATA: src='+SRC+' | gate='+GATE+' | band='+(r.band||'-')+' | score='+(r.pct!=null?r.pct:'-')+' | wants_demo='+(demo?'true':'false')+' | phone='+(phone||'-'),
     'Nori demo su Indre: '+(demo?'TAIP':'ne'),
     'Organizacija: '+(org||'-'),
     'Telefonas: '+(phone||'-'),
@@ -1428,9 +1454,9 @@ function sendLead(o, ui){
   var body={ name:o.nm.slice(0,120), email:o.em.slice(0,200), intent:o.demo?'ExoClass testas + demo':'ExoClass testas', message:buildMessage(o.org||'', o.phone||'', o.demo), company:o.hp||'', autoreply:true, result:resultPayload(),
     src:SRC, band:r_.band||null, score:(r_.pct!=null?r_.pct:null), wants_demo:!!o.demo, phone:(o.phone||'').slice(0,40)||null };
   if(!ui.btn){ /* gate mode: result is already on screen, send quietly, report in one line */
-    var line=$('r-sent'); if(line) line.textContent='Siunčiame rezultatą į '+o.em+'…';
-    var ok=function(){ lead.sent=true; track('exo_lead_submit',{verdict:r_.key,band:r_.band,demo:o.demo?1:0,from:'gate'}); track('cta',{step:'lead'}); if(line) line.textContent='Rezultatą išsiuntėme į '+o.em+'. Jei laiško nėra, pažiūrėkite „Reklamos“ ar „Šlamšto“ aplanke.'; };
-    var bad=function(msg){ track('exo_lead_fail',{band:r_.band}); if(line) line.textContent=msg; };
+    var line=$(GATE?'r-sent':'m-sent'); if(line) line.textContent='Siunčiame rezultatą į '+o.em+'…';
+    var ok=function(){ lead.sent=true; track('exo_lead_submit',{verdict:r_.key,band:r_.band,demo:o.demo?1:0,from:GATE?'gate':'card',gate:GATE}); track('cta',{step:'lead'}); if(line) line.textContent='Rezultatą išsiuntėme į '+o.em+'. Jei laiško nėra, pažiūrėkite „Reklamos“ ar „Šlamšto“ aplanke.'; };
+    var bad=function(msg){ track('exo_lead_fail',{band:r_.band,gate:GATE}); if(line) line.textContent=msg; };
     var c2 = window.AbortController ? new AbortController() : null; var t2=setTimeout(function(){ if(c2) c2.abort(); },15000);
     try{
       fetch(SUPABASE_URL+'/functions/v1/submit-inquiry',{ method:'POST', headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON}, body:JSON.stringify(body), signal:c2?c2.signal:undefined })
