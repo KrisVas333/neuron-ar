@@ -239,6 +239,7 @@ footer p + p{margin-top:8px}
 .scale .labels span{text-align:center}
 .scale .mark{position:absolute;top:-8px;left:0;width:4px;height:30px;background:var(--ink);border-radius:4px;transform:translateX(-2px);transition:left 1.1s cubic-bezier(.16,1,.3,1)}
 .scale .mark b{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:13px;white-space:nowrap;background:var(--ink);color:#fff;border-radius:999px;padding:2px 8px}
+.scale .mark.edge-r b{left:auto;right:0;transform:none}.scale .mark.edge-l b{left:0;transform:none}
 .bands{display:grid;gap:8px;margin-top:8px}
 .band{display:grid;grid-template-columns:78px 1fr 24px;gap:10px;align-items:center;font-size:15px}
 .band .bt{height:14px;background:var(--sunk);border-radius:999px;overflow:hidden}
@@ -363,6 +364,11 @@ footer p + p{margin-top:8px}
 .gate-promise i{font-size:20px;flex:0 0 auto;margin-top:1px}
 .cta-row{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .coi-line{font-size:14.5px;line-height:1.5;color:var(--muted);margin:12px 0 0}
+/* KV-THUMBS: line thumbnail at the top of the result card (ExoClass purple, venture canon) */
+.r-thumb{display:block;width:48px;height:48px;margin:0 auto 10px;color:var(--p)}
+/* /KV-THUMBS */
+.insider-line{font-size:15.5px;line-height:1.5;margin:6px 0 0;text-align:center;color:var(--ink-2)}
+.insider-line a{font-weight:700;color:var(--p-ink)}
 .sent-line{font-size:14.5px;color:var(--muted);margin:10px 0 0;text-align:center}
 .change-list{margin:10px 0 0;padding-left:20px;line-height:1.6}
 </style>
@@ -464,7 +470,7 @@ footer p + p{margin-top:8px}
     </section>
 
     <div class="trust" id="trust" aria-label="ExoClass skaičiais">
-      <div><b data-count="20" data-suf=" 000+">20 000+</b><span>vaikų užsiėmimai tvarkomi per ExoClass</span></div>
+      <div><b data-count="20" data-suf=" 000+">20 000+</b><span>vaikų ExoClass sistemoje</span></div>
       <div><b data-count="700" data-suf="+">700+</b><span>lokacijų</span></div>
       <div><b data-count="70" data-suf="+">70+</b><span>partnerių būrelių</span></div>
     </div>
@@ -556,6 +562,7 @@ footer p + p{margin-top:8px}
       </div>
     </div>
     <div class="res-head">
+      <svg class="r-thumb" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="10" y="8" width="28" height="34" rx="4"/><path d="M18 8V6h12v2M18 4.5h12" /><path d="m17 25 5 5 9-10"/><path d="M17 36h14" stroke-width="1"/></svg>
       <div class="gauge" aria-hidden="true">
         <svg viewBox="0 0 120 120"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3097D7"/><stop offset="1" stop-color="#AE4197"/></linearGradient></defs>
           <circle cx="60" cy="60" r="50" fill="none" stroke="#E4E9F0" stroke-width="12"/>
@@ -1135,7 +1142,7 @@ var IC={
     line:'50-ies Vilniaus mokyklų svetainėse kainą rodo tik 129 iš 1 536 būrelių (8 %).',
     src:'71 % ir 42 %: rėmėjo įrašas American Camp Association svetainėje, JAV stovyklos, 2026. Lietuvos duomenų dar neturime. 8 %: mūsų 50-ies Vilniaus mokyklų svetainių patikra, 2026 m. rugsėjis.'},
   money:{eye:'Trumpa pauzė · automatika', t:'Sąskaitos ir priminimai be rankų darbo',
-    big:'20 000+', unit:'vaikų', cap:'20 000+ vaikų užsiėmimai tvarkomi per ExoClass.',
+    big:'20 000+', unit:'vaikų', cap:'20 000+ vaikų ExoClass sistemoje.',
     body:function(){ var box=document.createElement('div');
       var ul=document.createElement('ul'); ul.className='ic-flow'; ul.setAttribute('aria-label','Automatinis kelias: registracija, sutartis, sąskaita, priminimas, apmokėta');
       var fl=document.createElement('span'); fl.className='fl'; ul.appendChild(fl);
@@ -1189,7 +1196,7 @@ function questionFact(){
 /* result visuals */
 function renderWhere(){
   var pct=result.pct, mark=$('r-mark');
-  mark.style.left='0%'; $('r-mark-t').textContent='Jūs · '+pct+'%';
+  mark.style.left='0%'; mark.classList.toggle('edge-r',pct>85); mark.classList.toggle('edge-l',pct<15); $('r-mark-t').textContent='Jūs · '+pct+'%';
   requestAnimationFrame(function(){ requestAnimationFrame(function(){ mark.style.left=Math.max(1,Math.min(99,pct))+'%'; }); });
   $('r-scale-sr').textContent='Jūsų rezultatas '+pct+' % skalėje: iki 39 dar ne laikas, 40–69 verta išbandyti, 70 ir daugiau laikas jau dabar.';
   var v=VERT[A[QI.type]]||VERT[9];
@@ -1286,7 +1293,9 @@ var BAND={anksti:'low',laikas:'medium',veluojate:'high'};
 var SRC=(params.src||params.utm_source||'direct').slice(0,40);
 var REG_URL='https://exoclass.lt/registracija/?src='+encodeURIComponent(SRC);
 var CAL_URL='https://calendar.app.google/q3UA1VBDoaDDK1dr5';
-var LOW_URL='https://krisvas.lt/?src=exo-testas-low'; /* placeholder: Kris Vas provider newsletter / ExoInsider sign-up */
+/* provider newsletter: krisvas.lt/bureliams (live 2026-10-05, ExoInsider block). ?src=exo-testas-<band> per band */
+function insiderUrl(band){ return 'https://krisvas.lt/bureliams?src=exo-testas-'+band; }
+var LOW_URL=insiderUrl('low');
 var lead={sent:false};
 /* {hi} in the HIGH title = upper end of their own Q7 admin-hours answer (20+ shown as "20+") */
 function adminHi(A){ var o=Q[QI.hours].opts[A[QI.hours]]; return o.lo>=20 ? '20+' : String(o.hi); }
@@ -1343,8 +1352,10 @@ function renderCTA(){
   } else {
     h='Kas pakeistų šį atsakymą';
     body='<ul class="change-list">'+lowChanges(A_).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('')+'</ul><p class="muted small" style="margin-top:10px">Kol kas sistemos jums nesiūlome. Jei norite kartą per savaitę gauti praktinių patarimų būrelių vadovams, užsiprenumeruokite laišką.</p>';
-    btns='<a class="btn sec block" id="r-low" href="'+LOW_URL+'" target="_blank" rel="noopener">Laiškas būrelių vadovams <i class="ph ph-envelope-simple" aria-hidden="true"></i></a>';
+    btns='<a class="btn sec block" id="r-low" href="'+LOW_URL+'" target="_blank" rel="noopener">Būrelių vadovams: viena mintis per savaitę <i class="ph ph-envelope-simple" aria-hidden="true"></i></a>';
   }
+  /* every band: one line + link to the weekly provider letter */
+  btns+='<p class="insider-line">Kas savaitę: vienas būrelio vadovo sprendimas. <a id="r-insider" href="'+esc(insiderUrl(result.band))+'" target="_blank" rel="noopener">ExoInsider →</a></p>';
   $('r-cta-h').textContent=h; $('r-cta-body').innerHTML=body; $('r-cta-btns').innerHTML=btns;
   [].forEach.call($('r-cta-btns').querySelectorAll('a'),function(a){ a.addEventListener('click',function(){
     track(a.id==='r-cal'?'exo_booking_click':'exo_cta_click',{to:a.id,band:result.band,src:SRC}); }); });
