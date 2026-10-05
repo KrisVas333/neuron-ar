@@ -367,6 +367,9 @@ footer p + p{margin-top:8px}
 /* KV-THUMBS: line thumbnail at the top of the result card (ExoClass purple, venture canon) */
 .r-thumb{display:block;width:48px;height:48px;margin:0 auto 10px;color:var(--p)}
 /* /KV-THUMBS */
+.compare{margin-top:14px;padding:12px 14px;border:1px dashed var(--line);border-radius:var(--r);font-size:15.5px;line-height:1.5;color:var(--ink-2)}
+.compare-list{margin:8px 0 0 20px;padding:0}
+.compare-list li{margin-top:4px}
 .insider-line{font-size:15.5px;line-height:1.5;margin:6px 0 0;text-align:center;color:var(--ink-2)}
 .insider-line a{font-weight:700;color:var(--p-ink)}
 .sent-line{font-size:14.5px;color:var(--muted);margin:10px 0 0;text-align:center}
@@ -1356,6 +1359,12 @@ function renderCTA(){
   }
   /* every band: one line + link to the weekly provider letter */
   btns+='<p class="insider-line">Kas savaitę: vienas būrelio vadovo sprendimas. <a id="r-insider" href="'+esc(insiderUrl(result.band))+'" target="_blank" rel="noopener">ExoInsider →</a></p>';
+  /* bias vartai 2026-10-05: HIGH + MEDIUM gauna neutralų palyginimo sąrašą, be jokios sistemos pavadinimo */
+  if(k==='veluojate'||k==='laikas'){
+    body+='<div class="compare"><p><b>Prieš renkantis bet kurią sistemą, palyginkite bent dvi.</b> Paklauskite kiekvieno tiekėjo:</p><ol class="compare-list">'
+      +'<li>kiek kainuoja išėjimas ir duomenų eksportas,</li><li>kas vyksta, kai tėvas nesumoka,</li>'
+      +'<li>ar NVŠ krepšelis apskaitomas automatiškai,</li><li>kas atsako telefonu per 24 h.</li></ol></div>';
+  }
   $('r-cta-h').textContent=h; $('r-cta-body').innerHTML=body; $('r-cta-btns').innerHTML=btns;
   [].forEach.call($('r-cta-btns').querySelectorAll('a'),function(a){ a.addEventListener('click',function(){
     track(a.id==='r-cal'?'exo_booking_click':'exo_cta_click',{to:a.id,band:result.band,src:SRC}); }); });
