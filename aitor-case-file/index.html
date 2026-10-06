@@ -20,59 +20,80 @@ html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)
 button{font:inherit;color:inherit;cursor:pointer}
 img{image-rendering:pixelated}
 
-/* top bar: name left, case file chips right */
-.top{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:var(--bg);z-index:5}
+/* ---------- top bar: Neuron progress left, mission chips right, calm timer line at the bottom ---------- */
+.top{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 24px 12px;background:var(--bg);z-index:5}
+.who{display:flex;align-items:center;gap:12px;min-width:0}
+.who img{height:64px;width:48px;object-fit:cover;object-position:top;border-radius:10px;flex:none}
+.who .t{display:flex;flex-direction:column;gap:2px;min-width:0}
 .brand{color:var(--muted);font-size:20px;font-weight:600;white-space:nowrap}
 .brand span{color:#666;font-weight:400;margin-left:10px}
+.free{font-size:18px;color:var(--soft)}
+.free b{color:var(--green)}
+.demo{display:inline-block;padding:2px 10px;border-radius:999px;background:#3a3112;color:#ffd866;font-size:15px;font-weight:600;width:max-content}
+.demo[hidden]{display:none}
+.right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .chips{display:flex;gap:8px;flex-wrap:nowrap;justify-content:flex-end}
-.chip{border:1px solid var(--edge);border-radius:999px;padding:6px 14px;color:#6f6f6f;display:flex;align-items:center;gap:8px;font-size:18px;transition:all .4s}
+.chip{border:1px solid var(--edge);border-radius:999px;padding:6px 14px;color:#8a8a8a;display:flex;align-items:center;gap:8px;font-size:19px;transition:all .4s;white-space:nowrap}
+.chip .n{font-size:20px}
 .chip .lab{font-family:var(--pixel);font-size:11px}
 .chip .kw{color:var(--ink);font-weight:600}
 .chip.lit{border-color:var(--green);color:var(--green);background:rgba(61,220,132,.10)}
+.chip.flick{border:1px dashed var(--green);color:var(--green);animation:flick 1.4s ease-in-out infinite}
+@keyframes flick{0%,100%{opacity:.35}50%{opacity:.9}}
 .chip.pop{animation:pop .8s}
-.demo{position:absolute;top:58px;left:24px;padding:3px 12px;border-radius:999px;background:#3a3112;color:#ffd866;font-size:16px;font-weight:600;vertical-align:middle}
-.donebtn{border:1px solid var(--green);background:var(--green);color:#0b1a10;border-radius:999px;padding:10px 24px;font-weight:700;font-size:20px;white-space:nowrap;position:absolute;top:60px;right:24px;padding:6px 18px;font-size:18px;box-shadow:0 0 0 5px rgba(61,220,132,.15)}
-.donebtn[hidden]{display:none}
-.right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
+.donebtn{border:1px solid var(--green);background:var(--green);color:#0b1a10;border-radius:999px;padding:6px 18px;font-weight:700;font-size:18px;white-space:nowrap;box-shadow:0 0 0 5px rgba(61,220,132,.15)}
+.donebtn[hidden]{display:none}
+.timer{position:absolute;left:0;right:0;bottom:0;height:3px;background:#1f1f1f}
+.timer i{display:block;height:100%;width:0;background:#4f7f63;transition:width 1s linear}
 
-/* home: objective + search */
-.home{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:96px 16px 40px;text-align:center}
+/* ---------- home: Neuron's line + the 3 mission questions + search ---------- */
+.home{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:110px 16px 40px;text-align:center}
 .obj{display:flex;align-items:center;gap:16px;max-width:820px;text-align:left;font-size:26px;color:var(--soft);margin:0}
-.obj img{width:72px;height:72px;border-radius:50%;background:#2a2a2a;flex:none}
+.obj img{width:84px;height:112px;object-fit:cover;object-position:top;border-radius:14px;flex:none}
 .obj b{color:var(--ink)}
+.mission{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;width:min(760px,100%);text-align:left}
+.mission li{background:var(--card);border:1px solid var(--edge);border-radius:14px;padding:12px 18px;font-size:24px;font-weight:600}
+.mission li span{color:var(--muted);margin-right:10px;font-weight:400}
+.method{color:var(--muted);font-size:20px}
+.method b{color:var(--soft);font-weight:600}
 #homeSlot{width:min(760px,100%);display:flex;flex-direction:column;align-items:center;gap:10px}
 .started .home{display:none}
 
 form.search{display:flex;align-items:center;gap:8px;width:min(760px,100%);background:var(--card);border:1px solid var(--edge);border-radius:999px;padding:8px 8px 8px 26px}
 form.search input{flex:1;min-width:0;background:transparent;border:0;color:var(--ink);font:inherit;font-size:24px;padding:12px 0;outline:none}
 form.search button{background:#fff;color:#111;border:0;border-radius:999px;padding:12px 26px;font-weight:700;font-size:22px}
-form.search button:disabled{opacity:.4}
+form.search button:disabled,form.search input:disabled{opacity:.4}
 form.search:focus-within{border-color:#555}
-.note{color:#777;font-size:20px;min-height:1.4em;text-align:center}
+.note{color:#9a9a9a;font-size:20px;min-height:1.4em;text-align:center}
 .dock{display:none}
 .started .dock{display:flex;flex-direction:column;align-items:center;gap:6px;position:fixed;left:0;right:0;bottom:0;padding:16px 16px 18px;background:linear-gradient(transparent,var(--bg) 35%);z-index:5}
 
-/* canvas: one card per turn, flowing left -> right */
-.canvas{display:none;position:relative;overflow-x:auto;padding:104px 60px 220px;gap:120px;align-items:flex-start;min-height:100vh}
+/* ---------- canvas: one card per turn, flowing left -> right ---------- */
+.canvas{display:none;position:relative;overflow-x:auto;padding:120px 60px 220px;gap:120px;align-items:flex-start;min-height:100vh}
 .started .canvas{display:flex}
 .col{flex:none;width:520px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
 .card{background:var(--card);border:1px solid var(--edge);border-radius:16px;padding:22px 24px 36px;position:relative}
-.card h2{margin:0 0 12px;font-size:26px;line-height:1.3;font-weight:700}
+.card h2{margin:0 0 8px;font-size:26px;line-height:1.3;font-weight:700}
+.lights{display:flex;gap:14px;margin:0 0 12px;font-size:15px;font-weight:600;letter-spacing:.06em;color:#6a6a6a}
+.lights span{display:flex;align-items:center;gap:6px}
+.lights span::before{content:"";width:11px;height:11px;border-radius:50%;background:#3a3a3a}
+.lights span.on{color:var(--green)}
+.lights span.on::before{background:var(--green);box-shadow:0 0 8px rgba(61,220,132,.7)}
 .card ul{margin:0;padding:0;list-style:none}
 .card li{color:var(--soft);font-size:23px;margin:8px 0;padding-left:20px;position:relative}
 .card li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:#777}
 .card li b{color:var(--ink)}
 .pill{position:absolute;left:50%;bottom:-21px;transform:translateX(-50%);background:#fff;color:#111;border:0;border-radius:999px;padding:9px 22px;font-size:19px;font-weight:700;white-space:nowrap}
-.tipline{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:21px;margin-top:20px}
+.tipline{display:flex;align-items:center;gap:10px;color:var(--soft);font-size:21px;margin-top:20px}
 .tipline img{height:46px;width:auto;flex:none}
 .follow{display:flex;flex-direction:column;gap:10px;padding-left:28px}
+.follow .lbl{font-size:15px;color:#777;letter-spacing:.06em;font-weight:600}
 .fu{background:var(--card);border:1px solid var(--edge);border-radius:14px;padding:10px 16px;text-align:left}
 .fu b{display:block;font-size:21px;font-weight:600}
 .fu span{display:block;font-size:19px;color:var(--muted)}
 .fu.sel{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset}
 .fu:disabled{cursor:default}
-/* wide: follow-up cards hang off the right side of the answer card */
 @media (min-width:761px){
   .col{width:auto;display:grid;grid-template-columns:520px 300px;column-gap:28px;row-gap:0;align-items:start}
   .col>.card{grid-column:1;grid-row:1}
@@ -82,7 +103,6 @@ form.search:focus-within{border-color:#555}
 .wires{position:absolute;left:0;top:0;pointer-events:none;z-index:0;overflow:visible}
 .wires path{stroke:var(--green);stroke-width:2;fill:none}
 
-/* skeleton loading inside a card */
 .load{display:flex;gap:16px;align-items:center}
 .load img{width:96px;height:auto;border-radius:12px;background:#fff;flex:none}
 .bars{flex:1;display:flex;flex-direction:column;gap:12px}
@@ -90,15 +110,21 @@ form.search:focus-within{border-color:#555}
 @keyframes sh{from{background-position:200% 0}to{background-position:-200% 0}}
 .slow{color:var(--muted);font-size:19px;margin-top:12px;min-height:1.2em}
 
-/* overlays (win + mentor menu) */
-.ov{position:fixed;inset:0;background:rgba(10,10,10,.88);display:none;padding:20px;z-index:10;overflow:auto}
+/* ---------- overlays: win (tap only), time's-up reveal, mentor menu ---------- */
+.ov{position:fixed;inset:0;background:rgba(10,10,10,.9);display:none;padding:20px;z-index:10;overflow:auto}
 .ov.show{display:flex}
-.box{margin:auto;background:var(--card);border:1px solid var(--edge);border-radius:20px;padding:30px;width:min(640px,100%);display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center}
+.box{margin:auto;background:var(--card);border:1px solid var(--edge);border-radius:20px;padding:24px 30px;width:min(680px,100%);display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
 .box h2{margin:0;font-size:28px;letter-spacing:.04em}
-.box img{width:130px;border-radius:14px;background:#fff}
+.box .hero{width:96px;height:auto;border-radius:16px}
 .wchips{display:flex;flex-direction:column;gap:8px;width:100%}
-.wchips .chip{justify-content:space-between;font-size:22px;padding:10px 18px}
+.wchips .chip{justify-content:space-between;font-size:22px;padding:10px 18px;white-space:normal}
+.rv{width:100%;display:flex;flex-direction:column;gap:10px;text-align:left}
+.rv div{background:#1b1b1b;border:1px solid var(--edge);border-radius:14px;padding:12px 16px;font-size:22px;color:var(--soft)}
+.rv div.got{border-color:var(--green)}
+.rv .rn{font-family:var(--sans);font-size:20px;vertical-align:middle}
+.rv b{display:block;font-family:var(--pixel);font-size:12px;color:var(--green);margin-bottom:6px;font-weight:400}
 .box p{margin:0}
+.back{font-size:24px;font-weight:700}
 .score b{font-size:30px}
 .muted{color:var(--muted)}
 .btn{background:#fff;color:#111;border:0;border-radius:999px;padding:12px 28px;font-weight:700;font-size:21px}
@@ -107,13 +133,12 @@ form.search:focus-within{border-color:#555}
 .tm button{background:#2a2a2a;border:1px solid var(--edge);border-radius:12px;padding:10px 12px;font-size:19px;text-align:left}
 
 @media (max-width:760px){
-  .top{flex-direction:column;align-items:flex-start;gap:8px;padding:10px 16px;background:var(--bg);border-bottom:1px solid #222}
-  .chips{justify-content:flex-start}
-  .chips{flex-wrap:wrap}
-  .demo,.donebtn{position:static}
-  .donebtn{margin:4px 0 2px}
+  .top{flex-direction:column;align-items:flex-start;gap:8px;padding:10px 16px 12px;border-bottom:1px solid #222}
+  .right{align-items:flex-start}
+  .chips{flex-wrap:wrap;justify-content:flex-start}
   .obj{font-size:23px}
-  .canvas{flex-direction:column;align-items:stretch;gap:56px;padding:230px 16px 220px;overflow-x:visible}
+  .mission li{font-size:22px}
+  .canvas{flex-direction:column;align-items:stretch;gap:56px;padding:260px 16px 220px;overflow-x:visible}
   .col{width:100%}
   .follow{padding-left:0}
   .wires{display:none}
@@ -126,14 +151,25 @@ form.search:focus-within{border-color:#555}
 <body>
 <div id="app">
   <div class="top">
-    <div class="brand">AItor Case File<span id="count"></span></div>
-    <div class="chips" id="slots"></div>
-    <div class="demo" id="demo" hidden>DEMO MODE — pre-written answers, not the real AI</div>
-    <button type="button" class="donebtn" id="doneBtn" hidden>CASE FILE COMPLETE — see it</button>
+    <div class="who">
+      <img id="neuronImg" src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop">
+      <div class="t">
+        <div class="brand">AItor Case File<span id="count"></span></div>
+        <div class="free" id="free"></div>
+        <div class="demo" id="demo" hidden>DEMO MODE — pre-written answers, not the real AI</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="chips" id="slots"></div>
+      <button type="button" class="donebtn" id="doneBtn" hidden>CASE FILE COMPLETE — see it</button>
+    </div>
+    <div class="timer" aria-hidden="true"><i id="timerBar"></i></div>
   </div>
 
   <section class="home">
-    <p class="obj"><img src="assets/neuron_scared_sm.png" alt="Neuron"><span><b>Neuron:</b> <span id="objective"></span></span></p>
+    <p class="obj"><img src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop"><span><b>Neuron:</b> <span id="objective"></span></span></p>
+    <ol class="mission" id="mission"></ol>
+    <div class="method">Good prompts light 3 lights: <b>TASK</b> · <b>CONTEXT</b> · <b>OUTCOME</b></div>
     <div id="homeSlot"></div>
   </section>
 
@@ -143,22 +179,32 @@ form.search:focus-within{border-color:#555}
 
   <!-- the one search box: lives on the home screen, then docks at the bottom -->
   <form class="search" id="ask" autocomplete="off">
-    <input id="q" name="q" type="text" maxlength="300" placeholder="Ask AItor a question..." enterkeyhint="send" aria-label="Your question for AItor">
+    <input id="q" name="q" type="text" maxlength="300" placeholder="Ask AItor..." enterkeyhint="send" aria-label="Your prompt for AItor">
     <button id="go" type="submit">Ask</button>
   </form>
   <div class="note" id="ctx"></div>
 </div>
 
-<!-- win -->
+<!-- win (opens only when the kid taps the green pill) -->
 <div class="ov" id="winOv">
   <div class="box">
-    <img src="assets/neuron_happy.gif" alt="Neuron is happy">
+    <img class="hero" src="assets/neuron_backflip.png" alt="Neuron backflips out of the slop">
     <h2 id="winTitle"></h2>
     <div class="wchips" id="winSlots"></div>
     <p class="score">It took you <b id="winCount">0</b> prompts.</p>
     <p id="winNote"></p>
     <p class="muted" id="winBonus"></p>
+    <p class="back" id="winBack"></p>
     <button class="btn" id="keepBtn" type="button">Keep asking</button>
+  </div>
+</div>
+
+<!-- time's up: reveal all 3 answers -->
+<div class="ov" id="revealOv">
+  <div class="box">
+    <h2 id="revealTitle"></h2>
+    <div class="rv" id="revealList"></div>
+    <p class="back" id="revealBack"></p>
   </div>
 </div>
 
@@ -179,43 +225,54 @@ const C = window.CASE_CONFIG;
 const params = new URLSearchParams(location.search);
 const MOCK = params.get("mock") === "1" || !C.anonKey;   // no key yet -> offline mock
 const $ = (id) => document.getElementById(id);
+const IDS = C.slots.map((s) => s.id);
 
 const S = {
-  found: {}, prompts: 0, sinceNew: 0,
+  found: {}, flicker: {}, prompts: 0, sinceNew: 0,
   turns: [],            // [{q, from:{turn,i}|null, r:reply|null}]
   branch: null,         // {turn, i} tapped on the latest card
   history: [], busy: false, lastSend: 0, slowNext: false, won: false,
+  timerEnd: 0, warned: false, timeUp: false, lastRender: 0,
   sessionId: (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)),
 };
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const poseSrc = (p) => p === "shrug" ? "assets/aitor_shrug_sm.png" : "assets/aitor_point_sm.png";
+const nFound = () => IDS.filter((id) => S.found[id]).length;
 
 /* ---------- static text ---------- */
 $("objective").textContent = C.objective;
+$("mission").innerHTML = C.slots.map((s) => `<li><span>${s.num}</span>${esc(s.question)}</li>`).join("");
 $("winTitle").textContent = C.win.title;
 $("winNote").textContent = C.win.notebook;
 $("winBonus").textContent = C.win.bonus;
-const DISCLOSE = "";   // line removed at Kris's request 2026-10-06
+$("winBack").textContent = C.endMessage;
+$("revealTitle").textContent = C.reveal.title;
+$("revealBack").textContent = C.endMessage;
 
-/* search box sits on the home screen until the first question, then docks at the bottom */
 function placeSearch() {
   const host = document.body.classList.contains("started") ? $("dock") : $("homeSlot");
   host.appendChild($("ask")); host.appendChild($("ctx"));
-  if (!$("ctx").textContent) $("ctx").textContent = DISCLOSE;
 }
+function start() { if (!document.body.classList.contains("started")) { document.body.classList.add("started"); placeSearch(); } }
 
-/* ---------- case file chips ---------- */
+/* ---------- mission chips + Neuron progress ---------- */
 function chipHTML(s, big) {
-  const kw = S.found[s.id];
-  return `<div class="chip ${kw ? "lit" : ""}" id="${big ? "w" : ""}slot-${s.id}">${kw
-    ? `<span class="lab">${esc(s.label)}</span><span class="kw">${esc(kw)}</span>` : `<span class="lab">???</span>`}</div>`;
+  const kw = S.found[s.id], fl = !kw && S.flicker[s.id];
+  const cls = kw ? "lit" : fl ? "flick" : "";
+  const inner = kw ? `<span class="n">${s.num}</span><span class="lab">${esc(s.label)}</span><span class="kw">${esc(kw)}</span>`
+    : big ? `<span class="n">${s.num}</span><span>${esc(s.question)}</span>`
+    : `<span class="n">${s.num}</span><span>${fl ? "…" : "?"}</span>`;
+  return `<div class="chip ${cls}" id="${big ? "w" : ""}slot-${s.id}">${inner}</div>`;
 }
 function renderSlots(popId) {
   $("slots").innerHTML = C.slots.map((s) => chipHTML(s)).join("");
   $("winSlots").innerHTML = C.slots.map((s) => chipHTML(s, true)).join("");
   if (popId) $("slot-" + popId)?.classList.add("pop");
   $("count").textContent = S.prompts ? S.prompts + (S.prompts === 1 ? " prompt" : " prompts") : "";
+  const n = nFound();
+  $("free").innerHTML = `Neuron: <b>${n}/3 free</b>`;
+  $("neuronImg").src = ["assets/neuron_stuck.gif", "assets/neuron_free1.png", "assets/neuron_free2.png", "assets/neuron_backflip.png"][n];
 }
 
 /* ---------- cards ---------- */
@@ -223,23 +280,27 @@ function pointsOf(r) {
   if (Array.isArray(r.points) && r.points.length) return r.points;
   return [{ lead: "", text: r.answer || "" }];
 }
+function lightsHTML(tco) {
+  const t = tco || {};
+  return `<div class="lights">${["task", "context", "outcome"].map((k) => `<span class="${t[k] ? "on" : ""}" data-l="${k}">${k.toUpperCase()}</span>`).join("")}</div>`;
+}
 function colHTML(t, k) {
   const last = k === S.turns.length - 1;
-  let card = `<div class="card" id="card-${k}"><h2>${esc(t.q)}</h2>`;
+  let card = `<div class="card" id="card-${k}"><h2>${esc(t.q)}</h2>${lightsHTML(t.r && t.r.tco)}`;
   if (!t.r) {
     card += `<div class="load"><img src="assets/L6_neuron_shakes_aitor.gif" alt="Neuron shakes AItor"><div class="bars">
       <div class="sk" style="width:92%"></div><div class="sk" style="width:78%"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:55%"></div></div></div>
       <div class="slow" id="slow"></div>`;
   } else {
     card += `<ul>${pointsOf(t.r).map((p) => `<li>${p.lead ? `<b>${esc(p.lead)}</b> ` : ""}${esc(p.text)}</li>`).join("")}</ul>`;
-    if (last) card += `<button type="button" class="pill" id="followBtn">Ask Follow Up</button>`;
+    if (last && !S.timeUp) card += `<button type="button" class="pill" id="followBtn">Ask Follow Up</button>`;
   }
   card += `</div>`;
   let below = "";
   if (t.r) {
     if (t.r.tip && t.r.tip.text) below += `<div class="tipline"><img src="${poseSrc(t.r.pose)}" alt="AItor ${esc(t.r.pose || "point")}s"><span>${esc(t.r.tip.text)}</span></div>`;
     const bs = t.r.branches || [];
-    if (bs.length) below += `<div class="follow">${bs.map((b, i) => {
+    if (bs.length) below += `<div class="follow"><div class="lbl">GO DEEPER</div>${bs.map((b, i) => {
       const sel = (S.branch && S.branch.turn === k && S.branch.i === i) || (S.turns[k + 1] && S.turns[k + 1].from && S.turns[k + 1].from.i === i);
       return `<button type="button" class="fu ${sel ? "sel" : ""}" id="fu-${k}-${i}" data-turn="${k}" data-i="${i}" ${last ? "" : "disabled"}><b>${esc(b.title)}</b><span>${esc(b.teaser)}</span></button>`;
     }).join("")}</div>`;
@@ -247,8 +308,7 @@ function colHTML(t, k) {
   return `<div class="col" id="col-${k}">${card}${below}</div>`;
 }
 function render() {
-  const cv = $("canvas");
-  cv.innerHTML = S.turns.map(colHTML).join("") + `<svg class="wires" id="wires"></svg>`;
+  $("canvas").innerHTML = S.turns.map(colHTML).join("") + `<svg class="wires" id="wires"></svg>`;
   drawWires();
 }
 function rel(el, cv) {
@@ -273,11 +333,11 @@ addEventListener("resize", drawWires);
 
 $("canvas").addEventListener("click", (e) => {
   if (e.target.closest("#followBtn")) { $("q").focus(); return; }
-  const btn = e.target.closest(".fu"); if (!btn || btn.disabled) return;
+  const btn = e.target.closest(".fu"); if (!btn || btn.disabled || S.timeUp) return;
   S.branch = { turn: +btn.dataset.turn, i: +btn.dataset.i };
   document.querySelectorAll(".fu").forEach((b) => b.classList.toggle("sel", b === btn));
   const b = S.turns[S.branch.turn].r.branches[S.branch.i];
-  $("ctx").textContent = "Following: " + b.title + " — now type your question.";
+  $("ctx").textContent = "Going deeper: " + b.title + " — now type your prompt.";
   $("q").placeholder = "Ask about: " + b.title;
 });
 
@@ -292,22 +352,22 @@ function niceKw(k) {
   return map[k] || k;
 }
 
-/* ---------- prompt quality (mock only; live gets it from the model) ---------- */
-const QW = /^(what|why|how|which|when|where|who|whose|can|could|does|do|is|are|will|would|should|tell|explain|describe|give|show)\b/i;
-const TOPIC = /(brain|scroll|video|app|slop|rot|neuron|phone|screen|game|tiktok|youtube|short|reel|feed|watch|habit|hook|stop|dopamine|reward)/i;
-function judge(q) {
-  const words = q.trim().split(/\s+/).filter(Boolean);
-  const qm = (q.match(/\?/g) || []).length;
-  if (qm >= 2) return "two_questions";
-  if (words.length <= 3) return "vague";
-  if (!qm && !QW.test(q.trim())) return "not_question";
-  if (!TOPIC.test(q)) return "no_context";
-  if (words.length < 7) return "no_detail";
-  return "great";
+/* ---------- TASK + CONTEXT + OUTCOME (mock scoring; live gets tco from the model) ---------- */
+const RE_TASK = /\b(explain|tell|describe|list|give|show|teach|help|what|why|how|which|where|when|can you|could you)\b/i;
+const RE_CONTEXT = /\b(i'?m \d{1,2}|i am \d{1,2}|\d{1,2}[- ]?(years?|yo)\b|i (scroll|watch|play|use|game|have|get)|at night|after school|before bed|for (a |my )?(kid|kids|child|student|brother|sister|friend|class|gamer|neuron|\d{1,2}[- ]?year)|when i|my (phone|tablet|brother|sister|friend|class|mum|mom|dad)|i'?m a (kid|student|gamer))/i;
+const RE_OUTCOME = /\b((\d+|one|two|three|four|five) (short |simple |easy )?(points?|steps?|sentences?|words?|tips?|ideas?|bullets?|reasons?|ways?)|in (simple|easy|short|plain|kid) words|simple words|short answer|as a list|step by step|like i'?m \d+|one sentence|briefly|in short)\b/i;
+function scoreTCO(q) {
+  const words = q.trim().split(/\s+/).filter(Boolean).length;
+  return { task: words >= 3 && RE_TASK.test(q), context: RE_CONTEXT.test(q), outcome: RE_OUTCOME.test(q) };
+}
+const lightCount = (t) => (t.task ? 1 : 0) + (t.context ? 1 : 0) + (t.outcome ? 1 : 0);
+function tcoTip(t, n) {
+  for (const k of ["task", "context", "outcome"]) if (!t[k]) { const ex = C.tcoTips[k]; return { kind: "missing_" + k, text: ex[n % ex.length] }; }
+  return { kind: "all", text: C.tcoTips.all };
 }
 
-/* ---------- MOCK AItor (offline, canned; answers only what was asked) ---------- */
-const MOCK_ANS = {
+/* ---------- MOCK AItor (offline, pre-written; depth depends on the lights) ---------- */
+const MOCK_FULL = {
   trick: [
     { lead: "Surprise.", text: "The feed gives rewards at random: most videos are meh, sometimes one is amazing." },
     { lead: "Slot machine.", text: "You never know when the good one comes, so you keep scrolling to find it." }],
@@ -319,73 +379,64 @@ const MOCK_ANS = {
     { lead: "If-then plan.", text: "\"If the timer rings, then I stand up and go outside.\"" },
     { lead: "Notifications off.", text: "Fewer pings means fewer pulls back." }],
 };
-// DEMO answers. Rule: answer the question that was actually asked.
-// 1) direct factual questions get a matching fact and NEVER light a slot
-const MOCK_FACTS = [
+const MOCK_HALF = {   // 2 lights: partial, one keyword (chip flickers, not counted)
+  trick: [{ lead: "Surprise.", text: "Some videos are great and most are not, and you can't tell which comes next." }],
+  brain: [{ lead: "Dopamine.", text: "A brain chemical that rises when something good happens." }],
+  counter: [{ lead: "Plan ahead.", text: "People stop more easily when they set a timer first." }],
+};
+const MOCK_GENERAL = {   // 0-1 light: true but general, no keywords
+  trick: [{ lead: "Many reasons.", text: "Apps are made to be easy to keep using, and short videos are quick to start." }],
+  brain: [{ lead: "Your brain.", text: "Many parts of your brain work together while you watch videos." }],
+  counter: [{ lead: "Habits.", text: "Changing a habit is possible, and it works differently for different people." }],
+};
+const MOCK_FACTS = [   // direct facts: answered at any light level, never a slot
   [/how many (brain cells|neurons|cells)|(brain cells|neurons) .*(how many|are there)|number of (brain cells|neurons)/i,
     [{ lead: "About 86 billion.", text: "That's roughly how many neurons (brain cells) are in a human brain." }]],
-  [/what (is|are) (a )?(neuron|brain cell)s?\b/i,
-    [{ lead: "Brain cell.", text: "A neuron is a cell that sends tiny electrical messages to other cells." }]],
-  [/what (is|does) (brain ?rot|the villain)\b|who is brain ?rot/i,
-    [{ lead: "The villain.", text: "Brain Rot attacks with slop: fast, flashy, super-bright videos." }]],
-  [/what (is|does) (the )?slop\b|what('s| is) slop/i,
-    [{ lead: "Slop.", text: "Endless short videos with quick cuts and very bright colours." }]],
-  [/(who|what) are you|are you (a )?(human|person|real|friend)/i,
-    [{ lead: "A tool.", text: "I'm AItor, an AI computer program. I'm not a person and not your friend." }]],
-  [/how long .*(short|video|reel|tiktok)/i,
-    [{ lead: "Under a minute.", text: "Many short videos last 15 to 60 seconds." }]],
-  [/colou?rs?|bright|neon/i,
-    [{ lead: "Bright colours.", text: "Eyes notice strong contrast first, so neon colours grab attention." }]],
-  [/how much sleep|sleep/i,
-    [{ lead: "Sleep.", text: "Kids aged 9 to 12 need about 9 to 12 hours of sleep a night." }]],
+  [/what (is|are) (a )?(neuron|brain cell)s?\b/i, [{ lead: "Brain cell.", text: "A neuron is a cell that sends tiny electrical messages to other cells." }]],
+  [/what (is|does) (brain ?rot|the villain)\b|who is brain ?rot/i, [{ lead: "The villain.", text: "Brain Rot attacks with slop: fast, flashy, super-bright videos." }]],
+  [/what (is|does) (the )?slop\b|what('s| is) slop/i, [{ lead: "Slop.", text: "Endless short videos with quick cuts and very bright colours." }]],
+  [/(who|what) are you|are you (a )?(human|person|real|friend)/i, [{ lead: "A tool.", text: "I'm AItor, an AI computer program. I'm not a person and not your friend." }]],
+  [/how long .*(short|video|reel|tiktok)/i, [{ lead: "Under a minute.", text: "Many short videos last 15 to 60 seconds." }]],
+  [/colou?rs?|bright|neon/i, [{ lead: "Bright colours.", text: "Eyes notice strong contrast first, so neon colours grab attention." }]],
+  [/how much sleep|sleep/i, [{ lead: "Sleep.", text: "Kids aged 9 to 12 need about 9 to 12 hours of sleep a night." }]],
 ];
-// 2) slot topics: only when the question is really about that topic (question text first)
 const TOPIC_RE = {
-  counter: /(\b(how|what) (do|can|could|should|would|will|must)\b.*\b(stop|escape|quit|beat|resist|break free|get away|cut down|fight)|\bescape\b|\bdefeat\b|beat (him|brain ?rot|the slop|it)\b|break free|plan (to|for) stop|tips? (to|for) stop|way to stop|stop on time)/i,
+  counter: /(\b(how|what) (do|can|could|should|would|will|must)\b.*\b(stop|escape|quit|beat|resist|break free|get away|cut down|fight)|\bhow to (stop|escape|quit|beat|break free)|\bescape\b|\bdefeat\b|beat (him|brain ?rot|the slop|it)\b|break free|plan (to|for) stop|tips? (to|for) stop|ways? to stop|stop on time)/i,
   brain: /(dopamine|reward|striatum|brain chemical|what happens (in|inside) (my|your|the|our) (brain|head)|inside (my|your|the) (brain|head)|which part of (the|my|your) brain|why .*(feel|feels) (so )?(good|great|nice|fun)|why .*(fun|exciting) to)/i,
   trick: /(why .*\b(can'?t|cannot|hard to|keep|don'?t|won'?t)\b.*\b(stop|scroll|watch|swip)|how does (he|brain ?rot|it|the feed|the app) (hook|trick|pull|get|keep)|\bhook|\btrick|random|unpredictab|surprise|slot machine|next video|keep (scrolling|watching|swiping)|addictive|pulls? me back)/i,
 };
-const STOP = new Set("what why how who when where which does do is are can could would should will the a an my me i you your he his it its to of in on at for about and or with this that there tell explain give show please".split(" "));
+// neutral "go deeper" detours of the current answer (never steer to a missing question)
+const DEEPER = {
+  trick: [{ title: "Why short videos?", teaser: "What makes a video short and fast." }, { title: "Who picks the feed?", teaser: "How an app chooses what you see." }],
+  brain: [{ title: "Brain cells talking", teaser: "How neurons pass signals." }, { title: "Feeling good", teaser: "Other everyday things that feel rewarding." }],
+  counter: [{ title: "New habits", teaser: "How long a new habit takes to stick." }, { title: "Other screen habits", teaser: "Games, chats and videos." }],
+  other: [{ title: "Neon colours", teaser: "Why bright colours pop out on a screen." }, { title: "Brain cell count", teaser: "How many neurons live in your head?" },
+          { title: "Sleep and screens", teaser: "How much sleep kids your age need." }, { title: "How long are shorts?", teaser: "How many seconds one short video lasts." }],
+};
+const STOP = new Set("what why how who when where which does do is are can could would should will the a an my me i you your he his it its to of in on at for about and or with this that there tell explain give show please im i'm and".split(" "));
 function mainNoun(q) {
-  const w = q.toLowerCase().replace(/brain rot/g, "").match(/[a-z']+/g) || [];
+  const w = q.toLowerCase().replace(/brain ?rot/g, "").match(/[a-z']+/g) || [];
   return w.filter((x) => x.length > 2 && !STOP.has(x)).pop() || "that";
 }
-const MOCK_BRANCH = {
-  trick: { title: "Why can't I stop?", teaser: "Something about the NEXT video keeps people swiping." },
-  brain: { title: "Inside your head", teaser: "Something in your brain gets excited by surprises." },
-  counter: { title: "The escape plan", teaser: "People who stop on time decide something first." },
-};
-const MOCK_DRIFT_BRANCH = [
-  { title: "Neon colours", teaser: "Why bright pink and yellow pop out on a screen." },
-  { title: "How long are shorts?", teaser: "How many seconds one short video lasts." },
-  { title: "Brain cell count", teaser: "How many neurons live in your head?" },
-  { title: "Sleep and screens", teaser: "How much sleep kids your age need." },
-];
 let driftI = 0;
-function mockReply(q, branch, found) {
-  const kind = judge(q);
-  const nWords = q.trim().split(/\s+/).length;
-  const clear = kind !== "vague" && kind !== "not_question" && nWords >= 4;
+function mockReply(q, branch, n) {
+  const tco = scoreTCO(q), L = lightCount(tco);
   let topic = null, points = null;
   const fact = MOCK_FACTS.find(([re]) => re.test(q));
-  if (fact) points = fact[1];                                         // direct fact: never a slot
-  else if (clear) {
+  if (fact) points = fact[1];
+  else if (tco.task) {
     topic = ["counter", "brain", "trick"].find((t) => TOPIC_RE[t].test(q)) || null;
-    // short follow-up like "tell me more about that" leans on the tapped follow-up card
-    if (!topic && branch && /\b(that|this|more|it|why|how)\b/i.test(q)) topic = ["counter", "brain", "trick"].find((t) => TOPIC_RE[t].test(branch.title + " " + branch.teaser)) || null;
-    if (topic) points = MOCK_ANS[topic];
+    if (!topic && branch && /\b(that|this|more|it)\b/i.test(q)) topic = ["counter", "brain", "trick"].find((t) => TOPIC_RE[t].test(branch.title + " " + branch.teaser)) || null;
+    if (topic) points = (L >= 3 ? MOCK_FULL : L === 2 ? MOCK_HALF : MOCK_GENERAL)[topic];
   }
-  if (!points) {                                                     // honest literal drift about the main noun
-    const n = mainNoun(q);
-    points = [{ lead: "Guessing.", text: `You asked about "${n}". I only answer exactly what you ask, so ask me what you want to know about ${n}.` }];
-  }
-  const missing = C.slots.map((s) => s.id).filter((id) => !found[id] && id !== topic);
+  if (!points) points = [{ lead: "Guessing.", text: `You asked about "${mainNoun(q)}". Tell me what you want to know about it.` }];
   driftI++;
+  const other = DEEPER.other, br = topic ? DEEPER[topic] : [other[driftI % 4], other[(driftI + 1) % 4]];
   return {
     status: "ok", points, answer: points.map((p) => p.lead + " " + p.text).join(" "),
-    branches: [MOCK_BRANCH[missing[0] || "trick"], MOCK_DRIFT_BRANCH[driftI % MOCK_DRIFT_BRANCH.length]],
-    tip: { kind, text: C.tips[kind].text }, pose: C.tips[kind].pose,
-    slots_explained: topic ? [topic] : [],
+    branches: br, tco, lights: L,
+    tip: tcoTip(tco, n), pose: L <= 1 ? "shrug" : "point",
+    slots_explained: topic && L >= 2 ? [topic] : [],
   };
 }
 
@@ -394,18 +445,43 @@ async function liveReply(q, branch) {
   const res = await fetch(C.endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: C.anonKey, Authorization: "Bearer " + C.anonKey },
-    body: JSON.stringify({ prompt: q, sessionId: S.sessionId, found: Object.keys(S.found), branch, history: S.history.slice(-2) }),
+    body: JSON.stringify({ prompt: q, sessionId: S.sessionId, found: Object.keys(S.found), branch, history: S.history.slice(-2), n: S.prompts }),
   });
   return res.json();
 }
-const FUZZY = { status: "error", answer: "AItor's signal got fuzzy. Not yet — try asking again!", branches: [], tip: { kind: "vague", text: "Ask again in a few seconds." }, pose: "shrug", lit: [] };
+const FUZZY = { status: "error", answer: "AItor's signal got fuzzy. Not yet — try asking again!", branches: [], tip: { kind: "none", text: "Ask again in a few seconds." }, pose: "shrug", lit: [], flicker: [] };
+
+/* ---------- 12-minute timer: calm bar, one gentle warning, then reveal ---------- */
+function startTimer() { if (!S.timerEnd) S.timerEnd = Date.now() + C.timerMinutes * 60000; }
+function tick() {
+  if (!S.timerEnd || S.timeUp || S.won) return;
+  const total = C.timerMinutes * 60000, left = S.timerEnd - Date.now();
+  $("timerBar").style.width = Math.min(100, Math.max(0, (1 - left / total) * 100)) + "%";
+  if (!S.warned && left <= C.warnAtMinutes * 60000 && left > 0) { S.warned = true; $("ctx").textContent = C.warnText; }
+  if (left <= 0) timeUp();
+}
+setInterval(tick, 1000);
+function timeUp() {
+  S.timeUp = true;
+  $("timerBar").style.width = "100%";
+  $("q").disabled = true; $("go").disabled = true; $("q").placeholder = "Time's up";
+  // never cover an answer the kid has not had time to read
+  const wait = S.busy ? 400 : Math.max(0, 6000 - (Date.now() - S.lastRender));
+  const show = () => { if (S.busy) return setTimeout(show, 400); render(); showReveal(); };
+  setTimeout(show, wait);
+}
+function showReveal() {
+  $("revealList").innerHTML = C.slots.map((s) => `<div class="${S.found[s.id] ? "got" : ""}"><b><span class="rn">${s.num}</span> ${esc(s.label)}${S.found[s.id] ? " ✓" : ""}</b>${esc(s.reveal)}</div>`).join("");
+  $("winOv").classList.remove("show");
+  $("revealOv").classList.add("show");
+}
 
 /* ---------- main loop ---------- */
 function openTest() { $("testOv").classList.add("show"); }
 function scrollToTurn(k) {
   const col = $("col-" + k); if (!col) return;
   if (innerWidth > 760) { const cv = $("canvas"); cv.scrollTo({ left: Math.max(0, col.offsetLeft - 60), behavior: "smooth" }); }
-  else {   // narrow: keep the card title below the fixed top bar
+  else {
     const topH = document.querySelector(".top").offsetHeight;
     window.scrollTo({ top: col.getBoundingClientRect().top + scrollY - topH - 12, behavior: "smooth" });
   }
@@ -415,20 +491,21 @@ async function submit(e) {
   const q = ($("q").value || "").trim();          // read value at submit (Quest keyboard fires no key events)
   if (!q || S.busy) return;
   if (/^t-?e-?s-?t$/i.test(q)) { $("q").value = ""; openTest(); return; }
-  if (C.clientMinGapMs - (Date.now() - S.lastSend) > 0) { $("ctx").textContent = "One question at a time — wait a second..."; return; }
+  if (S.timeUp) return;
+  if (C.clientMinGapMs - (Date.now() - S.lastSend) > 0) { $("ctx").textContent = "One prompt at a time — wait a second..."; return; }
   if (S.prompts >= C.sessionCap) { $("ctx").textContent = "AItor needs a rest. Ask your mentor to restart the case file."; return; }
 
   S.busy = true; S.lastSend = Date.now();
-  $("q").value = ""; $("go").disabled = true; $("q").placeholder = "Ask AItor a question...";
-  $("app").classList.add("busy");
-  if (!document.body.classList.contains("started")) { document.body.classList.add("started"); placeSearch(); }
+  startTimer();
+  $("q").value = ""; $("go").disabled = true; $("q").placeholder = "Ask AItor...";
+  start();
   const from = S.branch && S.branch.turn === S.turns.length - 1 ? S.branch : null;
   const branchObj = from ? S.turns[from.turn].r.branches[from.i] : null;
   S.branch = null;
   S.turns.push({ q, from, r: null });
   const k = S.turns.length - 1;
   render(); scrollToTurn(k);
-  $("ctx").textContent = DISCLOSE;
+  if (!S.warned) $("ctx").textContent = "";
   const slowT = setTimeout(() => { const el = $("slow"); if (el) el.textContent = "Still guessing... hold on."; }, C.slowReplyMs);
 
   let r;
@@ -437,9 +514,11 @@ async function submit(e) {
       const delay = S.slowNext ? C.slowReplyMs + 2500 : 900 + Math.random() * 700;
       S.slowNext = false;
       await new Promise((ok) => setTimeout(ok, delay));
-      r = mockReply(q, branchObj, S.found);
+      r = mockReply(q, branchObj, S.prompts);
       const kw = keywordHits(r.answer);
-      r.lit = r.slots_explained.filter((id) => kw[id]);     // both must agree (as on server)
+      const agreed = r.slots_explained.filter((id) => kw[id]);   // model AND keyword check (as on server)
+      r.lit = r.lights === 3 ? agreed : [];
+      r.flicker = r.lights === 2 ? agreed : [];
     } else {
       r = await liveReply(q, branchObj);
     }
@@ -453,19 +532,21 @@ async function submit(e) {
   const kw = keywordHits(r.answer);
   let newId = null;
   for (const id of (r.lit || [])) if (!S.found[id]) { S.found[id] = niceKw(kw[id] || id); newId = id; }
-  if (r.status === "ok") S.sinceNew = newId ? 0 : S.sinceNew + 1;
+  S.flicker = {};
+  for (const id of (r.flicker || [])) if (!S.found[id]) S.flicker[id] = true;
+  if (Object.keys(S.flicker).length && r.tip) r.tip = { kind: r.tip.kind, text: C.flickerNote + " " + r.tip.text };
 
-  const missing = C.slots.map((s) => s.id).filter((id) => !S.found[id]);
-  if (missing.length && S.sinceNew >= C.nudges.after) {
-    r.tip = { kind: "nudge", text: (S.sinceNew >= C.nudges.strongAfter ? C.nudges.strong : C.nudges.soft)[missing[0]] };
-    r.pose = "point";
-  }
+  // nudge only when the prompt was already great (3 lights) but missed every open question
+  const missing = IDS.filter((id) => !S.found[id]);
+  if (r.status === "ok" && r.lights === 3) S.sinceNew = newId ? 0 : S.sinceNew + 1;
+  if (newId) S.sinceNew = 0;
+  if (missing.length && S.sinceNew >= C.nudges.after) { r.tip = { kind: "nudge", text: C.nudges.soft[missing[0]] }; r.pose = "point"; }
 
   S.turns[k].r = r;
-  $("app").classList.remove("busy");
   if (!missing.length && !S.won) { S.won = true; $("doneBtn").hidden = false; }   // never auto-cover: kid taps to open
   render(); renderSlots(newId); scrollToTurn(k);
-  S.busy = false; $("go").disabled = false;
+  S.lastRender = Date.now();
+  S.busy = false; if (!S.timeUp) $("go").disabled = false;
 }
 function showWin() { renderSlots(); $("winCount").textContent = S.prompts; $("winOv").classList.add("show"); }
 
@@ -476,31 +557,35 @@ $("keepBtn").addEventListener("click", () => { $("winOv").classList.remove("show
 $("tmClose").addEventListener("click", () => $("testOv").classList.remove("show"));
 
 /* ---------- mentor test menu ---------- */
-function fakeTurn(q, r) {
-  if (!document.body.classList.contains("started")) { document.body.classList.add("started"); placeSearch(); }
-  S.turns.push({ q, from: null, r }); render(); scrollToTurn(S.turns.length - 1);
-}
+function fakeTurn(q, r) { start(); S.turns.push({ q, from: null, r }); render(); scrollToTurn(S.turns.length - 1); S.lastRender = Date.now(); }
 const closeTM = () => $("testOv").classList.remove("show");
+const T3 = { task: true, context: true, outcome: true };
 const TM = [
-  ["Light slots", null],
-  ...C.slots.map((s) => ["Light " + s.label, () => { S.found[s.id] = niceKw(s.keywords[0]); renderSlots(s.id); }]),
-  ["Reset case file", () => { S.found = {}; S.prompts = 0; S.sinceNew = 0; S.won = false; S.turns = []; S.branch = null; $("doneBtn").hidden = true; render(); renderSlots(); document.body.classList.remove("started"); placeSearch(); }],
+  ["Questions", null],
+  ...C.slots.map((s) => ["Lock " + s.num + " " + s.label, () => { S.found[s.id] = niceKw(s.keywords[0]); delete S.flicker[s.id]; if (nFound() === 3) { S.won = true; $("doneBtn").hidden = false; } renderSlots(s.id); }]),
+  ["Flicker ① (2 lights)", () => { S.flicker = { trick: true }; renderSlots(); }],
+  ["Reset case file", () => { S.found = {}; S.flicker = {}; S.prompts = 0; S.sinceNew = 0; S.won = false; S.turns = []; S.branch = null; S.timerEnd = 0; S.warned = false; S.timeUp = false;
+    $("timerBar").style.width = "0"; $("q").disabled = false; $("go").disabled = false; $("q").placeholder = "Ask AItor..."; $("ctx").textContent = "";
+    $("doneBtn").hidden = true; $("revealOv").classList.remove("show"); render(); renderSlots(); document.body.classList.remove("started"); placeSearch(); }],
   ["Jump", null],
   ["Win screen", () => { S.won = true; closeTM(); showWin(); }],
+  ["Jump timer to 0:10", () => { closeTM(); S.timeUp = false; S.timerEnd = Date.now() + 10000; tick(); }],
+  ["Show reveal", () => { closeTM(); showReveal(); }],
   ["Slow next reply", () => { S.slowNext = true; closeTM(); $("ctx").textContent = "(test) next reply will be slow"; }],
   ["Loading card", () => { closeTM(); fakeTurn("(test) loading card", null); }],
-  ["Nudge (soft)", () => { closeTM(); fakeTurn("(test) soft nudge", { points: [{ lead: "", text: "(test answer)" }], branches: [], tip: { text: C.nudges.soft.brain }, pose: "point" }); }],
-  ["Nudge (strong)", () => { closeTM(); fakeTurn("(test) strong nudge", { points: [{ lead: "", text: "(test answer)" }], branches: [], tip: { text: C.nudges.strong.brain }, pose: "point" }); }],
+  ["Nudge", () => { closeTM(); fakeTurn("(test) nudge", { points: [{ lead: "", text: "(test answer)" }], branches: [], tco: T3, tip: { text: C.nudges.soft.brain }, pose: "point" }); }],
   ["Tips + poses", null],
-  ...Object.entries(C.tips).map(([k, t]) => ["Tip: " + k + " (" + t.pose + ")", () => {
-    closeTM(); fakeTurn("(test) tip: " + k, { points: [{ lead: "Test.", text: "This is how the '" + k + "' tip looks." }], branches: [MOCK_BRANCH.trick, MOCK_DRIFT_BRANCH[0]], tip: t, pose: t.pose });
+  ...[["missing TASK", { task: false, context: false, outcome: false }], ["missing CONTEXT", { task: true, context: false, outcome: false }],
+      ["missing OUTCOME", { task: true, context: true, outcome: false }], ["all 3 lights", T3]].map(([label, t]) => ["Tip: " + label, () => {
+    closeTM(); const L = lightCount(t);
+    fakeTurn("(test) tip: " + label, { points: [{ lead: "Test.", text: "This is how this tip looks." }], branches: DEEPER.trick, tco: t, tip: tcoTip(t, 0), pose: L <= 1 ? "shrug" : "point" });
   }]),
 ];
 $("tm").innerHTML = TM.map(([label, fn], i) => fn ? `<button type="button" data-i="${i}">${esc(label)}</button>` : `<h3>${esc(label)}</h3>`).join("")
   + `<h3>Mode: ${MOCK ? "mock (offline)" : "live (server)"}</h3>`;
 $("tm").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) TM[+b.dataset.i][1](); });
 
-/* ---------- first screen: objective + search box only ---------- */
+/* ---------- first screen: Neuron's line + 3 questions + search ---------- */
 placeSearch(); renderSlots();
 window.__case = S; // for testing
 })();
