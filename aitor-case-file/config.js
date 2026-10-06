@@ -66,7 +66,7 @@ window.CASE_CONFIG = {
     }
   },
 
-  timerMinutes: 12,        // starts on the first prompt
+  timerMinutes: 10,        // starts on the first prompt
   warnAtMinutes: 2,
   warnText: "2 minutes left — try one more great prompt!",
   // Shown at the end of the reveal AND the win screen.
