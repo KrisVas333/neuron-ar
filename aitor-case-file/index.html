@@ -394,7 +394,8 @@ function scoreTCO(q) {
   return { task: words >= 3 && RE_TASK.test(q), context: RE_CONTEXT.test(q), outcome: RE_OUTCOME.test(q) };
 }
 const lightCount = (t) => (t.task ? 1 : 0) + (t.context ? 1 : 0) + (t.outcome ? 1 : 0);
-function tcoTip(t, n) {
+function tcoTip(t, n, missingInterest) {
+  if (missingInterest && t.task && t.context && t.outcome) { const ex = C.tcoTips.missing_interest; return { kind: "missing_interest", text: ex[n % ex.length] }; }
   for (const k of ["task", "context", "outcome"]) if (!t[k]) { const ex = C.tcoTips[k]; return { kind: "missing_" + k, text: ex[n % ex.length] }; }
   return { kind: "all", text: C.tcoTips.all };
 }
@@ -406,16 +407,17 @@ const MOCK_FULL = {
     { lead: "Slot machine.", text: "You never know when the good one comes, so you keep scrolling to find it." }],
 };
 // ② is open and personal: the counter-move depends on the child's context
+// (no generic fallback: without a stated interest the mock gives a general answer, no counter-move, no lock)
 const COUNTER_FULL = [
-  [/football|soccer/i, "Play football after 20 min", [
-    { lead: "Football.", text: "Scroll for 20 minutes at most, then go and play football." },
+  [/football|soccer/i, "football", "Play a 20-min football match", [
+    { lead: "Football.", text: "Play a 20-minute football match with a friend instead of scrolling." },
     { lead: "If-then plan.", text: "\"If my timer rings, then I put the phone down and kick the ball.\"" }]],
-  [/\bdraw|drawing|paint|\bart\b|sketch/i, "Draw instead of scrolling", [
-    { lead: "Draw.", text: "Keep paper and a pencil next to you and draw when you feel the pull." },
+  [/\bdraw|drawing|sketch/i, "drawing", "Draw a comic instead of scrolling", [
+    { lead: "Draw.", text: "Draw a comic instead of scrolling: paper, pencil, and your own story." },
     { lead: "Swap it.", text: "Drawing fills the same free time as scrolling, and you make something real." }]],
-  [/./, "Set a timer before you start", [
-    { lead: "Stopping point.", text: "Decide before you start: set a timer for 15 minutes." },
-    { lead: "If-then plan.", text: "\"If the timer rings, then I stand up and go outside.\"" }]],
+  [/minecraft/i, "Minecraft", "Build your Minecraft base in Lego", [
+    { lead: "Build.", text: "Build your Minecraft base in real Lego instead of scrolling." },
+    { lead: "Swap it.", text: "Same building fun, but you can hold it in your hands." }]],
 ];
 const MOCK_HALF = {   // 2 lights: partial, one keyword (chip flickers, not counted)
   trick: [{ lead: "Surprise.", text: "Some videos are great and most are not, and you can't tell which comes next." }],
@@ -423,7 +425,7 @@ const MOCK_HALF = {   // 2 lights: partial, one keyword (chip flickers, not coun
 };
 const MOCK_GENERAL = {   // 0-1 light: true but general, no keywords
   trick: [{ lead: "Many reasons.", text: "Apps are made to be easy to keep using, and short videos are quick to start." }],
-  counter: [{ lead: "Habits.", text: "Changing a habit is possible, and it works differently for different people." }],
+  counter: [{ lead: "Habits.", text: "Changing a habit is easier when you swap scrolling for something you love." }],
 };
 const MOCK_FACTS = [   // direct facts: answered at any light level, never a slot
   [/how many (brain cells|neurons|cells)|(brain cells|neurons) .*(how many|are there)|number of (brain cells|neurons)/i,
@@ -455,24 +457,31 @@ function mainNoun(q) {
 let driftI = 0;
 function mockReply(q, branch, n) {
   const tco = scoreTCO(q), L = lightCount(tco);
-  let topic = null, points = null, move = "";
+  let topic = null, points = null, move = "", interest = "", usesInterest = false;
+  const ctxQ = [q, ...S.history.map((h) => h.q)].join(" ");   // interest may come from recent history
   const fact = MOCK_FACTS.find(([re]) => re.test(q));
   if (fact) points = fact[1];
   else if (tco.task) {
     topic = ["counter", "trick"].find((t) => TOPIC_RE[t].test(q)) || null;
     if (!topic && branch && /\b(that|this|more|it)\b/i.test(q)) topic = ["counter", "trick"].find((t) => TOPIC_RE[t].test(branch.title + " " + branch.teaser)) || null;
-    if (topic === "counter" && L >= 3) { const c = COUNTER_FULL.find(([re]) => re.test(q)); points = c[2]; move = c[1]; }
+    if (topic === "counter" && L >= 3) {
+      const c = (COUNTER_FULL.find(([re]) => re.test(q)) || COUNTER_FULL.find(([re]) => re.test(ctxQ)));
+      if (c) { points = c[3]; move = c[2]; interest = c[1]; usesInterest = true; }
+      else points = MOCK_GENERAL.counter;   // no interest named -> general line, no counter-move
+    }
     else if (topic) points = (L >= 3 ? MOCK_FULL : L === 2 ? MOCK_HALF : MOCK_GENERAL)[topic];
   }
   if (!points) points = [{ lead: "Guessing.", text: `You asked about "${mainNoun(q)}". Tell me what you want to know about it.` }];
+  const askedBreakFree = TOPIC_RE.counter.test(q);
+  if (!interest) { const c = (COUNTER_FULL.find(([re]) => re.test(q)) || COUNTER_FULL.find(([re]) => re.test(ctxQ))); if (c) interest = c[1]; }
   driftI++;
   const other = DEEPER.other, br = topic ? DEEPER[topic] : [other[driftI % 4], other[(driftI + 1) % 4]];
   return {
     status: "ok", points, answer: points.map((p) => p.lead + " " + p.text).join(" "),
     branches: br, tco, lights: L,
-    tip: tcoTip(tco, n), pose: L <= 1 ? "shrug" : "point",
-    slots_explained: topic && L >= 2 ? [topic] : [],
-    counter_move: move,
+    tip: tcoTip(tco, n, askedBreakFree && !interest), pose: L <= 1 ? "shrug" : "point",
+    slots_explained: topic && L >= 2 && !(topic === "counter" && L >= 3 && !usesInterest) ? [topic] : [],
+    counter_move: move, interest, uses_interest: usesInterest,
   };
 }
 
@@ -619,7 +628,7 @@ const TM = [
   ["Questions", null],
   ...C.slots.map((s) => ["Lock " + s.num + " " + s.label, () => { S.found[s.id] = s.testMove || niceKw(s.keywords[0]); delete S.flicker[s.id]; if (nFound() === IDS.length) { S.won = true; $("doneBtn").hidden = false; } renderSlots(s.id); }]),
   ["Flicker ① (2 lights)", () => { S.flicker = { trick: true }; renderSlots(); }],
-  ["Reset case file", () => { S.found = {}; S.flicker = {}; S.prompts = 0; S.sinceNew = 0; S.won = false; S.turns = []; S.branch = null; S.timerEnd = 0; S.warned = false; S.timeUp = false;
+  ["Reset case file", () => { S.found = {}; S.flicker = {}; S.prompts = 0; S.sinceNew = 0; S.won = false; S.turns = []; S.history = []; S.branch = null; S.timerEnd = 0; S.warned = false; S.timeUp = false;
     $("timerBar").style.width = "0"; $("q").disabled = false; $("go").disabled = false; $("q").placeholder = "Ask AItor..."; $("ctx").textContent = "";
     $("doneBtn").hidden = true; $("revealOv").classList.remove("show"); render(); renderSlots(); document.body.classList.remove("started"); placeSearch(); }],
   ["Jump", null],
@@ -631,9 +640,9 @@ const TM = [
   ["Nudge", () => { closeTM(); fakeTurn("(test) nudge", { points: [{ lead: "", text: "(test answer)" }], branches: [], tco: T3, tip: { text: C.nudges.soft.counter }, pose: "point" }); }],
   ["Tips + poses", null],
   ...[["missing TASK", { task: false, context: false, outcome: false }], ["missing CONTEXT", { task: true, context: false, outcome: false }],
-      ["missing OUTCOME", { task: true, context: true, outcome: false }], ["all 3 lights", T3]].map(([label, t]) => ["Tip: " + label, () => {
+      ["missing OUTCOME", { task: true, context: true, outcome: false }], ["all 3 lights", T3], ["missing interest", T3, true]].map(([label, t, mi]) => ["Tip: " + label, () => {
     closeTM(); const L = lightCount(t);
-    fakeTurn("(test) tip: " + label, { points: [{ lead: "Test.", text: "This is how this tip looks." }], branches: DEEPER.trick, tco: t, tip: tcoTip(t, 0), pose: L <= 1 ? "shrug" : "point" });
+    fakeTurn("(test) tip: " + label, { points: [{ lead: "Test.", text: "This is how this tip looks." }], branches: DEEPER.trick, tco: t, tip: tcoTip(t, 0, mi), pose: L <= 1 ? "shrug" : "point" });
   }]),
 ];
 $("tm").innerHTML = TM.map(([label, fn], i) => fn ? `<button type="button" data-i="${i}">${esc(label)}</button>` : `<h3>${esc(label)}</h3>`).join("")

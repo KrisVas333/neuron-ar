@@ -14,8 +14,9 @@ window.CASE_CONFIG = {
   aiDisclosure: "AItor is an AI computer program, not a person.",
 
   // The 2 mission questions (shown on the start screen + as chips ① ? ② ?).
-  // ① = fixed answer (keywords). ② = OPEN, personal: any concrete healthy way to break the pull;
-  // the model returns `counter_move` (<=5-word label); the keyword list is only a server sanity check.
+  // ① = fixed answer (keywords). ② = OPEN and PERSONAL: a specific offline activity built on the kid's OWN stated
+  // interest (generic timer / go-outside never counts); the model returns `counter_move` (<=5-word label),
+  // `interest` and `uses_interest`; the keyword list is only a server sanity check.
   slots: [
     {
       id: "trick",
@@ -29,7 +30,7 @@ window.CASE_CONFIG = {
     {
       id: "counter",
       num: "②",
-      question: "ONE way YOU could break free?",
+      question: "ONE way YOU could break free — with something YOU love",
       label: "COUNTER-MOVE",
       open: true,
       keywords: ["stopping point", "stop point", "limit", "timer", "alarm", "before you start", "if-then", "if then", "notification", "phone out of", "another room", "leave your phone", "leave the phone", "charge your phone", "plan when to stop", "schedule",
@@ -37,10 +38,10 @@ window.CASE_CONFIG = {
         "football", "soccer", "basketball", "sport", "run", "bike", "cycl", "swim", "skate", "exercise", "move your body", "get up and move", "stretch", "go for a walk", "walk", "play outside", "go outside", "outside", "fresh air",
         "friend", "family", "talk to", "meet", "play with", "game with", "pet", "dog", "garden", "replace"],
       reveal: "Your own counter-move!",
-      testMove: "Draw instead of scrolling"
+      testMove: "Draw a comic instead"
     }
   ],
-  counterMoveFallback: "ask your mentor for ideas!",
+  counterMoveFallback: "tell AItor what you love next time!",
 
   // Prompt method: TASK + CONTEXT + OUTCOME. Same texts live in the server (TCO_TIPS) - edit both.
   // Tip names the first missing part (task -> context -> outcome), examples rotate.
@@ -48,9 +49,11 @@ window.CASE_CONFIG = {
     task:    ["Missing TASK — say what you want: 'Explain why…'", "Missing TASK — give AItor a job: 'Tell me how…'", "Missing TASK — ask for something: 'List 3 ways…'"],
     context: ["Missing CONTEXT — tell AItor who it's for: 'I'm 11 and…'", "Missing CONTEXT — add your situation: 'I scroll at night…'", "Missing CONTEXT — say who's asking: 'For a kid who games…'"],
     outcome: ["Missing OUTCOME — say how the answer should look: 'in 3 short points'", "Missing OUTCOME — ask for a shape: 'in 2 sentences'", "Missing OUTCOME — say the format: 'in simple words'"],
+    // asks how to break free but names no interest (rotates; ② needs YOUR hobby / interest)
+    missing_interest: ["Missing CONTEXT — what do YOU love doing? 'I love football…'", "Missing CONTEXT — tell AItor what you like: 'I love drawing…'", "Missing CONTEXT — what are YOU into? 'I'm into Minecraft…'"],
     all: "All 3 lights! TASK + CONTEXT + OUTCOME."
   },
-  missionReminder: "3 lights = a great prompt. It unlocks a question only if you ASK about that question.",
+  missionReminder: "3 lights = a great prompt. It unlocks a question only if you ASK about that question. For ②, tell AItor what YOU like.",
   // shown under a half-lit (2-light) chip moment
   flickerNote: "Almost! Add the missing light to lock it in.",
 
