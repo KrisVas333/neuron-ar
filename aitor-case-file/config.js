@@ -13,8 +13,9 @@ window.CASE_CONFIG = {
   aitorIntro:"I'm AItor. I'm not a friend, I'm a tool. I'm the world's best guesser — I answer only what you ACTUALLY ask.",
   aiDisclosure: "AItor is an AI computer program, not a person.",
 
-  // The 3 mission questions (shown on the start screen + as chips ① ? ② ? ③ ?).
-  // A chip locks green with its label + the keyword AItor's answer used.
+  // The 2 mission questions (shown on the start screen + as chips ① ? ② ?).
+  // ① = fixed answer (keywords). ② = OPEN, personal: any concrete healthy way to break the pull;
+  // the model returns `counter_move` (<=5-word label); the keyword list is only a server sanity check.
   slots: [
     {
       id: "trick",
@@ -26,22 +27,20 @@ window.CASE_CONFIG = {
       reveal: "Unpredictable rewards, like a slot machine — you never know when the good video comes."
     },
     {
-      id: "brain",
-      num: "②",
-      question: "WHERE in the brain does it grab?",
-      label: "BRAIN PART",
-      keywords: ["reward system", "reward center", "reward centre", "reward circuit", "dopamine", "striatum"],
-      reveal: "The reward system — dopamine reacts most to surprises."
-    },
-    {
       id: "counter",
-      num: "③",
-      question: "HOW does Neuron break free?",
+      num: "②",
+      question: "ONE way YOU could break free?",
       label: "COUNTER-MOVE",
-      keywords: ["stopping point", "stop point", "limit", "timer", "before you start", "if-then", "if then", "notifications off", "turn off notification", "turn off the notification", "go outside", "exercise", "move your body", "get up and move", "go for a walk", "plan when to stop"],
-      reveal: "Decide your stopping point before you start, and move your body."
+      open: true,
+      keywords: ["stopping point", "stop point", "limit", "timer", "alarm", "before you start", "if-then", "if then", "notification", "phone out of", "another room", "leave your phone", "leave the phone", "charge your phone", "plan when to stop", "schedule",
+        "hobby", "draw", "paint", "read", "book", "lego", "build", "music", "guitar", "piano", "sing", "dance", "cook", "bake", "puzzle", "board game", "write", "journal", "craft",
+        "football", "soccer", "basketball", "sport", "run", "bike", "cycl", "swim", "skate", "exercise", "move your body", "get up and move", "stretch", "go for a walk", "walk", "play outside", "go outside", "outside", "fresh air",
+        "friend", "family", "talk to", "meet", "play with", "game with", "pet", "dog", "garden", "replace"],
+      reveal: "Your own counter-move!",
+      testMove: "Draw instead of scrolling"
     }
   ],
+  counterMoveFallback: "ask your mentor for ideas!",
 
   // Prompt method: TASK + CONTEXT + OUTCOME. Same texts live in the server (TCO_TIPS) - edit both.
   // Tip names the first missing part (task -> context -> outcome), examples rotate.
@@ -51,6 +50,7 @@ window.CASE_CONFIG = {
     outcome: ["Missing OUTCOME — say how the answer should look: 'in 3 short points'", "Missing OUTCOME — ask for a shape: 'in 2 sentences'", "Missing OUTCOME — say the format: 'in simple words'"],
     all: "All 3 lights! TASK + CONTEXT + OUTCOME."
   },
+  missionReminder: "3 lights = a great prompt. It unlocks a question only if you ASK about that question.",
   // shown under a half-lit (2-light) chip moment
   flickerNote: "Almost! Add the missing light to lock it in.",
 
@@ -59,23 +59,22 @@ window.CASE_CONFIG = {
     after: 3,
     soft: {
       trick:   "Great prompts! Now aim at question ①: WHAT pulls you back to the slop?",
-      brain:   "Great prompts! Now aim at question ②: WHERE in your brain does it grab?",
-      counter: "Great prompts! Now aim at question ③: HOW can Neuron break free?"
+      counter: "Great prompts! Now aim at question ②: what is ONE way YOU could break free?"
     }
   },
 
   timerMinutes: 12,        // starts on the first prompt
   warnAtMinutes: 2,
   warnText: "2 minutes left — try one more great prompt!",
-  // Shown at the end of the reveal AND the win screen. Kids stay in VR and play Dish It Out next.
-  endMessage: "Case closed! Now press the Meta button and open DISH IT OUT — smash Brain Rot's slime with your hands!",
+  // Shown at the end of the reveal AND the win screen.
+  endMessage: "Case closed! Take your headset off and come back to the class — tell everyone your counter-move.",
   reveal: {
     title: "TIME'S UP!"
   },
 
   win: {
     title: "CASE FILE COMPLETE",
-    notebook: "Write all 3 in your notebook.",
+    notebook: "Write both answers in your notebook.",
     bonus: "Fast finisher? Explain the trick to AItor in one sentence."
   },
 
