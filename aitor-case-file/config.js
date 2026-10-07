@@ -85,3 +85,97 @@ window.CASE_CONFIG = {
   clientMinGapMs: 3000,    // matches server per-session gap
   slowReplyMs: 12000       // after this, show "AItor is still thinking..."
 };
+
+// ---------------------------------------------------------------------------
+// LIETUVIŠKA VERSIJA (LT). Mentors: edit the Lithuanian words here.
+// Only what is written below changes in LT; anything missing falls back to the English config above.
+// slots[i] overrides the i-th slot above. `keywords` here are EXTRA Lithuanian stems (matched anywhere in a word,
+// so "pieš" also hits "nupiešk"); the English list above still counts. The SAME LT lists are copied into
+// supabase/functions/aitor-case-file/index.ts (SLOT_KEYWORDS_LT, TCO_TIPS_LT) - edit both, then redeploy.
+// The page switches with the EN | LT button at the top, or with ?lang=lt in the link.
+// ---------------------------------------------------------------------------
+window.CASE_CONFIG_LT = {
+  objective: "Brain Rot vis tempia mane atgal į šlamštą, ir AŠ NEGALIU SUSTOTI. Išsiaiškink, kaip jis tai daro — ir kaip man ištrūkti!",
+  aitorIntro: "Aš AItor. Aš ne draugas, aš įrankis. Aš geriausias pasaulio spėliotojas — atsakau tik į tai, ko TIKRAI paklausi.",
+  aiDisclosure: "AItor yra DI kompiuterio programa, ne žmogus.",
+  slots: [
+    {
+      question: "KUO Brain Rot tave taip traukia?",
+      label: "TRIUKAS",
+      keywords: ["nenuspėjam", "nenuspėj", "atsitiktin", "netikėt", "lošimo automat", "loterij", "niekada nežinai", "nežinai, kada", "nežinai kada", "džekpot", "staigmen", "siurpriz"],
+      reveal: "Nenuspėjami prizai, kaip lošimo automate — niekada nežinai, kada pasirodys geras video."
+    },
+    {
+      question: "VIENAS būdas TAU ištrūkti — su tuo, ką TU mėgsti",
+      label: "PLANAS",
+      keywords: ["sustojimo", "ribą", "limit", "laikmat", "žadintuv", "pranešim", "kitame kambaryje", "kitą kambarį", "jei-tai", "jei – tai", "pomėg", "hobi",
+        "pieš", "spalvin", "skait", "knyg", "lego", "statyk", "statyt", "pastatyk", "muzik", "gitar", "pianin", "dainuo", "šokt", "šokių", "gamin", "kepk", "kept", "dėlion", "stalo žaidim", "rašyk", "rašyt", "dienoraš",
+        "futbol", "krepšin", "tinklin", "sport", "treniruot", "bėgt", "bėgiok", "dvirat", "plauk", "riedlent", "riedučiai", "mankšt", "judėk", "pasivaikšč", "vaikšč", "į lauką", "lauke", "gryname ore",
+        "draug", "šeim", "pasikalbėk", "susitik", "žaisk su", "šun", "augint", "sode", "darž", "pakeisk"],
+      reveal: "Tavo ištrūkimo planas!",
+      testMove: "Nupiešk komiksą"
+    }
+  ],
+  counterMoveFallback: "kitą kartą pasakyk AItor, ką mėgsti!",
+  // how a found ① keyword is shown on the chip (LT stem -> nice words)
+  kwLabels: { "nenuspėjam": "nenuspėjami prizai", "nenuspėj": "nenuspėjami prizai", "atsitiktin": "atsitiktiniai prizai", "netikėt": "netikėti prizai",
+    "lošimo automat": "lošimo automatas", "loterij": "loterija", "niekada nežinai": "niekada nežinai, kada", "nežinai, kada": "niekada nežinai, kada",
+    "nežinai kada": "niekada nežinai, kada", "džekpot": "džekpotas", "staigmen": "staigmenos", "siurpriz": "siurprizai" },
+
+  tcoTips: {
+    task:    ["Trūksta UŽDUOTIES — pasakyk, ko nori: „Paaiškink, kodėl…“", "Trūksta UŽDUOTIES — duok AItor darbą: „Pasakyk, kaip…“", "Trūksta UŽDUOTIES — paprašyk: „Išvardink 3 būdus…“"],
+    context: ["Trūksta KONTEKSTO — kam tai? „Man 11 metų ir…“", "Trūksta KONTEKSTO — papasakok apie save: „Aš scrollinu naktį…“", "Trūksta KONTEKSTO — kas klausia? „Vaikui, kuris žaidžia…“"],
+    outcome: ["Trūksta REZULTATO — kokio atsakymo nori? „3 trumpais punktais“", "Trūksta REZULTATO — kokios formos? „2 sakiniais“", "Trūksta REZULTATO — kaip parašyti? „paprastais žodžiais“"],
+    missing_interest: ["Trūksta KONTEKSTO — ką TU mėgsti veikti? „Aš mėgstu futbolą…“", "Trūksta KONTEKSTO — kas tau patinka? „Man patinka piešti…“", "Trūksta KONTEKSTO — kuo TU domiesi? „Aš žaidžiu Minecraft…“"],
+    all: "Visos 3 lemputės! UŽDUOTIS + KONTEKSTAS + REZULTATAS."
+  },
+  missionReminder: "3 lemputės = puikus klausimas. Bet atsakymas atsirakina tik tada, kai KLAUSI būtent apie jį. Prie ② pasakyk AItor, ką TU mėgsti.",
+  flickerNote: "Beveik! Pridėk trūkstamą lemputę ir užrakink.",
+  nudges: {
+    soft: {
+      trick:   "Puikūs klausimai! Dabar taikyk į ①: KAS tave traukia atgal prie šlamšto?",
+      counter: "Puikūs klausimai! Dabar taikyk į ②: koks VIENAS būdas TAU ištrūkti?"
+    }
+  },
+  warnText: "Liko 2 minutės — pabandyk dar vieną gerą klausimą!",
+  endMessage: "Byla uždaryta! Nusiimk VR akinius ir grįžk pas klasę — papasakok visiems savo ištrūkimo planą.",
+  reveal: { title: "LAIKAS BAIGĖSI!" },
+  win: {
+    title: "BYLA IŠSPRĘSTA",
+    notebook: "Užsirašyk abu atsakymus į sąsiuvinį.",
+    bonus: "Baigei greitai? Paaiškink AItor triuką vienu sakiniu."
+  },
+
+  // buttons, labels and short messages on the page
+  ui: {
+    demo: "DEMO REŽIMAS — iš anksto parašyti atsakymai, ne tikras DI",
+    mission: "MISIJA",
+    done: "BYLA IŠSPRĘSTA — pažiūrėk",
+    neuron: "Neuron:",
+    method: "Geras klausimas uždega 3 lemputes:",
+    lights: { task: "UŽDUOTIS", context: "KONTEKSTAS", outcome: "REZULTATAS" },
+    placeholder: "Paklausk AItor...",
+    inputLabel: "Tavo klausimas AItor",
+    ask: "Klausti",
+    tookYou: "Prireikė klausimų:",
+    keepAsking: "Klausti toliau",
+    close: "Uždaryti",
+    promptOne: "klausimas", promptFew: "klausimai", promptMany: "klausimų",
+    free: "Neuron laisvas:",
+    followUp: "Klausk dar",
+    goDeeper: "GILIAU",
+    goingDeeper: "Giliau: {title} — dabar parašyk savo klausimą.",
+    askAbout: "Klausk apie: ",
+    timesUp: "Laikas baigėsi",
+    yourMove: "Tavo ištrūkimo planas:",
+    oneAtATime: "Po vieną klausimą — palauk sekundę...",
+    needsRest: "AItor reikia pailsėti. Paprašyk mentoriaus iš naujo atidaryti bylą.",
+    slow: "Dar spėlioju... palauk.",
+    fuzzy: "AItor signalas trūkinėja. Pabandyk paklausti dar kartą!",
+    fuzzyTip: "Paklausk dar kartą po kelių sekundžių.",
+    altStuck: "Neuron įstrigęs šlamšte",
+    altBackflip: "Neuron daro salto ir ištrūksta iš šlamšto",
+    altShake: "Neuron purto AItor",
+    altAitor: "AItor"
+  }
+};

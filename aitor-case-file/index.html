@@ -149,8 +149,19 @@ form.search:focus-within{border-color:#555}
 .tm h3{grid-column:1/-1;margin:8px 0 0;font-size:16px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
 .tm button{background:#2a2a2a;border:1px solid var(--edge);border-radius:12px;padding:10px 12px;font-size:19px;text-align:left}
 
+/* ---------- EN | LT language pill (fixed, top centre; top-right on phones) ---------- */
+.lang{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:20;display:flex;border:1px solid #555;border-radius:999px;background:#1d1d1d;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:17px;letter-spacing:.06em;min-width:52px;min-height:44px;padding:0 14px}
+.lang button.on{background:var(--ink);color:#111}
+
 @media (max-width:760px){
   .top{flex-direction:column;align-items:flex-start;gap:8px;padding:10px 16px 12px;border-bottom:1px solid #222}
+  .lang{left:auto;right:12px;transform:none;top:10px}
+  .lang button{min-width:48px;padding:0 10px}
+  .who{padding-right:116px}
+  .brand{white-space:normal}
+  .demo{width:auto;white-space:normal;border-radius:10px}
+  .lights{flex-wrap:wrap;row-gap:4px}
   .right{align-items:flex-start}
   .chips{flex-wrap:wrap;justify-content:flex-start}
   .chiprow{flex-wrap:wrap;justify-content:flex-start}
@@ -167,10 +178,11 @@ form.search:focus-within{border-color:#555}
 </style>
 </head>
 <body>
+<div class="lang" id="langPill" role="group" aria-label="Language / Kalba"><button type="button" data-lang="en" lang="en">EN</button><button type="button" data-lang="lt" lang="lt">LT</button></div>
 <div id="app">
   <div class="top">
     <div class="who">
-      <img id="neuronImg" src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop">
+      <img id="neuronImg" class="a-stuck" src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop">
       <div class="t">
         <div class="brand">AItor Case File<span id="count"></span></div>
         <div class="free" id="free"></div>
@@ -185,9 +197,9 @@ form.search:focus-within{border-color:#555}
   </div>
 
   <section class="home">
-    <p class="obj"><img src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop"><span><b>Neuron:</b> <span id="objective"></span></span></p>
+    <p class="obj"><img class="a-stuck" src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop"><span><b class="t-neuron">Neuron:</b> <span id="objective"></span></span></p>
     <ol class="mission" id="mission"></ol>
-    <div class="method">Good prompts light 3 lights: <b>TASK</b> · <b>CONTEXT</b> · <b>OUTCOME</b></div>
+    <div class="method" id="method">Good prompts light 3 lights: <b>TASK</b> · <b>CONTEXT</b> · <b>OUTCOME</b></div>
     <div id="homeSlot"></div>
   </section>
 
@@ -206,11 +218,11 @@ form.search:focus-within{border-color:#555}
 <!-- win (opens only when the kid taps the green pill) -->
 <div class="ov" id="winOv">
   <div class="box">
-    <img class="hero" src="assets/neuron_backflip.png" alt="Neuron backflips out of the slop">
+    <img class="hero" id="heroImg" src="assets/neuron_backflip.png" alt="Neuron backflips out of the slop">
     <h2 id="winTitle"></h2>
     <p class="wtrick" id="winTrick"></p>
     <p class="wmove" id="winMove"></p>
-    <p class="score">It took you <b id="winCount">0</b> prompts.</p>
+    <p class="score" id="winScore">It took you <b id="winCount">0</b> prompts.</p>
     <p id="winNote"></p>
     <p class="muted" id="winBonus"></p>
     <p class="back" id="winBack"></p>
@@ -221,10 +233,10 @@ form.search:focus-within{border-color:#555}
 <!-- mission card: always reachable (MISSION pill or any chip); closes on any tap -->
 <div class="ov" id="missionOv">
   <div class="box">
-    <p class="obj"><img src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop"><span><b>Neuron:</b> <span id="missionLine"></span></span></p>
+    <p class="obj"><img class="a-stuck" src="assets/neuron_stuck.gif" alt="Neuron stuck in the slop"><span><b class="t-neuron">Neuron:</b> <span id="missionLine"></span></span></p>
     <ol class="mlist" id="missionList"></ol>
     <p class="muted" id="missionTip"></p>
-    <button class="btn" type="button">Close</button>
+    <button class="btn" id="missionClose" type="button">Close</button>
   </div>
 </div>
 
@@ -250,8 +262,34 @@ form.search:focus-within{border-color:#555}
 <script>
 (() => {
 "use strict";
-const C = window.CASE_CONFIG;
+/* ---------- language: EN (config above) or LT (CASE_CONFIG_LT overrides) ---------- */
+const UI_EN = {
+  demo: "DEMO MODE — pre-written answers, not the real AI", mission: "MISSION", done: "CASE FILE COMPLETE — see it", neuron: "Neuron:",
+  method: "Good prompts light 3 lights:", lights: { task: "TASK", context: "CONTEXT", outcome: "OUTCOME" },
+  placeholder: "Ask AItor...", inputLabel: "Your prompt for AItor", ask: "Ask", tookYou: null, keepAsking: "Keep asking", close: "Close",
+  promptOne: "prompt", promptFew: "prompts", promptMany: "prompts", free: null, followUp: "Ask Follow Up", goDeeper: "GO DEEPER",
+  goingDeeper: "Going deeper: {title} — now type your prompt.", askAbout: "Ask about: ", timesUp: "Time's up", yourMove: "Your counter-move:",
+  oneAtATime: "One prompt at a time — wait a second...", needsRest: "AItor needs a rest. Ask your mentor to restart the case file.",
+  slow: "Still guessing... hold on.", fuzzy: "AItor's signal got fuzzy. Not yet — try asking again!", fuzzyTip: "Ask again in a few seconds.",
+  altStuck: "Neuron stuck in the slop", altBackflip: "Neuron backflips out of the slop", altShake: "Neuron shakes AItor", altAitor: null,
+};
+const BASE = window.CASE_CONFIG, LTC = window.CASE_CONFIG_LT || {};
+function buildLT() {
+  const o = Object.assign({}, BASE, LTC);
+  o.slots = BASE.slots.map((s, i) => { const l = (LTC.slots || [])[i] || {}; return Object.assign({}, s, l, { keywords: s.keywords, keywordsLt: l.keywords || [] }); });
+  o.tcoTips = Object.assign({}, BASE.tcoTips, LTC.tcoTips);
+  o.nudges = Object.assign({}, BASE.nudges, LTC.nudges, { soft: Object.assign({}, BASE.nudges.soft, (LTC.nudges || {}).soft) });
+  o.reveal = Object.assign({}, BASE.reveal, LTC.reveal); o.win = Object.assign({}, BASE.win, LTC.win);
+  o.ui = Object.assign({}, UI_EN, LTC.ui, { lights: Object.assign({}, UI_EN.lights, (LTC.ui || {}).lights) });
+  o.kwLabels = LTC.kwLabels || {};
+  return o;
+}
+const CFG = { en: Object.assign({}, BASE, { ui: UI_EN, kwLabels: {} }), lt: buildLT() };
 const params = new URLSearchParams(location.search);
+function storedLang() { try { return localStorage.getItem("aitorLang"); } catch (e) { return null; } }
+let LANG = (params.get("lang") || storedLang() || "en").toLowerCase() === "lt" ? "lt" : "en";
+let C = CFG[LANG];
+const U = () => C.ui;
 const MOCK = params.get("mock") === "1" || !C.anonKey;   // no key yet -> offline mock
 const $ = (id) => document.getElementById(id);
 const IDS = C.slots.map((s) => s.id);
@@ -271,17 +309,47 @@ const moveText = () => S.found.counter || C.counterMoveFallback;
 const cleanMove = (m) => String(m || "").replace(/["\n]/g, " ").trim().split(/\s+/).filter(Boolean).slice(0, 6).join(" ").slice(0, 40).replace(/[.!\s]+$/, "");
 const nFound = () => IDS.filter((id) => S.found[id]).length;
 
-/* ---------- static text ---------- */
-$("objective").textContent = C.objective;
-$("mission").innerHTML = C.slots.map((s) => `<li><span>${s.num}</span>${esc(s.question)}</li>`).join("");
-$("winTitle").textContent = C.win.title;
-$("winNote").textContent = C.win.notebook;
-$("winBonus").textContent = C.win.bonus;
-$("winBack").textContent = C.endMessage;
-$("revealTitle").textContent = C.reveal.title;
-$("missionLine").textContent = C.objective;
-$("missionTip").textContent = C.missionReminder;
-$("revealBack").textContent = C.endMessage;
+/* ---------- static text (re-run on every EN | LT switch) ---------- */
+const promptWord = (n) => { const u = U(); if (LANG !== "lt") return n === 1 ? u.promptOne : u.promptMany;
+  const t = n % 10, h = n % 100; return (t === 1 && h !== 11) ? u.promptOne : (t >= 2 && (h < 10 || h > 20)) ? u.promptFew : u.promptMany; };
+function applyStatic() {
+  const u = U();
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("#langPill button").forEach((b) => { const on = b.dataset.lang === LANG; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  $("objective").textContent = C.objective;
+  $("mission").innerHTML = C.slots.map((s) => `<li><span>${s.num}</span>${esc(s.question)}</li>`).join("");
+  $("method").innerHTML = `${esc(u.method)} <b>${esc(u.lights.task)}</b> · <b>${esc(u.lights.context)}</b> · <b>${esc(u.lights.outcome)}</b>`;
+  $("winTitle").textContent = C.win.title;
+  $("winNote").textContent = C.win.notebook;
+  $("winBonus").textContent = C.win.bonus;
+  $("winBack").textContent = C.endMessage;
+  $("revealTitle").textContent = C.reveal.title;
+  $("missionLine").textContent = C.objective;
+  $("missionTip").textContent = C.missionReminder;
+  $("revealBack").textContent = C.endMessage;
+  $("demo").textContent = u.demo;
+  $("missionBtn").textContent = u.mission;
+  $("doneBtn").textContent = u.done;
+  document.querySelectorAll(".t-neuron").forEach((b) => { b.textContent = u.neuron; });
+  document.querySelectorAll(".a-stuck").forEach((i) => { i.alt = u.altStuck; });
+  $("heroImg").alt = u.altBackflip;
+  $("go").textContent = u.ask;
+  $("q").setAttribute("aria-label", u.inputLabel);
+  if (!S.timeUp) $("q").placeholder = S.branch ? u.askAbout + S.turns[S.branch.turn].r.branches[S.branch.i].title : u.placeholder;
+  else $("q").placeholder = u.timesUp;
+  $("keepBtn").textContent = u.keepAsking;
+  $("missionClose").textContent = u.close; $("tmClose").textContent = u.close;
+}
+function setLang(l) {
+  if (l !== "en" && l !== "lt") return;
+  LANG = l; C = CFG[l];
+  try { localStorage.setItem("aitorLang", l); } catch (e) { /* private mode: fine */ }
+  applyStatic(); renderSlots(); render();
+  if ($("winOv").classList.contains("show")) showWin();
+  if ($("revealOv").classList.contains("show")) showReveal();
+  if ($("missionOv").classList.contains("show")) showMission();
+}
+$("langPill").addEventListener("click", (e) => { const b = e.target.closest("button[data-lang]"); if (b) setLang(b.dataset.lang); });
 
 function placeSearch() {
   const host = document.body.classList.contains("started") ? $("dock") : $("homeSlot");
@@ -301,9 +369,9 @@ function chipHTML(s, big) {
 function renderSlots(popId) {
   $("slots").innerHTML = C.slots.map((s) => chipHTML(s)).join("");
   if (popId) $("slot-" + popId)?.classList.add("pop");
-  $("count").textContent = S.prompts ? S.prompts + (S.prompts === 1 ? " prompt" : " prompts") : "";
+  $("count").textContent = S.prompts ? S.prompts + " " + promptWord(S.prompts) : "";
   const n = nFound();
-  $("free").innerHTML = `Neuron: <b>${n}/${IDS.length} free</b>`;
+  $("free").innerHTML = U().free ? `${esc(U().free)} <b>${n}/${IDS.length}</b>` : `Neuron: <b>${n}/${IDS.length} free</b>`;
   $("neuronImg").src = ["assets/neuron_stuck.gif", "assets/neuron_free1.png", "assets/neuron_backflip.png"][n];
 }
 
@@ -314,25 +382,25 @@ function pointsOf(r) {
 }
 function lightsHTML(tco) {
   const t = tco || {};
-  return `<div class="lights">${["task", "context", "outcome"].map((k) => `<span class="${t[k] ? "on" : ""}" data-l="${k}">${k.toUpperCase()}</span>`).join("")}</div>`;
+  return `<div class="lights">${["task", "context", "outcome"].map((k) => `<span class="${t[k] ? "on" : ""}" data-l="${k}">${esc(U().lights[k])}</span>`).join("")}</div>`;
 }
 function colHTML(t, k) {
   const last = k === S.turns.length - 1;
   let card = `<div class="card" id="card-${k}"><h2>${esc(t.q)}</h2>${lightsHTML(t.r && t.r.tco)}`;
   if (!t.r) {
-    card += `<div class="load"><img src="assets/L6_neuron_shakes_aitor.gif" alt="Neuron shakes AItor"><div class="bars">
+    card += `<div class="load"><img src="assets/L6_neuron_shakes_aitor.gif" alt="${esc(U().altShake)}"><div class="bars">
       <div class="sk" style="width:92%"></div><div class="sk" style="width:78%"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:55%"></div></div></div>
       <div class="slow" id="slow"></div>`;
   } else {
     card += `<ul>${pointsOf(t.r).map((p) => `<li>${p.lead ? `<b>${esc(p.lead)}</b> ` : ""}${esc(p.text)}</li>`).join("")}</ul>`;
-    if (last && !S.timeUp) card += `<button type="button" class="pill" id="followBtn">Ask Follow Up</button>`;
+    if (last && !S.timeUp) card += `<button type="button" class="pill" id="followBtn">${esc(U().followUp)}</button>`;
   }
   card += `</div>`;
   let below = "";
   if (t.r) {
-    if (t.r.tip && t.r.tip.text) below += `<div class="tipline"><img src="${poseSrc(t.r.pose)}" alt="AItor ${esc(t.r.pose || "point")}s"><span>${esc(t.r.tip.text)}</span></div>`;
+    if (t.r.tip && t.r.tip.text) below += `<div class="tipline"><img src="${poseSrc(t.r.pose)}" alt="${U().altAitor ? esc(U().altAitor) : `AItor ${esc(t.r.pose || "point")}s`}"><span>${esc(t.r.tip.text)}</span></div>`;
     const bs = t.r.branches || [];
-    if (bs.length) below += `<div class="follow"><div class="lbl">GO DEEPER</div>${bs.map((b, i) => {
+    if (bs.length) below += `<div class="follow"><div class="lbl">${esc(U().goDeeper)}</div>${bs.map((b, i) => {
       const sel = (S.branch && S.branch.turn === k && S.branch.i === i) || (S.turns[k + 1] && S.turns[k + 1].from && S.turns[k + 1].from.i === i);
       return `<button type="button" class="fu ${sel ? "sel" : ""}" id="fu-${k}-${i}" data-turn="${k}" data-i="${i}" ${last ? "" : "disabled"}><b>${esc(b.title)}</b><span>${esc(b.teaser)}</span></button>`;
     }).join("")}</div>`;
@@ -369,28 +437,34 @@ $("canvas").addEventListener("click", (e) => {
   S.branch = { turn: +btn.dataset.turn, i: +btn.dataset.i };
   document.querySelectorAll(".fu").forEach((b) => b.classList.toggle("sel", b === btn));
   const b = S.turns[S.branch.turn].r.branches[S.branch.i];
-  $("ctx").textContent = "Going deeper: " + b.title + " — now type your prompt.";
-  $("q").placeholder = "Ask about: " + b.title;
+  $("ctx").textContent = U().goingDeeper.replace("{title}", b.title);
+  $("q").placeholder = U().askAbout + b.title;
 });
 
 /* ---------- keyword check (mirrors server) ---------- */
 function keywordHits(answer) {
   const a = answer.toLowerCase(); const hits = {};
   const has = (k) => { let i = a.indexOf(k); while (i !== -1) { if (i === 0 || !/[a-z0-9]/.test(a[i - 1])) return true; i = a.indexOf(k, i + 1); } return false; };
-  for (const s of C.slots) { const k = s.keywords.find(has); if (k) hits[s.id] = k; }
+  // LT stems match anywhere in a word (Lithuanian prefixes: "nupiešk" has "pieš"); EN words match at a word start
+  for (const s of C.slots) { const k = s.keywords.find(has) || (s.keywordsLt || []).find((x) => a.includes(x)); if (k) hits[s.id] = k; }
   return hits;
 }
 function niceKw(k) {
   const map = { "unpredictab": "unpredictable", "random": "random rewards", "surprise": "surprise rewards", "never know": "never know when", "limit": "set a limit", "timer": "timer", "if then": "if-then plan", "if-then": "if-then plan" };
-  return map[k] || k;
+  return C.kwLabels[k] || map[k] || k;
 }
 
 /* ---------- TASK + CONTEXT + OUTCOME (mock scoring; live gets tco from the model) ---------- */
 const RE_TASK = /\b(explain|tell|describe|list|give|show|teach|help|what|why|how|which|where|when|can you|could you)\b/i;
 const RE_CONTEXT = /\b(i'?m \d{1,2}|i am \d{1,2}|\d{1,2}[- ]?(years?|yo)\b|i (scroll|watch|play|use|game|have|get)|at night|after school|before bed|for (a |my )?(kid|kids|child|student|brother|sister|friend|class|gamer|neuron|\d{1,2}[- ]?year)|when i|my (phone|tablet|brother|sister|friend|class|mum|mom|dad)|i'?m a (kid|student|gamer))/i;
 const RE_OUTCOME = /\b((\d+|one|two|three|four|five) (short |simple |easy )?(points?|steps?|sentences?|words?|tips?|ideas?|bullets?|reasons?|ways?)|in (simple|easy|short|plain|kid) words|simple words|short answer|as a list|step by step|like i'?m \d+|one sentence|briefly|in short)\b/i;
+// Lithuanian versions (mock only; live lights come from the model). No \b: it does not work with ą č ę ė į š ų ū ž.
+const LT_TASK = /(^|[^\p{L}])(paaiškink|pasakyk|papasakok|išvardink|išvardyk|išvardinkite|duok|parodyk|padėk|patark|kodėl|kaip|kas|ką|kokie|kokia|kokį|kuris|kur|kada|ar gali|gal gali)([^\p{L}]|$)/iu;
+const LT_CONTEXT = /((^|[^\p{L}])man \d{1,2}|esu \d{1,2}|\d{1,2} met|(^|[^\p{L}])aš [\p{L}]+|(^|[^\p{L}])mano (telefon|planšet|brol|ses|draug|klas|mam|tėt)|naktį|vakarais|vakare|po pamokų|prieš miegą|vaikui|vaikams|mokiniui|žaidėjui|(^|[^\p{L}])mėgstu|man patinka|(^|[^\p{L}])kai (aš|žiūriu|scrollinu|žaidžiu))/iu;
+const LT_OUTCOME = /(((^|[^\p{L}])(\d+|vienu|dviem|trim|keturiais|penkiais|vieną|du|dvi|tris|trys|keturis|penkis) (trumpais |trumpus |paprastais |paprastus |trumpus |trumpomis |trumpais )?(punkt|žingsn|sakin|žodž|patarim|idėj|būd|priežast|eilut))|paprastai|paprastais žodžiais|trumpai|sąrašu|žingsnis po žingsnio|vienu sakiniu)/iu;
 function scoreTCO(q) {
   const words = q.trim().split(/\s+/).filter(Boolean).length;
+  if (LANG === "lt") return { task: words >= 3 && (RE_TASK.test(q) || LT_TASK.test(q)), context: RE_CONTEXT.test(q) || LT_CONTEXT.test(q), outcome: RE_OUTCOME.test(q) || LT_OUTCOME.test(q) };
   return { task: words >= 3 && RE_TASK.test(q), context: RE_CONTEXT.test(q), outcome: RE_OUTCOME.test(q) };
 }
 const lightCount = (t) => (t.task ? 1 : 0) + (t.context ? 1 : 0) + (t.outcome ? 1 : 0);
@@ -454,8 +528,42 @@ function mainNoun(q) {
   const w = q.toLowerCase().replace(/brain ?rot/g, "").match(/[a-z']+/g) || [];
   return w.filter((x) => x.length > 2 && !STOP.has(x)).pop() || "that";
 }
+/* LT mock (same shapes as above) */
+const LT_MOCK = {
+  full: { trick: [
+    { lead: "Siurprizas.", text: "Srautas duoda prizus atsitiktinai: dauguma video nuobodūs, bet kartais pasitaiko super geras." },
+    { lead: "Lošimo automatas.", text: "Niekada nežinai, kada ateis geras video, todėl vis scrollini toliau." }] },
+  counter: [
+    [/futbol/i, "futbolas", "Sužaisk 20 min. futbolo", [
+      { lead: "Futbolas.", text: "Vietoj scrollinimo sužaisk 20 minučių futbolo su draugu." },
+      { lead: "Jei–tai planas.", text: "„Jei suskamba laikmatis, tada padedu telefoną ir einu spardyti kamuolio.“" }]],
+    [/pieš/i, "piešimas", "Nupiešk komiksą vietoj telefono", [
+      { lead: "Piešk.", text: "Vietoj scrollinimo nupiešk komiksą: popierius, pieštukas ir tavo istorija." },
+      { lead: "Pakeisk.", text: "Piešimas užpildo tą patį laisvą laiką, o tu sukuri kažką tikro." }]],
+    [/minecraft/i, "Minecraft", "Pastatyk Minecraft bazę iš Lego", [
+      { lead: "Statyk.", text: "Pastatyk savo Minecraft bazę iš tikrų Lego kaladėlių." },
+      { lead: "Pakeisk.", text: "Tas pats statybų smagumas, tik gali ją paliesti rankomis." }]],
+  ],
+  half: { trick: [{ lead: "Siurprizas.", text: "Kai kurie video geri, dauguma ne, ir negali žinoti, kuris bus kitas." }],
+          counter: [{ lead: "Planuok.", text: "Lengviau sustoti, kai iš anksto nusistatai laikmatį." }] },
+  general: { trick: [{ lead: "Daug priežasčių.", text: "Programėlės sukurtos taip, kad jomis būtų lengva naudotis, o trumpi video greitai prasideda." }],
+             counter: [{ lead: "Įpročiai.", text: "Įprotį pakeisti lengviau, kai scrollinimą pakeiti tuo, ką mėgsti." }] },
+  topic: {
+    counter: /(kaip (man |galiu |galėčiau |)?(sustot|nustot|liautis|pabėgt|ištrūkt|atsikratyt|mest|nugalėt|įveikt|atsispirt|mažiau)|ištrūk|pabėg|nugalė|įveik|išsilaisvin|atsikrat|būd[^ ]* (sustot|nustot|ištrūkt|mažiau)|padėk (man )?(sustot|nustot)|planą (sustot|nustot))/i,
+    trick: /(kodėl.*(negaliu|sunku|nesustoju|vis|nuolat).*(sustot|nustot|scroll|žiūr|nar|padėt)|kaip (jis|brain ?rot|programėl|srautas).*(trauk|apgaun|kabin|laik)|trauk|apgaul|gudryb|triuk|atsitiktin|nenuspėj|netikėt|lošim|kitas video|kitą video|vis (žiūriu|scrollinu|naršau))/i,
+  },
+  deeper: {
+    trick: [{ title: "Kodėl trumpi video?", teaser: "Kas daro video trumpą ir greitą." }, { title: "Kas renka srautą?", teaser: "Kaip programėlė parenka, ką matai." }],
+    counter: [{ title: "Nauji įpročiai", teaser: "Kiek laiko prigyja naujas įprotis." }, { title: "Kiti ekrano įpročiai", teaser: "Žaidimai, pokalbiai ir video." }],
+    other: [{ title: "Ryškios spalvos", teaser: "Kodėl ryškios spalvos išsiskiria ekrane." }, { title: "Kiek smegenų ląstelių?", teaser: "Kiek neuronų gyvena tavo galvoje?" },
+            { title: "Miegas ir ekranai", teaser: "Kiek miego reikia tavo amžiaus vaikams." }, { title: "Kiek trunka shorts?", teaser: "Kiek sekundžių trunka vienas trumpas video." }],
+  },
+  guess: (w) => `Paklausei apie „${w}“. Pasakyk, ką apie tai nori sužinoti.`,
+  stop: new Set("kas ką kodėl kaip kur kada kuris kokia kokie ar aš man mane tu tau tave jis jo ji jos tai šitas apie ir bet su be į iš už prie paaiškink pasakyk papasakok duok parodyk prašau mano tavo gali galiu".split(" ")),
+};
 let driftI = 0;
 function mockReply(q, branch, n) {
+  if (LANG === "lt") return mockReplyLT(q, branch, n);
   const tco = scoreTCO(q), L = lightCount(tco);
   let topic = null, points = null, move = "", interest = "", usesInterest = false;
   const ctxQ = [q, ...S.history.map((h) => h.q)].join(" ");   // interest may come from recent history
@@ -484,17 +592,45 @@ function mockReply(q, branch, n) {
     counter_move: move, interest, uses_interest: usesInterest,
   };
 }
+function mockReplyLT(q, branch, n) {
+  const M = LT_MOCK, tco = scoreTCO(q), L = lightCount(tco);
+  let topic = null, points = null, move = "", interest = "", usesInterest = false;
+  const ctxQ = [q, ...S.history.map((h) => h.q)].join(" ");
+  const findC = () => M.counter.find(([re]) => re.test(q)) || M.counter.find(([re]) => re.test(ctxQ));
+  if (tco.task) {
+    topic = ["counter", "trick"].find((t) => M.topic[t].test(q)) || null;
+    if (!topic && branch && /(tai|apie tai|daugiau|plačiau)/i.test(q)) topic = ["counter", "trick"].find((t) => M.topic[t].test(branch.title + " " + branch.teaser)) || null;
+    if (topic === "counter" && L >= 3) {
+      const c = findC();
+      if (c) { points = c[3]; move = c[2]; interest = c[1]; usesInterest = true; }
+      else points = M.general.counter;
+    }
+    else if (topic) points = (L >= 3 ? M.full : L === 2 ? M.half : M.general)[topic];
+  }
+  if (!points) { const w = (q.toLowerCase().replace(/brain ?rot/g, "").match(/[\p{L}']+/gu) || []).filter((x) => x.length > 2 && !M.stop.has(x)).pop() || "tai"; points = [{ lead: "Spėju.", text: M.guess(w) }]; }
+  const askedBreakFree = M.topic.counter.test(q);
+  if (!interest) { const c = findC(); if (c) interest = c[1]; }
+  driftI++;
+  const other = M.deeper.other, br = topic ? M.deeper[topic] : [other[driftI % 4], other[(driftI + 1) % 4]];
+  return {
+    status: "ok", points, answer: points.map((p) => p.lead + " " + p.text).join(" "),
+    branches: br, tco, lights: L,
+    tip: tcoTip(tco, n, askedBreakFree && !interest), pose: L <= 1 ? "shrug" : "point",
+    slots_explained: topic && L >= 2 && !(topic === "counter" && L >= 3 && !usesInterest) ? [topic] : [],
+    counter_move: move, interest, uses_interest: usesInterest,
+  };
+}
 
 /* ---------- live call ---------- */
 async function liveReply(q, branch) {
   const res = await fetch(C.endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: C.anonKey, Authorization: "Bearer " + C.anonKey },
-    body: JSON.stringify({ prompt: q, sessionId: S.sessionId, found: Object.keys(S.found), branch, history: S.history.slice(-2), n: S.prompts }),
+    body: JSON.stringify({ prompt: q, sessionId: S.sessionId, found: Object.keys(S.found), branch, history: S.history.slice(-2), n: S.prompts, lang: LANG }),
   });
   return res.json();
 }
-const FUZZY = { status: "error", answer: "AItor's signal got fuzzy. Not yet — try asking again!", branches: [], tip: { kind: "none", text: "Ask again in a few seconds." }, pose: "shrug", lit: [], flicker: [] };
+const fuzzy = () => ({ status: "error", answer: U().fuzzy, branches: [], tip: { kind: "none", text: U().fuzzyTip }, pose: "shrug", lit: [], flicker: [] });
 
 /* ---------- 12-minute timer: calm bar, one gentle warning, then reveal ---------- */
 function startTimer() { if (!S.timerEnd) S.timerEnd = Date.now() + C.timerMinutes * 60000; }
@@ -509,7 +645,7 @@ setInterval(tick, 1000);
 function timeUp() {
   S.timeUp = true;
   $("timerBar").style.width = "100%";
-  $("q").disabled = true; $("go").disabled = true; $("q").placeholder = "Time's up";
+  $("q").disabled = true; $("go").disabled = true; $("q").placeholder = U().timesUp;
   // never cover an answer the kid has not had time to read
   const wait = S.busy ? 400 : Math.max(0, 6000 - (Date.now() - S.lastRender));
   const show = () => { if (S.busy) return setTimeout(show, 400); render(); showReveal(); };
@@ -518,7 +654,7 @@ function timeUp() {
 function showReveal() {
   const [t, c] = C.slots;
   $("revealList").innerHTML = `<div class="${S.found[t.id] ? "got" : ""}"><b><span class="rn">${t.num}</span> ${esc(t.label)}${S.found[t.id] ? " \u2713" : ""}</b>${esc(t.reveal)}</div>`
-    + `<div class="move${S.found[c.id] ? "" : " none"}"><b><span class="rn">${c.num}</span> ${esc(c.label)}${S.found[c.id] ? " \u2713" : ""}</b><span class="big">Your counter-move: ${esc(moveText())}</span></div>`;
+    + `<div class="move${S.found[c.id] ? "" : " none"}"><b><span class="rn">${c.num}</span> ${esc(c.label)}${S.found[c.id] ? " \u2713" : ""}</b><span class="big">${esc(U().yourMove)} ${esc(moveText())}</span></div>`;
   $("winOv").classList.remove("show");
   $("revealOv").classList.add("show");
 }
@@ -539,12 +675,12 @@ async function submit(e) {
   if (!q || S.busy) return;
   if (/^t-?e-?s-?t$/i.test(q)) { $("q").value = ""; openTest(); return; }
   if (S.timeUp) return;
-  if (C.clientMinGapMs - (Date.now() - S.lastSend) > 0) { $("ctx").textContent = "One prompt at a time — wait a second..."; return; }
-  if (S.prompts >= C.sessionCap) { $("ctx").textContent = "AItor needs a rest. Ask your mentor to restart the case file."; return; }
+  if (C.clientMinGapMs - (Date.now() - S.lastSend) > 0) { $("ctx").textContent = U().oneAtATime; return; }
+  if (S.prompts >= C.sessionCap) { $("ctx").textContent = U().needsRest; return; }
 
   S.busy = true; S.lastSend = Date.now();
   startTimer();
-  $("q").value = ""; $("go").disabled = true; $("q").placeholder = "Ask AItor...";
+  $("q").value = ""; $("go").disabled = true; $("q").placeholder = U().placeholder;
   start();
   const from = S.branch && S.branch.turn === S.turns.length - 1 ? S.branch : null;
   const branchObj = from ? S.turns[from.turn].r.branches[from.i] : null;
@@ -553,7 +689,7 @@ async function submit(e) {
   const k = S.turns.length - 1;
   render(); scrollToTurn(k);
   if (!S.warned) $("ctx").textContent = "";
-  const slowT = setTimeout(() => { const el = $("slow"); if (el) el.textContent = "Still guessing... hold on."; }, C.slowReplyMs);
+  const slowT = setTimeout(() => { const el = $("slow"); if (el) el.textContent = U().slow; }, C.slowReplyMs);
 
   let r;
   try {
@@ -569,9 +705,9 @@ async function submit(e) {
     } else {
       r = await liveReply(q, branchObj);
     }
-  } catch (err) { r = FUZZY; }
+  } catch (err) { r = fuzzy(); }
   clearTimeout(slowT);
-  if (!r || typeof r.answer !== "string") r = FUZZY;
+  if (!r || typeof r.answer !== "string") r = fuzzy();
 
   if (r.status === "ok") S.prompts++;
   S.history.push({ q, a: r.answer }); S.history = S.history.slice(-3);
@@ -599,9 +735,10 @@ async function submit(e) {
   S.busy = false; if (!S.timeUp) $("go").disabled = false;
 }
 function showWin() {
-  renderSlots(); $("winCount").textContent = S.prompts;
+  renderSlots();
+  $("winScore").innerHTML = U().tookYou ? `${esc(U().tookYou)} <b id="winCount">${S.prompts}</b>` : `It took you <b id="winCount">${S.prompts}</b> prompts.`;
   $("winTrick").innerHTML = `<b>\u2460</b> ${esc(C.slots[0].reveal)}`;
-  $("winMove").innerHTML = `<small>Your counter-move:</small>${esc(moveText())}`;
+  $("winMove").innerHTML = `<small>${esc(U().yourMove)}</small>${esc(moveText())}`;
   $("winOv").classList.add("show");
 }
 
@@ -629,7 +766,7 @@ const TM = [
   ...C.slots.map((s) => ["Lock " + s.num + " " + s.label, () => { S.found[s.id] = s.testMove || niceKw(s.keywords[0]); delete S.flicker[s.id]; if (nFound() === IDS.length) { S.won = true; $("doneBtn").hidden = false; } renderSlots(s.id); }]),
   ["Flicker ① (2 lights)", () => { S.flicker = { trick: true }; renderSlots(); }],
   ["Reset case file", () => { S.found = {}; S.flicker = {}; S.prompts = 0; S.sinceNew = 0; S.won = false; S.turns = []; S.history = []; S.branch = null; S.timerEnd = 0; S.warned = false; S.timeUp = false;
-    $("timerBar").style.width = "0"; $("q").disabled = false; $("go").disabled = false; $("q").placeholder = "Ask AItor..."; $("ctx").textContent = "";
+    $("timerBar").style.width = "0"; $("q").disabled = false; $("go").disabled = false; $("q").placeholder = U().placeholder; $("ctx").textContent = "";
     $("doneBtn").hidden = true; $("revealOv").classList.remove("show"); render(); renderSlots(); document.body.classList.remove("started"); placeSearch(); }],
   ["Jump", null],
   ["Win screen", () => { S.won = true; closeTM(); showWin(); }],
@@ -650,7 +787,7 @@ $("tm").innerHTML = TM.map(([label, fn], i) => fn ? `<button type="button" data-
 $("tm").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) TM[+b.dataset.i][1](); });
 
 /* ---------- first screen: Neuron's line + 2 questions + search ---------- */
-placeSearch(); renderSlots();
+applyStatic(); placeSearch(); renderSlots();
 window.__case = S; // for testing
 })();
 </script>
