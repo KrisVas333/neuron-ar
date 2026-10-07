@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7 vakarų planas be ekrano · Kris Vas</title>
+<meta name="description" content="7 vakarai po 15–30 min. kartu su vaiku. Be draudimų. Kiekvienas vakaras su paaiškinimu, ką sako tyrimai, ir sąžiningu įrodymų ženkleliu.">
+<link rel="canonical" href="https://krisvas333.github.io/neuron-ar/7-vakaru-planas/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="lt_LT">
+<meta property="og:title" content="7 vakarų planas be ekrano">
+<meta property="og:description" content="7 vakarai po 15–30 min. kartu su vaiku. Be draudimų. Pagal Jonathan Haidt ir Catherine Price idėjas.">
+<meta property="og:url" content="https://krisvas333.github.io/neuron-ar/7-vakaru-planas/">
+<meta property="og:image" content="https://krisvas333.github.io/neuron-ar/7-vakaru-planas/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--red:#FF0000;--r:4px;
+--mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 18px/1.65 var(--body);letter-spacing:.005em;overflow-x:hidden}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 56px}
+p,li{max-width:68ch}
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+h1,h2,h3,.label,.day,.badge,.btn,.prog{font-family:var(--mono)}
+.label{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:32px 0 10px}
+.label::before{content:"";display:inline-block;width:8px;height:8px;background:var(--red);border-radius:2px;margin-right:8px;vertical-align:1px}
+h1{font-size:clamp(30px,8vw,46px);line-height:1.08;letter-spacing:-.03em;font-weight:800;margin:0 0 16px}
+.promise{font-size:20px;line-height:1.5;margin:0 0 8px}
+.promise strong{color:var(--accent)}
+.meta{font-size:15px;color:var(--muted);margin:14px 0 0}
+h2{font-size:22px;line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:0 0 12px}
+h3{font-size:17px;line-height:1.3;font-weight:700;margin:18px 0 6px}
+section.block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px;margin:28px 0}
+section.block p{margin:0 0 12px}
+.norms{margin:0 0 14px;padding-left:24px}
+.norms li{margin:0 0 6px}
+.note{font-size:16px;color:var(--muted)}
+.legend{font-size:16px;margin:0}
+.legend .badge{margin-right:4px}
+.badge{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--ink);border-radius:var(--r);padding:2px 7px;line-height:1.5;vertical-align:2px;white-space:nowrap}
+.badge.b{background:var(--ink);color:#fff}
+.badge.c{background:#fff;color:var(--ink)}
+.badge.x{background:#fff;color:var(--muted);border-color:var(--muted)}
+.progwrap{position:sticky;top:0;z-index:5;background:var(--ground);padding:10px 0 8px;margin:24px 0 8px;border-bottom:1px solid var(--line)}
+.prog{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.bar{height:6px;background:var(--line);border-radius:var(--r);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.card{border:1px solid var(--line);border-left:4px solid var(--line);border-radius:var(--r);padding:18px 18px 12px;margin:0 0 16px;background:#fff}
+.card.done{border-left-color:var(--accent);background:var(--surface)}
+.dayrow{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:0 0 4px}
+.day{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.min{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+.steps{margin:6px 0 12px;padding-left:24px}
+.steps li{margin:0 0 8px}
+.why{border-top:1px solid var(--line);padding-top:12px;margin-top:4px;font-size:16px;line-height:1.6}
+.why b{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+.why p{margin:0 0 8px}
+.tick{display:flex;gap:12px;align-items:center;min-height:48px;cursor:pointer;font-weight:700;font-size:17px;margin-top:6px;user-select:none}
+.tick input{width:28px;height:28px;accent-color:var(--accent);flex:none;cursor:pointer;margin:0}
+.alldone{display:none;border:2px solid var(--accent);border-radius:var(--r);padding:18px;margin:8px 0 20px}
+.alldone.on{display:block}
+.alldone p{margin:0 0 8px}
+.books .book{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+.books .book:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 18px;border-radius:var(--r);font-size:15px;font-weight:700;letter-spacing:.04em;text-decoration:none;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;line-height:1.25;text-align:center}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--ink)}
+.res{list-style:none;padding:0;margin:0}
+.res li{padding:12px 0;border-top:1px solid var(--line)}
+.res li:first-child{border-top:0;padding-top:0}
+.res a{font-weight:600}
+.cta{border:2px solid var(--ink);background:#fff}
+footer{font-size:15px;color:var(--muted);line-height:1.6;margin-top:36px;border-top:1px solid var(--line);padding-top:20px}
+footer p{margin:0 0 12px}
+footer .coi{color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.src{padding-left:20px;margin:0 0 12px;font-size:14px}
+.src li{margin:0 0 8px;word-break:break-word}
+.linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer;min-height:44px}
+.printonly{display:none}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+@media print{
+  @page{size:A4;margin:9mm}
+  body{font-size:9.6px;line-height:1.32;color:#000}
+  .wrap{max-width:none;padding:0}
+  .label{margin:0 0 2px;font-size:8px}
+  h1{font-size:19px;margin:0 0 3px}
+  .promise{font-size:10.5px;margin:0 0 2px}
+  .meta,.progwrap,.alldone,.cta,.books,.resources,.btns,.linkbtn,.legend-block,.noprint{display:none!important}
+  section.block{padding:5px 8px;margin:4px 0;background:#fff}
+  section.block p{margin:0 0 3px}
+  h2{font-size:11.5px;margin:0 0 3px}
+  .norms{margin:0 0 3px;padding-left:14px}.norms li{margin:0}
+  .card{break-inside:avoid;padding:5px 8px 3px;margin:0 0 4px;border-left-width:3px}
+  .steps{margin:2px 0 3px;padding-left:14px}.steps li{margin:0 0 1px}
+  .why{font-size:8.6px;padding-top:3px;line-height:1.3}
+  .why b{font-size:7.5px;display:inline;margin-right:4px}
+  .why p{margin:0 0 1px}
+  .day,.min{font-size:8px}
+  .badge{font-size:7px;padding:0 3px}
+  .tick{min-height:0;font-size:9px;margin-top:2px}
+  .tick input{width:11px;height:11px}
+  a{color:#000;text-decoration:none}
+  footer{font-size:8px;margin-top:4px;padding-top:4px;color:#333}
+  footer p{margin:0 0 3px}
+  footer .coi{padding:4px 6px}
+  .src{font-size:7.4px;margin:0 0 3px}.src li{margin:0}
+  .note,.why p,.note a{font-size:inherit}
+  p,li{max-width:none}
+  .printonly{display:block}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<p class="label">Kris Vas · tėvams</p>
+<h1>7 vakarų planas be ekrano</h1>
+<p class="promise"><strong>7 vakarai, po 15–30 minučių, kartu su vaiku.</strong> Tinka vaikams maždaug nuo 6 iki 12 metų.</p>
+<p class="promise">Be draudimų. Kiekvieną vakarą pirmas pradedi tu, vaikas seka paskui.</p>
+<p class="meta">Atnaujinta 2026-10-07 · Remiuosi Jonathan Haidt ir Catherine Price · <a href="#interesas">Mano interesai</a></p>
+
+<section class="block" aria-labelledby="kodel">
+  <h2 id="kodel">Kodėl verta pabandyti</h2>
+  <p>Psichologas Jonathan Haidt knygoje „Nerimo karta“ siūlo keturias naujas šeimos normas:</p>
+  <ol class="norms">
+    <li>Iki maždaug 14 metų be išmaniojo telefono. Paprastas telefonas skambučiams tinka.</li>
+    <li>Socialiniai tinklai nuo 16 metų.</li>
+    <li>Mokykla be telefonų.</li>
+    <li>Daugiau savarankiškumo, laisvo žaidimo ir atsakomybės tikrame pasaulyje.</li>
+  </ol>
+  <p class="note">Tai autoriaus siūlymas iš jo knygos. <a href="https://www.anxiousgeneration.com/pdfs/four-norms.pdf" target="_blank" rel="noopener">Originalas (PDF, anglų k.)</a></p>
+  <p>Antra priežastis esame mes, suaugę. Tyrime su 170 JAV šeimų, kur vaikams buvo apie 3 metai, tėvų telefono pertraukimai bendro laiko metu <strong>siejami</strong> su daugiau vaiko elgesio sunkumų. <span class="badge c" title="Silpnesni įrodymai">C</span></p>
+  <p class="note">Tai sąsaja. Priežastis neįrodyta, o tyrime dalyvavo maži vaikai. <a href="https://pubmed.ncbi.nlm.nih.gov/28493400/" target="_blank" rel="noopener">McDaniel ir Radesky, 2018</a></p>
+  <p>Ne visi tyrėjai sutinka. Didelė analizė su 355 tūkst. paauglių rado, kad technologijų ir savijautos ryšys neigiamas, bet mažas. <span class="badge b" title="Geri įrodymai su išlygom">B</span> <a href="https://pubmed.ncbi.nlm.nih.gov/30944443/" target="_blank" rel="noopener">Orben ir Przybylski, 2019</a></p>
+  <p><strong>Todėl be panikos.</strong> Tiesiog savaitės eksperimentas, kuris prasideda nuo tavo telefono.</p>
+  <p class="legend legend-block"><span class="badge b">B</span> gera apžvalga ar eksperimentas, bet su išlygom. <span class="badge c">C</span> silpnesnis ryšys, vienas tyrimas ar tėvų apklausa. <span class="badge x">Ne mokslas</span> šeimos eksperimentas ar knygos idėja. A ženklelio čia nėra: tokių stiprių tyrimų apie vaikus ir ekranus dar mažai.</p>
+</section>
+
+<div class="progwrap" aria-live="polite">
+  <div class="prog"><span>Tavo savaitė</span><span id="prog">0 / 7</span></div>
+  <div class="bar"><i id="bar"></i></div>
+</div>
+
+<section class="card" data-d="1" aria-labelledby="d1">
+  <div class="dayrow"><span class="day">1 · Pirmadienis</span><span class="min">20 min.</span></div>
+  <h2 id="d1">Pilkas ekranas ir 10 minučių laikmatis</h2>
+  <ol class="steps">
+    <li><strong>Pirmas tu.</strong> Perjunk savo telefoną į pilką (nespalvotą) režimą. Paskui vaiko planšetę ar telefoną, jei turi.</li>
+    <li>iPhone: Nustatymai › Prieinamumas › Ekranas ir teksto dydis › Spalvų filtrai › įjunk ir pasirink pilką. Android: Nustatymuose ieškok „pilki tonai“ arba „spalvų korekcija“. Pavadinimas priklauso nuo telefono.</li>
+    <li>Nusistatyk laikmatį programėlei, kuri labiausiai traukia. Aš turiu ADHD ir socialiniams tinklams naudoju 10 min. laikmatį. Suskamba, padedu telefoną.</li>
+    <li>Kartu su vaiku pažiūrėkite, kuri programėlė pilkai nusibosta pirma.</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p>Eksperimente su 112 suaugusiųjų pilkas ekranas iš karto sumažino laiką telefone. Laiko limitai irgi padėjo, tik mažiau ir lėčiau. Savijauta per tyrimo laiką nepasikeitė. Su vaikais to netyrė. <span class="badge b">B</span> <a href="https://pubmed.ncbi.nlm.nih.gov/36577008/" target="_blank" rel="noopener">Zimmermann ir Sobolev, 2023</a></p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="1"> Padarėme</label>
+</section>
+
+<section class="card" data-d="2" aria-labelledby="d2">
+  <div class="dayrow"><span class="day">2 · Antradienis</span><span class="min">25 min.</span></div>
+  <h2 id="d2">Šeimos telefono susitarimas</h2>
+  <ol class="steps">
+    <li>Atsisėskite visi prie stalo su vienu lapu. <strong>Tėvai atsako pirmi.</strong></li>
+    <li>Kur telefonai miega naktį? Kada valgome be telefonų? Ką darome, kai nuobodu?</li>
+    <li>Nuo kada vaikui savas išmanusis telefonas? Haidt siūlo apie 14 metų, socialinius tinklus nuo 16. Jūs nusprendžiate patys.</li>
+    <li>Surašykite 3 taisykles, kurios galioja ir suaugusiems. Pasirašykite visi ir pakabinkite ant šaldytuvo.</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p>Amerikos pediatrų akademija (AAP) pataria šeimai susitarti dėl vietų ir laiko be ekranų. Miegamasis būtinai, taip pat vakarienė ir laikas prieš miegą. Tai ekspertų gairės, sudėtos iš daug tyrimų. <span class="badge b">B</span> <a href="https://www.healthychildren.org/English/fmp/Pages/MediaPlan.aspx" target="_blank" rel="noopener">AAP Family Media Plan (nemokamas šablonas, anglų k.)</a></p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="2"> Padarėme</label>
+</section>
+
+<section class="card" data-d="3" aria-labelledby="d3">
+  <div class="dayrow"><span class="day">3 · Trečiadienis</span><span class="min">30 min.</span></div>
+  <h2 id="d3">Laukas ir laisvas žaidimas. Veda vaikas</h2>
+  <ol class="steps">
+    <li>Eikite laukan. <strong>Tavo telefonas lieka namie.</strong></li>
+    <li>Vaikas renkasi žaidimą ir taisykles. Tu tik žaidi ir neperimi vadovavimo.</li>
+    <li>Leisk truputį rizikos: įlipti į medį, peršokti balą, nubėgti nuo kalno. Tu stebi iš toliau.</li>
+    <li>Pabaigai vienas savarankiškas dalykas. Vaikas pats nuperka duonos, nueina iki kaimyno ar grįžta paskutinę gatvę vienas. Pasirink pagal amžių ir savo kiemą.</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p>Sisteminė apžvalga (21 tyrimas) rado, kad rizikingas žaidimas lauke apskritai siejamas su geresne vaikų sveikata, dažniausiai su daugiau judesio, taip pat su socialiniais įgūdžiais. Autoriai prašo daugiau gerų tyrimų. <span class="badge c">B/C</span> <a href="https://pubmed.ncbi.nlm.nih.gov/26062038/" target="_blank" rel="noopener">Brussoni ir kt., 2015</a></p>
+    <p>Savarankiškos užduoties idėja iš <a href="https://letgrow.org/" target="_blank" rel="noopener">Let Grow</a> (JAV tėvų organizacija).</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="3"> Padarėme</label>
+</section>
+
+<section class="card" data-d="4" aria-labelledby="d4">
+  <div class="dayrow"><span class="day">4 · Ketvirtadienis</span><span class="min">20 min.</span></div>
+  <h2 id="d4">Telefonai miega virtuvėje</h2>
+  <ol class="steps">
+    <li>Prieš miegą visi telefonai kraunasi virtuvėje ar koridoriuje. <strong>Tavo irgi.</strong></li>
+    <li>Prie lovos padėk tai, ką norisi daryti vietoj telefono: knygą, pieštukus, užrašų knygelę. Tai Catherine Price patarimas.</li>
+    <li>Pritemdyk šviesą ir 10 min. skaitykite garsiai.</li>
+    <li>Pabaigai kiekvienas pasako vieną gerą dalyką iš šiandienos. Žadintuvui užtenka paprasto laikrodžio.</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p>Meta-analizė (20 tyrimų, 125 198 vaikai ir paaugliai nuo 6 iki 19 m.) rado, kad telefonas ar planšetė prie lovos siejasi su prastesniu miegu. Per trumpo miego tikimybė apie 2 kartus didesnė. <span class="badge b">B</span> <a href="https://pubmed.ncbi.nlm.nih.gov/27802500/" target="_blank" rel="noopener">Carter ir kt., 2016</a></p>
+    <p>Kita apžvalga ryšį su prastesniu miegu rado 90 % iš 67 tyrimų. Tai sąsaja, priežastis neįrodyta. <span class="badge b">B</span> <a href="https://pubmed.ncbi.nlm.nih.gov/25193149/" target="_blank" rel="noopener">Hale ir Guan, 2015</a></p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="4"> Padarėme</label>
+</section>
+
+<section class="card" data-d="5" aria-labelledby="d5">
+  <div class="dayrow"><span class="day">5 · Penktadienis</span><span class="min">30 min.</span></div>
+  <h2 id="d5">Tikro smagumo vakaras</h2>
+  <ol class="steps">
+    <li>Catherine Price tikrą smagumą (angl. True Fun) apibūdina kaip žaismingumą, ryšį su kitais ir visišką įsitraukimą.</li>
+    <li><strong>Pirmas tu:</strong> papasakok, kada paskutinį kartą taip juokeisi, kad pamiršai laiką.</li>
+    <li>Kiekvienas ant lapelio užrašo vieną dalyką be ekrano, kuris jam tikrai smagus. Ištraukite vieną ir darykite dabar pat.</li>
+    <li>Pabaigoje paklausk vaiko: kuo tai skyrėsi nuo filmuko?</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p><span class="badge x">Ne mokslas</span> Tai knygos idėja. Price skiria tikrą smagumą nuo netikro, kai ilgai scrollini ir paskui jautiesi tuščias. <a href="https://www.penguinrandomhouse.com/books/669961/the-power-of-fun-by-catherine-price/" target="_blank" rel="noopener" data-book="power-of-fun">„The Power of Fun“</a></p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="5"> Padarėme</label>
+</section>
+
+<section class="card" data-d="6" aria-labelledby="d6">
+  <div class="dayrow"><span class="day">6 · Šeštadienis</span><span class="min">30 min.</span></div>
+  <h2 id="d6">Vakarienė be telefonų</h2>
+  <ol class="steps">
+    <li>Visi telefonai į dėžutę už virtuvės. <strong>Tavo pirmas.</strong></li>
+    <li>Kai prireikia telefono, pasakyk garsiai, kam: „Paimsiu telefoną, parašysiu močiutei, kad atvažiuojam.“ Vaikas mato, kad telefonas yra įrankis.</li>
+    <li>Vakarienės klausimas visiems: „Kas tave šiandien nustebino?“</li>
+    <li>Po vakarienės paklausk vaiko: „Kada aš per daug žiūriu į telefoną?“ Klausyk ir nesiteisink.</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p><span class="badge x">Ne mokslas</span> Tai šeimos eksperimentas. Tyrimo būtent apie vakarienę be telefonų neradau. Artimiausias yra tėvų telefono pertraukimų tyrimas su mažais vaikais (žr. viršuje).</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="6"> Padarėme</label>
+</section>
+
+<section class="card" data-d="7" aria-labelledby="d7">
+  <div class="dayrow"><span class="day">7 · Sekmadienis</span><span class="min">30 min.</span></div>
+  <h2 id="d7">Maištininkų vakaras</h2>
+  <ol class="steps">
+    <li>Haidt ir Price parašė knygą vaikams „The Amazing Generation“. Joje vaikai, kurie patys valdo ekranus, yra maištininkai. Jie plaukia prieš srovę.</li>
+    <li>Turite knygą? Paskaitykite kartu kelis puslapius. Neturite? Papasakok šią mintį savais žodžiais.</li>
+    <li><strong>Vaikas susikuria savo maištininko kodeksą.</strong> Keturios eilutės ant lapo: kam man ekranas tikrai naudingas? Su kuo noriu būti gyvai? Ką noriu daryti pats, be suaugusių? Kas man tikrai smagu?</li>
+    <li>Tu parašai savo kodeksą irgi. Pakabinkite abu šalia susitarimo ir aptarkite savaitę: kas buvo smagiausia, ką paliekame?</li>
+  </ol>
+  <div class="why">
+    <b>Kodėl tai veikia</b>
+    <p><span class="badge x">Ne mokslas</span> Tai knygos idėja. Kodeksą vaikas rašo pats, todėl jis jo ir laikosi. Klausimai sukurti pagal knygos „maištininko kodeksą“: technologija kaip įrankis, tikra draugystė, laisvė ir tikras smagumas.</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-k="7"> Padarėme</label>
+  <p class="printonly">Mano kodeksas: ______________________________________________</p>
+</section>
+
+<div class="alldone" id="alldone" role="status">
+  <p><strong>Visi 7 vakarai. Šaunu.</strong></p>
+  <p>Parašyk man, kuris vakaras suveikė, o kuris ne. Taisau planą pagal tikrų šeimų atsakymus.</p>
+  <div class="btns"><a class="btn" data-ev="newsletter" href="https://krisvas.lt/?src=7vp-done#newsletter" target="_blank" rel="noopener">Gauti laišką ir atrašyti</a></div>
+</div>
+
+<section class="block books" aria-labelledby="knyga">
+  <h2 id="knyga">Knyga vaikui: The Amazing Generation</h2>
+  <div class="book">
+    <p>Jonathan Haidt ir Catherine Price, iliustravo Cynthia Yuan Cheng. 2025 m., vaikams nuo 9 iki 12 metų.</p>
+    <p>Kol kas tik anglų kalba. Lietuviško vertimo neradau. Viduje tikrų jaunų žmonių istorijos, komiksas ir užduotys.</p>
+    <p class="note">Patarimas: paskaityk vieną užduotį pats ir išversk vaikui vakarienės metu.</p>
+    <div class="btns">
+      <a class="btn" data-book="amazing-official" href="https://www.anxiousgeneration.com/book/amazinggeneration" target="_blank" rel="noopener">Oficialus knygos puslapis</a>
+      <a class="btn ghost" data-book="amazing-prh" href="https://www.penguinrandomhouse.com/books/797271/the-amazing-generation-by-jonathan-haidt-and-catherine-price-illustrated-by-cynthia-yuan-cheng/" target="_blank" rel="noopener">Leidėjas (anglų k.)</a>
+    </div>
+  </div>
+  <div class="book">
+    <h3>Tėvams lietuviškai: „Nerimo karta“</h3>
+    <p>Jonathan Haidt. Vertė Edita Ramanauskienė, „Eugrimas“, 2024.</p>
+    <div class="btns"><a class="btn ghost" data-book="nerimo-karta" href="https://eugrimas.lt/knygos/knyga-nerimo-karta/" target="_blank" rel="noopener">Leidyklos puslapis</a></div>
+  </div>
+  <div class="book">
+    <h3>Tėvams angliškai: „How to Break Up with Your Phone“</h3>
+    <p>Catherine Price. Plano mintis paprasta: pastebėk, kodėl paimi telefoną, ir sudėk jam kliūčių.</p>
+    <p>Jos svetainėje yra nemokamas šeimos rinkinys (Family Starter Kit, el. paštu). Ji taip pat parduoda savo 7 dienų šeimos gidą. Šis planas kitas ir nemokamas, jos gido nekopijavau.</p>
+    <div class="btns">
+      <a class="btn ghost" data-book="break-up" href="https://www.penguinrandomhouse.com/books/780895/how-to-break-up-with-your-phone-revised-edition-by-catherine-price/" target="_blank" rel="noopener">Knyga (anglų k.)</a>
+      <a class="btn ghost" data-book="price-kit" href="https://catherineprice.com/family" target="_blank" rel="noopener">Nemokamas rinkinys</a>
+    </div>
+  </div>
+  <p class="note" style="margin-top:14px">Iš šių knygų nieko neuždirbu, rekomenduoju, nes pats jomis remiuosi. Nuorodose nėra partnerystės kodų.</p>
+</section>
+
+<section class="block resources" aria-labelledby="nemokamai">
+  <h2 id="nemokamai">Nemokami šaltiniai</h2>
+  <ul class="res">
+    <li><a href="https://www.anxiousgeneration.com/pdfs/four-norms.pdf" target="_blank" rel="noopener">4 naujos normos</a> · Haidt, vienas lapas, PDF, anglų k.</li>
+    <li><a href="https://www.anxiousgeneration.com/book/amazinggeneration" target="_blank" rel="noopener" data-book="amazing-guides">The Amazing Generation gidai</a> · pokalbių gidas ir žaidimai „Games for Rebels“, anglų k.</li>
+    <li><a href="https://letgrow.org/" target="_blank" rel="noopener">Let Grow</a> · savarankiškumo užduotys vaikams, anglų k.</li>
+    <li><a href="https://www.waituntil8th.org/" target="_blank" rel="noopener">Wait Until 8th</a> · JAV tėvų pažadas palaukti su išmaniuoju telefonu. Įsigalioja, kai pasirašo bent 10 vienos klasės šeimų. Mūsų atitikmuo yra maždaug 14 metų.</li>
+    <li><a href="https://www.healthychildren.org/English/fmp/Pages/MediaPlan.aspx" target="_blank" rel="noopener">AAP Family Media Plan</a> · šeimos susitarimo šablonas, anglų k.</li>
+    <li><a href="https://catherineprice.com/family" target="_blank" rel="noopener">Catherine Price Family Starter Kit</a> · PDF el. paštu, anglų k.</li>
+  </ul>
+</section>
+
+<section class="block cta" aria-labelledby="laiskas">
+  <h2 id="laiskas">Kas penktadienį vienas laiškas</h2>
+  <p>Vienas mokslo faktas, vienas žmogus, trys žingsniai. Atsisakyti gali vienu paspaudimu.</p>
+  <div class="btns">
+    <a class="btn" data-ev="newsletter" href="https://krisvas.lt/?src=7vp#newsletter" target="_blank" rel="noopener">Gauti laišką</a>
+    <button class="btn ghost" type="button" id="print">Spausdinti planą</button>
+  </div>
+  <p class="note" style="margin:10px 0 0"><a href="https://krisvas.lt/?src=7vp">Grįžti į krisvas.lt</a></p>
+</section>
+
+<footer>
+  <p class="coi" id="interesas"><strong>Mano interesas.</strong> Planą sudarė <a href="https://krisvas.lt/?src=7vp">Kris Vas</a> (Kristijonas Vasiliauskas). Esu vaikų būrelių verslo dalis: kartu įkūriau <a data-venture="ra" href="https://robotikosakademija.lt/" target="_blank" rel="noopener">Robotikos Akademiją</a> ir <a data-venture="exoclass" href="https://exoclass.lt/" target="_blank" rel="noopener">ExoClass</a> (sistemą būrelių vadovams). Laikas be ekrano naudingas ir būreliams, taip pat mano. Todėl šiame plane nesiūlau nė vieno būrelio ir nė vienos savo paslaugos.</p>
+  <p>⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti. Svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt/?src=7vp">krisvas.lt</a></p>
+  <p class="noprint">Privatumas: anoniminė statistika be slapukų. Microsoft Clarity įsijungia tik paspaudus „Leisti“. Pažymėti vakarai saugomi tik tavo naršyklėje. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a> · <button class="linkbtn" type="button" id="consent">Keisti sutikimą</button></p>
+  <p><strong>Šaltiniai</strong></p>
+  <ol class="src">
+    <li>Haidt J. The Four New Norms. <a href="https://www.anxiousgeneration.com/pdfs/four-norms.pdf" target="_blank" rel="noopener">anxiousgeneration.com</a></li>
+    <li>McDaniel BT, Radesky JS (2018). Technoference: Parent Distraction With Technology and Associations With Child Behavior Problems. Child Development 89(1). <a href="https://doi.org/10.1111/cdev.12822" target="_blank" rel="noopener">doi:10.1111/cdev.12822</a></li>
+    <li>Orben A, Przybylski AK (2019). The association between adolescent well-being and digital technology use. Nature Human Behaviour. <a href="https://doi.org/10.1038/s41562-018-0506-1" target="_blank" rel="noopener">doi:10.1038/s41562-018-0506-1</a></li>
+    <li>Zimmermann L, Sobolev M (2023). Digital Strategies for Screen Time Reduction: A Randomized Field Experiment. Cyberpsychology, Behavior, and Social Networking. <a href="https://doi.org/10.1089/cyber.2022.0027" target="_blank" rel="noopener">doi:10.1089/cyber.2022.0027</a></li>
+    <li>American Academy of Pediatrics. Family Media Plan. <a href="https://www.healthychildren.org/English/fmp/Pages/MediaPlan.aspx" target="_blank" rel="noopener">healthychildren.org</a></li>
+    <li>Brussoni M ir kt. (2015). What is the Relationship between Risky Outdoor Play and Health in Children? A Systematic Review. IJERPH 12(6). <a href="https://doi.org/10.3390/ijerph120606423" target="_blank" rel="noopener">doi:10.3390/ijerph120606423</a></li>
+    <li>Carter B ir kt. (2016). Association Between Portable Screen-Based Media Device Access or Use and Sleep Outcomes. JAMA Pediatrics. <a href="https://doi.org/10.1001/jamapediatrics.2016.2341" target="_blank" rel="noopener">doi:10.1001/jamapediatrics.2016.2341</a></li>
+    <li>Hale L, Guan S (2015). Screen time and sleep among school-aged children and adolescents: a systematic literature review. Sleep Medicine Reviews. <a href="https://doi.org/10.1016/j.smrv.2014.07.007" target="_blank" rel="noopener">doi:10.1016/j.smrv.2014.07.007</a></li>
+    <li>Price C. The Power of Fun (2021) ir How to Break Up with Your Phone. Haidt J, Price C. The Amazing Generation (2025). Haidt J. Nerimo karta (Eugrimas, 2024).</li>
+  </ol>
+  <p>Atnaujinta 2026-10-07</p>
+</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var SRC = 'direct';
+  try { SRC = (new URLSearchParams(location.search).get('src') || 'direct').slice(0, 40); } catch (e) {}
+
+  /* events: window.bt comes from track.js (loaded by kv-track.js). Queue until it exists. */
+  var q = [];
+  function ev(name, props) {
+    var p = { src: SRC };
+    for (var k in props || {}) p[k] = props[k];
+    try { if (window.bt) window.bt(name, p); else q.push([name, p]); } catch (e) {}
+  }
+  var tries = 0;
+  (function flush() {
+    if (window.bt) { q.splice(0).forEach(function (a) { try { window.bt(a[0], a[1]); } catch (e) {} }); return; }
+    if (tries++ < 40) setTimeout(flush, 500);
+  })();
+  ev('plan_open', {});
+
+  var KEY = '7vp-v2', st = {};
+  try { st = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { st = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+  var boxes = document.querySelectorAll('input[data-k]');
+  function count() { var n = 0; boxes.forEach(function (b) { if (st[b.getAttribute('data-k')]) n++; }); return n; }
+  function paint() {
+    boxes.forEach(function (b) {
+      var on = !!st[b.getAttribute('data-k')];
+      b.checked = on;
+      b.closest('.card').classList.toggle('done', on);
+    });
+    var n = count();
+    document.getElementById('prog').textContent = n + ' / 7';
+    document.getElementById('bar').style.width = (n / 7 * 100) + '%';
+    document.getElementById('alldone').classList.toggle('on', n === 7);
+  }
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () {
+      var k = b.getAttribute('data-k');
+      st[k] = b.checked; save();
+      if (b.checked) {
+        ev('day_done_' + k, { day: +k });
+        if (count() === 7) ev('all_done', {});
+      }
+      paint();
+    });
+  });
+
+  document.getElementById('print').addEventListener('click', function () { ev('print', {}); window.print(); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a') : null;
+    if (!a) return;
+    if (a.hasAttribute('data-book')) ev('book_click', { book: a.getAttribute('data-book') });
+    else if (a.hasAttribute('data-venture')) ev('venture_click', { venture: a.getAttribute('data-venture') });
+    else if (a.getAttribute('data-ev') === 'newsletter') ev('newsletter_click', {});
+  }, { passive: true, capture: true });
+
+  document.getElementById('consent').addEventListener('click', function () {
+    if (window.kvConsent) window.kvConsent('reset');
+  });
+
+  paint();
+})();
+</script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body>
+</html>
