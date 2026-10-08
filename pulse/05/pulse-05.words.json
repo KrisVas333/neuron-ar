@@ -1,0 +1,2350 @@
+{
+ "text": "Labas. Čia Kris, tiksliau, mano balso klonas. Laišką parašiau aš su AI padėjėju, o skaito jį mano balso kopija, kad galėtum klausytis vairuodama ar ruošdama vakarienę. Kas pirmas tavo rankose ryte: vaikas ar telefonas? O vakare, paskutinis? Klausiu ne iš aukšto. Pats ilgai pralaimėdavau šitą kovą. ADHD ir telefonas yra pavojinga pora. Laidoje Proto Industrija su Džiugu pasakėm paprastą dalyką. Jei sakai vaikui „nesėdėk telefone\", o pats skrolini, vaikas to nepadarys. Vaikai daro ne tai, ką girdi. Jie daro tai, ką mato. Amerikoje beveik pusė paauglių sako, kad tėvai bent kartais išsiblaško dėl telefono, kai vaikas su jais kalba. Ir beveik pusė tėvų patys pripažįsta, kad telefone praleidžia per daug. Tai kas yra priešnuodis? Daugiau sporto? Uždrausti telefonus? Daugiau būrelių? Ar būti pavyzdžiu namie? Mano atsakymas: visi keturi gali padėti, bet nė vienas nėra stebuklas. Iš savo patirties: be ketvirto pirmi trys neišsilaiko. Tyrimai su mažų vaikų šeimomis rodo: kuo dažniau mamos pokalbį su vaiku pertraukdavo telefonas, tuo daugiau elgesio sunkumų turėjo vaikas. Tai ryšys, ne įrodyta priežastis. O britų tyrime vien mokyklos draudimas nebuvo susijęs su geresne vaikų savijauta. Labiau siejosi tai, kiek telefono vaikas naudoja apskritai. Sakiau ir kartosiu: televizija buvo kanapės, o begalinio slinkimo programėlės yra heroinas. Jos sukurtos taip, kad nepaleistų. Suaugęs su tuo kovoja sunkiai. Vaikas dar sunkiau. Mano numeris vienas: telefonas pilkas. Įjungiu juodai baltą ekraną, ir jo nebesinori pakelti taip dažnai. Antra: mano būreliuose telefonų nėra. Ten vaikai stato, ginčijasi, klysta ir randa draugą. Draudimas palieka tuščią vietą. Ją reikia kuo nors užpildyti. Vaikui reikia iššūkio, įdomesnio už ekraną: būrelio, kiemo, laužo, rankų darbo. Paruošiau dešimt šeimos telefono taisyklių. Pirma: prie stalo telefonų nėra, nei vaikų, nei tėvų. Antra: suaugusieji telefoną padeda pirmi. Trečia: kai vaikas kalba, padedi telefoną ir pažiūri į akis. Ketvirta: telefonai nakvoja ne miegamajame. Penkta: pirma ir paskutinė dienos valanda be ekranų. Šešta: prie durų yra telefonų stovėjimo vieta. Septinta: jei reikia atsakyti į žinutę, pasakai garsiai, kiek tai užtruks. Aštunta: prieš keldamas vaiko nuotrauką, jo paklausi. Devinta: susitarimą pasirašo visi, ir tėvai. Dešimta: kartą per mėnesį peržiūrit taisykles, be kaltės. Išsirink kelias, įrašyk savo numerį vieną, atsispausdink ir pakabink ant šaldytuvo. Šiai savaitei trys žingsniai. Šiandien prie vakarienės stalo telefonų nėra. Ir tavo. Kai vaikas kalba, padėk telefoną ekranu žemyn ir pažiūrėk į akis. Ir paklausk būrelio vadovo: ar per užsiėmimą telefonai kur nors miega? Šeštadienį, spalio dešimtą, būsiu Kaune, Neskaitymo festivalyje. Tai festivalis apie disleksiją ir kitokį skaitymą, Ąžuolyno bibliotekoje. Diskusija su manimi keturioliktą valandą penkiolika minučių. Įėjimas nemokamas. Ateik pasisveikinti. Ir vienas klausimas tau. Kokia tavo numeris vienas taisyklė su telefonu? Atrašyk vienu sakiniu. Gražiausią, su tavo leidimu, įdėsiu į kitą laišką. Ačiū, kad esi čia. Aš Kris, vyriausiasis būrelių evangelistas. Mano darbas: padaryti gyvenimą įdomesnį už ekraną. Per būrelius, įrankius ir patarimus, kaip sugyventi su technologijomis ir pasiruošti ateičiai. Iki kitos savaitės.",
+ "tagged_text": null,
+ "voice": "UobNtYFTcCUxlYZA6j6J",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.85,
+  "style": 0.0,
+  "use_speaker_boost": true
+ },
+ "alignment": "with-timestamps",
+ "words": [
+  {
+   "word": "Labas.",
+   "start": 0.0,
+   "end": 0.72
+  },
+  {
+   "word": "Čia",
+   "start": 0.747,
+   "end": 0.8
+  },
+  {
+   "word": "Kris,",
+   "start": 0.88,
+   "end": 1.52
+  },
+  {
+   "word": "tiksliau,",
+   "start": 1.56,
+   "end": 2.08
+  },
+  {
+   "word": "mano",
+   "start": 2.16,
+   "end": 2.36
+  },
+  {
+   "word": "balso",
+   "start": 2.4,
+   "end": 2.64
+  },
+  {
+   "word": "klonas.",
+   "start": 2.72,
+   "end": 3.6
+  },
+  {
+   "word": "Laišką",
+   "start": 3.64,
+   "end": 3.92
+  },
+  {
+   "word": "parašiau",
+   "start": 4.0,
+   "end": 4.4
+  },
+  {
+   "word": "aš",
+   "start": 4.48,
+   "end": 4.72
+  },
+  {
+   "word": "su",
+   "start": 4.8,
+   "end": 4.96
+  },
+  {
+   "word": "AI",
+   "start": 5.12,
+   "end": 5.44
+  },
+  {
+   "word": "padėjėju,",
+   "start": 5.52,
+   "end": 6.32
+  },
+  {
+   "word": "o",
+   "start": 6.4,
+   "end": 6.48
+  },
+  {
+   "word": "skaito",
+   "start": 6.52,
+   "end": 6.88
+  },
+  {
+   "word": "jį",
+   "start": 6.933,
+   "end": 7.04
+  },
+  {
+   "word": "mano",
+   "start": 7.12,
+   "end": 7.28
+  },
+  {
+   "word": "balso",
+   "start": 7.36,
+   "end": 7.68
+  },
+  {
+   "word": "kopija,",
+   "start": 7.8,
+   "end": 8.32
+  },
+  {
+   "word": "kad",
+   "start": 8.4,
+   "end": 8.48
+  },
+  {
+   "word": "galėtum",
+   "start": 8.52,
+   "end": 8.8
+  },
+  {
+   "word": "klausytis",
+   "start": 8.88,
+   "end": 9.2
+  },
+  {
+   "word": "vairuodama",
+   "start": 9.28,
+   "end": 9.92
+  },
+  {
+   "word": "ar",
+   "start": 10.04,
+   "end": 10.16
+  },
+  {
+   "word": "ruošdama",
+   "start": 10.24,
+   "end": 10.56
+  },
+  {
+   "word": "vakarienę.",
+   "start": 10.64,
+   "end": 11.68
+  },
+  {
+   "word": "Kas",
+   "start": 11.733,
+   "end": 11.84
+  },
+  {
+   "word": "pirmas",
+   "start": 11.92,
+   "end": 12.24
+  },
+  {
+   "word": "tavo",
+   "start": 12.293,
+   "end": 12.4
+  },
+  {
+   "word": "rankose",
+   "start": 12.48,
+   "end": 12.8
+  },
+  {
+   "word": "ryte:",
+   "start": 12.88,
+   "end": 13.52
+  },
+  {
+   "word": "vaikas",
+   "start": 13.6,
+   "end": 14.08
+  },
+  {
+   "word": "ar",
+   "start": 14.16,
+   "end": 14.24
+  },
+  {
+   "word": "telefonas?",
+   "start": 14.36,
+   "end": 15.28
+  },
+  {
+   "word": "O",
+   "start": 15.32,
+   "end": 15.36
+  },
+  {
+   "word": "vakare,",
+   "start": 15.44,
+   "end": 16.0
+  },
+  {
+   "word": "paskutinis?",
+   "start": 16.04,
+   "end": 16.96
+  },
+  {
+   "word": "Klausiu",
+   "start": 17.0,
+   "end": 17.28
+  },
+  {
+   "word": "ne",
+   "start": 17.36,
+   "end": 17.44
+  },
+  {
+   "word": "iš",
+   "start": 17.48,
+   "end": 17.6
+  },
+  {
+   "word": "aukšto.",
+   "start": 17.68,
+   "end": 18.24
+  },
+  {
+   "word": "Pats",
+   "start": 18.28,
+   "end": 18.48
+  },
+  {
+   "word": "ilgai",
+   "start": 18.52,
+   "end": 18.72
+  },
+  {
+   "word": "pralaimėdavau",
+   "start": 18.76,
+   "end": 19.36
+  },
+  {
+   "word": "šitą",
+   "start": 19.413,
+   "end": 19.6
+  },
+  {
+   "word": "kovą.",
+   "start": 19.72,
+   "end": 20.32
+  },
+  {
+   "word": "ADHD",
+   "start": 20.4,
+   "end": 21.28
+  },
+  {
+   "word": "ir",
+   "start": 21.32,
+   "end": 21.36
+  },
+  {
+   "word": "telefonas",
+   "start": 21.44,
+   "end": 22.16
+  },
+  {
+   "word": "yra",
+   "start": 22.24,
+   "end": 22.4
+  },
+  {
+   "word": "pavojinga",
+   "start": 22.453,
+   "end": 22.92
+  },
+  {
+   "word": "pora.",
+   "start": 22.96,
+   "end": 23.68
+  },
+  {
+   "word": "Laidoje",
+   "start": 23.733,
+   "end": 24.0
+  },
+  {
+   "word": "Proto",
+   "start": 24.08,
+   "end": 24.4
+  },
+  {
+   "word": "Industrija",
+   "start": 24.48,
+   "end": 24.88
+  },
+  {
+   "word": "su",
+   "start": 24.96,
+   "end": 25.04
+  },
+  {
+   "word": "Džiugu",
+   "start": 25.12,
+   "end": 25.44
+  },
+  {
+   "word": "pasakėm",
+   "start": 25.52,
+   "end": 25.92
+  },
+  {
+   "word": "paprastą",
+   "start": 25.973,
+   "end": 26.32
+  },
+  {
+   "word": "dalyką.",
+   "start": 26.36,
+   "end": 27.04
+  },
+  {
+   "word": "Jei",
+   "start": 27.08,
+   "end": 27.2
+  },
+  {
+   "word": "sakai",
+   "start": 27.24,
+   "end": 27.52
+  },
+  {
+   "word": "vaikui",
+   "start": 27.56,
+   "end": 28.0
+  },
+  {
+   "word": "„nesėdėk",
+   "start": 28.08,
+   "end": 28.56
+  },
+  {
+   "word": "telefone\",",
+   "start": 28.84,
+   "end": 29.28
+  },
+  {
+   "word": "o",
+   "start": 29.36,
+   "end": 29.44
+  },
+  {
+   "word": "pats",
+   "start": 29.493,
+   "end": 29.6
+  },
+  {
+   "word": "skrolini,",
+   "start": 29.68,
+   "end": 30.4
+  },
+  {
+   "word": "vaikas",
+   "start": 30.48,
+   "end": 30.8
+  },
+  {
+   "word": "to",
+   "start": 30.88,
+   "end": 30.96
+  },
+  {
+   "word": "nepadarys.",
+   "start": 31.0,
+   "end": 31.92
+  },
+  {
+   "word": "Vaikai",
+   "start": 31.96,
+   "end": 32.24
+  },
+  {
+   "word": "daro",
+   "start": 32.28,
+   "end": 32.48
+  },
+  {
+   "word": "ne",
+   "start": 32.56,
+   "end": 32.72
+  },
+  {
+   "word": "tai,",
+   "start": 32.773,
+   "end": 32.92
+  },
+  {
+   "word": "ką",
+   "start": 32.96,
+   "end": 33.04
+  },
+  {
+   "word": "girdi.",
+   "start": 33.12,
+   "end": 33.76
+  },
+  {
+   "word": "Jie",
+   "start": 33.84,
+   "end": 33.92
+  },
+  {
+   "word": "daro",
+   "start": 34.0,
+   "end": 34.24
+  },
+  {
+   "word": "tai,",
+   "start": 34.32,
+   "end": 34.64
+  },
+  {
+   "word": "ką",
+   "start": 34.72,
+   "end": 34.8
+  },
+  {
+   "word": "mato.",
+   "start": 34.88,
+   "end": 35.52
+  },
+  {
+   "word": "Amerikoje",
+   "start": 35.6,
+   "end": 36.08
+  },
+  {
+   "word": "beveik",
+   "start": 36.16,
+   "end": 36.48
+  },
+  {
+   "word": "pusė",
+   "start": 36.56,
+   "end": 36.72
+  },
+  {
+   "word": "paauglių",
+   "start": 36.8,
+   "end": 37.2
+  },
+  {
+   "word": "sako,",
+   "start": 37.24,
+   "end": 37.56
+  },
+  {
+   "word": "kad",
+   "start": 37.6,
+   "end": 37.68
+  },
+  {
+   "word": "tėvai",
+   "start": 37.76,
+   "end": 38.08
+  },
+  {
+   "word": "bent",
+   "start": 38.16,
+   "end": 38.32
+  },
+  {
+   "word": "kartais",
+   "start": 38.4,
+   "end": 38.72
+  },
+  {
+   "word": "išsiblaško",
+   "start": 38.76,
+   "end": 39.28
+  },
+  {
+   "word": "dėl",
+   "start": 39.32,
+   "end": 39.44
+  },
+  {
+   "word": "telefono,",
+   "start": 39.52,
+   "end": 40.04
+  },
+  {
+   "word": "kai",
+   "start": 40.08,
+   "end": 40.16
+  },
+  {
+   "word": "vaikas",
+   "start": 40.24,
+   "end": 40.48
+  },
+  {
+   "word": "su",
+   "start": 40.56,
+   "end": 40.64
+  },
+  {
+   "word": "jais",
+   "start": 40.72,
+   "end": 40.88
+  },
+  {
+   "word": "kalba.",
+   "start": 40.96,
+   "end": 41.44
+  },
+  {
+   "word": "Ir",
+   "start": 41.48,
+   "end": 41.52
+  },
+  {
+   "word": "beveik",
+   "start": 41.6,
+   "end": 41.92
+  },
+  {
+   "word": "pusė",
+   "start": 42.0,
+   "end": 42.16
+  },
+  {
+   "word": "tėvų",
+   "start": 42.24,
+   "end": 42.64
+  },
+  {
+   "word": "patys",
+   "start": 42.76,
+   "end": 42.96
+  },
+  {
+   "word": "pripažįsta,",
+   "start": 43.04,
+   "end": 43.64
+  },
+  {
+   "word": "kad",
+   "start": 43.68,
+   "end": 43.76
+  },
+  {
+   "word": "telefone",
+   "start": 44.0,
+   "end": 44.24
+  },
+  {
+   "word": "praleidžia",
+   "start": 44.28,
+   "end": 44.72
+  },
+  {
+   "word": "per",
+   "start": 44.8,
+   "end": 44.88
+  },
+  {
+   "word": "daug.",
+   "start": 44.96,
+   "end": 45.52
+  },
+  {
+   "word": "Tai",
+   "start": 45.6,
+   "end": 45.68
+  },
+  {
+   "word": "kas",
+   "start": 45.76,
+   "end": 45.84
+  },
+  {
+   "word": "yra",
+   "start": 45.92,
+   "end": 46.08
+  },
+  {
+   "word": "priešnuodis?",
+   "start": 46.133,
+   "end": 47.04
+  },
+  {
+   "word": "Daugiau",
+   "start": 47.093,
+   "end": 47.28
+  },
+  {
+   "word": "sporto?",
+   "start": 47.48,
+   "end": 48.0
+  },
+  {
+   "word": "Uždrausti",
+   "start": 48.04,
+   "end": 48.48
+  },
+  {
+   "word": "telefonus?",
+   "start": 48.6,
+   "end": 49.36
+  },
+  {
+   "word": "Daugiau",
+   "start": 49.413,
+   "end": 49.627
+  },
+  {
+   "word": "būrelių?",
+   "start": 49.653,
+   "end": 50.4
+  },
+  {
+   "word": "Ar",
+   "start": 50.44,
+   "end": 50.48
+  },
+  {
+   "word": "būti",
+   "start": 50.56,
+   "end": 50.88
+  },
+  {
+   "word": "pavyzdžiu",
+   "start": 50.92,
+   "end": 51.28
+  },
+  {
+   "word": "namie?",
+   "start": 51.36,
+   "end": 52.08
+  },
+  {
+   "word": "Mano",
+   "start": 52.16,
+   "end": 52.28
+  },
+  {
+   "word": "atsakymas:",
+   "start": 52.32,
+   "end": 53.2
+  },
+  {
+   "word": "visi",
+   "start": 53.28,
+   "end": 53.52
+  },
+  {
+   "word": "keturi",
+   "start": 53.6,
+   "end": 53.92
+  },
+  {
+   "word": "gali",
+   "start": 53.96,
+   "end": 54.16
+  },
+  {
+   "word": "padėti,",
+   "start": 54.24,
+   "end": 54.88
+  },
+  {
+   "word": "bet",
+   "start": 54.96,
+   "end": 55.04
+  },
+  {
+   "word": "nė",
+   "start": 55.08,
+   "end": 55.2
+  },
+  {
+   "word": "vienas",
+   "start": 55.28,
+   "end": 55.6
+  },
+  {
+   "word": "nėra",
+   "start": 55.64,
+   "end": 55.84
+  },
+  {
+   "word": "stebuklas.",
+   "start": 55.88,
+   "end": 56.72
+  },
+  {
+   "word": "Iš",
+   "start": 56.747,
+   "end": 56.8
+  },
+  {
+   "word": "savo",
+   "start": 56.88,
+   "end": 57.04
+  },
+  {
+   "word": "patirties:",
+   "start": 57.12,
+   "end": 57.92
+  },
+  {
+   "word": "be",
+   "start": 57.96,
+   "end": 58.0
+  },
+  {
+   "word": "ketvirto",
+   "start": 58.08,
+   "end": 58.56
+  },
+  {
+   "word": "pirmi",
+   "start": 58.72,
+   "end": 58.96
+  },
+  {
+   "word": "trys",
+   "start": 59.04,
+   "end": 59.28
+  },
+  {
+   "word": "neišsilaiko.",
+   "start": 59.32,
+   "end": 60.32
+  },
+  {
+   "word": "Tyrimai",
+   "start": 60.36,
+   "end": 60.64
+  },
+  {
+   "word": "su",
+   "start": 60.72,
+   "end": 60.8
+  },
+  {
+   "word": "mažų",
+   "start": 60.88,
+   "end": 61.08
+  },
+  {
+   "word": "vaikų",
+   "start": 61.12,
+   "end": 61.4
+  },
+  {
+   "word": "šeimomis",
+   "start": 61.44,
+   "end": 61.92
+  },
+  {
+   "word": "rodo:",
+   "start": 62.0,
+   "end": 62.48
+  },
+  {
+   "word": "kuo",
+   "start": 62.52,
+   "end": 62.64
+  },
+  {
+   "word": "dažniau",
+   "start": 62.72,
+   "end": 63.04
+  },
+  {
+   "word": "mamos",
+   "start": 63.08,
+   "end": 63.44
+  },
+  {
+   "word": "pokalbį",
+   "start": 63.52,
+   "end": 63.92
+  },
+  {
+   "word": "su",
+   "start": 63.96,
+   "end": 64.0
+  },
+  {
+   "word": "vaiku",
+   "start": 64.04,
+   "end": 64.32
+  },
+  {
+   "word": "pertraukdavo",
+   "start": 64.44,
+   "end": 64.88
+  },
+  {
+   "word": "telefonas,",
+   "start": 64.96,
+   "end": 65.76
+  },
+  {
+   "word": "tuo",
+   "start": 65.8,
+   "end": 65.92
+  },
+  {
+   "word": "daugiau",
+   "start": 66.0,
+   "end": 66.32
+  },
+  {
+   "word": "elgesio",
+   "start": 66.4,
+   "end": 66.72
+  },
+  {
+   "word": "sunkumų",
+   "start": 66.76,
+   "end": 67.2
+  },
+  {
+   "word": "turėjo",
+   "start": 67.28,
+   "end": 67.52
+  },
+  {
+   "word": "vaikas.",
+   "start": 67.6,
+   "end": 68.24
+  },
+  {
+   "word": "Tai",
+   "start": 68.32,
+   "end": 68.4
+  },
+  {
+   "word": "ryšys,",
+   "start": 68.48,
+   "end": 69.12
+  },
+  {
+   "word": "ne",
+   "start": 69.2,
+   "end": 69.28
+  },
+  {
+   "word": "įrodyta",
+   "start": 69.36,
+   "end": 69.76
+  },
+  {
+   "word": "priežastis.",
+   "start": 69.8,
+   "end": 70.64
+  },
+  {
+   "word": "O",
+   "start": 70.72,
+   "end": 70.8
+  },
+  {
+   "word": "britų",
+   "start": 70.88,
+   "end": 71.04
+  },
+  {
+   "word": "tyrime",
+   "start": 71.12,
+   "end": 71.52
+  },
+  {
+   "word": "vien",
+   "start": 71.6,
+   "end": 71.76
+  },
+  {
+   "word": "mokyklos",
+   "start": 71.84,
+   "end": 72.24
+  },
+  {
+   "word": "draudimas",
+   "start": 72.32,
+   "end": 72.96
+  },
+  {
+   "word": "nebuvo",
+   "start": 73.04,
+   "end": 73.44
+  },
+  {
+   "word": "susijęs",
+   "start": 73.56,
+   "end": 73.84
+  },
+  {
+   "word": "su",
+   "start": 73.92,
+   "end": 74.0
+  },
+  {
+   "word": "geresne",
+   "start": 74.08,
+   "end": 74.4
+  },
+  {
+   "word": "vaikų",
+   "start": 74.44,
+   "end": 74.72
+  },
+  {
+   "word": "savijauta.",
+   "start": 74.8,
+   "end": 75.52
+  },
+  {
+   "word": "Labiau",
+   "start": 75.6,
+   "end": 75.84
+  },
+  {
+   "word": "siejosi",
+   "start": 75.92,
+   "end": 76.32
+  },
+  {
+   "word": "tai,",
+   "start": 76.36,
+   "end": 76.64
+  },
+  {
+   "word": "kiek",
+   "start": 76.72,
+   "end": 76.88
+  },
+  {
+   "word": "telefono",
+   "start": 77.12,
+   "end": 77.36
+  },
+  {
+   "word": "vaikas",
+   "start": 77.44,
+   "end": 77.76
+  },
+  {
+   "word": "naudoja",
+   "start": 77.8,
+   "end": 78.24
+  },
+  {
+   "word": "apskritai.",
+   "start": 78.32,
+   "end": 79.2
+  },
+  {
+   "word": "Sakiau",
+   "start": 79.24,
+   "end": 79.68
+  },
+  {
+   "word": "ir",
+   "start": 79.76,
+   "end": 79.84
+  },
+  {
+   "word": "kartosiu:",
+   "start": 79.96,
+   "end": 80.72
+  },
+  {
+   "word": "televizija",
+   "start": 80.76,
+   "end": 81.36
+  },
+  {
+   "word": "buvo",
+   "start": 81.4,
+   "end": 81.6
+  },
+  {
+   "word": "kanapės,",
+   "start": 81.68,
+   "end": 82.4
+  },
+  {
+   "word": "o",
+   "start": 82.44,
+   "end": 82.48
+  },
+  {
+   "word": "begalinio",
+   "start": 82.56,
+   "end": 82.96
+  },
+  {
+   "word": "slinkimo",
+   "start": 83.0,
+   "end": 83.44
+  },
+  {
+   "word": "programėlės",
+   "start": 83.6,
+   "end": 84.16
+  },
+  {
+   "word": "yra",
+   "start": 84.2,
+   "end": 84.32
+  },
+  {
+   "word": "heroinas.",
+   "start": 84.4,
+   "end": 85.28
+  },
+  {
+   "word": "Jos",
+   "start": 85.36,
+   "end": 85.44
+  },
+  {
+   "word": "sukurtos",
+   "start": 85.52,
+   "end": 86.0
+  },
+  {
+   "word": "taip,",
+   "start": 86.08,
+   "end": 86.32
+  },
+  {
+   "word": "kad",
+   "start": 86.4,
+   "end": 86.48
+  },
+  {
+   "word": "nepaleistų.",
+   "start": 86.52,
+   "end": 87.52
+  },
+  {
+   "word": "Suaugęs",
+   "start": 87.56,
+   "end": 88.0
+  },
+  {
+   "word": "su",
+   "start": 88.08,
+   "end": 88.16
+  },
+  {
+   "word": "tuo",
+   "start": 88.213,
+   "end": 88.32
+  },
+  {
+   "word": "kovoja",
+   "start": 88.4,
+   "end": 88.72
+  },
+  {
+   "word": "sunkiai.",
+   "start": 88.76,
+   "end": 89.44
+  },
+  {
+   "word": "Vaikas",
+   "start": 89.52,
+   "end": 90.08
+  },
+  {
+   "word": "dar",
+   "start": 90.16,
+   "end": 90.24
+  },
+  {
+   "word": "sunkiau.",
+   "start": 90.32,
+   "end": 91.04
+  },
+  {
+   "word": "Mano",
+   "start": 91.12,
+   "end": 91.28
+  },
+  {
+   "word": "numeris",
+   "start": 91.4,
+   "end": 91.68
+  },
+  {
+   "word": "vienas:",
+   "start": 91.72,
+   "end": 92.32
+  },
+  {
+   "word": "telefonas",
+   "start": 92.44,
+   "end": 92.96
+  },
+  {
+   "word": "pilkas.",
+   "start": 93.2,
+   "end": 93.92
+  },
+  {
+   "word": "Įjungiu",
+   "start": 93.96,
+   "end": 94.32
+  },
+  {
+   "word": "juodai",
+   "start": 94.36,
+   "end": 94.64
+  },
+  {
+   "word": "baltą",
+   "start": 94.68,
+   "end": 94.96
+  },
+  {
+   "word": "ekraną,",
+   "start": 95.04,
+   "end": 95.52
+  },
+  {
+   "word": "ir",
+   "start": 95.56,
+   "end": 95.6
+  },
+  {
+   "word": "jo",
+   "start": 95.68,
+   "end": 95.76
+  },
+  {
+   "word": "nebesinori",
+   "start": 95.84,
+   "end": 96.4
+  },
+  {
+   "word": "pakelti",
+   "start": 96.48,
+   "end": 96.88
+  },
+  {
+   "word": "taip",
+   "start": 96.92,
+   "end": 97.04
+  },
+  {
+   "word": "dažnai.",
+   "start": 97.12,
+   "end": 97.76
+  },
+  {
+   "word": "Antra:",
+   "start": 97.84,
+   "end": 98.4
+  },
+  {
+   "word": "mano",
+   "start": 98.48,
+   "end": 98.64
+  },
+  {
+   "word": "būreliuose",
+   "start": 98.667,
+   "end": 99.2
+  },
+  {
+   "word": "telefonų",
+   "start": 99.28,
+   "end": 99.76
+  },
+  {
+   "word": "nėra.",
+   "start": 99.84,
+   "end": 100.4
+  },
+  {
+   "word": "Ten",
+   "start": 100.48,
+   "end": 100.56
+  },
+  {
+   "word": "vaikai",
+   "start": 100.64,
+   "end": 100.88
+  },
+  {
+   "word": "stato,",
+   "start": 100.96,
+   "end": 101.6
+  },
+  {
+   "word": "ginčijasi,",
+   "start": 101.72,
+   "end": 102.32
+  },
+  {
+   "word": "klysta",
+   "start": 102.4,
+   "end": 102.88
+  },
+  {
+   "word": "ir",
+   "start": 103.04,
+   "end": 103.12
+  },
+  {
+   "word": "randa",
+   "start": 103.16,
+   "end": 103.44
+  },
+  {
+   "word": "draugą.",
+   "start": 103.52,
+   "end": 104.16
+  },
+  {
+   "word": "Draudimas",
+   "start": 104.2,
+   "end": 104.72
+  },
+  {
+   "word": "palieka",
+   "start": 104.8,
+   "end": 105.12
+  },
+  {
+   "word": "tuščią",
+   "start": 105.2,
+   "end": 105.52
+  },
+  {
+   "word": "vietą.",
+   "start": 105.56,
+   "end": 106.16
+  },
+  {
+   "word": "Ją",
+   "start": 106.2,
+   "end": 106.32
+  },
+  {
+   "word": "reikia",
+   "start": 106.36,
+   "end": 106.64
+  },
+  {
+   "word": "kuo",
+   "start": 106.68,
+   "end": 106.76
+  },
+  {
+   "word": "nors",
+   "start": 106.8,
+   "end": 106.96
+  },
+  {
+   "word": "užpildyti.",
+   "start": 107.0,
+   "end": 107.84
+  },
+  {
+   "word": "Vaikui",
+   "start": 107.92,
+   "end": 108.16
+  },
+  {
+   "word": "reikia",
+   "start": 108.2,
+   "end": 108.56
+  },
+  {
+   "word": "iššūkio,",
+   "start": 108.6,
+   "end": 109.2
+  },
+  {
+   "word": "įdomesnio",
+   "start": 109.24,
+   "end": 109.76
+  },
+  {
+   "word": "už",
+   "start": 109.8,
+   "end": 109.88
+  },
+  {
+   "word": "ekraną:",
+   "start": 109.92,
+   "end": 110.56
+  },
+  {
+   "word": "būrelio,",
+   "start": 110.64,
+   "end": 111.28
+  },
+  {
+   "word": "kiemo,",
+   "start": 111.36,
+   "end": 111.84
+  },
+  {
+   "word": "laužo,",
+   "start": 111.92,
+   "end": 112.48
+  },
+  {
+   "word": "rankų",
+   "start": 112.56,
+   "end": 112.84
+  },
+  {
+   "word": "darbo.",
+   "start": 112.88,
+   "end": 113.52
+  },
+  {
+   "word": "Paruošiau",
+   "start": 113.6,
+   "end": 114.0
+  },
+  {
+   "word": "dešimt",
+   "start": 114.08,
+   "end": 114.4
+  },
+  {
+   "word": "šeimos",
+   "start": 114.48,
+   "end": 114.8
+  },
+  {
+   "word": "telefono",
+   "start": 114.88,
+   "end": 115.28
+  },
+  {
+   "word": "taisyklių.",
+   "start": 115.32,
+   "end": 116.16
+  },
+  {
+   "word": "Pirma:",
+   "start": 116.2,
+   "end": 116.72
+  },
+  {
+   "word": "prie",
+   "start": 116.773,
+   "end": 116.88
+  },
+  {
+   "word": "stalo",
+   "start": 116.96,
+   "end": 117.28
+  },
+  {
+   "word": "telefonų",
+   "start": 117.36,
+   "end": 117.84
+  },
+  {
+   "word": "nėra,",
+   "start": 117.893,
+   "end": 118.4
+  },
+  {
+   "word": "nei",
+   "start": 118.48,
+   "end": 118.6
+  },
+  {
+   "word": "vaikų,",
+   "start": 118.64,
+   "end": 119.2
+  },
+  {
+   "word": "nei",
+   "start": 119.28,
+   "end": 119.4
+  },
+  {
+   "word": "tėvų.",
+   "start": 119.44,
+   "end": 120.08
+  },
+  {
+   "word": "Antra:",
+   "start": 120.16,
+   "end": 120.72
+  },
+  {
+   "word": "suaugusieji",
+   "start": 120.76,
+   "end": 121.36
+  },
+  {
+   "word": "telefoną",
+   "start": 121.44,
+   "end": 121.92
+  },
+  {
+   "word": "padeda",
+   "start": 122.0,
+   "end": 122.24
+  },
+  {
+   "word": "pirmi.",
+   "start": 122.32,
+   "end": 122.96
+  },
+  {
+   "word": "Trečia:",
+   "start": 123.08,
+   "end": 123.6
+  },
+  {
+   "word": "kai",
+   "start": 123.64,
+   "end": 123.76
+  },
+  {
+   "word": "vaikas",
+   "start": 123.8,
+   "end": 124.16
+  },
+  {
+   "word": "kalba,",
+   "start": 124.24,
+   "end": 124.72
+  },
+  {
+   "word": "padedi",
+   "start": 124.8,
+   "end": 125.12
+  },
+  {
+   "word": "telefoną",
+   "start": 125.24,
+   "end": 125.76
+  },
+  {
+   "word": "ir",
+   "start": 125.84,
+   "end": 125.92
+  },
+  {
+   "word": "pažiūri",
+   "start": 126.0,
+   "end": 126.32
+  },
+  {
+   "word": "į",
+   "start": 126.4,
+   "end": 126.48
+  },
+  {
+   "word": "akis.",
+   "start": 126.68,
+   "end": 127.2
+  },
+  {
+   "word": "Ketvirta:",
+   "start": 127.253,
+   "end": 127.92
+  },
+  {
+   "word": "telefonai",
+   "start": 128.04,
+   "end": 128.4
+  },
+  {
+   "word": "nakvoja",
+   "start": 128.48,
+   "end": 128.96
+  },
+  {
+   "word": "ne",
+   "start": 129.04,
+   "end": 129.12
+  },
+  {
+   "word": "miegamajame.",
+   "start": 129.2,
+   "end": 130.16
+  },
+  {
+   "word": "Penkta:",
+   "start": 130.24,
+   "end": 130.8
+  },
+  {
+   "word": "pirma",
+   "start": 130.88,
+   "end": 131.2
+  },
+  {
+   "word": "ir",
+   "start": 131.28,
+   "end": 131.36
+  },
+  {
+   "word": "paskutinė",
+   "start": 131.44,
+   "end": 131.92
+  },
+  {
+   "word": "dienos",
+   "start": 131.973,
+   "end": 132.24
+  },
+  {
+   "word": "valanda",
+   "start": 132.32,
+   "end": 132.72
+  },
+  {
+   "word": "be",
+   "start": 132.88,
+   "end": 133.04
+  },
+  {
+   "word": "ekranų.",
+   "start": 133.12,
+   "end": 133.84
+  },
+  {
+   "word": "Šešta:",
+   "start": 133.88,
+   "end": 134.56
+  },
+  {
+   "word": "prie",
+   "start": 134.613,
+   "end": 134.72
+  },
+  {
+   "word": "durų",
+   "start": 134.8,
+   "end": 135.12
+  },
+  {
+   "word": "yra",
+   "start": 135.173,
+   "end": 135.28
+  },
+  {
+   "word": "telefonų",
+   "start": 135.4,
+   "end": 135.76
+  },
+  {
+   "word": "stovėjimo",
+   "start": 135.84,
+   "end": 136.32
+  },
+  {
+   "word": "vieta.",
+   "start": 136.36,
+   "end": 137.04
+  },
+  {
+   "word": "Septinta:",
+   "start": 137.16,
+   "end": 137.84
+  },
+  {
+   "word": "jei",
+   "start": 137.88,
+   "end": 138.0
+  },
+  {
+   "word": "reikia",
+   "start": 138.04,
+   "end": 138.24
+  },
+  {
+   "word": "atsakyti",
+   "start": 138.32,
+   "end": 138.72
+  },
+  {
+   "word": "į",
+   "start": 138.76,
+   "end": 138.8
+  },
+  {
+   "word": "žinutę,",
+   "start": 138.84,
+   "end": 139.36
+  },
+  {
+   "word": "pasakai",
+   "start": 139.44,
+   "end": 139.76
+  },
+  {
+   "word": "garsiai,",
+   "start": 139.84,
+   "end": 140.24
+  },
+  {
+   "word": "kiek",
+   "start": 140.32,
+   "end": 140.44
+  },
+  {
+   "word": "tai",
+   "start": 140.48,
+   "end": 140.56
+  },
+  {
+   "word": "užtruks.",
+   "start": 140.64,
+   "end": 141.36
+  },
+  {
+   "word": "Aštunta:",
+   "start": 141.44,
+   "end": 142.16
+  },
+  {
+   "word": "prieš",
+   "start": 142.213,
+   "end": 142.4
+  },
+  {
+   "word": "keldamas",
+   "start": 142.48,
+   "end": 142.8
+  },
+  {
+   "word": "vaiko",
+   "start": 142.88,
+   "end": 143.12
+  },
+  {
+   "word": "nuotrauką,",
+   "start": 143.2,
+   "end": 143.84
+  },
+  {
+   "word": "jo",
+   "start": 143.92,
+   "end": 144.0
+  },
+  {
+   "word": "paklausi.",
+   "start": 144.08,
+   "end": 144.88
+  },
+  {
+   "word": "Devinta:",
+   "start": 144.96,
+   "end": 145.68
+  },
+  {
+   "word": "susitarimą",
+   "start": 145.76,
+   "end": 146.24
+  },
+  {
+   "word": "pasirašo",
+   "start": 146.32,
+   "end": 146.8
+  },
+  {
+   "word": "visi,",
+   "start": 146.92,
+   "end": 147.44
+  },
+  {
+   "word": "ir",
+   "start": 147.48,
+   "end": 147.52
+  },
+  {
+   "word": "tėvai.",
+   "start": 147.6,
+   "end": 148.24
+  },
+  {
+   "word": "Dešimta:",
+   "start": 148.32,
+   "end": 148.96
+  },
+  {
+   "word": "kartą",
+   "start": 149.04,
+   "end": 149.28
+  },
+  {
+   "word": "per",
+   "start": 149.32,
+   "end": 149.36
+  },
+  {
+   "word": "mėnesį",
+   "start": 149.44,
+   "end": 149.92
+  },
+  {
+   "word": "peržiūrit",
+   "start": 150.0,
+   "end": 150.32
+  },
+  {
+   "word": "taisykles,",
+   "start": 150.4,
+   "end": 151.2
+  },
+  {
+   "word": "be",
+   "start": 151.28,
+   "end": 151.44
+  },
+  {
+   "word": "kaltės.",
+   "start": 151.52,
+   "end": 152.24
+  },
+  {
+   "word": "Išsirink",
+   "start": 152.28,
+   "end": 152.64
+  },
+  {
+   "word": "kelias,",
+   "start": 152.72,
+   "end": 153.28
+  },
+  {
+   "word": "įrašyk",
+   "start": 153.32,
+   "end": 153.68
+  },
+  {
+   "word": "savo",
+   "start": 153.733,
+   "end": 153.84
+  },
+  {
+   "word": "numerį",
+   "start": 153.92,
+   "end": 154.24
+  },
+  {
+   "word": "vieną,",
+   "start": 154.28,
+   "end": 154.8
+  },
+  {
+   "word": "atsispausdink",
+   "start": 154.88,
+   "end": 155.68
+  },
+  {
+   "word": "ir",
+   "start": 155.76,
+   "end": 155.84
+  },
+  {
+   "word": "pakabink",
+   "start": 155.88,
+   "end": 156.24
+  },
+  {
+   "word": "ant",
+   "start": 156.28,
+   "end": 156.32
+  },
+  {
+   "word": "šaldytuvo.",
+   "start": 156.4,
+   "end": 157.2
+  },
+  {
+   "word": "Šiai",
+   "start": 157.24,
+   "end": 157.44
+  },
+  {
+   "word": "savaitei",
+   "start": 157.48,
+   "end": 158.08
+  },
+  {
+   "word": "trys",
+   "start": 158.2,
+   "end": 158.32
+  },
+  {
+   "word": "žingsniai.",
+   "start": 158.36,
+   "end": 158.96
+  },
+  {
+   "word": "Šiandien",
+   "start": 159.04,
+   "end": 159.52
+  },
+  {
+   "word": "prie",
+   "start": 159.6,
+   "end": 159.76
+  },
+  {
+   "word": "vakarienės",
+   "start": 159.84,
+   "end": 160.24
+  },
+  {
+   "word": "stalo",
+   "start": 160.32,
+   "end": 160.64
+  },
+  {
+   "word": "telefonų",
+   "start": 160.72,
+   "end": 161.2
+  },
+  {
+   "word": "nėra.",
+   "start": 161.28,
+   "end": 161.8
+  },
+  {
+   "word": "Ir",
+   "start": 162.0,
+   "end": 162.16
+  },
+  {
+   "word": "tavo.",
+   "start": 162.24,
+   "end": 162.72
+  },
+  {
+   "word": "Kai",
+   "start": 162.88,
+   "end": 162.96
+  },
+  {
+   "word": "vaikas",
+   "start": 163.0,
+   "end": 163.36
+  },
+  {
+   "word": "kalba,",
+   "start": 163.44,
+   "end": 163.92
+  },
+  {
+   "word": "padėk",
+   "start": 164.04,
+   "end": 164.24
+  },
+  {
+   "word": "telefoną",
+   "start": 164.32,
+   "end": 164.76
+  },
+  {
+   "word": "ekranu",
+   "start": 164.8,
+   "end": 165.12
+  },
+  {
+   "word": "žemyn",
+   "start": 165.16,
+   "end": 165.52
+  },
+  {
+   "word": "ir",
+   "start": 165.68,
+   "end": 165.84
+  },
+  {
+   "word": "pažiūrėk",
+   "start": 165.92,
+   "end": 166.32
+  },
+  {
+   "word": "į",
+   "start": 166.36,
+   "end": 166.4
+  },
+  {
+   "word": "akis.",
+   "start": 166.6,
+   "end": 167.12
+  },
+  {
+   "word": "Ir",
+   "start": 167.2,
+   "end": 167.28
+  },
+  {
+   "word": "paklausk",
+   "start": 167.36,
+   "end": 167.68
+  },
+  {
+   "word": "būrelio",
+   "start": 167.72,
+   "end": 168.0
+  },
+  {
+   "word": "vadovo:",
+   "start": 168.08,
+   "end": 168.72
+  },
+  {
+   "word": "ar",
+   "start": 168.8,
+   "end": 168.88
+  },
+  {
+   "word": "per",
+   "start": 168.96,
+   "end": 169.04
+  },
+  {
+   "word": "užsiėmimą",
+   "start": 169.08,
+   "end": 169.68
+  },
+  {
+   "word": "telefonai",
+   "start": 169.76,
+   "end": 170.24
+  },
+  {
+   "word": "kur",
+   "start": 170.32,
+   "end": 170.4
+  },
+  {
+   "word": "nors",
+   "start": 170.48,
+   "end": 170.72
+  },
+  {
+   "word": "miega?",
+   "start": 170.8,
+   "end": 171.44
+  },
+  {
+   "word": "Šeštadienį,",
+   "start": 171.52,
+   "end": 172.12
+  },
+  {
+   "word": "spalio",
+   "start": 172.16,
+   "end": 172.48
+  },
+  {
+   "word": "dešimtą,",
+   "start": 172.56,
+   "end": 173.12
+  },
+  {
+   "word": "būsiu",
+   "start": 173.16,
+   "end": 173.4
+  },
+  {
+   "word": "Kaune,",
+   "start": 173.44,
+   "end": 174.0
+  },
+  {
+   "word": "Neskaitymo",
+   "start": 174.08,
+   "end": 174.64
+  },
+  {
+   "word": "festivalyje.",
+   "start": 174.8,
+   "end": 175.52
+  },
+  {
+   "word": "Tai",
+   "start": 175.6,
+   "end": 175.68
+  },
+  {
+   "word": "festivalis",
+   "start": 175.813,
+   "end": 176.24
+  },
+  {
+   "word": "apie",
+   "start": 176.32,
+   "end": 176.48
+  },
+  {
+   "word": "disleksiją",
+   "start": 176.6,
+   "end": 177.2
+  },
+  {
+   "word": "ir",
+   "start": 177.24,
+   "end": 177.28
+  },
+  {
+   "word": "kitokį",
+   "start": 177.36,
+   "end": 177.76
+  },
+  {
+   "word": "skaitymą,",
+   "start": 177.8,
+   "end": 178.48
+  },
+  {
+   "word": "Ąžuolyno",
+   "start": 178.56,
+   "end": 178.96
+  },
+  {
+   "word": "bibliotekoje.",
+   "start": 179.04,
+   "end": 179.92
+  },
+  {
+   "word": "Diskusija",
+   "start": 180.04,
+   "end": 180.4
+  },
+  {
+   "word": "su",
+   "start": 180.44,
+   "end": 180.48
+  },
+  {
+   "word": "manimi",
+   "start": 180.56,
+   "end": 180.88
+  },
+  {
+   "word": "keturioliktą",
+   "start": 181.04,
+   "end": 181.56
+  },
+  {
+   "word": "valandą",
+   "start": 181.6,
+   "end": 182.0
+  },
+  {
+   "word": "penkiolika",
+   "start": 182.08,
+   "end": 182.56
+  },
+  {
+   "word": "minučių.",
+   "start": 182.64,
+   "end": 183.28
+  },
+  {
+   "word": "Įėjimas",
+   "start": 183.36,
+   "end": 183.84
+  },
+  {
+   "word": "nemokamas.",
+   "start": 184.0,
+   "end": 184.88
+  },
+  {
+   "word": "Ateik",
+   "start": 184.92,
+   "end": 185.12
+  },
+  {
+   "word": "pasisveikinti.",
+   "start": 185.2,
+   "end": 186.16
+  },
+  {
+   "word": "Ir",
+   "start": 186.2,
+   "end": 186.24
+  },
+  {
+   "word": "vienas",
+   "start": 186.28,
+   "end": 186.56
+  },
+  {
+   "word": "klausimas",
+   "start": 186.64,
+   "end": 187.04
+  },
+  {
+   "word": "tau.",
+   "start": 187.16,
+   "end": 187.6
+  },
+  {
+   "word": "Kokia",
+   "start": 187.68,
+   "end": 187.84
+  },
+  {
+   "word": "tavo",
+   "start": 188.0,
+   "end": 188.24
+  },
+  {
+   "word": "numeris",
+   "start": 188.4,
+   "end": 188.8
+  },
+  {
+   "word": "vienas",
+   "start": 188.853,
+   "end": 189.12
+  },
+  {
+   "word": "taisyklė",
+   "start": 189.16,
+   "end": 189.68
+  },
+  {
+   "word": "su",
+   "start": 189.72,
+   "end": 189.76
+  },
+  {
+   "word": "telefonu?",
+   "start": 189.88,
+   "end": 190.64
+  },
+  {
+   "word": "Atrašyk",
+   "start": 190.68,
+   "end": 191.12
+  },
+  {
+   "word": "vienu",
+   "start": 191.2,
+   "end": 191.44
+  },
+  {
+   "word": "sakiniu.",
+   "start": 191.48,
+   "end": 192.16
+  },
+  {
+   "word": "Gražiausią,",
+   "start": 192.2,
+   "end": 192.88
+  },
+  {
+   "word": "su",
+   "start": 192.92,
+   "end": 192.96
+  },
+  {
+   "word": "tavo",
+   "start": 193.04,
+   "end": 193.2
+  },
+  {
+   "word": "leidimu,",
+   "start": 193.24,
+   "end": 193.76
+  },
+  {
+   "word": "įdėsiu",
+   "start": 193.84,
+   "end": 194.187
+  },
+  {
+   "word": "į",
+   "start": 194.213,
+   "end": 194.24
+  },
+  {
+   "word": "kitą",
+   "start": 194.32,
+   "end": 194.48
+  },
+  {
+   "word": "laišką.",
+   "start": 194.533,
+   "end": 195.2
+  },
+  {
+   "word": "Ačiū,",
+   "start": 195.28,
+   "end": 195.493
+  },
+  {
+   "word": "kad",
+   "start": 195.52,
+   "end": 195.6
+  },
+  {
+   "word": "esi",
+   "start": 195.72,
+   "end": 195.84
+  },
+  {
+   "word": "čia.",
+   "start": 195.88,
+   "end": 196.4
+  },
+  {
+   "word": "Aš",
+   "start": 196.44,
+   "end": 196.56
+  },
+  {
+   "word": "Kris,",
+   "start": 196.64,
+   "end": 197.12
+  },
+  {
+   "word": "vyriausiasis",
+   "start": 197.16,
+   "end": 197.68
+  },
+  {
+   "word": "būrelių",
+   "start": 197.76,
+   "end": 198.133
+  },
+  {
+   "word": "evangelistas.",
+   "start": 198.187,
+   "end": 199.12
+  },
+  {
+   "word": "Mano",
+   "start": 199.2,
+   "end": 199.32
+  },
+  {
+   "word": "darbas:",
+   "start": 199.36,
+   "end": 199.92
+  },
+  {
+   "word": "padaryti",
+   "start": 200.0,
+   "end": 200.32
+  },
+  {
+   "word": "gyvenimą",
+   "start": 200.4,
+   "end": 200.88
+  },
+  {
+   "word": "įdomesnį",
+   "start": 200.96,
+   "end": 201.52
+  },
+  {
+   "word": "už",
+   "start": 201.547,
+   "end": 201.6
+  },
+  {
+   "word": "ekraną.",
+   "start": 201.68,
+   "end": 202.32
+  },
+  {
+   "word": "Per",
+   "start": 202.36,
+   "end": 202.4
+  },
+  {
+   "word": "būrelius,",
+   "start": 202.48,
+   "end": 203.12
+  },
+  {
+   "word": "įrankius",
+   "start": 203.2,
+   "end": 203.68
+  },
+  {
+   "word": "ir",
+   "start": 203.76,
+   "end": 203.84
+  },
+  {
+   "word": "patarimus,",
+   "start": 203.92,
+   "end": 204.56
+  },
+  {
+   "word": "kaip",
+   "start": 204.64,
+   "end": 204.8
+  },
+  {
+   "word": "sugyventi",
+   "start": 204.88,
+   "end": 205.28
+  },
+  {
+   "word": "su",
+   "start": 205.36,
+   "end": 205.44
+  },
+  {
+   "word": "technologijomis",
+   "start": 205.56,
+   "end": 206.24
+  },
+  {
+   "word": "ir",
+   "start": 206.4,
+   "end": 206.48
+  },
+  {
+   "word": "pasiruošti",
+   "start": 206.56,
+   "end": 207.12
+  },
+  {
+   "word": "ateičiai.",
+   "start": 207.24,
+   "end": 207.92
+  },
+  {
+   "word": "Iki",
+   "start": 207.96,
+   "end": 208.08
+  },
+  {
+   "word": "kitos",
+   "start": 208.16,
+   "end": 208.32
+  },
+  {
+   "word": "savaitės.",
+   "start": 208.4,
+   "end": 209.2
+  }
+ ]
+}
