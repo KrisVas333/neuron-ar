@@ -1,560 +1,632 @@
 1
-00:00:00,000 --> 00:00:00,720
-Labas.
+00:00:00,000 --> 00:00:01,920
+Labas, mamos ir tėčiai.
 
 2
-00:00:00,747 --> 00:00:02,360
+00:00:01,960 --> 00:00:03,520
 Čia Kris, tiksliau, mano
 
 3
-00:00:02,400 --> 00:00:03,600
+00:00:03,600 --> 00:00:04,640
 balso klonas.
 
 4
-00:00:03,640 --> 00:00:04,960
+00:00:04,720 --> 00:00:06,080
 Laišką parašiau aš su
 
 5
-00:00:05,120 --> 00:00:06,880
+00:00:06,160 --> 00:00:07,760
 AI padėjėju, o skaito
 
 6
-00:00:06,933 --> 00:00:08,320
+00:00:07,813 --> 00:00:09,040
 jį mano balso kopija,
 
 7
-00:00:08,400 --> 00:00:09,920
-kad galėtum klausytis vairuodama
+00:00:09,120 --> 00:00:10,560
+kad galėtum klausytis pakeliui
 
 8
-00:00:10,040 --> 00:00:11,680
-ar ruošdama vakarienę.
+00:00:10,680 --> 00:00:12,160
+ar ruošiant vakarienę.
 
 9
-00:00:11,733 --> 00:00:12,800
+00:00:12,200 --> 00:00:13,280
 Kas pirmas tavo rankose
 
 10
-00:00:12,880 --> 00:00:15,280
+00:00:13,360 --> 00:00:15,680
 ryte: vaikas ar telefonas?
 
 11
-00:00:15,320 --> 00:00:16,960
+00:00:15,720 --> 00:00:17,360
 O vakare, paskutinis?
 
 12
-00:00:17,000 --> 00:00:18,240
+00:00:17,400 --> 00:00:18,720
 Klausiu ne iš aukšto.
 
 13
-00:00:18,280 --> 00:00:19,600
+00:00:18,773 --> 00:00:20,000
 Pats ilgai pralaimėdavau šitą
 
 14
-00:00:19,720 --> 00:00:20,320
+00:00:20,120 --> 00:00:20,720
 kovą.
 
 15
-00:00:20,400 --> 00:00:22,400
+00:00:20,800 --> 00:00:22,880
 ADHD ir telefonas yra
 
 16
-00:00:22,453 --> 00:00:23,680
+00:00:22,933 --> 00:00:24,080
 pavojinga pora.
 
 17
-00:00:23,733 --> 00:00:25,040
-Laidoje Proto Industrija su
+00:00:24,160 --> 00:00:25,840
+Pokalbį laidoje Proto Industrija
 
 18
-00:00:25,120 --> 00:00:27,040
-Džiugu pasakėm paprastą dalyką.
+00:00:25,920 --> 00:00:27,520
+su Džiugu, mano bendraįkūrėju
 
 19
-00:00:27,080 --> 00:00:28,560
-Jei sakai vaikui „nesėdėk
+00:00:27,600 --> 00:00:28,800
+ir geriausiu draugu, per
 
 20
-00:00:28,840 --> 00:00:30,400
-telefone", o pats skrolini,
+00:00:28,880 --> 00:00:30,280
+dvi savaites peržiūrėjo daugiau
 
 21
-00:00:30,480 --> 00:00:31,920
-vaikas to nepadarys.
+00:00:30,320 --> 00:00:32,160
+nei penkiasdešimt keturis tūkstančius
 
 22
-00:00:31,960 --> 00:00:32,920
-Vaikai daro ne tai,
+00:00:32,240 --> 00:00:32,880
+kartų.
 
 23
-00:00:32,960 --> 00:00:33,760
-ką girdi.
+00:00:32,960 --> 00:00:34,240
+Ačiū visiems, kurie žiūrėjo
 
 24
-00:00:33,840 --> 00:00:34,800
-Jie daro tai, ką
+00:00:34,320 --> 00:00:35,360
+ir komentavo.
 
 25
-00:00:34,880 --> 00:00:35,520
-mato.
+00:00:35,400 --> 00:00:37,360
+Laidoje pasakėm paprastą dalyką.
 
 26
-00:00:35,600 --> 00:00:37,200
-Amerikoje beveik pusė paauglių
+00:00:37,400 --> 00:00:38,960
+Jei sakai vaikui „nesėdėk
 
 27
-00:00:37,240 --> 00:00:38,320
-sako, kad tėvai bent
+00:00:39,240 --> 00:00:40,800
+telefone", o pats skrolini,
 
 28
-00:00:38,400 --> 00:00:40,040
-kartais išsiblaško dėl telefono,
+00:00:40,880 --> 00:00:42,240
+vaikas to nepadarys.
 
 29
-00:00:40,080 --> 00:00:40,880
-kai vaikas su jais
+00:00:42,280 --> 00:00:43,320
+Vaikai daro ne tai,
 
 30
-00:00:40,960 --> 00:00:41,440
-kalba.
+00:00:43,360 --> 00:00:44,160
+ką girdi.
 
 31
-00:00:41,480 --> 00:00:42,640
-Ir beveik pusė tėvų
+00:00:44,200 --> 00:00:45,200
+Jie daro tai, ką
 
 32
-00:00:42,760 --> 00:00:44,240
-patys pripažįsta, kad telefone
+00:00:45,240 --> 00:00:45,920
+mato.
 
 33
-00:00:44,280 --> 00:00:45,520
-praleidžia per daug.
+00:00:45,960 --> 00:00:47,600
+Amerikoje beveik pusė paauglių
 
 34
-00:00:45,600 --> 00:00:47,040
-Tai kas yra priešnuodis?
+00:00:47,707 --> 00:00:48,720
+sako, kad tėvai bent
 
 35
-00:00:47,093 --> 00:00:48,000
-Daugiau sporto?
+00:00:48,840 --> 00:00:50,560
+kartais išsiblaško dėl telefono,
 
 36
-00:00:48,040 --> 00:00:49,360
-Uždrausti telefonus?
+00:00:50,613 --> 00:00:51,360
+kai vaikas su jais
 
 37
-00:00:49,413 --> 00:00:50,400
-Daugiau būrelių?
+00:00:51,440 --> 00:00:52,000
+kalba.
 
 38
-00:00:50,440 --> 00:00:52,080
-Ar būti pavyzdžiu namie?
+00:00:52,040 --> 00:00:53,120
+Ir beveik pusė tėvų
 
 39
-00:00:52,160 --> 00:00:53,920
-Mano atsakymas: visi keturi
+00:00:53,240 --> 00:00:54,720
+patys pripažįsta, kad telefone
 
 40
-00:00:53,960 --> 00:00:55,200
-gali padėti, bet nė
+00:00:54,800 --> 00:00:56,000
+praleidžia per daug.
 
 41
-00:00:55,280 --> 00:00:56,720
-vienas nėra stebuklas.
+00:00:56,080 --> 00:00:57,520
+Tai kas yra priešnuodis?
 
 42
-00:00:56,747 --> 00:00:58,000
-Iš savo patirties: be
+00:00:57,573 --> 00:00:58,560
+Daugiau sporto?
 
 43
-00:00:58,080 --> 00:01:00,320
-ketvirto pirmi trys neišsilaiko.
+00:00:58,587 --> 00:00:59,920
+Uždrausti telefonus?
 
 44
-00:01:00,360 --> 00:01:01,400
-Tyrimai su mažų vaikų
+00:00:59,973 --> 00:01:00,960
+Daugiau būrelių?
 
 45
-00:01:01,440 --> 00:01:03,040
-šeimomis rodo: kuo dažniau
+00:01:01,000 --> 00:01:02,560
+Ar būti pavyzdžiu namie?
 
 46
-00:01:03,080 --> 00:01:04,320
-mamos pokalbį su vaiku
+00:01:02,640 --> 00:01:04,400
+Mano atsakymas: visi keturi
 
 47
-00:01:04,440 --> 00:01:06,320
-pertraukdavo telefonas, tuo daugiau
+00:01:04,480 --> 00:01:05,680
+gali padėti, bet nė
 
 48
-00:01:06,400 --> 00:01:08,240
-elgesio sunkumų turėjo vaikas.
+00:01:05,733 --> 00:01:07,120
+vienas nėra stebuklas.
 
 49
-00:01:08,320 --> 00:01:09,760
-Tai ryšys, ne įrodyta
+00:01:07,160 --> 00:01:08,480
+Iš savo patirties: be
 
 50
-00:01:09,800 --> 00:01:10,640
-priežastis.
+00:01:08,560 --> 00:01:10,800
+ketvirto pirmi trys neišsilaiko.
 
 51
-00:01:10,720 --> 00:01:11,760
-O britų tyrime vien
+00:01:10,880 --> 00:01:11,840
+Tyrimai su mažų vaikų
 
 52
-00:01:11,840 --> 00:01:13,840
-mokyklos draudimas nebuvo susijęs
+00:01:11,880 --> 00:01:13,440
+šeimomis rodo: kuo dažniau
 
 53
-00:01:13,920 --> 00:01:15,520
-su geresne vaikų savijauta.
+00:01:13,480 --> 00:01:14,640
+mamos pokalbį su vaiku
 
 54
-00:01:15,600 --> 00:01:16,880
-Labiau siejosi tai, kiek
+00:01:14,720 --> 00:01:16,640
+pertraukdavo telefonas, tuo daugiau
 
 55
-00:01:17,120 --> 00:01:19,200
-telefono vaikas naudoja apskritai.
+00:01:16,720 --> 00:01:18,560
+elgesio sunkumų turėjo vaikas.
 
 56
-00:01:19,240 --> 00:01:21,360
-Sakiau ir kartosiu: televizija
+00:01:18,600 --> 00:01:20,080
+Tai ryšys, ne įrodyta
 
 57
-00:01:21,400 --> 00:01:22,960
-buvo kanapės, o begalinio
+00:01:20,133 --> 00:01:21,040
+priežastis.
 
 58
-00:01:23,000 --> 00:01:25,280
-slinkimo programėlės yra heroinas.
+00:01:21,080 --> 00:01:22,160
+O britų tyrime vien
 
 59
-00:01:25,360 --> 00:01:26,480
-Jos sukurtos taip, kad
+00:01:22,240 --> 00:01:24,120
+mokyklos draudimas nebuvo susijęs
 
 60
-00:01:26,520 --> 00:01:27,520
-nepaleistų.
+00:01:24,160 --> 00:01:25,760
+su geresne vaikų savijauta.
 
 61
-00:01:27,560 --> 00:01:28,720
-Suaugęs su tuo kovoja
+00:01:25,840 --> 00:01:27,120
+Labiau siejosi tai, kiek
 
 62
-00:01:28,760 --> 00:01:29,440
-sunkiai.
+00:01:27,360 --> 00:01:29,360
+telefono vaikas naudoja apskritai.
 
 63
-00:01:29,520 --> 00:01:31,040
-Vaikas dar sunkiau.
+00:01:29,400 --> 00:01:31,360
+Sakiau ir kartosiu: televizija
 
 64
-00:01:31,120 --> 00:01:32,960
-Mano numeris vienas: telefonas
+00:01:31,440 --> 00:01:32,960
+buvo kanapės, o begalinio
 
 65
-00:01:33,200 --> 00:01:33,920
-pilkas.
+00:01:33,040 --> 00:01:35,280
+slinkimo programėlės yra heroinas.
 
 66
-00:01:33,960 --> 00:01:35,520
-Įjungiu juodai baltą ekraną,
+00:01:35,400 --> 00:01:36,480
+Jos sukurtos taip, kad
 
 67
-00:01:35,560 --> 00:01:36,880
-ir jo nebesinori pakelti
+00:01:36,560 --> 00:01:37,520
+nepaleistų.
 
 68
-00:01:36,920 --> 00:01:37,760
-taip dažnai.
+00:01:37,560 --> 00:01:38,720
+Suaugęs su tuo kovoja
 
 69
-00:01:37,840 --> 00:01:39,760
-Antra: mano būreliuose telefonų
+00:01:38,800 --> 00:01:39,440
+sunkiai.
 
 70
-00:01:39,840 --> 00:01:40,400
-nėra.
+00:01:39,520 --> 00:01:40,960
+Vaikas dar sunkiau.
 
 71
-00:01:40,480 --> 00:01:42,320
-Ten vaikai stato, ginčijasi,
+00:01:41,040 --> 00:01:42,800
+Mano numeris vienas: telefonas
 
 72
-00:01:42,400 --> 00:01:44,160
-klysta ir randa draugą.
+00:01:43,040 --> 00:01:43,840
+pilkas.
 
 73
-00:01:44,200 --> 00:01:46,160
-Draudimas palieka tuščią vietą.
+00:01:43,880 --> 00:01:45,360
+Įjungiu juodai baltą ekraną,
 
 74
-00:01:46,200 --> 00:01:46,960
-Ją reikia kuo nors
+00:01:45,400 --> 00:01:46,640
+ir jo nebesinori pakelti
 
 75
-00:01:47,000 --> 00:01:47,840
-užpildyti.
+00:01:46,680 --> 00:01:47,520
+taip dažnai.
 
 76
-00:01:47,920 --> 00:01:49,760
-Vaikui reikia iššūkio, įdomesnio
+00:01:47,600 --> 00:01:48,880
+Mano pilko ekrano reelą
 
 77
-00:01:49,800 --> 00:01:51,840
-už ekraną: būrelio, kiemo,
+00:01:48,960 --> 00:01:51,040
+pažiūrėjo aštuoniasdešimt vienas tūkstantis
 
 78
-00:01:51,920 --> 00:01:53,520
-laužo, rankų darbo.
+00:01:51,120 --> 00:01:52,960
+kartų, juo pasidalinta šešis
 
 79
-00:01:53,600 --> 00:01:55,280
-Paruošiau dešimt šeimos telefono
+00:01:53,000 --> 00:01:54,800
+šimtus dvidešimt šešis kartus.
 
 80
-00:01:55,320 --> 00:01:56,160
-taisyklių.
+00:01:54,840 --> 00:01:56,000
+Tai jums rezonavo.
 
 81
-00:01:56,200 --> 00:01:57,840
-Pirma: prie stalo telefonų
+00:01:56,027 --> 00:01:57,440
+Todėl padariau paprastą gidą
 
 82
-00:01:57,893 --> 00:01:59,400
-nėra, nei vaikų, nei
+00:01:57,600 --> 00:01:59,280
+žingsnis po žingsnio: vienas
 
 83
-00:01:59,440 --> 00:02:00,080
-tėvų.
+00:01:59,320 --> 00:02:00,560
+mygtukas telefone.
 
 84
-00:02:00,160 --> 00:02:02,240
-Antra: suaugusieji telefoną padeda
+00:02:00,640 --> 00:02:01,680
+Nuoroda laiške.
 
 85
-00:02:02,320 --> 00:02:02,960
-pirmi.
+00:02:01,760 --> 00:02:03,600
+Labai mažas žingsnis, labai
 
 86
-00:02:03,080 --> 00:02:04,720
-Trečia: kai vaikas kalba,
+00:02:03,680 --> 00:02:04,960
+didelis poveikis.
 
 87
-00:02:04,800 --> 00:02:06,320
-padedi telefoną ir pažiūri
+00:02:05,040 --> 00:02:07,040
+Antra: mano būreliuose telefonų
 
 88
-00:02:06,400 --> 00:02:07,200
-į akis.
+00:02:07,093 --> 00:02:07,600
+nėra.
 
 89
-00:02:07,253 --> 00:02:09,120
-Ketvirta: telefonai nakvoja ne
+00:02:07,680 --> 00:02:09,440
+Ten vaikai stato, ginčijasi,
 
 90
-00:02:09,200 --> 00:02:10,160
-miegamajame.
+00:02:09,480 --> 00:02:11,120
+klysta ir randa draugą.
 
 91
-00:02:10,240 --> 00:02:11,920
-Penkta: pirma ir paskutinė
+00:02:11,160 --> 00:02:12,960
+Draudimas palieka tuščią vietą.
 
 92
-00:02:11,973 --> 00:02:13,840
-dienos valanda be ekranų.
+00:02:13,040 --> 00:02:13,760
+Ją reikia kuo nors
 
 93
-00:02:13,880 --> 00:02:15,280
-Šešta: prie durų yra
+00:02:13,800 --> 00:02:14,720
+užpildyti.
 
 94
-00:02:15,400 --> 00:02:17,040
-telefonų stovėjimo vieta.
+00:02:14,760 --> 00:02:16,560
+Vaikui reikia iššūkio, įdomesnio
 
 95
-00:02:17,160 --> 00:02:18,720
-Septinta: jei reikia atsakyti
+00:02:16,587 --> 00:02:18,560
+už ekraną: būrelio, kiemo,
 
 96
-00:02:18,760 --> 00:02:20,240
-į žinutę, pasakai garsiai,
+00:02:18,600 --> 00:02:20,160
+laužo, rankų darbo.
 
 97
-00:02:20,320 --> 00:02:21,360
-kiek tai užtruks.
+00:02:20,200 --> 00:02:21,920
+Paruošiau dešimt šeimos telefono
 
 98
-00:02:21,440 --> 00:02:23,120
-Aštunta: prieš keldamas vaiko
+00:02:21,960 --> 00:02:22,800
+taisyklių.
 
 99
-00:02:23,200 --> 00:02:24,880
-nuotrauką, jo paklausi.
+00:02:22,840 --> 00:02:24,480
+Pirma: prie stalo telefonų
 
 100
-00:02:24,960 --> 00:02:27,440
-Devinta: susitarimą pasirašo visi,
+00:02:24,533 --> 00:02:25,920
+nėra, nei vaikų, nei
 
 101
-00:02:27,480 --> 00:02:28,240
-ir tėvai.
+00:02:26,000 --> 00:02:26,640
+tėvų.
 
 102
-00:02:28,320 --> 00:02:29,920
-Dešimta: kartą per mėnesį
+00:02:26,680 --> 00:02:28,800
+Antra: suaugusieji telefoną padeda
 
 103
-00:02:30,000 --> 00:02:32,240
-peržiūrit taisykles, be kaltės.
+00:02:28,880 --> 00:02:29,600
+pirmi.
 
 104
-00:02:32,280 --> 00:02:33,840
-Išsirink kelias, įrašyk savo
+00:02:29,680 --> 00:02:31,280
+Trečia: kai vaikas kalba,
 
 105
-00:02:33,920 --> 00:02:35,840
-numerį vieną, atsispausdink ir
+00:02:31,360 --> 00:02:32,720
+padedi telefoną ir pažiūri
 
 106
-00:02:35,880 --> 00:02:37,200
-pakabink ant šaldytuvo.
+00:02:32,800 --> 00:02:33,680
+į akis.
 
 107
-00:02:37,240 --> 00:02:38,960
-Šiai savaitei trys žingsniai.
+00:02:33,733 --> 00:02:35,760
+Ketvirta: telefonai nakvoja ne
 
 108
-00:02:39,040 --> 00:02:40,640
-Šiandien prie vakarienės stalo
+00:02:35,813 --> 00:02:36,640
+miegamajame.
 
 109
-00:02:40,720 --> 00:02:41,800
-telefonų nėra.
+00:02:36,720 --> 00:02:38,800
+Penkta: pirma ir paskutinė
 
 110
-00:02:42,000 --> 00:02:42,720
-Ir tavo.
+00:02:38,933 --> 00:02:40,960
+dienos valanda be ekranų.
 
 111
-00:02:42,880 --> 00:02:44,240
-Kai vaikas kalba, padėk
+00:02:41,040 --> 00:02:42,560
+Šešta: prie durų yra
 
 112
-00:02:44,320 --> 00:02:45,840
-telefoną ekranu žemyn ir
+00:02:42,680 --> 00:02:44,320
+telefonų stovėjimo vieta.
 
 113
-00:02:45,920 --> 00:02:47,120
-pažiūrėk į akis.
+00:02:44,400 --> 00:02:46,080
+Septinta: jei reikia atsakyti
 
 114
-00:02:47,200 --> 00:02:48,720
-Ir paklausk būrelio vadovo:
+00:02:46,120 --> 00:02:47,680
+į žinutę, pasakai garsiai,
 
 115
-00:02:48,800 --> 00:02:50,240
-ar per užsiėmimą telefonai
+00:02:47,760 --> 00:02:48,880
+kiek tai užtruks.
 
 116
-00:02:50,320 --> 00:02:51,440
-kur nors miega?
+00:02:48,960 --> 00:02:50,640
+Aštunta: prieš keliant vaiko
 
 117
-00:02:51,520 --> 00:02:53,400
-Šeštadienį, spalio dešimtą, būsiu
+00:02:50,680 --> 00:02:52,480
+nuotrauką, jo paklausi.
 
 118
-00:02:53,440 --> 00:02:55,520
-Kaune, Neskaitymo festivalyje.
+00:02:52,560 --> 00:02:55,040
+Devinta: susitarimą pasirašo visi,
 
 119
-00:02:55,600 --> 00:02:57,200
-Tai festivalis apie disleksiją
+00:02:55,200 --> 00:02:56,080
+ir tėvai.
 
 120
-00:02:57,240 --> 00:02:58,960
-ir kitokį skaitymą, Ąžuolyno
+00:02:56,160 --> 00:02:57,920
+Dešimta: kartą per mėnesį
 
 121
-00:02:59,040 --> 00:02:59,920
-bibliotekoje.
+00:02:58,040 --> 00:03:00,200
+peržiūrit taisykles, be kaltės.
 
 122
-00:03:00,040 --> 00:03:01,560
-Diskusija su manimi keturioliktą
+00:03:00,400 --> 00:03:02,080
+Išsirink kelias, įrašyk savo
 
 123
-00:03:01,600 --> 00:03:03,280
-valandą penkiolika minučių.
+00:03:02,200 --> 00:03:04,000
+numerį vieną, atsispausdink ir
 
 124
-00:03:03,360 --> 00:03:04,880
-Įėjimas nemokamas.
+00:03:04,080 --> 00:03:05,520
+pakabink ant šaldytuvo.
 
 125
-00:03:04,920 --> 00:03:06,160
-Ateik pasisveikinti.
+00:03:05,600 --> 00:03:07,600
+Šiai savaitei trys žingsniai.
 
 126
-00:03:06,200 --> 00:03:07,600
-Ir vienas klausimas tau.
+00:03:07,640 --> 00:03:09,120
+Šiandien prie vakarienės stalo
 
 127
-00:03:07,680 --> 00:03:09,120
-Kokia tavo numeris vienas
+00:03:09,200 --> 00:03:10,360
+telefonų nėra.
 
 128
-00:03:09,160 --> 00:03:10,640
-taisyklė su telefonu?
+00:03:10,560 --> 00:03:11,280
+Ir tavo.
 
 129
-00:03:10,680 --> 00:03:12,160
-Atrašyk vienu sakiniu.
+00:03:11,307 --> 00:03:12,560
+Kai vaikas kalba, padėk
 
 130
-00:03:12,200 --> 00:03:13,760
-Gražiausią, su tavo leidimu,
+00:03:12,680 --> 00:03:14,080
+telefoną ekranu žemyn ir
 
 131
-00:03:13,840 --> 00:03:15,200
-įdėsiu į kitą laišką.
+00:03:14,160 --> 00:03:15,360
+pažiūrėk į akis.
 
 132
-00:03:15,280 --> 00:03:16,400
-Ačiū, kad esi čia.
+00:03:15,440 --> 00:03:17,040
+Ir paklausk būrelio vadovo:
 
 133
-00:03:16,440 --> 00:03:18,133
-Aš Kris, vyriausiasis būrelių
+00:03:17,120 --> 00:03:18,480
+ar per užsiėmimą telefonai
 
 134
-00:03:18,187 --> 00:03:19,120
-evangelistas.
+00:03:18,560 --> 00:03:19,560
+kur nors miega?
 
 135
-00:03:19,200 --> 00:03:20,880
-Mano darbas: padaryti gyvenimą
+00:03:19,840 --> 00:03:21,640
+Šeštadienį, spalio dešimtą, būsiu
 
 136
-00:03:20,960 --> 00:03:22,320
-įdomesnį už ekraną.
+00:03:21,680 --> 00:03:23,600
+Kaune, Neskaitymo festivalyje.
 
 137
-00:03:22,360 --> 00:03:23,840
-Per būrelius, įrankius ir
+00:03:23,680 --> 00:03:25,280
+Tai festivalis apie disleksiją
 
 138
-00:03:23,920 --> 00:03:25,440
-patarimus, kaip sugyventi su
+00:03:25,320 --> 00:03:26,960
+ir kitokį skaitymą, Ąžuolyno
 
 139
-00:03:25,560 --> 00:03:27,920
-technologijomis ir pasiruošti ateičiai.
+00:03:27,040 --> 00:03:27,920
+bibliotekoje.
 
 140
-00:03:27,960 --> 00:03:29,200
+00:03:28,040 --> 00:03:29,520
+Diskusija su manimi keturioliktą
+
+141
+00:03:29,640 --> 00:03:31,200
+valandą penkiolika minučių.
+
+142
+00:03:31,240 --> 00:03:32,640
+Įėjimas nemokamas.
+
+143
+00:03:32,680 --> 00:03:33,920
+Ateik pasisveikinti.
+
+144
+00:03:34,000 --> 00:03:35,520
+Ir vienas klausimas tau.
+
+145
+00:03:35,600 --> 00:03:36,960
+Kokia tavo numeris vienas
+
+146
+00:03:37,040 --> 00:03:38,480
+taisyklė su telefonu?
+
+147
+00:03:38,520 --> 00:03:40,000
+Atrašyk vienu sakiniu.
+
+148
+00:03:40,040 --> 00:03:41,760
+Gražiausią, su tavo leidimu,
+
+149
+00:03:41,840 --> 00:03:43,280
+įdėsiu į kitą laišką.
+
+150
+00:03:43,360 --> 00:03:44,480
+Ačiū, kad esi čia.
+
+151
+00:03:44,520 --> 00:03:46,200
+Aš Kris, vyriausiasis būrelių
+
+152
+00:03:46,240 --> 00:03:47,200
+evangelistas.
+
+153
+00:03:47,280 --> 00:03:48,960
+Mano darbas: padaryti gyvenimą
+
+154
+00:03:49,040 --> 00:03:50,400
+įdomesnį už ekraną.
+
+155
+00:03:50,440 --> 00:03:51,920
+Per būrelius, įrankius ir
+
+156
+00:03:52,000 --> 00:03:53,520
+patarimus, kaip sugyventi su
+
+157
+00:03:53,600 --> 00:03:56,080
+technologijomis ir pasiruošti ateičiai.
+
+158
+00:03:56,120 --> 00:03:57,440
 Iki kitos savaitės.
 
