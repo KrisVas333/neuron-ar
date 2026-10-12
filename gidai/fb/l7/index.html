@@ -1,0 +1,377 @@
+<title>FB L7 Deck Draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Kanit:wght@400;600;800&display=swap">
+<style>
+/* Layout: one 1920×1080 stage scaled to fit; same look as the live FB decks (purple gradient, Russo One, cyan + yellow). Notes panel under the stage. */
+:root{
+  --navy:#141B3E; --deep:#0A0620; --cyan:#4FD8FF; --yellow:#FFC24B; --frame:#FFD34D; --white:#FFFFFF; --green:#7CFC9A; --violet:#7B3FF2;
+  --page:#0A0620; --ui:#1A1F4E; --uifg:#E8ECFF;
+  --head:"Russo One", "Arial Black", sans-serif; --body:"Kanit", "Segoe UI", sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--page);color:var(--uifg);font-family:var(--body);display:flex;flex-direction:column;align-items:center;padding-inline:16px;padding-block:12px}
+.bar{width:100%;max-width:1400px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-bottom:10px;font-size:14px}
+.bar b{font-family:var(--head);font-weight:400;letter-spacing:.03em}
+.bar button{background:var(--ui);color:var(--uifg);border:1px solid #2f3a7a;border-radius:6px;padding:6px 12px;font:600 14px var(--body);cursor:pointer}
+.bar button:focus-visible{outline:2px solid var(--cyan)}
+.viewport{width:100%;max-width:1400px;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px #0008}
+.stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.slide{position:absolute;inset:0;background:url(deck-assets/image23.png) center/cover;color:var(--white);padding:70px 90px;display:none;flex-direction:column;gap:30px;overflow:hidden}
+.slide.on{display:flex}
+.slide.big{box-shadow:inset 0 0 0 16px var(--frame)}
+.slide.big::after{content:"BIGGER KIDS ONLY";position:absolute;top:28px;right:40px;background:var(--frame);color:var(--navy);font:400 30px var(--head);padding:6px 18px;border-radius:8px}
+h1,h2{font-family:var(--head);font-weight:400;margin:0;line-height:1.05;text-wrap:balance}
+h1{font-size:110px}
+h2{font-size:84px;color:var(--cyan)}
+.t{font-size:52px;line-height:1.2;font-weight:600}
+.s{font-size:44px;line-height:1.25}
+.y{color:var(--yellow)}
+.c{color:var(--cyan)}
+.row{display:flex;gap:40px;align-items:stretch;flex:1;min-height:0}
+.col{display:flex;flex-direction:column;gap:24px;flex:1;min-width:0}
+.card{background:#141B3ECC;border:3px solid var(--cyan);border-radius:24px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;flex:1;min-width:0}
+.card .em{font-size:170px;line-height:1}
+.card .lb{font:400 50px var(--head)}
+.card .sm{font-size:40px;line-height:1.2}
+.pic{border:4px dashed #ffffff88;border-radius:24px;background:#ffffff14;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:20px;flex:1;min-width:0}
+.pic .em{font-size:200px;line-height:1}
+.pic .todo{font-size:26px;color:#ffffffaa;font-style:italic}
+.steps{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:24px;align-items:center;font-size:48px;line-height:1.15;font-weight:600}
+.steps .n{flex:none;width:80px;height:80px;border-radius:50%;background:var(--cyan);color:var(--navy);display:grid;place-items:center;font:400 46px var(--head)}
+.word{background:var(--yellow);color:var(--navy);border-radius:24px;padding:26px 40px;display:flex;flex-direction:column;gap:6px}
+.word .k{font:400 40px var(--head);letter-spacing:.06em}
+.word .w{font:400 120px var(--head);line-height:1}
+.word .d{font-size:50px;font-weight:600}
+.timer{position:absolute;left:40px;bottom:30px;font:400 34px var(--head);color:var(--yellow)}
+.quote{font:800 76px/1.15 var(--body);text-align:center}
+.center{align-items:center;justify-content:center;text-align:center}
+.who img{height:560px}
+.mapbox{display:flex;gap:30px;align-items:center;justify-content:center;flex:1}
+.mapitem{width:360px;height:300px;border-radius:24px;background:#ffffff;display:grid;place-items:center;overflow:hidden;border:6px solid var(--green)}
+.mapitem img{max-height:280px;max-width:340px}
+.mapitem.q{background:#141B3E;border:6px dashed var(--yellow);font:400 150px var(--head);color:var(--yellow)}
+.mapitem.new{background:#ffffff14;border:6px solid var(--yellow);flex-direction:column;color:var(--white)}
+.frame{background:#141B3ECC;border-left:12px solid var(--yellow);border-radius:16px;padding:22px 30px;font-size:50px;font-weight:600;line-height:1.2}
+.rules{display:flex;gap:30px;justify-content:center}
+.rules figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;font:400 40px var(--head)}
+.rules img{width:220px;height:220px;object-fit:contain}
+.slide.ad{padding:0;background:#000}
+.slide.ad video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slide.find{padding:0;background:#fff url(deck-assets/supplies-mess-a.png) center/cover}
+.find .band{background:#141B3EE6;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.find .band h2{font-size:64px}
+.find .chips{display:flex;gap:18px}
+.find .chip{background:var(--yellow);color:var(--navy);border-radius:16px;padding:8px 22px;font:400 44px var(--head)}
+.clock{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:#141B3ECC;border:4px solid var(--yellow);border-radius:28px;padding:30px}
+.clock .rnd{font:400 56px var(--head);color:var(--cyan)}
+.clock .dig{font:400 240px/1 var(--head);color:var(--yellow);font-variant-numeric:tabular-nums}
+.clock .dig.end{color:#ff8a7d}
+.clock .btns{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.clock button{font:400 44px var(--head);background:var(--cyan);color:var(--navy);border:0;border-radius:16px;padding:12px 28px;cursor:pointer}
+.clock button:focus-visible{outline:4px solid var(--white)}
+.notes{width:100%;max-width:1400px;margin-top:12px;background:var(--ui);border-radius:8px;padding:14px 18px;font-size:16px;line-height:1.5}
+.notes h3{margin:0 0 6px;font:400 16px var(--head);color:var(--cyan)}
+.notes ul{margin:0;padding-left:20px}
+.notes .tm{color:var(--yellow);font-weight:600}
+.notes[hidden]{display:none}
+@media (prefers-reduced-motion:no-preference){.slide.on{animation:fade .25s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+
+<div class="bar">
+  <span><b>FB L7 · Helper Robot</b> · draft 4 · HTML only</span>
+  <span id="count">1 / 18</span>
+  <span style="display:flex;gap:6px">
+    <button id="prev" type="button">← Back</button>
+    <button id="next" type="button">Next →</button>
+    <button id="tn" type="button">Notes (N)</button>
+  </span>
+</div>
+
+<div class="viewport" id="vp"><div class="stage" id="stage">
+
+<!-- 1 -->
+<section class="slide" data-notes='Say: &quot;Today the future gets its NEXT thing!&quot; Don&#39;t name it.||PREP: No building instructions needed this lesson. Kids build from their own drawings. Bring paper + pencils.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="col">
+      <p class="t c" style="margin:0">LESSON 7</p>
+      <h1>WELCOME BACK, FUTURE BUILDERS!</h1>
+      <p class="s" style="margin:0">Today the future gets its next thing!</p>
+    </div>
+    <div class="who"><img src="deck-assets/leo-luna-full.png" alt="Leo and Luna high five" style="height:900px"></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes='Ask: &quot;What did our plane bring?&quot; → supplies.||Point at the ??? spot. Don&#39;t reveal it.' data-t="1|1">
+  <h2 style="text-align:center">THE TOMORROW MAP</h2>
+  <div class="mapbox">
+    <div class="mapitem"><img src="deck-assets/image1.png" alt="Supply plane"></div>
+    <div class="mapitem"><img src="deck-assets/image21.png" alt="Supplies"></div>
+    <div class="mapitem q">???</div>
+  </div>
+  <p class="t" style="text-align:center;margin:0">What did our plane <span class="y">bring?</span></p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes='Leo &amp; Luna&#39;s message: &quot;The supplies landed! But look: a box broke, the juice is leaking. What a mess!&quot;||Ask: &quot;Who could clean it all up?&quot; → a helper ROBOT.||Then: &quot;But HOW do we build one? Leo is out of ideas…&quot; (next slide).||Don&#39;t hunt for details yet. That is slide 6.' data-t="2|1">
+  <div class="row" style="align-items:center">
+    <div class="who" style="margin-left:-70px;flex:none"><img src="deck-assets/luna-full.png" alt="Luna" style="height:820px"></div>
+    <div class="col">
+      <p class="t c" style="margin:0">MESSAGE FROM LEO &amp; LUNA</p>
+      <p class="quote" style="text-align:left;font-size:58px">“Supplies landed! What a mess…”</p>
+      <p class="t y" style="margin:0">Who will help?</p>
+    </div>
+    <img src="deck-assets/supplies-mess-a.png" alt="The supply landing site: broken crate, leaking juice, spilled crisps, jumbled books" style="flex:0 0 900px;width:900px;border-radius:24px;border:6px solid var(--white)">
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide center" data-notes='Say: &quot;A robot! But how do we build it? I&#39;m out of ideas! 🤯 Let&#39;s ask LOTS of people! 💡 That is called crowdsourcing.&quot;||Then say the promise together. CROWDSOURCE is a big word: we learn it on slide 7.||We check it on slide 17.' data-t="1|1">
+  <p class="t c" style="margin:0">OUR PROMISE</p>
+  <p class="quote">“I can crowdsource to gather information.”</p>
+  <span class="timer">⏱ 1:00</span>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes='Quick recall of the rules.||New today: another crew will look at YOUR drawings (slide 14).||Say: &quot;When you look at other drawings: eyes, not hands. Say one kind thing.&quot;' data-t="1|1">
+  <h2 style="text-align:center">REMEMBER OUR RULES?</h2>
+  <div class="rules" style="flex:1;align-items:center">
+    <figure><img src="deck-assets/image5.png" alt=""><figcaption>ATTENTION</figcaption></figure>
+    <figure><img src="deck-assets/image8.png" alt=""><figcaption>ORDER</figcaption></figure>
+    <figure><img src="deck-assets/image4.png" alt=""><figcaption>STOP</figcaption></figure>
+    <figure><img src="deck-assets/image9.png" alt=""><figcaption>FRIENDSHIP</figcaption></figure>
+    <figure><img src="deck-assets/image6.png" alt=""><figcaption>BASE</figcaption></figure>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide find" data-notes='Robots do the jobs people don&#39;t want: DIRTY, DULL, DANGEROUS.||One category at a time. Say: &quot;Find something DIRTY!&quot; One kid comes up and points on the screen. Find at least 2, then the next category.||DIRTY: leaking juice box · mushed banana · spilled crisps · muddy parachute · spilled jam.||DULL: jumbled books · mixed-up cans · a heap of bricks to sort · a long row of boxes to count.||DANGEROUS: broken crate with nails · broken glass bottle · wobbly crate tower · sparking cable on the plane.||Younglings: one find per category is enough.||These 3 words pick our job on slide 10.' data-t="5|5">
+  <div class="band"><h2>ROBOT JOBS: FIND THEM!</h2><div class="chips"><span class="chip">🟫 DIRTY</span><span class="chip">😴 DULL</span><span class="chip">⚡ DANGEROUS</span></div></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-notes='Say: &quot;Okay, you found so many jobs. You know what to do. We need some good, bright ideas to make it happen. That&#39;s why we CROWDSOURCE: ask lots of people for ideas.&quot;||Everyone says it: CROWD-SOURCE.||Leo writes it in his word notebook. Next slide: all our words.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="col">
+      <p class="t c" style="margin:0">We need bright ideas! 💡</p>
+      <div class="word"><span class="k">WORD OF THE DAY</span><span class="w">CROWDSOURCE</span><span class="d">= ask lots of people for ideas</span></div>
+    </div>
+    <img src="deck-assets/leo-notebook.png" alt="Leo writing in his notebook" style="height:900px;flex:none">
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes='Word recap, ~5 min. Point at each word: &quot;What does it mean? Give me an example!&quot; One kid answers, then the next word.||MOTOR = the robot&#39;s muscle (a fan, a car wheel) · SENSOR = the robot&#39;s eye (a door that opens by itself) · HUB = the robot&#39;s brain box (it holds the code).||PROGRAMMING = telling a robot exactly what to do · PSEUDOCODE = a plan in our own words · BUG = a mistake in the code (the plane missed the spot).||DECOMPOSE = cut a big job into parts (tidy room: toys, books, clothes) · CROWDSOURCE = ask lots of people (ask the class which job a robot should do).||Younglings: 4 words only (motor, sensor, decompose, crowdsource), mentor gives the example if no one can.' data-t="5|2">
+  <img src="deck-assets/words-notebook.png" alt="Leo's notebook: motor, sensor, hub, programming, pseudocode, bug, decompose, crowdsource" style="flex:1;min-height:0;width:100%;object-fit:contain">
+  <p class="t" style="text-align:center;margin:0">What does it mean? <span class="y">Give an example!</span></p>
+  <span class="timer">⏱ 5:00</span>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes='Running late? The drawing rounds get shorter, never the build.' data-t="1|1">
+  <h2>TODAY’S PLAN</h2>
+  <ol class="steps">
+    <li><span class="n">1</span>Pick a job</li>
+    <li><span class="n">2</span>Design game</li>
+    <li><span class="n">3</span>Swap + vote</li>
+    <li><span class="n">4</span>Build + code</li>
+    <li><span class="n">5</span>Robot Expo</li>
+  </ol>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-notes='Ask: &quot;Which jobs did we find on the big picture?&quot; The pictures are reminders: crews may pick ANY job they found, not only these.||Every crew gets ONE job. Let crews agree among themselves so every job is taken (with 4+ crews a job can repeat).||Say: &quot;Your robot must do this job.&quot;||Younglings: ONE job for the whole class. Thumbs vote on 3 jobs from slide 6.' data-t="2|1">
+  <h2 style="text-align:center">PICK YOUR JOB!</h2>
+  <div class="row">
+    <div class="card"><div style="width:100%;height:340px;border-radius:16px;border:4px solid var(--white);background:url(deck-assets/supplies-mess-a.png) -1482px -651px/2400px auto no-repeat"></div><div class="lb y" style="font-size:52px">DIRTY</div></div>
+    <div class="card"><div style="width:100%;height:340px;border-radius:16px;border:4px solid var(--white);background:url(deck-assets/supplies-mess-a.png) -118px -326px/1904px auto no-repeat"></div><div class="lb y" style="font-size:52px">DULL</div></div>
+    <div class="card"><div style="width:100%;height:340px;border-radius:16px;border:4px solid var(--white);background:url(deck-assets/supplies-mess-a.png) 0px -628px/1867px auto no-repeat"></div><div class="lb y" style="font-size:52px">DANGEROUS</div></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide ad" data-notes='We introduce our first ads to the content.' data-t="1|1">
+  <video src="deck-assets/nose-ad-v1.mp4" playsinline preload="auto"></video>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-notes='Crews of 4 sit together. Everyone has paper and a pencil.||Each kid draws a robot part they imagine. It MUST include one of the 4 parts on screen (motor, sensor, wheel, this one).||Next slide = the timer: 3 min per drawing. When it rings, pass your paper to the LEFT. The next kid adds one of the 4 parts plus anything else they imagine.||Bigger kids: 4 rounds, so every kid works on all 4 drawings. They write the part names (motor, sensor, hub). Younglings: 2 rounds, no writing expected.||Only real parts from the box.||After the last round the crew lines up its 4 drawings (1 min).' data-t="2|1">
+  <h2 style="text-align:center">DESIGN GAME</h2>
+  <ol class="steps">
+    <li><span class="n">1</span>Draw a robot part you imagine</li>
+    <li style="padding-left:104px;gap:18px"><span class="y" style="font-size:44px">MUST include one:</span><img src="deck-assets/part-motor.png" alt="Motor" style="height:150px;width:150px;object-fit:contain"><img src="deck-assets/part-sensor.png" alt="Sensor" style="height:150px;width:150px;object-fit:contain"><img src="deck-assets/part-wheel.png" alt="Wheel" style="height:150px;width:150px;object-fit:contain"><img src="deck-assets/part-tube.png" alt="This one" style="height:150px;width:150px;object-fit:contain"></li>
+    <li><span class="n">2</span>Pass it on ➡️</li>
+    <li><span class="n">3</span>Add one part + your own ideas!</li>
+  </ol>
+  <p class="frame" style="margin:0">Bigger kids: Write the part names!<br><span class="y">MOTOR · SENSOR · HUB</span></p>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-notes='Leave this slide on while kids draw. Timer: Start/Pause, Reset, Next round. The 4/2 button sets bigger kids / younglings. A soft beep rings at 0:00.||The starter project (PIN 1305) already has a motor activity and a light/colour-sensor activity. These parts make the code work.||The curved tube is just for fun.||Kids may add any other REAL part from the box. No made-up parts (no flamethrowers!): only parts that are really in the box.||Say: &quot;Every robot uses one of these. Then add anything you imagine.&quot;' data-t="13|7">
+  <h2 style="text-align:center">MUST INCLUDE!</h2>
+  <div class="row" style="flex:none;height:440px">
+    <div class="card"><img src="deck-assets/part-motor.png" alt="Motor" style="max-height:290px;max-width:100%;object-fit:contain"><div class="lb c">MOTOR</div></div>
+    <div class="card"><img src="deck-assets/part-sensor.png" alt="Colour and light sensor" style="max-height:290px;max-width:100%;object-fit:contain"><div class="lb c">SENSOR</div></div>
+    <div class="card"><img src="deck-assets/part-wheel.png" alt="Wheel" style="max-height:290px;max-width:100%;object-fit:contain"><div class="lb c">WHEEL</div></div>
+    <div class="card"><img src="deck-assets/part-tube.png" alt="Curved tube piece" style="max-height:290px;max-width:100%;object-fit:contain"><div class="lb y">THIS ONE</div></div>
+  </div>
+    <div class="clock" id="clock" style="flex:none;align-self:center;width:1100px">
+      <div class="rnd" id="clkRound">Drawing 1 of 4</div>
+      <div class="dig" id="clkDigits">3:00</div>
+      <div class="btns">
+        <button type="button" id="clkStart">Start</button>
+        <button type="button" id="clkReset">Reset</button>
+        <button type="button" id="clkNext">Next round</button>
+        <button type="button" id="clkMode">Rounds: 4</button>
+      </div>
+    </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-notes='Crews pass ALL 4 drawings to the next crew (round robin, e.g. crew A to B to C to A).||That crew looks, laughs, then votes by pointing on 3-2-1: each kid points at ONE drawing. They hand the winning drawing back.||The owning crew builds THAT one. This is crowdsourcing: lots of people choose the best idea.||About 5 min including handing papers. Younglings: 4 min, mentor counts the points.' data-t="5|4">
+  <h2>SWAP + VOTE!</h2>
+  <ol class="steps">
+    <li><span class="n">1</span>Give your 4 drawings to another crew</li>
+    <li><span class="n">2</span>Vote: which robot is BEST?</li>
+    <li><span class="n">3</span>Give the winner back!</li>
+  </ol>
+  <p class="t y" style="text-align:center;margin:0">3 – 2 – 1 – POINT! 👉</p>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes='NO building instructions are needed for this lesson. Kids build from the winning drawing.||ONE tablet per crew. Pair 1 builds, pair 2 codes. Swap builder/coder halfway.||Bigger kids: open the starter project PIN 1305. Script A (drive: move forward, wait, turn, move) fits the sweeper and the pusher: change the turn to moving back home. Script B (when the colour sensor sees blue, single motor turns 5 rotations one way, then back) fits the sorter: copy it for red and flip the direction.||Younglings: new project with Icon blocks. The mentor codes on the projector and crews copy.||Check: &quot;Does it do what the drawing shows?&quot; Robot did something wrong? Fix only that part.' data-t="35|21">
+  <h2 style="text-align:center">BUILD + CODE</h2>
+  <p class="quote" style="margin:0">No instructions today!<br><span class="y">Build your drawing.</span></p>
+  <div class="row">
+    <ol class="steps col" style="justify-content:center">
+      <li><span class="n">1</span>Build the winning robot</li>
+      <li><span class="n">2</span>Code it with 1305</li>
+      <li><span class="n">3</span>Does it match the drawing?</li>
+      <li><span class="n">4</span>Halfway: SWAP jobs</li>
+    </ol>
+    <img src="deck-assets/drawing-to-robot.png" alt="A silly robot drawing becomes a real shiny robot" style="flex:0 0 900px;width:900px;object-fit:contain">
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-notes='Each crew holds up its winning drawing: one sentence, then the robot runs once for the class. Everyone listens.||Ask: &quot;Did the robot do what you drew?&quot;||Younglings: the mentor goes crew to crew.' data-t="7|5">
+  <h2 style="text-align:center">ROBOT EXPO</h2>
+  <p class="quote">“Our job: ___.<br>Here is our drawing!”</p>
+  <p class="t y" style="text-align:center;margin:0">Did it do what you drew? 👏</p>
+  <div style="text-align:center;font-size:320px;line-height:1">🏆</div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-notes='&quot;TRUE?&quot; Thumbs.||Ask: &quot;Which drawing won in your crew? Why?&quot;||Ask: &quot;How did asking lots of people help?&quot;' data-t="2|1">
+  <h2 style="text-align:center">YOU DID IT, FUTURE BUILDERS!</h2>
+  <div class="col center" style="flex:1">
+    <p class="quote" style="text-align:center;font-size:72px">“I can crowdsource to gather information.”</p>
+    <p class="t y" style="margin:0;text-align:center">TRUE? 👍</p>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-notes='&quot;Our third thing on the map: a helper robot! The supplies are clean and safe.&quot;||Cliffhanger: &quot;The robots work. But where will the kids PLAY…?&quot; Don&#39;t answer.' data-t="1|1">
+  <h2 style="text-align:center">THE TOMORROW MAP</h2>
+  <div class="mapbox">
+    <div class="mapitem"><img src="deck-assets/image1.png" alt="Supply plane"></div>
+    <div class="mapitem"><img src="deck-assets/image21.png" alt="Supplies"></div>
+    <div class="mapitem new"><img src="deck-assets/robot-helper.png" alt="Helper robot"></div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-notes='Save the project. Take a photo of the model.||Sort · close the box · high five. Charge hubs and motors.' data-t="4|4">
+  <h2 style="text-align:center">EVERY BRICK GOES HOME!</h2>
+  <div class="row" style="align-items:center">
+    <ol class="steps col">
+      <li><span class="n">1</span>Save + take a photo 📸</li>
+      <li><span class="n">2</span>Sort by colour</li>
+      <li><span class="n">3</span>Close the box</li>
+      <li><span class="n">4</span>High five! ✋</li>
+    </ol>
+    <img src="deck-assets/image22.png" alt="Luna" style="height:640px">
+  </div>
+</section>
+
+</div></div>
+
+<div class="notes" id="notes" aria-live="polite"><h3>SPEAKER NOTES</h3><div id="nbody"></div></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const stage=document.getElementById('stage'),vp=document.getElementById('vp');
+let i=0;
+function fit(){stage.style.transform=`scale(${vp.clientWidth/1920})`}
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>{s.classList.toggle('on',k===i);const v=s.querySelector('video');if(v){if(k===i){try{v.currentTime=0;const p=v.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}else v.pause()}});
+  document.getElementById('count').textContent=`${i+1} / ${slides.length}`;
+  const s=slides[i],t=(s.dataset.t||'').split('|'),notes=(s.dataset.notes||'').split('||');
+  const y=t[1]==='0'?'skip':t[1]+' min';
+  document.getElementById('nbody').innerHTML='<ul>'+notes.map(x=>`<li>${x}</li>`).join('')+`</ul><p class="tm" style="margin:6px 0 0">90 min: ${t[0]} min · 60 min: ${y}</p>`;
+  try{history.replaceState(null,'','#s'+(i+1))}catch(e){}
+}
+document.getElementById('prev').onclick=()=>show(i-1);
+document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('tn').onclick=()=>{const n=document.getElementById('notes');n.hidden=!n.hidden};
+vp.addEventListener('click',e=>{const r=vp.getBoundingClientRect();show(e.clientX-r.left>r.width/2?i+1:i-1)});
+document.addEventListener('keydown',e=>{
+  if(e.target&&e.target.closest&&e.target.closest('.clock'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(i+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
+  else if(e.key==='n'||e.key==='N'){document.getElementById('tn').click()}
+});
+
+/* Design-game countdown: no libraries; clicks and keys stay inside the clock */
+(function(){
+  const box=document.getElementById('clock');if(!box)return;
+  const dig=document.getElementById('clkDigits'),rnd=document.getElementById('clkRound'),
+    bs=document.getElementById('clkStart'),br=document.getElementById('clkReset'),
+    bn=document.getElementById('clkNext'),bm=document.getElementById('clkMode');
+  const ROUND=180;let total=4,cur=1,left=ROUND,timer=null,ctx=null;
+  ['click','keydown','keyup'].forEach(ev=>box.addEventListener(ev,e=>e.stopPropagation()));
+  function draw(){
+    const m=Math.floor(left/60),s=left%60;
+    dig.textContent=m+':'+String(s).padStart(2,'0');
+    dig.classList.toggle('end',left===0);
+    rnd.textContent='Drawing '+cur+' of '+total;
+    bs.textContent=timer?'Pause':'Start';
+    bm.textContent='Rounds: '+total;
+    bn.textContent=cur>=total?'Done ✔':'Next round';
+    bn.disabled=cur>=total;bn.style.opacity=bn.disabled?.5:1;
+  }
+  function beep(){
+    try{
+      ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+      [0,.35,.7].forEach(d=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.type='sine';o.frequency.value=660;o.connect(g);g.connect(ctx.destination);
+        const t=ctx.currentTime+d;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.15,t+.05);g.gain.linearRampToValueAtTime(0,t+.3);
+        o.start(t);o.stop(t+.32);
+      });
+    }catch(e){}
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null}}
+  function tick(){left--;if(left<=0){left=0;stop();beep()}draw()}
+  bs.onclick=()=>{
+    if(timer){stop()}
+    else if(left>0){
+      try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(e){}
+      timer=setInterval(tick,1000);
+    }
+    draw();
+  };
+  br.onclick=()=>{stop();left=ROUND;draw()};
+  bn.onclick=()=>{if(cur<total){stop();cur++;left=ROUND;draw()}};
+  bm.onclick=()=>{stop();total=total===4?2:4;cur=1;left=ROUND;draw()};
+  draw();
+})();
+addEventListener('resize',fit);
+const m=/^#s(\d+)$/.exec(location.hash);
+fit();show(m?+m[1]-1:0);
+</script>
