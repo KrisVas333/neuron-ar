@@ -16,11 +16,11 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--page);color:var(--uifg);font-family:var(--body);display:flex;flex-direction:column;align-items:center;padding-inline:16px;padding-block:12px}
-.bar{width:100%;max-width:1400px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-bottom:10px;font-size:14px}
+.bar{width:min(100%, calc((100vh - 84px) * 16 / 9));display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-bottom:10px;font-size:14px}
 .bar b{font-family:var(--head);font-weight:400;letter-spacing:.03em}
 .bar button{background:var(--ui);color:var(--uifg);border:1px solid #2f3a7a;border-radius:6px;padding:6px 12px;font:600 14px var(--body);cursor:pointer}
 .bar button:focus-visible{outline:2px solid var(--cyan)}
-.viewport{width:100%;max-width:1400px;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px #0008}
+.viewport{width:min(100%, calc((100vh - 84px) * 16 / 9));flex:none;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px #0008}
 .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
 .slide{position:absolute;inset:0;background:url(deck-assets/image23.png) center/cover;color:var(--white);padding:70px 90px;display:none;flex-direction:column;gap:30px;overflow:hidden}
 .slide.on{display:flex}
@@ -76,7 +76,7 @@ h2{font-size:84px;color:var(--cyan)}
 .clock .btns{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
 .clock button{font:400 44px var(--head);background:var(--cyan);color:var(--navy);border:0;border-radius:16px;padding:12px 28px;cursor:pointer}
 .clock button:focus-visible{outline:4px solid var(--white)}
-.notes{width:100%;max-width:1400px;margin-top:12px;background:var(--ui);border-radius:8px;padding:14px 18px;font-size:16px;line-height:1.5}
+.notes{width:min(100%, calc((100vh - 84px) * 16 / 9));margin-top:12px;background:var(--ui);border-radius:8px;padding:14px 18px;font-size:16px;line-height:1.5}
 .notes h3{margin:0 0 6px;font:400 16px var(--head);color:var(--cyan)}
 .notes ul{margin:0;padding-left:20px}
 .notes .tm{color:var(--yellow);font-weight:600}
@@ -86,7 +86,7 @@ h2{font-size:84px;color:var(--cyan)}
 </head><body>
 
 <div class="bar">
-  <span><b>FB L7 · Helper Robot</b> · draft 4 · HTML only</span>
+  <span><b>FB L7 · Helper Robot</b></span>
   <span id="count">1 / 18</span>
   <span style="display:flex;gap:6px">
     <button id="prev" type="button">← Back</button>
