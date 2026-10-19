@@ -194,10 +194,16 @@ footer p+p{margin-top:10px}
 .hp,.sr{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nl{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.14)}}
 :root[data-theme="dark"] .nl{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.14)}
+.switch{display:flex;justify-content:center;padding-block:14px;border-bottom:1px solid var(--line);background:var(--bg)}
+.switch nav{display:inline-flex;border:2px solid var(--ink);border-radius:var(--r);overflow:hidden}
+.switch a{font-family:var(--head);font-weight:800;font-size:14px;letter-spacing:.04em;text-decoration:none;padding:10px 18px}
+.switch a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.switch a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
 </style>
 </head>
 <body>
 
+<div class="switch"><nav aria-label="Versija"><a href="./" aria-current="page">Suaugusiems</a><a href="../vaikams/?src=te-apie-switch">Vaikams</a></nav></div>
 <!-- HERO -->
 <header class="hero">
   <div class="wrap">

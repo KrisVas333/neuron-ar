@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Technologijų etiketas vaikams</title>
+<meta name="description" content="Technologijų etiketas vaikams 7–12 m.: 10 paprastų taisyklių su piešiniais ir šeimos susitarimo lapas. Nemokamas A4.">
+<meta property="og:title" content="Technologijų etiketas vaikams">
+<meta property="og:description" content="Žinai stalo etiketą? Yra ir ekrano etiketas. 10 taisyklių su piešiniais.">
+<meta property="og:image" content="https://krisvas333.github.io/neuron-ar/te/vaikams/vaikams-preview.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23D90429'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-weight='800' font-size='15' fill='white'%3ETE%3C/text%3E%3C/svg%3E">
+<!-- Kids page (rule 16): anonymous cookieless events only. No Clarity, no recordings, no forms, no personal data. -->
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="te-vaikams" data-kind="kids"></script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="kids" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap&subset=latin-ext">
+<style>
+/* Layout: same TE DNA as the adults' page, scaled up for 7–12: bigger drawings, one idea per card, a tick box per rule, a family pact at the end. Light only. */
+:root{
+  --bg:#FFFFFF; --paper:#F7F7F5; --ink:#0A0A0A; --muted:#5B5754; --line:#E6E3DF;
+  --red:#D90429; --spark:#FF0000; --blush:#FCECEC; --blush2:#F9DADC; --grey:#B9B5B1;
+  --head:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:4px; color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:64px}
+.tint{background:var(--paper)}
+h1,h2,h3{font-family:var(--head);letter-spacing:-.02em;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(38px,7vw,68px);font-weight:800}
+h1 .dot{color:var(--red)}
+h2{font-size:clamp(28px,4.2vw,40px);font-weight:800}
+h3{font-size:21px;font-weight:800}
+p{margin:0}
+a{color:inherit}
+.eyebrow{font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--head);font-weight:700;font-size:15px;text-decoration:none;padding:15px 20px;border-radius:var(--r);border:2px solid var(--ink);transition:transform .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible,.switch a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+
+.switch{display:flex;justify-content:center;padding-block:14px;border-bottom:1px solid var(--line);background:var(--bg)}
+.switch nav{display:inline-flex;border:2px solid var(--ink);border-radius:var(--r);overflow:hidden}
+.switch a{font-family:var(--head);font-weight:800;font-size:14px;letter-spacing:.04em;text-decoration:none;padding:10px 18px}
+.switch a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+
+.hero{padding-block:48px 64px;background:radial-gradient(circle at 85% 25%,var(--blush) 0,transparent 55%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero-text{display:grid;gap:22px;min-width:0}
+.age-chip{justify-self:start;font-family:var(--head);font-weight:800;font-size:14px;background:var(--ink);color:var(--bg);padding:6px 12px;border-radius:999px}
+.hero-line{font-size:clamp(20px,2.6vw,25px);font-weight:500;line-height:1.4;max-width:30ch}
+.hero-line b{color:var(--red)}
+.hero-art{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.hero-art div{aspect-ratio:1;background:var(--blush);border-radius:var(--r);display:grid;place-items:center}
+.hero-art svg{width:82%;height:auto}
+
+.power{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--ink);color:var(--bg);border-radius:var(--r);padding:32px}
+.power .badge{width:92px;height:92px;border-radius:50%;background:var(--red);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:34px;color:#fff}
+.power h2{color:inherit;font-size:clamp(24px,3.4vw,34px)}
+.power p{margin-top:10px;font-size:18px;opacity:.85;max-width:52ch}
+.power q{font-family:var(--head);font-weight:700;color:var(--spark);quotes:"„" "“"}
+
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.rule{display:grid;grid-template-columns:150px 1fr;gap:22px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.rule .art{width:150px;height:120px;border-radius:var(--r);background:var(--blush);display:grid;place-items:center}
+.rule .art svg{width:130px;height:105px}
+.rule .txt{display:grid;gap:8px;min-width:0}
+.rule .num{font-family:var(--head);font-size:13px;font-weight:800;color:var(--red);letter-spacing:.1em}
+.rule p{font-size:17px;line-height:1.45}
+.try{display:flex;gap:10px;align-items:center;font-size:15px;color:var(--muted);cursor:pointer;user-select:none}
+.try input{width:22px;height:22px;accent-color:var(--red);margin:0}
+.done-count{margin-top:22px;font-family:var(--head);font-weight:700;font-size:16px}
+.done-count b{color:var(--red)}
+svg .k{stroke:var(--ink);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+svg .kf{fill:var(--ink)}
+svg .r{fill:var(--red)}
+svg .rs{stroke:var(--red);fill:none;stroke-width:3;stroke-linecap:round}
+svg .w{fill:var(--bg)}
+svg .g{fill:var(--grey)}
+
+.pact{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.pact ol{margin:18px 0 26px;padding-left:22px;display:grid;gap:10px;font-size:18px}
+.pact-sheet{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:0 24px 50px -24px rgba(10,10,10,.3);transform:rotate(-1.5deg);display:grid;gap:14px}
+.pact-sheet b{font-family:var(--head);font-size:18px}
+.pact-sheet .ln{border-bottom:2px dashed var(--grey);height:30px;display:flex;align-items:flex-end;gap:10px;font-family:var(--head);font-weight:800;color:var(--red)}
+.pact-sheet .sig{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;font-size:13px;color:var(--muted)}
+.pact-sheet .sig span{border-top:1.5px solid var(--ink);padding-top:4px}
+
+.parents{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.parents div{border-top:3px solid var(--red);padding-top:14px;display:grid;gap:8px;align-content:start}
+.parents b{font-family:var(--head);font-size:16px}
+.parents p{font-size:16px;color:var(--muted);line-height:1.5}
+
+footer{padding-block:36px 52px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+footer p+p{margin-top:8px}
+
+@media (max-width:900px){
+  .hero-grid,.pact{grid-template-columns:1fr}
+  .rules,.parents{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  section{padding-block:48px}
+  .power{grid-template-columns:1fr;padding:24px}
+  .power .badge{width:68px;height:68px;font-size:26px}
+  .rule{grid-template-columns:104px 1fr;gap:14px;padding:14px}
+  .rule .art{width:104px;height:86px}
+  .rule .art svg{width:92px;height:76px}
+  .switch a{padding:10px 14px}
+}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<div class="switch"><nav aria-label="Versija"><a href="../apie/?src=te-vaikams-switch">Suaugusiems</a><a href="./" aria-current="page">Vaikams</a></nav></div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow">Kris Vas · TE · vaikams</span>
+      <h1>Technologijų etiketas vaikams<span class="dot">.</span></h1>
+      <span class="age-chip">7–12 metų</span>
+      <p class="hero-line">Žinai stalo etiketą? <b>Yra ir ekrano etiketas.</b> 10 taisyklių, kurias išmoksi per vieną vakarienę.</p>
+      <div class="row">
+        <a class="btn primary" data-ev="pdf" href="te-vaikams-A4.pdf?src=te-vaikams" target="_blank" rel="noopener">Atsisiųsti vaikų lapą (A4) ↓</a>
+        <a class="btn ghost" data-ev="suaugusiems" href="../apie/?src=te-vaikams">Tėvams: suaugusiųjų versija</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div><svg viewBox="0 0 104 84" aria-hidden="true"><circle class="k" cx="30" cy="30" r="12"/><circle class="k" cx="74" cy="30" r="12"/><path class="k" d="M12 74c0-12 8-20 18-20s18 8 18 20M56 74c0-12 8-20 18-20s18 8 18 20"/><path class="r" d="M52 22c-2-4-8-3-8 1 0 4 8 9 8 9s8-5 8-9c0-4-6-5-8-1z"/><rect class="kf" x="80" y="58" width="7" height="12" rx="1.5"/></svg></div><div><svg viewBox="0 0 104 84" aria-hidden="true"><circle class="k" cx="46" cy="44" r="22"/><circle class="k" cx="46" cy="44" r="13"/><path class="k" d="M14 26v36M10 26v10a4 4 0 0 0 8 0V26M78 26c-5 5-5 15 0 18v18"/><rect class="k" x="82" y="10" width="14" height="22" rx="2.5"/><path class="rs" d="M78 8l22 26"/></svg></div><div><svg viewBox="0 0 104 84" aria-hidden="true"><path class="r" d="M76 8a14 14 0 1 0 14 20 11 11 0 0 1-14-20z"/><rect class="k" x="22" y="26" width="28" height="46" rx="5"/><path class="k" d="M36 72v6h22M58 78v-8h8v8"/><text x="58" y="24" font-family="JetBrains Mono,monospace" font-weight="800" font-size="13" class="kf">z</text><text x="64" y="36" font-family="JetBrains Mono,monospace" font-weight="800" font-size="10" class="kf">z</text></svg></div>
+      <div><svg viewBox="0 0 104 84" aria-hidden="true"><rect class="k" x="14" y="28" width="56" height="40" rx="4"/><path class="k" d="M28 28l5-8h18l5 8"/><circle class="k" cx="42" cy="48" r="11"/><path class="r" d="M70 6h26a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H84l-8 7v-7h-6a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><text x="83" y="26" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="800" font-size="18" fill="#fff">?</text></svg></div><div><svg viewBox="0 0 104 84" aria-hidden="true"><path class="k" d="M34 8h36M34 76h36M38 8c0 22 28 22 28 34S38 54 38 76M66 8c0 22-28 22-28 34s28 12 28 34"/><path class="r" d="M44 70c2-8 14-8 16 0z"/><path class="r" d="M46 24h12c-2 6-10 6-12 0z"/></svg></div><div><svg viewBox="0 0 104 84" aria-hidden="true"><rect class="k" x="32" y="6" width="40" height="72" rx="7"/><rect class="r" x="38" y="16" width="12" height="12" rx="2"/><rect class="g" x="54" y="16" width="12" height="12" rx="2"/><rect class="r" x="38" y="32" width="12" height="12" rx="2" opacity=".75"/><rect class="g" x="54" y="32" width="12" height="12" rx="2"/><rect class="r" x="38" y="48" width="12" height="12" rx="2" opacity=".55"/><rect class="g" x="54" y="48" width="12" height="12" rx="2"/><path class="k" d="M52 10v64" stroke-dasharray="3 4"/><path class="k" d="M80 40h14M88 34l6 6-6 6"/></svg></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="power">
+      <div class="badge" aria-hidden="true">TE</div>
+      <div>
+        <span class="eyebrow">Tavo superjėga</span>
+        <h2>Tu gali priminti ir suaugusiems.</h2>
+        <p>Etiketas galioja visiems: tėčiui, mamai, močiutei ir mokytojui. Jei kas pamiršo, švelniai paklausk: <q>Prisimeni etiketą?</q></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tint" id="taisykles">
+  <div class="wrap">
+    <div style="display:grid;gap:12px;margin-bottom:36px;max-width:60ch">
+      <span class="eyebrow">10 taisyklių</span>
+      <h2>Pažymėk, kurią bandysi šią savaitę.</h2>
+    </div>
+    <div class="rules">
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><circle class="k" cx="30" cy="30" r="12"/><circle class="k" cx="74" cy="30" r="12"/><path class="k" d="M12 74c0-12 8-20 18-20s18 8 18 20M56 74c0-12 8-20 18-20s18 8 18 20"/><path class="r" d="M52 22c-2-4-8-3-8 1 0 4 8 9 8 9s8-5 8-9c0-4-6-5-8-1z"/><rect class="kf" x="80" y="58" width="7" height="12" rx="1.5"/></svg></div><div class="txt"><span class="num">01</span><h3>Žiūrėk į akis</h3><p>Kai kas nors su tavim kalba, ekraną padedi. Žmogus svarbesnis.</p><label class="try"><input type="checkbox" id="t1"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><circle class="k" cx="46" cy="44" r="22"/><circle class="k" cx="46" cy="44" r="13"/><path class="k" d="M14 26v36M10 26v10a4 4 0 0 0 8 0V26M78 26c-5 5-5 15 0 18v18"/><rect class="k" x="82" y="10" width="14" height="22" rx="2.5"/><path class="rs" d="M78 8l22 26"/></svg></div><div class="txt"><span class="num">02</span><h3>Valgom be ekranų</h3><p>Prie stalo pasakojam, kaip praėjo diena. Telefonai ilsisi kitur.</p><label class="try"><input type="checkbox" id="t2"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><path class="k" d="M34 56V40a18 18 0 0 1 36 0v16l6 8H28z"/><path class="k" d="M46 70a6 6 0 0 0 12 0M52 16v6"/><path class="rs" d="M26 14l52 56"/></svg></div><div class="txt"><span class="num">03</span><h3>Tylus ekranas</h3><p>Pranešimai išjungti. Žaidimas ir žinutės palauks.</p><label class="try"><input type="checkbox" id="t3"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><rect class="k" x="14" y="28" width="56" height="40" rx="4"/><path class="k" d="M28 28l5-8h18l5 8"/><circle class="k" cx="42" cy="48" r="11"/><path class="r" d="M70 6h26a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H84l-8 7v-7h-6a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><text x="83" y="26" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="800" font-size="18" fill="#fff">?</text></svg></div><div class="txt"><span class="num">04</span><h3>Pirma paklausk</h3><p>Nori nufotografuoti draugą? Pirma paklausk: „ar galima?“</p><label class="try"><input type="checkbox" id="t4"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><rect class="k" x="16" y="10" width="34" height="64" rx="6"/><path class="k" d="M28 64h10"/><circle class="w" cx="70" cy="46" r="20"/><circle class="k" cx="70" cy="46" r="20"/><path class="rs" d="M70 34v12l8 6"/></svg></div><div class="txt"><span class="num">05</span><h3>Skambutis? Atsiprašau</h3><p>Jei reikia atsiliepti, pasakyk „atsiprašau“ ir išeik pakalbėti.</p><label class="try"><input type="checkbox" id="t5"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><path class="k" d="M34 8h36M34 76h36M38 8c0 22 28 22 28 34S38 54 38 76M66 8c0 22-28 22-28 34s28 12 28 34"/><path class="r" d="M44 70c2-8 14-8 16 0z"/><path class="r" d="M46 24h12c-2 6-10 6-12 0z"/></svg></div><div class="txt"><span class="num">06</span><h3>Laikmatis pirmas</h3><p>Prieš žaidimą kartu su tėvais nustatai laiką. Suskambo? Užbaigi ir padedi.</p><label class="try"><input type="checkbox" id="t6"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><rect class="k" x="32" y="6" width="40" height="72" rx="7"/><rect class="r" x="38" y="16" width="12" height="12" rx="2"/><rect class="g" x="54" y="16" width="12" height="12" rx="2"/><rect class="r" x="38" y="32" width="12" height="12" rx="2" opacity=".75"/><rect class="g" x="54" y="32" width="12" height="12" rx="2"/><rect class="r" x="38" y="48" width="12" height="12" rx="2" opacity=".55"/><rect class="g" x="54" y="48" width="12" height="12" rx="2"/><path class="k" d="M52 10v64" stroke-dasharray="3 4"/><path class="k" d="M80 40h14M88 34l6 6-6 6"/></svg></div><div class="txt"><span class="num">07</span><h3>Pilkas ekranas</h3><p>Spalvos traukia akis. Paprašyk suaugusio įjungti nespalvotą ekraną.</p><label class="try"><input type="checkbox" id="t7"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><rect class="k" x="8" y="14" width="60" height="40" rx="3"/><path class="k" d="M2 62h72"/><rect class="r" x="18" y="22" width="40" height="24" rx="2"/><text x="38" y="40" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="800" font-size="17" fill="#fff">1</text><rect class="k" x="80" y="26" width="16" height="28" rx="3"/><path class="rs" d="M76 22l24 36"/></svg></div><div class="txt"><span class="num">08</span><h3>Vienas dalykas</h3><p>Ruoši pamokas? Telefonas kitame kambaryje. Taip greičiau baigsi.</p><label class="try"><input type="checkbox" id="t8"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><path class="r" d="M76 8a14 14 0 1 0 14 20 11 11 0 0 1-14-20z"/><rect class="k" x="22" y="26" width="28" height="46" rx="5"/><path class="k" d="M36 72v6h22M58 78v-8h8v8"/><text x="58" y="24" font-family="JetBrains Mono,monospace" font-weight="800" font-size="13" class="kf">z</text><text x="64" y="36" font-family="JetBrains Mono,monospace" font-weight="800" font-size="10" class="kf">z</text></svg></div><div class="txt"><span class="num">09</span><h3>Telefonas miega virtuvėje</h3><p>Naktį ekranas kraunasi ne tavo kambaryje. Tu išsimiegi geriau.</p><label class="try"><input type="checkbox" id="t9"> Bandau šią savaitę</label></div></article>
+      <article class="rule"><div class="art"><svg viewBox="0 0 104 84" aria-hidden="true"><path class="k" d="M18 12h56a6 6 0 0 1 6 6v32a6 6 0 0 1-6 6H44l-14 12V56H18a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z"/><text x="46" y="42" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="800" font-size="20" class="kf">DI</text><path class="r" d="M88 10l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg></div><div class="txt"><span class="num">10</span><h3>Pasakyk, kai padėjo DI</h3><p>Jei namų darbus padėjo DI, pasakyk mokytojui. Iki 13 metų DI tik su suaugusiu.</p><label class="try"><input type="checkbox" id="t10"> Bandau šią savaitę</label></div></article>
+    </div>
+    <p class="done-count" id="cnt" aria-live="polite">Pažymėta: <b>0</b> iš 10</p>
+  </div>
+</section>
+
+<section id="susitarimas">
+  <div class="wrap pact">
+    <div>
+      <span class="eyebrow">Šeimos susitarimas</span>
+      <h2 style="margin-top:12px">Mūsų šeimos 3 taisyklės.</h2>
+      <ol>
+        <li>Atsispausdinkit vaikų lapą.</li>
+        <li>Prie vakarienės kartu išsirinkit 3 taisykles.</li>
+        <li>Užrašykit jas ir pasirašykit visi, ir suaugę.</li>
+        <li>Pakabinkit ant šaldytuvo. Po savaitės pasikalbėkit, kas pavyko.</li>
+      </ol>
+      <a class="btn primary" data-ev="pdf" href="te-vaikams-A4.pdf?src=te-vaikams" target="_blank" rel="noopener">Atsisiųsti lapą (A4) ↓</a>
+    </div>
+    <div class="pact-sheet" aria-hidden="true">
+      <b>Mūsų šeimos taisyklės</b>
+      <div class="ln">1.</div><div class="ln">2.</div><div class="ln">3.</div>
+      <div class="sig"><span>Vaikas</span><span>Mama / tėtis</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <div style="display:grid;gap:12px;margin-bottom:28px">
+      <span class="eyebrow">Tėvams</span>
+      <h2>Kaip naudoti šį puslapį.</h2>
+    </div>
+    <div class="parents">
+      <div><b>Skaitykit kartu</b><p>Perskaitykit taisykles garsiai. Leiskit vaikui išsirinkti pirmą. Taisyklė, kurią išsirinko pats, laikosi geriau.</p></div>
+      <div><b>Jūs esat pavyzdys</b><p>Vaikai kopijuoja, ką darom, ne ką sakom. Taisyklės galioja ir suaugusiems.</p></div>
+      <div><b>Iš kur tai</b><p>Remiamės Jonathano Haidto ir Catherine Price knyga vaikams „The Amazing Generation“ (2025) ir tyrimais iš <a href="../apie/?src=te-vaikams#mokslas">suaugusiųjų versijos</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>⚗️ Eksperimentinis prototipas, sukurtas su DI. Šaltiniai tikrinti, bet galime klysti. Nemokamas. Radote klaidą? Parašykite per krisvas.lt.</p>
+    <p>Šis puslapis skirtas vaikams: jokių įrašų ir slapukų, tik anoniminė statistika. Pažymėtos taisyklės lieka tik jūsų naršyklėje.</p>
+    <p>Kris Vas · krisvas.lt · TE vaikams v1 · 2026-10</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var SRC='direct';
+  try{ var qs=new URLSearchParams(location.search); SRC=(qs.get('src')||'direct').replace(/[^\w.\-]/g,'').slice(0,40)||'direct'; }catch(e){}
+  function ev(name,p){ var props={src:SRC}; for(var k in p||{}) props[k]=p[k]; try{ if(window.bt) window.bt(name,props); }catch(e){} }
+  (function waitBt(n){ if(window.bt) ev('te_vaikams_atidaryta',{w:innerWidth}); else if(n<40) setTimeout(function(){waitBt(n+1)},250); })(0);
+  document.querySelectorAll('[data-ev]').forEach(function(a){ a.addEventListener('click',function(){ ev('te_vaikams_click',{to:a.getAttribute('data-ev')}); }); });
+  var KEY='te-vaikams-bandau', saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ saved={}; }
+  var boxes=[].slice.call(document.querySelectorAll('.try input')), cnt=document.querySelector('#cnt b');
+  function count(){ var n=boxes.filter(function(b){return b.checked;}).length; cnt.textContent=n; return n; }
+  boxes.forEach(function(b){
+    if(saved[b.id]) b.checked=true;
+    b.addEventListener('change',function(){
+      saved[b.id]=b.checked; try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      var n=count(); if(b.checked) ev('te_vaikams_bandau',{taisykle:b.id.slice(1),viso:n});
+    });
+  });
+  count();
+})();
+</script>
+</body>
+</html>
