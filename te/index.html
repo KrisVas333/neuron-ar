@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Technologijų etiketas · tėvų testas · Kris Vas</title>
+<meta name="description" content="10 taisyklių, kaip elgiamės su technologijomis namie, viešai, mokykloje ir darbe. Pasakykite, ką darytumėte. ~3 min, anonimiškai.">
+<meta property="og:title" content="Technologijų etiketas: 10 taisyklių. Ką manote?">
+<meta property="og:description" content="Prieš nešdami taisykles į šeimas, mokyklas ir darbovietes, klausiam jūsų. ~3 min, anonimiškai.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F7F7F5">
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="te-tevu-testas" data-kind="quiz"></script>
+<!-- Microsoft Clarity (y4gk0je1j0, krisvas.lt project) loads ONLY after „Leisti" via kv-track.js consent banner; without consent only anonymous cookieless events -->
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap&subset=latin-ext">
+<style>
+/* Layout: one narrow reading column for parents on phones (Instagram in-app browser). Intro → 10 rules with 3-way vote → 4 short questions → opt-in → submit (saved to Supabase) → thank-you with PDF, RA link and copy-to-message. Light paper look, same as the A4 card. */
+:root{--ground:#F7F7F5;--paper:#FFFFFF;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--red:#FF0000;--tint:#FBF3F4;
+--mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--r:4px;color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 16px/1.55 var(--body);letter-spacing:.01em;padding-block:24px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font:700 12px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+h1{font:800 clamp(30px,8vw,44px)/1.05 var(--mono);text-transform:uppercase;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+h1 .dot{color:var(--red)}
+.lede{font-size:17px;margin:14px 0 0}
+.lede + .lede{margin-top:10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--paper);padding:7px 9px;border-radius:var(--r)}
+.card{background:var(--paper);border-radius:var(--r);padding:20px;box-shadow:0 1px 2px rgba(10,10,10,.05)}
+h2{font:800 15px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;margin:0 0 4px}
+.hint{color:var(--muted);font-size:14px;margin:0 0 12px}
+ol{list-style:none;margin:0;padding:0}
+.rule{border-top:1px solid var(--line);padding:16px 0;display:flex;flex-direction:column;gap:12px}
+.rule:first-child{border-top:0;padding-top:4px}
+.rh{display:grid;grid-template-columns:40px 1fr;gap:8px}
+.rt{min-width:0}
+.n{font:800 22px/1 var(--mono);color:var(--accent)}
+.rule h3{font:800 15px/1.25 var(--mono);text-transform:uppercase;letter-spacing:.03em;margin:2px 0 6px}
+.do{font-weight:600;margin:0}
+details{margin-top:6px}
+summary{cursor:pointer;font:700 12px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);min-height:32px;display:flex;align-items:center}
+.why{margin:6px 0 2px;color:var(--muted);font-size:15px}
+.src{margin:0;font:500 12px/1.4 var(--mono);color:var(--muted)}
+.votes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-left:48px}
+.v,.opt{font:600 15px/1.2 var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:11px 6px;cursor:pointer;min-height:48px;-webkit-tap-highlight-color:transparent}
+.v:hover,.opt:hover{border-color:var(--ink)}
+.v:focus-visible,.opt:focus-visible,.btn:focus-visible,textarea:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.v[aria-pressed="true"],.opt[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.v[data-v="3"][aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
+.q{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding:16px 0}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q label,.q .ql{font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{padding:11px 14px}
+textarea,input[type=email]{font:400 16px/1.45 var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:12px;width:100%}
+textarea{min-height:84px;resize:vertical}
+input[type=email]{min-height:48px}
+.check{display:flex;gap:12px;align-items:flex-start;font-weight:600;cursor:pointer}
+.check input{width:24px;height:24px;flex:0 0 24px;margin:0;accent-color:var(--accent)}
+.gdpr{font-size:13px;color:var(--muted);margin:8px 0 0}
+.gdpr a{color:var(--ink)}
+#email-wrap{margin-top:12px}
+#email-wrap label{display:block;font-weight:600;margin-bottom:6px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.progress{font:700 12px/1 var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.out{background:var(--tint)}
+pre{white-space:pre-wrap;word-break:break-word;font:500 14px/1.5 var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:12px 0;user-select:all}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:700 14px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:#fff;background:var(--accent);border:0;padding:15px 18px;border-radius:var(--r);cursor:pointer;min-height:48px;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.btn.big{width:100%;font-size:15px;padding:18px}
+.btn[disabled]{opacity:.6;cursor:wait}
+.btn.ghost{background:var(--paper);color:var(--ink);border:1px solid var(--ink)}
+.status{font-size:14px;color:var(--muted)}
+.err{color:var(--accent);font-weight:600;font-size:15px;margin:10px 0 0;min-height:1em}
+.ra{border-left:3px solid var(--accent)}
+.ra p{margin:0 0 8px} .ra .verbs{font:800 13px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.04em}
+.thanks h2{font-size:22px}
+footer{font-size:13px;color:var(--muted)}
+footer p{margin:0 0 8px}
+footer a{color:var(--ink)}
+[hidden]{display:none!important}
+@media (max-width:480px){.votes{margin-left:0} .card{padding:16px}}
+@media (prefers-reduced-motion:no-preference){.v,.opt{transition:background .12s,border-color .12s}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Kris Vas · tėvų testas · v1.1</p>
+    <h1>Technologijų etiketas<span class="dot">.</span></h1>
+    <p class="lede">Noriu pakelti standartą, kaip elgiamės su technologijomis: <b>namie, viešose vietose, mokykloje ir darbe</b>.</p>
+    <p class="lede">Prieš nešdami šias 10 taisyklių į šeimas, mokyklas, restoranus ir darbovietes, klausiam jūsų. Kas tinka? Kas sunku? Su kuo nesutinkate?</p>
+    <div class="meta"><span class="chip">~3 min</span><span class="chip">Anonimiškai</span><span class="chip">Jokių vardų</span></div>
+  </header>
+
+  <section class="card" aria-labelledby="h-rules">
+    <h2 id="h-rules">10 taisyklių</h2>
+    <p class="hint">Prie kiekvienos pažymėkite: <b>Darysiu</b> · <b>Sunku</b> (gera, bet sunku laikytis) · <b>Nesutinku</b>.</p>
+    <ol id="rules">
+<li class="rule" data-i="0"><div class="rh"><span class="n">01</span><div class="rt"><h3>Veidas prieš telefoną</h3><p class="do">Kai kalbi su žmogumi, telefonas kišenėje ar rankinėje. Ne rankoje, ne ant stalo.</p><details><summary>Kodėl?</summary><p class="why">Net padėtas šalia telefonas gali mažinti pokalbio artumą.</p><p class="src">Przybylski 2013 · Misra 2016 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Veidas prieš telefoną: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r0v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r0v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r0v3">Nesutinku</button></div></li>
+<li class="rule" data-i="1"><div class="rh"><span class="n">02</span><div class="rt"><h3>Stalas be telefonų</h3><p class="do">Valgom kartu. Telefonai ilsisi kitame kambaryje.</p><details><summary>Kodėl?</summary><p class="why">Su telefonais prie stalo žmonės mažiau mėgaujasi bendru valgiu.</p><p class="src">Dwyer 2018 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Stalas be telefonų: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r1v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r1v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r1v3">Nesutinku</button></div></li>
+<li class="rule" data-i="2"><div class="rh"><span class="n">03</span><div class="rt"><h3>Pranešimai išjungti</h3><p class="do">Telefonas tavęs nekviečia. Tu jį pasiimi, kai reikia.</p><details><summary>Kodėl?</summary><p class="why">Net neatsakytas pyptelėjimas išmuša dėmesį.</p><p class="src">Stothart 2015 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Pranešimai išjungti: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r2v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r2v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r2v3">Nesutinku</button></div></li>
+<li class="rule" data-i="3"><div class="rh"><span class="n">04</span><div class="rt"><h3>Klausk prieš fotografuodamas</h3><p class="do">Nuotrauka, vaizdo įrašas ar išmanieji akiniai: pirma „ar galima?“.</p><details><summary>Kodėl?</summary><p class="why">Žmogaus atvaizdas yra jo asmens duomenys. Vaiko ypač.</p><p class="src">CK 2.22 str. · LT teisė</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Klausk prieš fotografuodamas: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r3v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r3v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r3v3">Nesutinku</button></div></li>
+<li class="rule" data-i="4"><div class="rh"><span class="n">05</span><div class="rt"><h3>Skambutis palauks</h3><p class="do">Atsiliepi tik į skubų skambutį. Tada atsiprašai ir išeini.</p><details><summary>Kodėl?</summary><p class="why">Tyrimai sieja dažnus tėvų „pertraukimus“ įrenginiais su vaikų neramumu.</p><p class="src">McDaniel 2018 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Skambutis palauks: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r4v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r4v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r4v3">Nesutinku</button></div></li>
+<li class="rule" data-i="5"><div class="rh"><span class="n">06</span><div class="rt"><h3>Pirma laikmatis</h3><p class="do">Prieš socialinius tinklus ar žaidimą nusistatai laiką.</p><details><summary>Kodėl?</summary><p class="why">30 min per dieną socialiniams tinklams 3 savaites sumažino vienišumą.</p><p class="src">Hunt 2018 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Pirma laikmatis: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r5v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r5v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r5v3">Nesutinku</button></div></li>
+<li class="rule" data-i="6"><div class="rh"><span class="n">07</span><div class="rt"><h3>Pilka reiškia ramu</h3><p class="do">Vaikams ir tėvams telefono ekranas nespalvotas.</p><details><summary>Kodėl?</summary><p class="why">Mažuose tyrimuose pilkas ekranas sutrumpino naudojimą ~20–50 min per dieną.</p><p class="src">Holte 2020 · Haidt 2025 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Pilka reiškia ramu: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r6v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r6v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r6v3">Nesutinku</button></div></li>
+<li class="rule" data-i="7"><div class="rh"><span class="n">08</span><div class="rt"><h3>Viena užduotis, vienas ekranas</h3><p class="do">Darbe ir susitikimuose telefonų nėra. Tarp užduočių netikrini.</p><details><summary>Kodėl?</summary><p class="why">Perjungus užduotį dalis dėmesio lieka senojoje.</p><p class="src">Leroy 2009 · B</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Viena užduotis, vienas ekranas: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r7v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r7v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r7v3">Nesutinku</button></div></li>
+<li class="rule" data-i="8"><div class="rh"><span class="n">09</span><div class="rt"><h3>Telefonai miega ne miegamajame</h3><p class="do">Kraunam virtuvėje, ne prie lovos. Visi, ir suaugę.</p><details><summary>Kodėl?</summary><p class="why">Vaikams su įrenginiu miegamajame dažniau trūksta miego.</p><p class="src">Carter 2016, metaanalizė · B+</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Telefonai miega ne miegamajame: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r8v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r8v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r8v3">Nesutinku</button></div></li>
+<li class="rule" data-i="9"><div class="rh"><span class="n">10</span><div class="rt"><h3>Pasakyk, kai padėjo DI</h3><p class="do">Namų darbuose, darbe, žinutėse: „čia padėjo DI“.</p><details><summary>Kodėl?</summary><p class="why">UNESCO ragina DI naudoti atvirai. DI įrankiai savarankiškai nuo 13 m.</p><p class="src">UNESCO 2023 · Gairės</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Pasakyk, kai padėjo DI: jūsų vertinimas">
+<button type="button" class="v" data-v="1" aria-pressed="false" id="r9v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r9v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r9v3">Nesutinku</button></div></li>
+    </ol>
+    <p class="progress" id="prog" aria-live="polite">Įvertinta 0 / 10</p>
+  </section>
+
+  <form id="te-form" novalidate>
+  <section class="card" aria-labelledby="h-q">
+    <h2 id="h-q">4 trumpi klausimai</h2>
+    <div class="q"><span class="ql" id="q-age">Kiek metų jūsų vaikams?</span><div class="opts" data-q="age" data-multi="1" role="group" aria-labelledby="q-age">
+      <button type="button" class="opt" id="age1" aria-pressed="false" data-v="3–6 m.">3–6 m.</button><button type="button" class="opt" id="age2" aria-pressed="false" data-v="7–12 m.">7–12 m.</button><button type="button" class="opt" id="age3" aria-pressed="false" data-v="13–17 m.">13–17 m.</button><button type="button" class="opt" id="age4" aria-pressed="false" data-v="neturiu vaikų">Neturiu vaikų</button></div></div>
+    <div class="q"><span class="ql" id="q-fridge">Ar pakabintumėte šį lapą ant šaldytuvo?</span><div class="opts" data-q="fridge" role="group" aria-labelledby="q-fridge">
+      <button type="button" class="opt" id="fr1" aria-pressed="false" data-v="taip">Taip</button><button type="button" class="opt" id="fr2" aria-pressed="false" data-v="galbūt">Galbūt</button><button type="button" class="opt" id="fr3" aria-pressed="false" data-v="ne">Ne</button></div></div>
+    <div class="q"><span class="ql" id="q-club">Ar norėtumėte, kad jūsų vaiko būrelis laikytųsi šių taisyklių?</span><div class="opts" data-q="club" role="group" aria-labelledby="q-club">
+      <button type="button" class="opt" id="cl1" aria-pressed="false" data-v="taip">Taip</button><button type="button" class="opt" id="cl2" aria-pressed="false" data-v="nesvarbu">Nesvarbu</button><button type="button" class="opt" id="cl3" aria-pressed="false" data-v="ne">Ne</button></div></div>
+    <div class="q"><label for="missing">Ko trūksta arba ką pakeistumėte? <span class="status">(nebūtina)</span></label><textarea id="missing" maxlength="600" placeholder="Pvz.: trūksta taisyklės apie planšetę automobilyje" data-clarity-mask="true"></textarea></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-kit">
+    <h2 id="h-kit">TE šeimos rinkinys</h2>
+    <p class="hint">Nebūtina. Ruošiam rinkinį šeimoms: lapas, kortelės, pokalbio planas.</p>
+    <label class="check"><input type="checkbox" id="kit"><span>Noriu gauti TE šeimos rinkinį, kai jis bus paruoštas</span></label>
+    <div id="email-wrap" hidden>
+      <label for="email">El. paštas <span class="status">(nebūtina)</span></label>
+      <input type="email" id="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="vardas@pastas.lt" data-clarity-mask="true">
+      <p class="gdpr">Palikdami el. paštą sutinkate, kad jį naudosiu tik TE rinkiniui ir su juo susijusioms naujienoms atsiųsti. Atsisakyti galite bet kada, atsakę į laišką. Duomenų valdytojas: Kris Vas (Kristijonas Vasiliauskas). <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></p>
+    </div>
+    <div class="hp" aria-hidden="true"><label for="company">Įmonė</label><input type="text" id="company" name="company" tabindex="-1" autocomplete="off"></div>
+  </section>
+
+  <section class="card" id="submit-card" aria-label="Pateikti atsakymą">
+    <button type="submit" class="btn big" id="submit">Pateikti atsakymą</button>
+    <p class="err" id="err" role="alert"></p>
+    <p class="status" style="margin:4px 0 0">Saugom tik atsakymus, be vardų. El. paštą, jei jį palikote, tik rinkiniui.</p>
+  </section>
+  </form>
+
+  <section class="card thanks" id="thanks" hidden tabindex="-1" aria-labelledby="h-thanks">
+    <p class="eyebrow">Atsakymas išsaugotas</p>
+    <h2 id="h-thanks">Ačiū! Jūsų balsas įskaitytas.</h2>
+    <p>Kai surinksim atsakymus, taisykles pataisysim ir išleisim visiems. Pasidalinkite nuoroda su kitu tėvu ar mama: kuo daugiau balsų, tuo tikslesnis standartas.</p>
+    <div class="row"><a class="btn ghost" id="pdf" href="technologiju-etiketas-seimoms-A4.pdf" target="_blank" rel="noopener">A4 lapas (PDF)</a></div>
+  </section>
+
+  <section class="card out" id="msg-card" hidden aria-labelledby="h-out">
+    <h2 id="h-out">Galite nusiųsti ir žinute</h2>
+    <p class="hint">Jei norite, nukopijuokite atsakymą ir nusiųskite tam, kas jums davė šią nuorodą.</p>
+    <pre id="reply" aria-live="polite"></pre>
+    <div class="row"><button type="button" class="btn ghost" id="copy">Kopijuoti atsakymą</button><span class="status" id="copied" role="status"></span></div>
+  </section>
+
+  <section class="card ra" id="ra-card" hidden aria-label="Kaip tai daro Robotikos akademija">
+    <p class="eyebrow">Kaip mes tai darom · Robotikos akademija</p>
+    <p><b>Mūsų būreliuose telefonų nėra.</b> Technologijos skirtos</p>
+    <p class="verbs">kurti · spręsti · draugauti · suprasti · atlaikyti</p>
+    <p class="status">Atvirai: esu Robotikos akademijos bendraįkūrėjas. Šios taisyklės tinka kiekvienai šeimai, nesvarbu, kurį būrelį pasirinksite.</p>
+    <div class="row"><a class="btn ghost" id="ra" href="https://robotikosakademija.lt/bureliai?src=te-test" target="_blank" rel="noopener">Rask būrelį šalia</a></div>
+  </section>
+
+  <footer>
+    <p>⚗️ Eksperimentinis prototipas, sukurtas su DI. Šaltinius tikrinau, bet galiu klysti: svarbius dalykus pasitikrinkite. Nemokamas. Radote klaidą ar turite minčių? Parašykite: <a href="https://krisvas.lt/?src=te-test">krisvas.lt</a> · Kris Vas</p>
+    <p>Atsakymus saugom be vardų, kad suskaičiuotume, kurios taisyklės tinka. Microsoft Clarity įsijungia tik paspaudus „Leisti“, įvesti tekstai įrašuose paslėpti.</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  /* Answers -> Supabase kris-life-os.public.te_atsakymai (anon = INSERT only, RLS on).
+     Publishable key: public by design. Events -> track.js (Umami, cookieless) + Clarity (only after consent). */
+  var SB_URL='https://iiekmeylpppczicrsxho.supabase.co';
+  var SB_KEY='sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF';
+  var VERSIJA='v1.1';
+  var SRC='direct';
+  try{ var qs=new URLSearchParams(location.search); SRC=(qs.get('src')||qs.get('utm_source')||'direct').replace(/[^\w.\-]/g,'').slice(0,40)||'direct'; }catch(e){}
+  var SESIJA=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('s'+Date.now().toString(36)+Math.random().toString(36).slice(2,10));
+  var atsake=false, tagged=false;
+
+  function tagClarity(){
+    if(!window.clarity) return;
+    try{
+      if(!tagged){ clarity('set','te_versija',VERSIJA); clarity('set','src',SRC); clarity('set','sesija',SESIJA); tagged=true; }
+      if(atsake) clarity('set','te_atsake','1');
+    }catch(e){}
+  }
+  /* Clarity appears only after „Leisti" (kv-track.js). Poll briefly so tags land whenever consent is given. */
+  var polls=0, poller=setInterval(function(){ tagClarity(); if(tagged || ++polls>900) clearInterval(poller); },2000);
+
+  function ev(name,p){
+    var props={src:SRC,versija:VERSIJA}; for(var k in p||{}) props[k]=p[k];
+    try{ if(window.bt) window.bt(name,props); }catch(e){}
+    tagClarity();
+    try{ if(window.clarity) window.clarity('event',name); }catch(e){}
+  }
+  /* track.js loads deferred: wait for bt before firing the open event */
+  (function waitBt(n){ if(window.bt) ev('te_atidaryta',{w:innerWidth}); else if(n<40) setTimeout(function(){waitBt(n+1)},250); })(0);
+
+  var $=function(id){return document.getElementById(id)};
+  var titles=["Veidas prieš telefoną","Stalas be telefonų","Pranešimai išjungti","Klausk prieš fotografuodamas","Skambutis palauks","Pirma laikmatis","Pilka reiškia ramu","Viena užduotis, vienas ekranas","Telefonai miega ne miegamajame","Pasakyk, kai padėjo DI"];
+  var labels={1:"darysiu",2:"sunku",3:"nesutinku"};
+  var votes={}; var ans={age:[],fridge:"",club:""};
+  var prog=$('prog'), out=$('reply'), miss=$('missing');
+  function pad(i){ return String(+i+1).padStart(2,'0'); }
+
+  function render(){
+    var n=Object.keys(votes).length; prog.textContent='Įvertinta '+n+' / 10';
+    var L=['TE tėvų testas '+VERSIJA];
+    if(ans.age.length) L.push('Vaikai: '+ans.age.join(', '));
+    var groups={1:[],2:[],3:[]};
+    Object.keys(votes).sort(function(a,b){return a-b}).forEach(function(i){groups[votes[i]].push(pad(i))});
+    if(n) L.push('Darysiu: '+(groups[1].join(', ')||'–'),'Sunku: '+(groups[2].join(', ')||'–'),'Nesutinku: '+(groups[3].join(', ')||'–'));
+    if(ans.fridge) L.push('Ant šaldytuvo: '+ans.fridge);
+    if(ans.club) L.push('Būrelis su šiomis taisyklėmis: '+ans.club);
+    var m=miss.value.trim(); if(m) L.push('Pastaba: '+m);
+    if(L.length===1) L.push('(pažymėkite taisykles ir atsakymas atsiras čia)');
+    out.textContent=L.join('\n');
+  }
+
+  $('rules').addEventListener('click',function(e){
+    var b=e.target.closest('.v'); if(!b) return;
+    var li=b.closest('.rule'), i=li.dataset.i, v=+b.dataset.v;
+    if(votes[i]===v){delete votes[i]} else {votes[i]=v}
+    li.querySelectorAll('.v').forEach(function(x){x.setAttribute('aria-pressed', String(votes[i]===+x.dataset.v))});
+    ev('te_taisykle_ivertinta',{n:+i+1, v:votes[i]?labels[v]:'atšaukta'});
+    if($('err').textContent) $('err').textContent='';
+    render();
+  });
+  document.querySelectorAll('#rules details').forEach(function(d){
+    d.addEventListener('toggle',function(){ if(d.open) ev('te_kodel_atidaryta',{n:+d.closest('.rule').dataset.i+1}); });
+  });
+  document.querySelectorAll('.opts').forEach(function(g){
+    g.addEventListener('click',function(e){
+      var b=e.target.closest('.opt'); if(!b) return; var q=g.dataset.q, v=b.dataset.v;
+      if(g.dataset.multi){var a=ans[q], k=a.indexOf(v); if(k<0)a.push(v); else a.splice(k,1);
+        g.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed',String(a.indexOf(x.dataset.v)>=0))});}
+      else {ans[q]=(ans[q]===v?'':v); g.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed',String(ans[q]===x.dataset.v))});}
+      ev('te_klausimas',{q:q, v:v});
+      render();
+    });
+  });
+  var missTold=false;
+  miss.addEventListener('input',function(){ render(); if(!missTold && miss.value.trim()){ missTold=true; ev('te_klausimas',{q:'pastaba',v:'rašo'}); } });
+
+  $('kit').addEventListener('change',function(){
+    var on=this.checked; $('email-wrap').hidden=!on;
+    ev('te_klausimas',{q:'rinkinys',v:on?'taip':'ne'});
+    if(on) setTimeout(function(){ $('email').focus(); },50);
+  });
+
+  var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var busy=false;
+  $('te-form').addEventListener('submit',function(e){
+    e.preventDefault(); if(busy) return;
+    var err=$('err'), btn=$('submit'); err.textContent='';
+    var n=Object.keys(votes).length;
+    if(!n){ err.textContent='Įvertinkite bent vieną taisyklę (Darysiu, Sunku arba Nesutinku).'; $('r0v1').focus(); return; }
+    var kit=$('kit').checked, em=kit?$('email').value.trim():'';
+    if(em && !EMAIL_RE.test(em)){ err.textContent='Patikrinkite el. paštą arba palikite laukelį tuščią.'; $('email').focus(); return; }
+    var iv={}; Object.keys(votes).forEach(function(i){ iv[pad(i)]=labels[votes[i]]; });
+    var body={ versija:VERSIJA, src:SRC, sesija:SESIJA, vaiku_amzius:ans.age.slice(0,4), ivertinimai:iv,
+      saldytuvas:ans.fridge||null, burelis:ans.club||null, pastaba:(miss.value.trim().slice(0,600)||null),
+      noriu_rinkinio:kit, el_pastas:(em?em.slice(0,200):null) };
+    function done(){
+      atsake=true; tagClarity();
+      ev('te_pateikta',{ivertinta:n, rinkinys:kit?1:0, el:em?1:0});
+      $('te-form').hidden=true;
+      ['thanks','msg-card','ra-card'].forEach(function(id){ $(id).hidden=false; });
+      render();
+      $('thanks').focus({preventScroll:true}); $('thanks').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    if($('company').value){ done(); return; } /* honeypot: bots get the thank-you, nothing is stored */
+    busy=true; btn.disabled=true; btn.textContent='Siunčiama…';
+    var ctrl=window.AbortController?new AbortController():null;
+    var timer=setTimeout(function(){ if(ctrl) ctrl.abort(); },15000);
+    function reset(){ busy=false; btn.disabled=false; btn.textContent='Pateikti atsakymą'; }
+    fetch(SB_URL+'/rest/v1/te_atsakymai',{ method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify(body), signal:ctrl?ctrl.signal:undefined })
+    .then(function(r){
+      clearTimeout(timer);
+      if(r.status===201||r.status===204){ done(); return; }
+      ev('error',{where:'te_submit',status:r.status});
+      err.textContent='Nepavyko išsaugoti. Pabandykite dar kartą arba nusiųskite atsakymą žinute (žemiau).';
+      $('msg-card').hidden=false; render(); reset();
+    })
+    .catch(function(x){
+      clearTimeout(timer);
+      ev('error',{where:'te_submit',status:(x&&x.name==='AbortError')?'timeout':'network'});
+      err.textContent=(x&&x.name==='AbortError')?'Siuntimas užtrunka per ilgai. Pabandykite dar kartą.':'Nėra ryšio. Patikrinkite internetą ir pabandykite dar kartą.';
+      $('msg-card').hidden=false; render(); reset();
+    });
+  });
+
+  $('copy').addEventListener('click',function(){
+    var t=out.textContent, s=$('copied');
+    ev('te_kopijuota',{});
+    function sel(){var r=document.createRange();r.selectNodeContents(out);var w=getSelection();w.removeAllRanges();w.addRange(r);s.textContent='Pažymėta. Spauskite „Kopijuoti“ savo telefone.';}
+    try{navigator.clipboard.writeText(t).then(function(){s.textContent='Nukopijuota ✓ Įklijuokite į žinutę.'},sel)}catch(e){sel()}
+  });
+  $('pdf').addEventListener('click',function(){ ev('te_pdf_click',{}); });
+  $('ra').addEventListener('click',function(){ ev('te_ra_click',{}); ev('cta',{to:'ra'}); });
+  render();
+})();
+</script>
+</body>
+</html>
