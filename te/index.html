@@ -109,8 +109,8 @@ footer a{color:var(--ink)}
 <li class="rule" data-i="2"><div class="rh"><span class="n">03</span><div class="rt"><h3>Pranešimai išjungti</h3><p class="do">Telefonas tavęs nekviečia. Tu jį pasiimi, kai reikia.</p><details><summary>Kodėl?</summary><p class="why">Net neatsakytas pyptelėjimas išmuša dėmesį.</p><p class="src">Stothart 2015 · B</p></details></div></div>
 <div class="votes" role="radiogroup" aria-label="Pranešimai išjungti: jūsų vertinimas">
 <button type="button" class="v" data-v="1" aria-pressed="false" id="r2v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r2v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r2v3">Nesutinku</button></div></li>
-<li class="rule" data-i="3"><div class="rh"><span class="n">04</span><div class="rt"><h3>Klausk prieš fotografuodamas</h3><p class="do">Nuotrauka, vaizdo įrašas ar išmanieji akiniai: pirma „ar galima?“.</p><details><summary>Kodėl?</summary><p class="why">Žmogaus atvaizdas yra jo asmens duomenys. Vaiko ypač.</p><p class="src">CK 2.22 str. · LT teisė</p></details></div></div>
-<div class="votes" role="radiogroup" aria-label="Klausk prieš fotografuodamas: jūsų vertinimas">
+<li class="rule" data-i="3"><div class="rh"><span class="n">04</span><div class="rt"><h3>Pirma paklausk, tada fotografuok</h3><p class="do">Nuotrauka, vaizdo įrašas ar išmanieji akiniai: pirma „ar galima?“.</p><details><summary>Kodėl?</summary><p class="why">Žmogaus atvaizdas yra jo asmens duomenys. Vaiko ypač.</p><p class="src">CK 2.22 str. · LT teisė</p></details></div></div>
+<div class="votes" role="radiogroup" aria-label="Pirma paklausk, tada fotografuok: jūsų vertinimas">
 <button type="button" class="v" data-v="1" aria-pressed="false" id="r3v1">Darysiu</button><button type="button" class="v" data-v="2" aria-pressed="false" id="r3v2">Sunku</button><button type="button" class="v" data-v="3" aria-pressed="false" id="r3v3">Nesutinku</button></div></li>
 <li class="rule" data-i="4"><div class="rh"><span class="n">05</span><div class="rt"><h3>Skambutis palauks</h3><p class="do">Atsiliepi tik į skubų skambutį. Tada atsiprašai ir išeini.</p><details><summary>Kodėl?</summary><p class="why">Tyrimai sieja dažnus tėvų „pertraukimus“ įrenginiais su vaikų neramumu.</p><p class="src">McDaniel 2018 · B</p></details></div></div>
 <div class="votes" role="radiogroup" aria-label="Skambutis palauks: jūsų vertinimas">
@@ -228,7 +228,7 @@ footer a{color:var(--ink)}
   (function waitBt(n){ if(window.bt) ev('te_atidaryta',{w:innerWidth}); else if(n<40) setTimeout(function(){waitBt(n+1)},250); })(0);
 
   var $=function(id){return document.getElementById(id)};
-  var titles=["Veidas prieš telefoną","Stalas be telefonų","Pranešimai išjungti","Klausk prieš fotografuodamas","Skambutis palauks","Pirma laikmatis","Pilka reiškia ramu","Viena užduotis, vienas ekranas","Telefonai miega ne miegamajame","Pasakyk, kai padėjo DI"];
+  var titles=["Veidas prieš telefoną","Stalas be telefonų","Pranešimai išjungti","Pirma paklausk, tada fotografuok","Skambutis palauks","Pirma laikmatis","Pilka reiškia ramu","Viena užduotis, vienas ekranas","Telefonai miega ne miegamajame","Pasakyk, kai padėjo DI"];
   var labels={1:"darysiu",2:"sunku",3:"nesutinku"};
   var votes={}; var ans={age:[],fridge:"",club:""};
   var prog=$('prog'), out=$('reply'), miss=$('missing');
