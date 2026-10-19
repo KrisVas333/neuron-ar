@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pasirašau Technologijų etiketą · Kris Vas</title>
+<meta name="description" content="Pritariu Technologijų etiketui: 10 taisyklių, kaip elgiamės su technologijomis namie, viešai, mokykloje ir darbe. Pasirašykite asmeniškai arba organizacijos vardu.">
+<meta property="og:title" content="Pasirašau Technologijų etiketą">
+<meta property="og:description" content="10 taisyklių, kad tikras gyvenimas būtų įdomesnis už ekraną. Pasirašykite ir pakvieskite kitus.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F7F7F5">
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="te-pasirasau" data-kind="tool"></script>
+<!-- Microsoft Clarity (y4gk0je1j0, krisvas.lt project) loads ONLY after „Leisti" via kv-track.js consent banner; without consent only anonymous cookieless events -->
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap&subset=latin-ext">
+<style>
+/* Layout: pledge text (big) → live counter → 10 rules (collapsed) → sign form (3 signer types) → thank-you + share → public wall (approved only) → who made this. Light paper look, same as the TE test. */
+:root{--ground:#F7F7F5;--paper:#FFFFFF;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--red:#FF0000;--tint:#FBF3F4;
+--mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--r:4px;color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 16px/1.55 var(--body);letter-spacing:.01em;padding-block:24px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font:700 12px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+h1{font:800 clamp(30px,8vw,44px)/1.05 var(--mono);text-transform:uppercase;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+h1 .dot{color:var(--red)}
+.pledge{font:600 19px/1.55 var(--body);margin:16px 0 0;padding:18px 18px 18px 20px;background:var(--paper);border-left:4px solid var(--accent);border-radius:var(--r)}
+.card{background:var(--paper);border-radius:var(--r);padding:20px;box-shadow:0 1px 2px rgba(10,10,10,.05)}
+h2{font:800 15px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
+.hint{color:var(--muted);font-size:14px;margin:0 0 12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.stat b{display:block;font:800 32px/1 var(--mono);color:var(--accent)}
+.stat span{font-size:14px;color:var(--muted)}
+.pending{font-size:14px;color:var(--muted);margin:10px 0 0}
+details summary{cursor:pointer;font:700 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);min-height:44px;display:flex;align-items:center}
+.rules{margin:8px 0 0;padding-left:24px}
+.rules li{margin:0 0 10px}
+.rules li::marker{font:800 14px var(--mono);color:var(--accent)}
+.types{display:grid;grid-template-columns:1fr;gap:6px;margin:0 0 16px}
+.t{font:600 15px/1.2 var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;cursor:pointer;min-height:48px;text-align:left;-webkit-tap-highlight-color:transparent}
+.t:hover{border-color:var(--ink)}
+.t[aria-checked="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.f{display:flex;flex-direction:column;gap:6px;margin:0 0 14px}
+.f label{font-weight:600}
+input[type=text],input[type=email]{font:400 16px/1.45 var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:12px;width:100%;min-height:48px}
+.check{display:flex;gap:12px;align-items:flex-start;font-weight:600;cursor:pointer;margin:0 0 14px}
+.check input{width:24px;height:24px;flex:0 0 24px;margin:0;accent-color:var(--accent)}
+.check small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.gdpr{font-size:13px;color:var(--muted);margin:4px 0 14px}
+.gdpr a{color:var(--ink)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.t:focus-visible,.btn:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:700 14px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:#fff;background:var(--accent);border:0;padding:15px 18px;border-radius:var(--r);cursor:pointer;min-height:48px;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.btn.big{width:100%;font-size:15px;padding:18px}
+.btn[disabled]{opacity:.6;cursor:wait}
+.btn.ghost{background:var(--paper);color:var(--ink);border:1px solid var(--ink)}
+.status{font-size:14px;color:var(--muted)}
+.err{color:var(--accent);font-weight:600;font-size:15px;margin:10px 0 0;min-height:1em}
+.note{background:var(--tint);border-radius:var(--r);padding:10px 12px;font-size:14px;margin:0 0 14px}
+.thanks h2{font-size:22px}
+.link{font:500 14px/1.4 var(--mono);background:var(--ground);border:1px solid var(--line);border-radius:var(--r);padding:10px;word-break:break-all;margin:10px 0}
+.wall{list-style:none;margin:0;padding:0}
+.wall li{border-top:1px solid var(--line);padding:10px 0;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.wall li:first-child{border-top:0}
+.wall .who{font-weight:600}
+.wall .meta{font-size:13px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted)}
+footer p{margin:0 0 8px}
+footer a{color:var(--ink)}
+footer h2{font-size:13px;color:var(--ink)}
+[hidden]{display:none!important}
+@media (min-width:560px){.types{grid-template-columns:repeat(3,1fr)} .t{text-align:center}}
+@media (max-width:480px){.card{padding:16px} .pledge{font-size:18px}}
+@media (prefers-reduced-motion:no-preference){.t{transition:background .12s,border-color .12s}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Technologijų etiketas · pasižadėjimas · v0.2</p>
+    <h1>Pasirašau etiketą<span class="dot">.</span></h1>
+    <p class="pledge" id="pledge" aria-live="polite">Pritariu Technologijų etiketui ir jo laikysiuos. Apie 10 taisyklių pasakosiu draugams, vaikams, kolegams ir nepažįstamiems. Jei kas nors pamirš, švelniai priminsiu, kad yra etiketas. Kai laikomės visi, jaučiamės labiau gerbiami, mūsų ryšiai stipresni, sveikata geresnė, o tikru gyvenimu mėgaujamės labiau nei skaitmeniniu.</p>
+  </header>
+
+  <section class="card" aria-labelledby="h-count">
+    <h2 id="h-count">Jau pasirašė</h2>
+    <div class="stats"><div class="stat"><b id="c-asm">·</b><span>žmonės</span></div><div class="stat"><b id="c-org">·</b><span>patvirtintos organizacijos</span></div></div>
+    <p class="pending" id="c-pend" hidden></p>
+  </section>
+
+  <section class="card" aria-label="10 taisyklių">
+    <details id="rules-d"><summary>Skaityti 10 taisyklių</summary>
+      <ol class="rules">
+<li><b>Veidas prieš telefoną.</b> Kai kalbi su žmogumi, telefonas kišenėje ar rankinėje. Ne rankoje, ne ant stalo.</li>
+<li><b>Stalas be telefonų.</b> Valgom kartu. Telefonai ilsisi kitame kambaryje.</li>
+<li><b>Pranešimai išjungti.</b> Telefonas tavęs nekviečia. Tu jį pasiimi, kai reikia.</li>
+<li><b>Klausk prieš fotografuodamas.</b> Nuotrauka, vaizdo įrašas ar išmanieji akiniai: pirma „ar galima?“.</li>
+<li><b>Skambutis palauks.</b> Atsiliepi tik į skubų skambutį. Tada atsiprašai ir išeini.</li>
+<li><b>Pirma laikmatis.</b> Prieš socialinius tinklus ar žaidimą nusistatai laiką.</li>
+<li><b>Pilka reiškia ramu.</b> Vaikams ir tėvams telefono ekranas nespalvotas.</li>
+<li><b>Viena užduotis, vienas ekranas.</b> Darbe ir susitikimuose telefonų nėra. Tarp užduočių netikrini.</li>
+<li><b>Telefonai miega ne miegamajame.</b> Kraunam virtuvėje, ne prie lovos. Visi, ir suaugę.</li>
+<li><b>Pasakyk, kai padėjo DI.</b> Namų darbuose, darbe, žinutėse: „čia padėjo DI“.</li>
+      </ol>
+      <p class="status">Šaltiniai ir pagrindimas: <a href="../?src=pasirasau">TE tėvų teste</a> (prie kiekvienos taisyklės „Kodėl?“). Versija v1.1, tikrinama su bendruomene.</p>
+    </details>
+  </section>
+
+  <form class="card" id="sign" novalidate aria-labelledby="h-sign">
+    <h2 id="h-sign">Pasirašykite</h2>
+    <p class="note" id="already" hidden>Šiame įrenginyje jau pasirašyta. Jei pasirašo kitas žmogus, užpildykite iš naujo.</p>
+    <div class="types" role="radiogroup" aria-label="Kas pasirašo?">
+      <button type="button" class="t" role="radio" aria-checked="true" data-t="asmuo">Asmuo</button>
+      <button type="button" class="t" role="radio" aria-checked="false" data-t="mokykla">Mokykla / darželis</button>
+      <button type="button" class="t" role="radio" aria-checked="false" data-t="organizacija">Įmonė / organizacija</button>
+    </div>
+    <div class="f"><label for="vardas" id="l-vardas">Vardas ir pavardė</label><input type="text" id="vardas" maxlength="120" autocomplete="name" data-clarity-mask="true" required></div>
+    <div class="f"><label for="miestas">Miestas <span class="status">(nebūtina)</span></label><input type="text" id="miestas" maxlength="60" autocomplete="address-level2"></div>
+    <div id="org-fields" hidden>
+      <div class="f"><label for="role">Jūsų pareigos</label><input type="text" id="role" maxlength="80" placeholder="Pvz.: direktorė, vadovas" data-clarity-mask="true"></div>
+      <div class="f"><label for="org-email">Darbo el. paštas <span class="status">(tik patvirtinimui)</span></label><input type="email" id="org-email" maxlength="200" inputmode="email" autocomplete="email" data-clarity-mask="true"></div>
+      <p class="status" style="margin:-6px 0 14px">Organizacijos parašą patvirtinsim per šį el. paštą. Iki tol ji skaičiuojama kaip „laukia patvirtinimo“.</p>
+    </div>
+    <label class="check"><input type="checkbox" id="viesai"><span id="l-viesai">Rodyti mano vardą viešoje pasirašiusiųjų sienoje<small>Nebūtina. Vardas atsiras po peržiūros.</small></span></label>
+    <div id="news-wrap">
+      <label class="check"><input type="checkbox" id="news"><span>Noriu gauti TE naujienas el. paštu<small>Nebūtina. Tik apie etiketą, ne reklama.</small></span></label>
+      <div class="f" id="news-email-f" hidden><label for="news-email">El. paštas</label><input type="email" id="news-email" maxlength="200" inputmode="email" autocomplete="email" data-clarity-mask="true"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="age14" required><span>Man 14 metų ar daugiau</span></label>
+    <p class="note" id="under14" hidden>Jei tau mažiau nei 14, paprašyk tėvų pasirašyti kartu.</p>
+    <p class="gdpr" id="privacy">Duomenų valdytojas: Kristijonas Vasiliauskas (Kris Vas) · kontaktas: <span class="kontaktas">kontaktas netrukus</span> · Tikslas: viešas etiketo šalininkų sąrašas, organizacijų patvirtinimas ir, jei pažymėjote, TE naujienos. Pagrindas: jūsų sutikimas (BDAR 6 str. 1 d. a p.). Saugoma iki projekto pabaigos, ne ilgiau 24 mėn. Sutikimą atšaukti ar duomenis ištrinti galite bet kada, atsakome per 7 d.</p>
+    <div class="hp" aria-hidden="true"><label for="company">Įmonė</label><input type="text" id="company" tabindex="-1" autocomplete="off"></div>
+    <button type="submit" class="btn big" id="go">Pasirašau</button>
+    <p class="err" id="err" role="alert"></p>
+  </form>
+
+  <section class="card thanks" id="thanks" hidden tabindex="-1" aria-labelledby="h-thanks">
+    <p class="eyebrow">Parašas priimtas</p>
+    <h2 id="h-thanks">Ačiū! Etiketas stiprėja.</h2>
+    <p id="t-msg"></p>
+    <p><b>Pakvieskite 3 žmones.</b> Etiketas veikia tik tada, kai jo laikosi daugelis.</p>
+    <p class="link" id="share-url">https://krisvas333.github.io/neuron-ar/te/pasirasau/?src=parasas-share</p>
+    <div class="row"><button type="button" class="btn" id="share">Dalintis nuoroda</button><a class="btn ghost" id="to-test" href="../?src=pasirasau">Atsakyti į TE testą</a><span class="status" id="shared" role="status"></span></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-wall">
+    <h2 id="h-wall">Pasirašiusieji</h2>
+    <ul class="wall" id="wall"><li class="status">Kraunama…</li></ul>
+  </section>
+
+  <footer>
+    <h2>Kas tai sukūrė</h2>
+    <p>Technologijų etiketą kuria Kris Vas su bendruomene: tėvais, mokytojais ir būrelių vadovais. Atvirai: esu <a id="ra" href="https://robotikosakademija.lt/bureliai?src=te-pasirasau" target="_blank" rel="noopener">Robotikos akademijos</a> bendraįkūrėjas. Etiketas nepriklauso jokiam būreliui ir tinka kiekvienai šeimai, mokyklai ir darbovietei.</p>
+    <p>⚗️ Eksperimentinis prototipas, sukurtas su DI. Šaltinius tikrinau, bet galiu klysti. Nemokamas. Radote klaidą ar turite minčių? Parašykite: <a href="https://krisvas.lt/?src=te-pasirasau">krisvas.lt</a> · Kris Vas</p>
+    <p>Microsoft Clarity įsijungia tik paspaudus „Leisti“, vardai ir el. paštai įrašuose paslėpti.</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  /* Writes ONLY via RPC kris-life-os.public.te_pasirasyti (SECURITY DEFINER, busena='laukia').
+     Table te_parasai has no anon grants. Counter + wall via te_parasu_skaicius / te_parasu_siena. */
+  var TE_KONTAKTAS=''; /* ⚠️ Kris to confirm the contact address (email). Empty = „kontaktas netrukus". */
+  var SB_URL='https://iiekmeylpppczicrsxho.supabase.co';
+  var SB_KEY='sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF';
+  var VERSIJA='v0.2';
+  var SRC='direct';
+  try{ var qs=new URLSearchParams(location.search); SRC=(qs.get('src')||qs.get('utm_source')||'direct').replace(/[^\w.\-]/g,'').slice(0,40)||'direct'; }catch(e){}
+  var SESIJA=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('s'+Date.now().toString(36)+Math.random().toString(36).slice(2,10));
+  var pasirase=false, tagged=false;
+  var $=function(id){return document.getElementById(id)};
+
+  document.querySelectorAll('.kontaktas').forEach(function(el){
+    if(TE_KONTAKTAS){ el.innerHTML=''; var a=document.createElement('a'); a.href='mailto:'+TE_KONTAKTAS; a.textContent=TE_KONTAKTAS; el.appendChild(a); }
+  });
+
+  function tagClarity(){
+    if(!window.clarity) return;
+    try{
+      if(!tagged){ clarity('set','te_versija',VERSIJA); clarity('set','src',SRC); clarity('set','sesija',SESIJA); tagged=true; }
+      if(pasirase) clarity('set','te_pasirase','1');
+    }catch(e){}
+  }
+  var polls=0, poller=setInterval(function(){ tagClarity(); if(tagged || ++polls>900) clearInterval(poller); },2000);
+  function ev(name,p){
+    var props={src:SRC,versija:VERSIJA}; for(var k in p||{}) props[k]=p[k];
+    try{ if(window.bt) window.bt(name,props); }catch(e){}
+    tagClarity();
+    try{ if(window.clarity) window.clarity('event',name); }catch(e){}
+  }
+  (function waitBt(n){ if(window.bt) ev('te_pasizadejimas_atidaryta',{w:innerWidth}); else if(n<40) setTimeout(function(){waitBt(n+1)},250); })(0);
+
+  function rpc(fn,body){
+    return fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify(body||{})});
+  }
+
+  /* counter */
+  function loadCount(){
+    rpc('te_parasu_skaicius').then(function(r){return r.ok?r.json():null}).then(function(j){
+      if(!j) return;
+      $('c-asm').textContent=j.asmenys; $('c-org').textContent=j.organizacijos;
+      if(j.organizacijos_laukia>0){ $('c-pend').hidden=false; $('c-pend').textContent='Dar laukia patvirtinimo: '+j.organizacijos_laukia+' org.'; }
+    }).catch(function(){});
+  }
+  /* wall: approved + public only */
+  var TIPAI={asmuo:'',mokykla:'mokykla / darželis',organizacija:'organizacija'};
+  function loadWall(){
+    rpc('te_parasu_siena',{p_limit:200}).then(function(r){return r.ok?r.json():null}).then(function(rows){
+      var ul=$('wall'); ul.innerHTML='';
+      if(!rows||!rows.length){ var li=document.createElement('li'); li.className='status'; li.textContent='Siena pildosi: vardai atsiranda po peržiūros.'; ul.appendChild(li); return; }
+      rows.forEach(function(x){
+        var li=document.createElement('li'), w=document.createElement('span'), m=document.createElement('span');
+        w.className='who'; w.textContent=x.vardas; m.className='meta';
+        m.textContent=[TIPAI[x.tipas],x.miestas,x.data].filter(Boolean).join(' · ');
+        li.appendChild(w); li.appendChild(m); ul.appendChild(li);
+      });
+    }).catch(function(){ $('wall').innerHTML='<li class="status">Sienos įkelti nepavyko.</li>'; });
+  }
+  loadCount(); loadWall();
+
+  try{ if(localStorage.getItem('te-pasirase')) $('already').hidden=false; }catch(e){}
+
+  /* signer type */
+  var PLEDGE={
+    asmuo:'Pritariu Technologijų etiketui ir jo laikysiuos. Apie 10 taisyklių pasakosiu draugams, vaikams, kolegams ir nepažįstamiems. Jei kas nors pamirš, švelniai priminsiu, kad yra etiketas. Kai laikomės visi, jaučiamės labiau gerbiami, mūsų ryšiai stipresni, sveikata geresnė, o tikru gyvenimu mėgaujamės labiau nei skaitmeniniu.',
+    org:'Mes pritariame Technologijų etiketui ir jo laikysimės. Apie 10 taisyklių pasakosime savo bendruomenei: mokiniams, darbuotojams, tėvams ir svečiams. Jei kas nors pamirš, švelniai priminsime, kad yra etiketas. Kai laikomės visi, jaučiamės labiau gerbiami, mūsų ryšiai stipresni, sveikata geresnė, o tikru gyvenimu mėgaujamės labiau nei skaitmeniniu.'
+  };
+  var tipas='asmuo';
+  function setType(t){
+    tipas=t; var org=t!=='asmuo';
+    document.querySelectorAll('.t').forEach(function(b){ b.setAttribute('aria-checked',String(b.dataset.t===t)); });
+    $('pledge').textContent=org?PLEDGE.org:PLEDGE.asmuo;
+    $('l-vardas').textContent=t==='asmuo'?'Vardas ir pavardė':(t==='mokykla'?'Mokyklos ar darželio pavadinimas':'Įmonės ar organizacijos pavadinimas');
+    $('vardas').setAttribute('autocomplete',org?'organization':'name');
+    $('org-fields').hidden=!org; $('news-wrap').hidden=org;
+    $('l-viesai').firstChild.nodeValue=org?'Rodyti organizacijos pavadinimą viešai':'Rodyti mano vardą viešoje pasirašiusiųjų sienoje';
+    $('l-viesai').querySelector('small').textContent=org?'Nebūtina. Pavadinimas atsiras tik patvirtinus parašą.':'Nebūtina. Vardas atsiras po peržiūros.';
+    $('go').textContent=org?'Pasirašome':'Pasirašau';
+  }
+  document.querySelector('.types').addEventListener('click',function(e){
+    var b=e.target.closest('.t'); if(!b||b.dataset.t===tipas) return;
+    setType(b.dataset.t); ev('te_tipas_pasirinktas',{tipas:tipas});
+  });
+  $('news').addEventListener('change',function(){ $('news-email-f').hidden=!this.checked; if(this.checked) setTimeout(function(){$('news-email').focus()},50); });
+  $('age14').addEventListener('change',function(){ $('under14').hidden=true; });
+
+  var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var busy=false;
+  $('sign').addEventListener('submit',function(e){
+    e.preventDefault(); if(busy) return;
+    var err=$('err'), btn=$('go'); err.textContent='';
+    var org=tipas!=='asmuo';
+    var vardas=$('vardas').value.trim().replace(/\s+/g,' ');
+    if(vardas.length<2){ err.textContent=org?'Įrašykite pavadinimą.':'Įrašykite vardą ir pavardę.'; $('vardas').focus(); return; }
+    var role=null, email=null;
+    if(org){
+      role=$('role').value.trim(); email=$('org-email').value.trim();
+      if(!role){ err.textContent='Įrašykite savo pareigas.'; $('role').focus(); return; }
+      if(!EMAIL_RE.test(email)){ err.textContent='Įrašykite darbo el. paštą: per jį patvirtinsim parašą.'; $('org-email').focus(); return; }
+    } else if($('news').checked){
+      email=$('news-email').value.trim();
+      if(email && !EMAIL_RE.test(email)){ err.textContent='Patikrinkite el. paštą arba palikite tuščią.'; $('news-email').focus(); return; }
+      if(!email) email=null;
+    }
+    if(!$('age14').checked){ $('under14').hidden=false; err.textContent='Pažymėkite, kad jums 14 metų ar daugiau.'; $('age14').focus(); return; }
+    var viesai=$('viesai').checked;
+    function done(){
+      pasirase=true; tagClarity();
+      ev('te_pasirasyta',{tipas:tipas, viesai:viesai?1:0});
+      try{ localStorage.setItem('te-pasirase','1'); }catch(x){}
+      $('sign').hidden=true; $('thanks').hidden=false;
+      $('t-msg').textContent=org?'Patvirtinsim per darbo el. paštą. Iki tol organizacija skaičiuojama kaip „laukia patvirtinimo“.':(viesai?'Jūsų vardas atsiras sienoje, kai jį peržiūrėsim.':'Jūsų parašas įskaitytas. Viešai vardo nerodysim.');
+      $('thanks').focus({preventScroll:true}); $('thanks').scrollIntoView({behavior:'smooth',block:'start'});
+      loadCount();
+    }
+    if($('company').value){ done(); return; } /* honeypot: bots get the thank-you, nothing is stored */
+    busy=true; btn.disabled=true; btn.textContent='Siunčiama…';
+    rpc('te_pasirasyti',{p_tipas:tipas,p_vardas:vardas,p_miestas:$('miestas').value.trim()||null,p_rodyti:viesai,p_14plus:true,
+      p_el_pastas:email,p_role:role,p_src:SRC,p_sesija:SESIJA,p_honeypot:''})
+    .then(function(r){
+      if(r.ok){ done(); return; }
+      return r.json().catch(function(){return {}}).then(function(j){
+        var m=(j&&j.message)||'';
+        ev('error',{where:'te_pasirasyti',status:r.status});
+        err.textContent=/sesija/.test(m)?'Šiame įrenginyje jau pasirašyta prieš kelias minutes. Ačiū!':(/global/.test(m)?'Dabar pasirašo daug žmonių. Pabandykite po minutės.':'Nepavyko pasirašyti. Patikrinkite laukelius ir pabandykite dar kartą.');
+      });
+    })
+    .catch(function(){ ev('error',{where:'te_pasirasyti',status:'network'}); err.textContent='Nėra ryšio. Patikrinkite internetą ir pabandykite dar kartą.'; })
+    .then(function(){ if(!pasirase){ busy=false; btn.disabled=false; btn.textContent=org?'Pasirašome':'Pasirašau'; } });
+  });
+
+  var SHARE_URL='https://krisvas333.github.io/neuron-ar/te/pasirasau/?src=parasas-share';
+  $('share').addEventListener('click',function(){
+    var s=$('shared');
+    if(navigator.share){ ev('te_dalintis_click',{how:'native'}); navigator.share({title:'Technologijų etiketas',text:'Aš pasirašiau Technologijų etiketą. Prisijunk:',url:SHARE_URL}).catch(function(){}); return; }
+    ev('te_dalintis_click',{how:'copy'});
+    try{ navigator.clipboard.writeText(SHARE_URL).then(function(){ s.textContent='Nuoroda nukopijuota ✓'; },function(){ s.textContent='Pažymėkite nuorodą ir nukopijuokite.'; }); }catch(x){ s.textContent='Pažymėkite nuorodą ir nukopijuokite.'; }
+  });
+  $('to-test').addEventListener('click',function(){ ev('te_testas_click',{}); });
+  $('ra').addEventListener('click',function(){ ev('te_ra_click',{}); });
+})();
+</script>
+</body>
+</html>

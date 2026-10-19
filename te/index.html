@@ -153,7 +153,7 @@ footer a{color:var(--ink)}
     <div id="email-wrap" hidden>
       <label for="email">El. paštas <span class="status">(nebūtina)</span></label>
       <input type="email" id="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="vardas@pastas.lt" data-clarity-mask="true">
-      <p class="gdpr">Palikdami el. paštą sutinkate, kad jį naudosiu tik TE rinkiniui ir su juo susijusioms naujienoms atsiųsti. Atsisakyti galite bet kada, atsakę į laišką. Duomenų valdytojas: Kris Vas (Kristijonas Vasiliauskas). <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></p>
+      <p class="gdpr">Palikdami el. paštą sutinkate, kad jį naudosiu tik TE rinkiniui ir su juo susijusioms naujienoms atsiųsti. Duomenų valdytojas: Kristijonas Vasiliauskas (Kris Vas) · kontaktas: <span class="kontaktas">kontaktas netrukus</span> · Pagrindas: jūsų sutikimas (BDAR 6 str. 1 d. a p.). Saugoma ne ilgiau 24 mėn. Atsisakyti ar ištrinti duomenis galite bet kada, atsakome per 7 d. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></p>
     </div>
     <div class="hp" aria-hidden="true"><label for="company">Įmonė</label><input type="text" id="company" name="company" tabindex="-1" autocomplete="off"></div>
   </section>
@@ -169,7 +169,7 @@ footer a{color:var(--ink)}
     <p class="eyebrow">Atsakymas išsaugotas</p>
     <h2 id="h-thanks">Ačiū! Jūsų balsas įskaitytas.</h2>
     <p>Kai surinksim atsakymus, taisykles pataisysim ir išleisim visiems. Pasidalinkite nuoroda su kitu tėvu ar mama: kuo daugiau balsų, tuo tikslesnis standartas.</p>
-    <div class="row"><a class="btn ghost" id="pdf" href="technologiju-etiketas-seimoms-A4.pdf" target="_blank" rel="noopener">A4 lapas (PDF)</a></div>
+    <div class="row"><a class="btn" id="pledge" href="pasirasau/?src=te-test">Pritariu etiketui → pasirašyk</a><a class="btn ghost" id="pdf" href="technologiju-etiketas-seimoms-A4.pdf" target="_blank" rel="noopener">A4 lapas (PDF)</a></div>
   </section>
 
   <section class="card out" id="msg-card" hidden aria-labelledby="h-out">
@@ -200,7 +200,9 @@ footer a{color:var(--ink)}
      Publishable key: public by design. Events -> track.js (Umami, cookieless) + Clarity (only after consent). */
   var SB_URL='https://iiekmeylpppczicrsxho.supabase.co';
   var SB_KEY='sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF';
+  var TE_KONTAKTAS=''; /* ⚠️ Kris to confirm the contact address (email). Empty = „kontaktas netrukus". */
   var VERSIJA='v1.1';
+  document.querySelectorAll('.kontaktas').forEach(function(el){ if(TE_KONTAKTAS){ el.innerHTML=''; var a=document.createElement('a'); a.href='mailto:'+TE_KONTAKTAS; a.textContent=TE_KONTAKTAS; el.appendChild(a); } });
   var SRC='direct';
   try{ var qs=new URLSearchParams(location.search); SRC=(qs.get('src')||qs.get('utm_source')||'direct').replace(/[^\w.\-]/g,'').slice(0,40)||'direct'; }catch(e){}
   var SESIJA=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('s'+Date.now().toString(36)+Math.random().toString(36).slice(2,10));
@@ -327,6 +329,7 @@ footer a{color:var(--ink)}
     function sel(){var r=document.createRange();r.selectNodeContents(out);var w=getSelection();w.removeAllRanges();w.addRange(r);s.textContent='Pažymėta. Spauskite „Kopijuoti“ savo telefone.';}
     try{navigator.clipboard.writeText(t).then(function(){s.textContent='Nukopijuota ✓ Įklijuokite į žinutę.'},sel)}catch(e){sel()}
   });
+  $('pledge').addEventListener('click',function(){ ev('te_pasirasyk_click',{}); });
   $('pdf').addEventListener('click',function(){ ev('te_pdf_click',{}); });
   $('ra').addEventListener('click',function(){ ev('te_ra_click',{}); ev('cta',{to:'ra'}); });
   render();
