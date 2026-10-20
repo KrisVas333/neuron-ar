@@ -148,11 +148,12 @@ footer a{color:var(--ink)}
 
   <section class="card" aria-labelledby="h-kit">
     <h2 id="h-kit">TE šeimos rinkinys</h2>
-    <p class="hint">Nebūtina. Ruošiam rinkinį šeimoms: lapas, kortelės, pokalbio planas.</p>
-    <label class="check"><input type="checkbox" id="kit"><span>Noriu gauti TE šeimos rinkinį, kai jis bus paruoštas</span></label>
+    <p class="hint">Nebūtina. Rinkinys: A4 lapas šeimai, A4 lapas vaikams su šeimos sutartimi ir 7 vakarų planas. Atsisiųsti galėsite iškart po atsakymo.</p>
+    <label class="check"><input type="checkbox" id="kit"><span>Atsiųskite TE šeimos rinkinį ir el. paštu</span></label>
     <div id="email-wrap" hidden>
       <label for="email">El. paštas <span class="status">(nebūtina)</span></label>
       <input type="email" id="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="vardas@pastas.lt" data-clarity-mask="true">
+      <label class="check" style="margin-top:12px"><input type="checkbox" id="nl"><span>Ir noriu penktadienio laiško tėvams: vienas laiškas per savaitę apie vaikus, ekranus ir būrelius. Atsisakyti galima vienu paspaudimu.</span></label>
       <p class="gdpr">Palikdami el. paštą sutinkate, kad jį naudosiu tik TE rinkiniui ir su juo susijusioms naujienoms atsiųsti. Duomenų valdytojas: Kristijonas Vasiliauskas (Kris Vas) · kontaktas: <span class="kontaktas">kontaktas netrukus</span> · Pagrindas: jūsų sutikimas (BDAR 6 str. 1 d. a p.). Saugoma ne ilgiau 24 mėn. Atsisakyti ar ištrinti duomenis galite bet kada, atsakome per 7 d. <a href="https://krisvas.lt/privatumas" target="_blank" rel="noopener">Privatumo politika</a></p>
     </div>
     <div class="hp" aria-hidden="true"><label for="company">Įmonė</label><input type="text" id="company" name="company" tabindex="-1" autocomplete="off"></div>
@@ -161,7 +162,7 @@ footer a{color:var(--ink)}
   <section class="card" id="submit-card" aria-label="Pateikti atsakymą">
     <button type="submit" class="btn big" id="submit">Pateikti atsakymą</button>
     <p class="err" id="err" role="alert"></p>
-    <p class="status" style="margin:4px 0 0">Saugom tik atsakymus, be vardų. El. paštą, jei jį palikote, tik rinkiniui.</p>
+    <p class="status" style="margin:4px 0 0">Saugom tik atsakymus, be vardų. El. paštą, jei jį palikote, tik rinkiniui (ir laiškui, jei jį pažymėjote).</p>
   </section>
   </form>
 
@@ -170,6 +171,9 @@ footer a{color:var(--ink)}
     <h2 id="h-thanks">Ačiū! Jūsų balsas įskaitytas.</h2>
     <p>Kai surinksim atsakymus, taisykles pataisysim ir išleisim visiems. Pasidalinkite nuoroda su kitu tėvu ar mama: kuo daugiau balsų, tuo tikslesnis standartas.</p>
     <div class="row"><a class="btn" id="pledge" href="pasirasau/?src=te-test">Pritariu etiketui → pasirašyk</a><a class="btn ghost" id="pdf" href="technologiju-etiketas-seimoms-A4.pdf" target="_blank" rel="noopener">A4 lapas (PDF)</a></div>
+    <p class="eyebrow" style="margin-top:18px">Jūsų TE šeimos rinkinys jau čia</p>
+    <div class="row kit-links"><a class="btn ghost" data-kit="a4-seimai" href="technologiju-etiketas-seimoms-A4.pdf" target="_blank" rel="noopener">① A4 šeimai</a><a class="btn ghost" data-kit="a4-vaikams" href="vaikams/te-vaikams-A4.pdf" target="_blank" rel="noopener">② A4 vaikams + sutartis</a><a class="btn ghost" data-kit="7-vakarai" href="../7-vakaru-planas/?src=te-test-kit" target="_blank" rel="noopener">③ 7 vakarų planas</a></div>
+    <p class="status" id="nl-msg" role="status"></p>
   </section>
 
   <section class="card out" id="msg-card" hidden aria-labelledby="h-out">
@@ -286,7 +290,8 @@ footer a{color:var(--ink)}
     var err=$('err'), btn=$('submit'); err.textContent='';
     var n=Object.keys(votes).length;
     if(!n){ err.textContent='Įvertinkite bent vieną taisyklę (Darysiu, Sunku arba Nesutinku).'; $('r0v1').focus(); return; }
-    var kit=$('kit').checked, em=kit?$('email').value.trim():'';
+    var kit=$('kit').checked, em=kit?$('email').value.trim():'', nl=kit&&$('nl').checked;
+    if(nl && !em){ err.textContent='Laiškui reikia el. pašto. Įrašykite jį arba nuimkite varnelę.'; $('email').focus(); return; }
     if(em && !EMAIL_RE.test(em)){ err.textContent='Patikrinkite el. paštą arba palikite laukelį tuščią.'; $('email').focus(); return; }
     var iv={}; Object.keys(votes).forEach(function(i){ iv[pad(i)]=labels[votes[i]]; });
     var body={ versija:VERSIJA, src:SRC, sesija:SESIJA, vaiku_amzius:ans.age.slice(0,4), ivertinimai:iv,
@@ -294,7 +299,8 @@ footer a{color:var(--ink)}
       noriu_rinkinio:kit, el_pastas:(em?em.slice(0,200):null) };
     function done(){
       atsake=true; tagClarity();
-      ev('te_pateikta',{ivertinta:n, rinkinys:kit?1:0, el:em?1:0});
+      ev('te_pateikta',{ivertinta:n, rinkinys:kit?1:0, el:em?1:0, nl:nl?1:0});
+      if(nl && em) subscribeNL(em);
       $('te-form').hidden=true;
       ['thanks','msg-card','ra-card'].forEach(function(id){ $(id).hidden=false; });
       render();
@@ -331,6 +337,20 @@ footer a{color:var(--ink)}
   });
   $('pledge').addEventListener('click',function(){ ev('te_pasirasyk_click',{}); });
   $('pdf').addEventListener('click',function(){ ev('te_pdf_click',{}); });
+  document.querySelectorAll('[data-kit]').forEach(function(a){ a.addEventListener('click',function(){ ev('te_kit_click',{item:a.dataset.kit}); }); });
+  /* Newsletter (separate opt-in) -> krisvas.lt edge function mailerlite-subscribe, group zemelapis-jul30, source te-test */
+  function subscribeNL(v){
+    var NL={URL:'https://bpufgnpzsjmtqyfihkuk.supabase.co/functions/v1/mailerlite-subscribe',KEY:'sb_publishable_kJxdHmhHG68-L938ap3F3w_uYkMRr9D'};
+    var msg=$('nl-msg'); ev('nl_submit',{place:'te-test'});
+    fetch(NL.URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':NL.KEY,'Authorization':'Bearer '+NL.KEY},
+      body:JSON.stringify({email:v,language:'lt',source:'te-test',src:SRC,page_url:location.origin+location.pathname,consent:true,company:''})})
+    .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){return {r:r,d:d};}); })
+    .then(function(x){
+      if(!x.r.ok||!x.d||!x.d.ok){ ev('nl_error',{place:'te-test',status:x.r.status}); return; }
+      msg.textContent=x.d.duplicate?'Laišką jau gaunate, ačiū!':'Užsiprenumeravote. Pirmas laiškas ateis penktadienį.';
+      ev('nl_ok',{place:'te-test',duplicate:x.d.duplicate?1:0});
+    }).catch(function(){ ev('nl_error',{place:'te-test',kind:'network'}); });
+  }
   $('ra').addEventListener('click',function(){ ev('te_ra_click',{}); ev('cta',{to:'ra'}); });
   render();
 })();
