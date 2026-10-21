@@ -9,6 +9,7 @@
 <meta property="og:description" content="Telefonai kitame kambaryje. Popierius ant stalo. Atsispausdink ir žaisk šįvakar.">
 <script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="stalas" data-kind="tool"></script>
 <script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-ev.js" data-page="stalas" data-mode="full" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -80,37 +81,37 @@ a{color:var(--red)}
     <li>🙋 Galima sakyti „praleidžiu"</li>
   </ul>
   <div class="btns">
-    <button class="btn" type="button" onclick="window.bt&&window.bt('value',{a:'print'});window.print()">Spausdinti</button>
-    <a class="btn o" href="stalas.pdf" download onclick="window.bt&&window.bt('value',{a:'pdf'})">Atsisiųsti PDF</a>
+    <button class="btn" type="button" data-kv="print_click" onclick="window.bt&&window.bt('value',{a:'print'});window.print()">Spausdinti</button>
+    <a class="btn o" data-kv="pdf_download" href="stalas.pdf" download onclick="window.bt&&window.bt('value',{a:'pdf'})">Atsisiųsti PDF</a>
   </div>
 
   <h2>10 klausimų</h2>
   <ol class="qs">
-    <li><span class="t">Kas tave šiandien prajuokino?</span><span class="age"><b>visiems</b></span></li>
-    <li><span class="t">Jei vieną dieną galėtum būti gyvūnu, kuriuo būtum? Kodėl?</span><span class="age"><b>3–6</b></span></li>
-    <li><span class="t">Kokios spalvos buvo tavo diena?</span><span class="age"><b>3–6</b></span></li>
-    <li><span class="t">Ką šiandien padarei pirmą kartą?</span><span class="age"><b>visiems</b></span></li>
-    <li><span class="t">Kam šiandien padėjai? O kas padėjo tau?</span><span class="age"><b>visiems</b></span></li>
-    <li><span class="t">Kas šiandien buvo sunku? Kas padėjo?</span><span class="age"><b>7–10</b></span></li>
-    <li><span class="t">Jei išrastum robotą namams, ką jis darytų pirmiausia?</span><span class="age"><b>7–10</b></span></li>
-    <li><span class="t">Ko norėtum išmokti, jei niekas netrukdytų?</span><span class="age"><b>7–10</b><b>11–14</b></span></li>
-    <li><span class="t">Kuri taisyklė namuose ar mokykloje tau atrodo neteisinga? Kaip ją pakeistum?</span><span class="age"><b>11–14</b></span></li>
-    <li><span class="t">Kurio darbo niekada neatiduotum dirbtiniam intelektui? Kodėl?</span><span class="age"><b>11–14</b></span></li>
+    <li data-kv-seen="q01"><span class="t">Kas tave šiandien prajuokino?</span><span class="age"><b>visiems</b></span></li>
+    <li data-kv-seen="q02"><span class="t">Jei vieną dieną galėtum būti gyvūnu, kuriuo būtum? Kodėl?</span><span class="age"><b>3–6</b></span></li>
+    <li data-kv-seen="q03"><span class="t">Kokios spalvos buvo tavo diena?</span><span class="age"><b>3–6</b></span></li>
+    <li data-kv-seen="q04"><span class="t">Ką šiandien padarei pirmą kartą?</span><span class="age"><b>visiems</b></span></li>
+    <li data-kv-seen="q05"><span class="t">Kam šiandien padėjai? O kas padėjo tau?</span><span class="age"><b>visiems</b></span></li>
+    <li data-kv-seen="q06"><span class="t">Kas šiandien buvo sunku? Kas padėjo?</span><span class="age"><b>7–10</b></span></li>
+    <li data-kv-seen="q07"><span class="t">Jei išrastum robotą namams, ką jis darytų pirmiausia?</span><span class="age"><b>7–10</b></span></li>
+    <li data-kv-seen="q08"><span class="t">Ko norėtum išmokti, jei niekas netrukdytų?</span><span class="age"><b>7–10</b><b>11–14</b></span></li>
+    <li data-kv-seen="q09"><span class="t">Kuri taisyklė namuose ar mokykloje tau atrodo neteisinga? Kaip ją pakeistum?</span><span class="age"><b>11–14</b></span></li>
+    <li data-kv-seen="q10"><span class="t">Kurio darbo niekada neatiduotum dirbtiniam intelektui? Kodėl?</span><span class="age"><b>11–14</b></span></li>
   </ol>
 
   <div class="p2">
   <h2>3 žaidimai be ekranų</h2>
-  <div class="game">
+  <div class="game" data-kv-seen="g1">
     <h3>🌹 Rožė, spyglys, pumpuras</h3>
     <p class="age"><b>visiems</b> · 5 min.</p>
     <p>Kiekvienas pasako tris dalykus. Rožė: geriausia dienos dalis. Spyglys: sunkiausia. Pumpuras: ko lauki rytoj. Mažiesiems užtenka rožės.</p>
   </div>
-  <div class="game">
+  <div class="game" data-kv-seen="g2">
     <h3>📖 Istorijų grandinė</h3>
     <p class="age"><b>3–6</b><b>7–10</b> · 10 min.</p>
     <p>Vienas pradeda: „Vieną kartą mūsų virtuvėje…". Kiekvienas prideda po vieną sakinį. Viena taisyklė: negalima baigti „ir tada pabudau".</p>
   </div>
-  <div class="game">
+  <div class="game" data-kv-seen="g3">
     <h3>🤔 Atspėk, ką galvoju</h3>
     <p class="age"><b>7–10</b><b>11–14</b> · 10 min.</p>
     <p>Vienas sugalvoja daiktą, gyvūną ar žmogų. Kiti klausia tik tokių klausimų, į kuriuos atsakymas „taip" arba „ne". Ar atspėsit per 20 klausimų? Su mažaisiais skaičiuoti nereikia.</p>
@@ -122,13 +123,13 @@ a{color:var(--red)}
     <p><b>Pokalbis prie stalo augina žodyną.</b> 3–5 metų vaikai prie vakarienės stalo išgirdo apie 1 000 retų žodžių, o skaitant paveikslėlių knygeles apie 140 (Snow ir Beals, 2006). <span class="age">Lygis C: stebėjimo tyrimas, ne eksperimentas.</span></p>
     <p>Sąžiningai: tyrimų apie vaikų telefonus būtent prie šeimos stalo beveik nėra. Tai šeimos eksperimentas, ne receptas.</p>
   </div>
-  <ol class="src">
-    <li>Dwyer, R. J., Kushlev, K., Dunn, E. W. (2018). Smartphone use undermines enjoyment of face-to-face social interactions. <i>Journal of Experimental Social Psychology</i>, 78, 233–239. <a href="https://doi.org/10.1016/j.jesp.2017.10.007">doi:10.1016/j.jesp.2017.10.007</a></li>
-    <li>Snow, C. E., Beals, D. E. (2006). Mealtime talk that supports literacy development. <i>New Directions for Child and Adolescent Development</i>, 111, 51–66. doi:10.1002/cd.155 · <a href="https://www.gse.harvard.edu/ideas/usable-knowledge/15/11/how-raise-voracious-reader">santrauka (Harvard GSE)</a></li>
-    <li>Beals, D. E. (1997). Sources of support for learning words in conversation: evidence from mealtimes. <i>Journal of Child Language</i>, 24(3), 673–694. <a href="https://doi.org/10.1017/S0305000997003267">doi:10.1017/S0305000997003267</a></li>
+  <ol class="src" data-kv-seen="sources">
+    <li>Dwyer, R. J., Kushlev, K., Dunn, E. W. (2018). Smartphone use undermines enjoyment of face-to-face social interactions. <i>Journal of Experimental Social Psychology</i>, 78, 233–239. <a data-kv="outbound" data-kv-p="source" href="https://doi.org/10.1016/j.jesp.2017.10.007">doi:10.1016/j.jesp.2017.10.007</a></li>
+    <li>Snow, C. E., Beals, D. E. (2006). Mealtime talk that supports literacy development. <i>New Directions for Child and Adolescent Development</i>, 111, 51–66. doi:10.1002/cd.155 · <a data-kv="outbound" data-kv-p="source" href="https://www.gse.harvard.edu/ideas/usable-knowledge/15/11/how-raise-voracious-reader">santrauka (Harvard GSE)</a></li>
+    <li>Beals, D. E. (1997). Sources of support for learning words in conversation: evidence from mealtimes. <i>Journal of Child Language</i>, 24(3), 673–694. <a data-kv="outbound" data-kv-p="source" href="https://doi.org/10.1017/S0305000997003267">doi:10.1017/S0305000997003267</a></li>
   </ol>
 
-  <p class="disc">⚗️ Eksperimentinis lapas, sukurtas su dirbtiniu intelektu. Klausimai ir žaidimai mano, šaltinius patikrinau, bet galiu klysti: svarbius dalykus pasitikrink. Nemokama. Esu Robotikos Akademijos, RAIC, BrAIn Club ir ExoClass įkūrėjas ar bendraįkūrėjas. Radai klaidą? Parašyk: <a href="https://krisvas.lt/?src=stalas">krisvas.lt</a> · Kris Vas</p>
+  <p class="disc" data-kv-seen="end">⚗️ Eksperimentinis lapas, sukurtas su dirbtiniu intelektu. Klausimai ir žaidimai mano, šaltinius patikrinau, bet galiu klysti: svarbius dalykus pasitikrink. Nemokama. Esu Robotikos Akademijos, RAIC, BrAIn Club ir ExoClass įkūrėjas ar bendraįkūrėjas. Radai klaidą? Parašyk: <a data-kv="cta" data-kv-p="krisvas" href="https://krisvas.lt/?src=stalas">krisvas.lt</a> · Kris Vas</p>
   </div>
 </main>
 </body>
