@@ -8,6 +8,7 @@
 <meta name="description" content="Kris Vas naujienlaiškio pasveikinimas: garso versija (2 min. 15 s), 3 įrankiai ir nuorodos.">
 <script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="sveiki" data-kind="newsletter"></script>
 <script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-ev.js" data-page="sveiki" data-mode="full" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -45,13 +46,13 @@ a{color:var(--red)}
 
   <h2>3 įrankiai iš laiško</h2>
   <ul class="links">
-    <li>01 · Pilkas ekranas vienu paspaudimu: <a href="https://krisvas.lt/mygtukas?src=welcome-page">krisvas.lt/mygtukas</a></li>
-    <li>02 · Ką žiūrėti kartu: <a href="https://www.commonsensemedia.org/">Common Sense Media</a> (nepriklausoma, su ja nesu susijęs)</li>
-    <li>03 · Prie stalo: <a href="../stalas/?src=welcome-page">10 klausimų ir 3 žaidimai</a></li>
+    <li>01 · Pilkas ekranas vienu paspaudimu: <a data-kv="cta" data-kv-p="mygtukas" href="https://krisvas.lt/mygtukas?src=welcome-page">krisvas.lt/mygtukas</a></li>
+    <li>02 · Ką žiūrėti kartu: <a data-kv="outbound" data-kv-p="commonsense" href="https://www.commonsensemedia.org/">Common Sense Media</a> (nepriklausoma, su ja nesu susijęs)</li>
+    <li>03 · Prie stalo: <a data-kv="cta" data-kv-p="stalas" href="../stalas/?src=welcome-page">10 klausimų ir 3 žaidimai</a></li>
   </ul>
 
   <h2>Tekstas</h2>
-  <div class="t">
+  <div class="t" data-kv-seen="transcript">
     <p>Labas, mamos ir tėčiai. Čia Kris Vas. Tiksliau, mano balso klonas, sukurtas su dirbtiniu intelektu.</p>
     <p>Ačiū, kad užsiregistravai.</p>
     <p>Daugiau nei dešimtmetį statau būrelius vaikams. Šiame naujienlaiškyje gausi mokslu paremtus patarimus ir įrankius, kurie tau ir vaikui parodo vieną dalyką. Tikras gyvenimas įdomesnis už ekraną.</p>
@@ -67,12 +68,16 @@ a{color:var(--red)}
     <p>Tavo vyriausiasis būrelių evangelistas, Kris Vas.</p>
   </div>
 
-  <p class="disc">⚗️ Garsas sugeneruotas su dirbtiniu intelektu iš mano balso (ElevenLabs). Mintys mano, galiu klysti: svarbius dalykus pasitikrink. Šaltiniai yra laiške. Esu Robotikos Akademijos, RAIC, BrAIn Club ir ExoClass įkūrėjas ar bendraįkūrėjas. Nemokama. <a href="https://krisvas.lt/?src=welcome-page">krisvas.lt</a></p>
+  <p class="disc" data-kv-seen="end">⚗️ Garsas sugeneruotas su dirbtiniu intelektu iš mano balso (ElevenLabs). Mintys mano, galiu klysti: svarbius dalykus pasitikrink. Šaltiniai yra laiške. Esu Robotikos Akademijos, RAIC, BrAIn Club ir ExoClass įkūrėjas ar bendraįkūrėjas. Nemokama. <a data-kv="cta" data-kv-p="krisvas" href="https://krisvas.lt/?src=welcome-page">krisvas.lt</a></p>
 </main>
 <script>
 (function(){var a=document.getElementById('player');var sent={};function ping(n){if(sent[n])return;sent[n]=1;try{window.bt&&window.bt(n==='play'?'engage':'value',{a:n})}catch(e){}try{window.clarity&&window.clarity('event','audio_'+n)}catch(e){}}
 a.addEventListener('play',function(){ping('play')});a.addEventListener('ended',function(){ping('ended')});
-a.addEventListener('timeupdate',function(){if(a.duration&&a.currentTime/a.duration>0.5)ping('half')});})();
+a.addEventListener('timeupdate',function(){if(a.duration&&a.currentTime/a.duration>0.5)ping('half')});
+/* kv-ev.js decision events (2026-10-21): play, then 25/50/75/100 % reached, once each -> Supabase kv_events */
+var q={};function kv(n){if(q[n])return;q[n]=1;try{window.kvEv&&window.kvEv(n,null,{once:true})}catch(e){}}
+a.addEventListener('play',function(){kv('audio_play')});a.addEventListener('ended',function(){kv('audio_100')});
+a.addEventListener('timeupdate',function(){if(!a.duration)return;var r=a.currentTime/a.duration;if(r>=.25)kv('audio_25');if(r>=.5)kv('audio_50');if(r>=.75)kv('audio_75');if(r>=.98)kv('audio_100')});})();
 </script>
 </body>
 </html>
