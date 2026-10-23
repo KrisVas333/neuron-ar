@@ -168,7 +168,8 @@ input[type=email]{width:100%;font:16px var(--body);padding:12px;border:1.5px sol
 
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var SRC=(q.src||q.utm_source||'direct').slice(0,40);
-  function ev(n,p,o){ try{ if(window.kvEv) window.kvEv(n,p||null,o); }catch(e){} }
+  var evq=[]; function ev(n,p,o){ try{ if(window.kvEv) window.kvEv(n,p||null,o); else evq.push([n,p||null,o]); }catch(e){} }
+  addEventListener('load',function(){ try{ if(window.kvEv) evq.splice(0).forEach(function(a){ window.kvEv(a[0],a[1],a[2]); }); }catch(e){} });
   var role=null, age=null, voted=false;
   var $=function(id){return document.getElementById(id);};
 
