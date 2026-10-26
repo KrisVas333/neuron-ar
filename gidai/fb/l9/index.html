@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FB L9 Dizzy Descent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Kanit:wght@400;600;800&display=swap">
+<style>
+/* Layout: one 1920×1080 stage scaled to fit; cloned from the L8 deck (purple gradient, Russo One, cyan + yellow). Notes panel under the stage. */
+:root{
+  --navy:#141B3E; --deep:#0A0620; --cyan:#4FD8FF; --yellow:#FFC24B; --frame:#FFD34D; --white:#FFFFFF; --green:#7CFC9A; --violet:#7B3FF2; --orange:#FFAB19;
+  --page:#0A0620; --ui:#1A1F4E; --uifg:#E8ECFF;
+  --head:"Russo One", "Arial Black", sans-serif; --body:"Kanit", "Segoe UI", sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--page);color:var(--uifg);font-family:var(--body);display:flex;flex-direction:column;align-items:center;padding-inline:16px;padding-block:12px}
+.bar{width:min(100%, calc((100vh - 84px) * 16 / 9));display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-bottom:10px;font-size:14px}
+.bar b{font-family:var(--head);font-weight:400;letter-spacing:.03em}
+.bar button{background:var(--ui);color:var(--uifg);border:1px solid #2f3a7a;border-radius:6px;padding:6px 12px;font:600 14px var(--body);cursor:pointer}
+.bar button:focus-visible{outline:2px solid var(--cyan)}
+.viewport{width:min(100%, calc((100vh - 84px) * 16 / 9));flex:none;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px #0008}
+.stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.slide{position:absolute;inset:0;background:url(deck-assets/image23-hq.png) center/cover;color:var(--white);padding:70px 90px;display:none;flex-direction:column;gap:30px;overflow:hidden}
+.slide.on{display:flex}
+.slide.big{box-shadow:inset 0 0 0 16px var(--frame)}
+.slide.big::after{content:"BIGGER KIDS ONLY";position:absolute;top:28px;right:40px;background:var(--frame);color:var(--navy);font:400 30px var(--head);padding:6px 18px;border-radius:8px}
+.slide.young::after{content:"YOUNGLINGS";position:absolute;top:28px;right:40px;background:var(--cyan);color:var(--navy);font:400 30px var(--head);padding:6px 18px;border-radius:8px}
+h1,h2{font-family:var(--head);font-weight:400;margin:0;line-height:1.05;text-wrap:balance}
+h1{font-size:110px}
+h2{font-size:84px;color:var(--cyan)}
+.t{font-size:52px;line-height:1.2;font-weight:600}
+.s{font-size:44px;line-height:1.25}
+.y{color:var(--yellow)}
+.c{color:var(--cyan)}
+.row{display:flex;gap:40px;align-items:stretch;flex:1;min-height:0}
+.col{display:flex;flex-direction:column;gap:24px;flex:1;min-width:0}
+.card{background:#141B3ECC;border:3px solid var(--cyan);border-radius:24px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;flex:1;min-width:0}
+.card .lb{font:400 50px var(--head)}
+.wcard{background:#fff;border-radius:24px;border:6px solid var(--white);display:flex;align-items:center;justify-content:center;overflow:hidden;min-width:0;min-height:0}
+.wcard img{width:100%;height:100%;object-fit:contain;display:block}
+.steps{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:24px;align-items:center;font-size:var(--fs,48px);line-height:1.15;font-weight:600}
+.steps .n{flex:none;width:80px;height:80px;border-radius:50%;background:var(--cyan);color:var(--navy);display:grid;place-items:center;font:400 46px var(--head)}
+.word{background:var(--yellow);color:var(--navy);border-radius:24px;padding:26px 40px;display:flex;flex-direction:column;gap:6px}
+.word .k{font:400 40px var(--head);letter-spacing:.06em}
+.word .w{font:400 120px var(--head);line-height:1}
+.word .d{font-size:50px;font-weight:600}
+.timer{position:absolute;left:40px;bottom:30px;font:400 34px var(--head);color:var(--yellow)}
+.credit{position:absolute;right:30px;bottom:14px;font-size:20px;color:#ffffffaa}
+.quote{font:800 76px/1.15 var(--body);text-align:center}
+.center{align-items:center;justify-content:center;text-align:center}
+.who img{height:560px}
+.frame{background:#141B3ECC;border-left:12px solid var(--yellow);border-radius:16px;padding:22px 30px;font-size:50px;font-weight:600;line-height:1.2}
+.rules{display:flex;gap:24px;justify-content:center}
+.rules figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;font:400 40px var(--head)}
+.rules img{width:310px;height:310px;object-fit:contain}
+.slide.ad{padding:0;background:#000}
+.slide.ad video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* picture slides: text compact on one side, picture as big as possible */
+.slide.pic{padding:40px 48px}
+.side{flex:none;display:flex;flex-direction:column;justify-content:center;gap:34px;min-width:0}
+.side h2{font-size:76px}
+.side .steps{--fs:42px;gap:20px}
+.side .steps .n{width:70px;height:70px;font-size:40px}
+/* Tomorrow Map: one white canvas image, full slide */
+.slide.mapfull{padding:0;background:#fff}
+.mapfull img.m{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mapfull .mt{position:absolute;top:26px;left:50%;transform:translateX(-50%);background:var(--navy);color:var(--cyan);font:400 64px var(--head);padding:8px 36px;border-radius:16px;white-space:nowrap}
+.mapfull .mq{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font:600 52px var(--body);padding:6px 36px;border-radius:16px;white-space:nowrap}
+.mapfull .mlbl{position:absolute;transform:translateX(-50%);font:400 48px var(--head);background:var(--yellow);color:var(--navy);border-radius:14px;padding:6px 26px;white-space:nowrap;box-shadow:0 0 40px #FFC24B88}
+/* black-canvas Tomorrow Map (old, unused) */
+.map{position:relative;flex:1;min-height:0;background:#000;border-radius:28px;border:4px solid #ffffff33;overflow:hidden}
+.map svg.path{position:absolute;inset:0;width:100%;height:100%}
+.mobj{position:absolute;width:380px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.mobj .ph{width:380px;height:290px;border-radius:20px;background:#fff;display:grid;place-items:center;overflow:hidden;border:5px solid var(--green)}
+.mobj .ph img{max-width:370px;max-height:280px;object-fit:contain}
+.mobj .ph.dark{background:#000}
+.mobj .lbl{font:400 40px var(--head);color:var(--yellow);background:#141B3E;border:3px dashed var(--yellow);border-radius:14px;padding:4px 22px;white-space:nowrap}
+.mobj.new .ph{border-color:var(--yellow);box-shadow:0 0 50px #FFC24B88}
+.mobj.new .lbl{border-style:solid;background:var(--yellow);color:var(--navy)}
+/* reveal on Next (first press reveals, second goes on) */
+.rv{transition:opacity .3s}
+.slide:not(.shown) .rv{opacity:0}
+.slide:not(.shown) .rv-cover{opacity:1}
+.slide.shown .rv-cover{opacity:0}
+/* clock game */
+.clk{position:relative;width:900px;height:900px;flex:none}
+.clk svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.clk .sec{fill:#141B3E;stroke:#fff;stroke-width:8;transition:fill .3s,opacity .3s}
+.clk .ic{position:absolute;transform:translate(-50%,-50%);transition:opacity .3s,transform .3s;display:flex;flex-direction:column;align-items:center}
+.clk .ic img{display:block;max-width:300px;max-height:240px;object-fit:contain;border-radius:18px}
+.clk.wb .ic img{max-width:410px;max-height:200px}
+.clk.tb .ic img{max-width:250px;max-height:250px;border-radius:40px}
+.clk .tick{position:absolute;transform:translate(-50%,-50%);font:400 150px var(--head);color:var(--green);opacity:0;transition:opacity .3s;text-shadow:0 0 30px #000}
+.slide.shown .clk .sec.ok{fill:#2a6b3e}
+.slide.shown .clk .sec:not(.ok){opacity:.25}
+.slide.shown .clk .ic:not(.ok){opacity:.2}
+.slide.shown .clk .ic.ok{transform:translate(-50%,-50%) scale(1.12)}
+.slide.shown .clk .tick{opacity:1}
+.clk .hub{fill:var(--yellow)}
+/* C-block drawn in CSS (check in) */
+.cblk{background:var(--orange);border-radius:18px;padding:16px 0 26px 0;display:flex;flex-direction:column;gap:12px;width:fit-content}
+.cblk .hd{font:600 44px var(--body);color:var(--navy);padding:0 26px;display:flex;align-items:center;gap:14px}
+.cblk .hd b{background:#fff;border-radius:40px;padding:0 22px}
+.cblk .in{margin-left:40px;background:#ffffff22;border-radius:10px 0 0 10px;padding:10px 20px 10px 10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.stack{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.stack img,.cblk img{height:84px;width:auto;display:block}
+.stack{gap:0}.stack img.r,.cblk img.r{height:108px}.stack img.w,.cblk img.w{height:103px}
+.stack img+img,.cblk .in img+img{margin-top:-25px}
+/* timer widget */
+.clock{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#141B3ECC;border:4px solid var(--yellow);border-radius:28px;padding:24px}
+.clock .rnd{font:400 44px var(--head);color:var(--cyan)}
+.clock .dig{font:400 170px/1 var(--head);color:var(--yellow);font-variant-numeric:tabular-nums}
+.clock .dig.end{color:#ff8a7d}
+.clock .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.clock button{font:400 36px var(--head);background:var(--cyan);color:var(--navy);border:0;border-radius:14px;padding:10px 22px;cursor:pointer}
+.clock button:focus-visible{outline:4px solid var(--white)}
+.ladder{display:flex;flex-direction:column;gap:10px;font:400 50px var(--head)}
+.ladder span{background:#141B3ECC;border:3px solid var(--cyan);border-radius:14px;padding:6px 22px}
+.ladder .bp{border-color:var(--yellow);color:var(--yellow)}
+.ladder .dr{border-color:#ff8a7d;color:#ff8a7d}
+.notes{width:min(100%, calc((100vh - 84px) * 16 / 9));margin-top:12px;background:var(--ui);border-radius:8px;padding:14px 18px;font-size:16px;line-height:1.5}
+.notes h3{margin:0 0 6px;font:400 16px var(--head);color:var(--cyan)}
+.notes ul{margin:0;padding-left:20px}
+.notes .tm{color:var(--yellow);font-weight:600}
+.notes[hidden]{display:none}
+@media (prefers-reduced-motion:no-preference){.slide.on{animation:fade .25s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+/* missing picture fallback */
+.miss{width:100%;height:100%;min-height:200px;border:6px dashed #888;border-radius:16px;background:#f4f4f4;color:#333;display:grid;place-items:center;font:600 36px var(--body);text-align:center;padding:20px;word-break:break-all}
+/* speech bubbles (hook) */
+.say{background:#fff;color:var(--navy);border-radius:28px;padding:24px 34px;font:800 56px/1.15 var(--body);position:relative;box-shadow:0 10px 30px #0006}
+.say b{display:block;font:400 34px var(--head);color:var(--violet);margin-bottom:6px}
+/* own animations (word slide + carousel), drawn by JS on a 1920 stage */
+.scene{position:relative;background:#fff;border-radius:28px;overflow:hidden}
+.scene .post{position:absolute;left:50%;width:44px;margin-left:-22px;top:60px;bottom:90px;background:repeating-linear-gradient(#9aa3ad 0 14px,#7d8690 14px 18px);border:4px solid #222;border-radius:8px}
+.scene .base{position:absolute;left:50%;bottom:40px;width:420px;height:80px;margin-left:-210px;background:#16A39A;border:4px solid #222;border-radius:50%}
+.scene .disc{position:absolute;left:50%;width:380px;height:96px;margin-left:-190px;border-radius:50%;background:#F05A8C;border:5px solid #222}
+.scene .rider{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:4px solid #222}
+.loopl{display:flex;flex-direction:column;gap:22px;font:400 54px var(--head)}
+.loopl span{border:6px solid #ffffff44;border-radius:999px;padding:12px 36px;background:#141B3ECC;transition:all .2s}
+.loopl span.in{margin-left:70px}
+.loopl span.lit{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 40px #FFC24B88}
+.carou .roof{position:absolute;left:50%;top:40px;width:0;height:0;margin-left:-330px;border-left:330px solid transparent;border-right:330px solid transparent;border-bottom:190px solid #E8413C}
+.carou .roofb{position:absolute;left:50%;top:228px;width:700px;height:56px;margin-left:-350px;background:repeating-linear-gradient(90deg,#E8413C 0 70px,#fff 70px 140px);border:4px solid #222;border-radius:14px}
+.carou .pole{position:absolute;left:50%;top:284px;bottom:150px;width:30px;margin-left:-15px;background:#FFC24B;border:4px solid #222}
+.carou .floor{position:absolute;left:50%;bottom:70px;width:820px;height:150px;margin-left:-410px;background:#4FD8FF;border:5px solid #222;border-radius:50%}
+.carou .horse{position:absolute;font-size:150px;line-height:1;margin:-75px 0 0 -75px}
+/* game: program blocks drawn in CSS */
+.prog{display:flex;flex-direction:column;align-items:flex-start;gap:18px;font:400 92px var(--head)}
+.slide.young .prog{font-size:130px}
+.gb .gb{background:#FFC870;border:5px solid #C77D00}
+.gb{background:var(--orange);color:var(--navy);border-radius:20px;padding:14px 0 26px;display:flex;flex-direction:column;gap:12px}
+.gb>.hd{padding:0 30px;display:flex;align-items:center;gap:16px}
+.gb>.hd b{background:#fff;border-radius:40px;padding:0 24px}
+.gb>.in{margin-left:46px;display:flex;flex-direction:column;gap:12px;padding-right:20px}
+.mv{background:#16A39A;color:#fff;border-radius:20px;padding:16px 40px;border:4px solid #0d6f69;width:fit-content}
+.ans{font:400 64px var(--head);background:var(--yellow);color:var(--navy);border-radius:18px;padding:10px 34px;width:fit-content}
+.gstep{display:flex;gap:30px;justify-content:center}
+.gstep figure{margin:0;flex:1;background:#141B3ECC;border:4px solid var(--cyan);border-radius:28px;padding:30px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.gstep .e{font-size:150px;line-height:1}
+.gstep .l{font:400 60px var(--head);color:var(--yellow)}
+.gstep .d{font-size:42px;font-weight:600;line-height:1.2}
+/* game programs stacked from real block tiles */
+.wp{--s:.62;display:flex;flex-direction:column;align-items:flex-start}
+.wrp{display:flex;flex-direction:column;width:calc(1024px*var(--s))}
+.wrp>img{display:block;width:100%}
+.wrp>.mid{background:url(deck-assets/icons-hq/word-repeat-spine.png) left top/100% 100% repeat-y;padding:0 0 0 calc(131px*var(--s));margin:-2px 0;display:flex;flex-direction:column;align-items:flex-start;min-height:calc(90px*var(--s))}
+.wp img.mv2{height:calc(211px*var(--s));width:auto;display:block}
+.wrp>.mid>*+*{margin-top:calc(-24px*var(--s))}
+.wrp>.mid>*:first-child{margin-top:calc(-30px*var(--s))}
+.ip{display:flex;align-items:flex-start}
+.irp{display:flex;flex-direction:column}
+.irp>.bar{height:36px;background:#FBAB18;border:4px solid #835A0C;border-radius:14px 14px 0 0;margin:0 0 -4px}
+.irp>.row2{display:flex;align-items:flex-start}
+.it{display:flex;flex-direction:column;align-items:center;gap:8px}
+.it img{width:230px;height:auto;display:block}
+.it .num{font:400 76px var(--head);background:#fff;color:var(--navy);border:5px solid #835A0C;border-radius:40px;padding:0 30px;line-height:1.15}
+/* ad fallback: only when the video fails */
+.slide.ad .vfb{display:none;position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,#2a2f7a,#0A0620);color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center}
+.slide.ad.vfail .vfb{display:flex}
+.slide.ad.vfail video{display:none}
+.vfb .moon{font-size:260px;line-height:1}
+.vfb .tag{font:400 110px var(--head)}
+.vfb .sub{font:600 56px var(--body);color:var(--cyan)}
+.vfb .fn{position:absolute;right:24px;bottom:16px;font-size:20px;color:#ffffff66}
+</style>
+</head><body>
+
+<div class="bar">
+  <span><b>FB L9 · Dizzy Descent</b></span>
+  <span id="count">1 / 32</span>
+  <span style="display:flex;gap:6px">
+    <button id="prev" type="button">← Back</button>
+    <button id="next" type="button">Next →</button>
+    <button id="tn" type="button">Notes (N)</button>
+  </span>
+</div>
+
+<div class="viewport" id="vp"><div class="stage" id="stage">
+
+<!-- 1 -->
+<section class="slide pic" data-notes='Say: “Welcome back! Today our ride learns a NEW trick!” Don’t say which one yet.||PREP: charge the double motors. Build: C1 p.54–67.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="col">
+      <p class="t c" style="margin:0">LESSON 9</p>
+      <h1>WELCOME BACK, FUTURE BUILDERS!</h1>
+      <p class="s" style="margin:0">Today our ride learns a new trick!</p>
+    </div>
+    <div class="who"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna high five" style="height:1000px"></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide mapfull" data-notes='Point at each thing: “Why did we need it?”||Plane → to get around and see the map. Supplies → tools and things for the first builders. Robot → someone to do the chores. Drop tower → a place to have FUN!||Younglings: mentor names the thing, kids say why.' data-t="2|1">
+  <img class="m" src="deck-assets/map-l9-start.png" alt="The Tomorrow Map: plane, supplies, helper robot and the drop tower on a white map">
+  <h2 class="mt">THE TOMORROW MAP</h2>
+  <p class="mq" style="margin:0">Why did we <span class="y">need</span> each one?</p>
+</section>
+
+<!-- 3 -->
+<section class="slide pic" data-notes='Recap. Ask: “What did our drop tower do?” (up in small steps… beep… DROP!).||“Which block made it go up again and again?” → LOOP.||Younglings: show up-up-up with your hand, everyone says LOOP.' data-t="2|1">
+  <div class="row" style="align-items:center">
+    <div class="wcard" style="flex:none;width:600px;height:940px"><img src="deck-assets/tower-hq.png" alt="Our drop tower from last time"></div>
+    <div class="side" style="flex:1">
+      <p class="t c" style="margin:0">LAST TIME</p>
+      <ol class="steps">
+        <li><span class="n">1</span>We built a drop tower</li>
+        <li><span class="n">2</span>A LOOP 🔁 made it climb</li>
+        <li><span class="n">3</span>Up, up, up… DROP!</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide pic" data-notes='Say FIRST: “Last time we built a drop tower: up, up, up… DROP! We rode it all week. But now we know exactly what it does. What if it could SPIN at the same time?”||Then read Leo with a big bored sigh: “Up, up, up, DROP… I know it by heart now. Boring!”||Then Luna: “Remember what we asked last time?” Kids shout: SPIN!||Press Next: “How could a ride spin AND drop at the same time?” Take 2–3 ideas. Don’t answer.||Younglings: same, kids spin a finger in the air.' data-t="3|2">
+  <div class="row" style="align-items:center">
+    <div class="who" style="flex:none"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna" style="height:1000px"></div>
+    <div class="col" style="gap:40px">
+      <p class="say"><b>LEO</b>“Up, up, DROP… Boring!” 🥱</p>
+      <p class="say"><b>LUNA</b>“Remember what we asked?”</p>
+      <p class="quote rv" style="text-align:left;margin:0">Spin AND drop… <span class="y">how?</span> 🤔</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide center" data-notes='Say it together.||We check it on slide 28.' data-t="1|1">
+  <p class="t c" style="margin:0">OUR PROMISE</p>
+  <p class="quote">“I can put a loop inside a loop.”</p>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes='Quick recall of the rules.' data-t="1|1">
+  <h2 style="text-align:center">REMEMBER OUR RULES?</h2>
+  <div class="rules" style="flex:1;align-items:center">
+    <figure><img src="deck-assets/image5-hq.png" alt=""><figcaption>ATTENTION</figcaption></figure>
+    <figure><img src="deck-assets/image8-hq.png" alt=""><figcaption>ORDER</figcaption></figure>
+    <figure><img src="deck-assets/image4-hq.png" alt=""><figcaption>STOP</figcaption></figure>
+    <figure><img src="deck-assets/image9-hq.png" alt=""><figcaption>FRIENDSHIP</figcaption></figure>
+    <figure><img src="deck-assets/image6-hq.png" alt=""><figcaption>BASE</figcaption></figure>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide pic" data-notes='Read the word. Everyone says it: NESTED LOOP.||Point at the animation: “It climbs one step (big loop, 6 times). At every step the platform SPINS (small loop, 4 times).”||“The small loop is INSIDE the big loop.” Watch which label lights up.' data-t="2|1">
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="col" style="flex:none;width:880px;gap:40px">
+      <div class="word"><span class="k">WORD OF THE DAY</span><span class="w" style="font-size:104px">NESTED LOOP</span><span class="d">= a loop inside a loop</span></div>
+      <div class="loopl"><span id="loopOut">🔁 REPEAT 6 · climb</span><span class="in" id="loopIn">🌀 REPEAT 4 · spin</span></div>
+    </div>
+    <div class="scene" id="nestAnim" style="flex:1;height:940px" aria-label="Animation: the platform climbs one step and spins, six times">
+      <div class="base"></div><div class="post"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide pic" data-notes='“The carousel goes round and round. And every horse goes up and down, up and down, the whole time.”||Everyone stands up: bob your hands up and down while you turn once on the spot.||“Up and down INSIDE round and round = a loop inside a loop!”' data-t="1|2">
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="side" style="width:620px">
+      <h2>LIKE A CAROUSEL!</h2>
+      <ol class="steps">
+        <li><span class="n">1</span>Round and round 🔄</li>
+        <li><span class="n">2</span>Up and down ↕️</li>
+        <li><span class="n">3</span>Stand up and try it!</li>
+      </ol>
+    </div>
+    <div style="flex:1;position:relative;height:960px;display:flex;align-items:center">
+      <video src="deck-assets/carousel-loop.mp4" autoplay muted loop playsinline preload="auto" aria-label="A real carousel turning while the horses go up and down" style="width:100%;border-radius:24px;box-shadow:0 12px 40px rgba(0,0,0,.18)"></video>
+      <span style="position:absolute;right:12px;bottom:150px;font-size:16px;color:#667;background:rgba(255,255,255,.8);padding:2px 8px;border-radius:6px">Video: Kaly99, Wikimedia Commons, CC BY-SA 3.0</span>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide pic" data-notes='Word recap. Point at each word: “What does it mean? Give me an example!”||9. LOOP = do the same thing again and again. New word 10: NESTED LOOP = a loop inside a loop.||Younglings: 4 words only (motor, bug, loop, nested loop). Mentor gives the example if no one can.' data-t="4|1">
+  <div class="row" style="align-items:center">
+    <img src="deck-assets/words-notebook-hq.png" alt="Leo's notebook: motor, sensor, hub, programming, pseudocode, bug, decompose, crowdsource" style="flex:1;min-width:0;max-height:100%;object-fit:contain">
+    <div class="col" style="flex:none;gap:40px">
+      <div style="background:#FFF6C8;color:#1F3DA0;border-radius:20px;padding:24px 36px;transform:rotate(-3deg);box-shadow:0 10px 30px #0008;font:400 70px var(--head);text-align:center">9. LOOP 🔁</div>
+      <div style="background:#FFF6C8;color:#1F3DA0;border-radius:20px;padding:24px 36px;transform:rotate(3deg);box-shadow:0 10px 30px #0008;font:400 70px var(--head);text-align:center">10. NESTED LOOP</div>
+    </div>
+  </div>
+  <p class="t" style="text-align:center;margin:0">What does it mean? <span class="y">Give an example!</span></p>
+  <span class="timer">⏱ 4:00</span>
+</section>
+
+<!-- 10 -->
+<section class="slide pic" data-notes='Running late? “Make it exciting” and the game get shorter, never the build.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>TODAY’S PLAN</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Build the spinning ride</li>
+      <li><span class="n">2</span>Put a loop inside a loop 🔁</li>
+      <li><span class="n">3</span>Make it exciting!</li>
+      <li><span class="n">4</span>Catch the broken ride 🎢</li>
+    </ol></div>
+    <div class="wcard" style="flex:none;width:560px;height:1000px"><img src="deck-assets/build-final-hq.png" alt="The finished ride: drop tower with a spinning platform"></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide pic" data-notes='Blind pick: each kid takes one minifigure from the bag.||Colour = your part of build step 1 (blue · red · green · yellow).' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>PICK YOUR MINIFIGURE!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Pick one, eyes closed 🙈</li>
+      <li><span class="n">2</span>Your colour = your part</li>
+      <li><span class="n">3</span>Find your colour in step 1</li>
+    </ol></div>
+    <div class="wcard" style="flex:none;width:1280px;height:912px"><img src="deck-assets/build-step-01-hq.png" alt="Build step 1 split into 4 colour parts: blue, red, green, yellow"></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide pic" data-notes='Build: C1 p.54–67, 17 steps. Groups of 4, one ride per crew.||While they build, ask: “How does the platform spin? How do riders get on and off?”||Check: both motor cables plugged in, the platform turns freely.||Younglings: more time (25 min); mentor checks every crew.' data-t="17|25">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>BUILD TOGETHER</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Build your colour part</li>
+      <li><span class="n">2</span>Put the parts together</li>
+      <li><span class="n">3</span>Follow steps 2–17</li>
+      <li><span class="n">4</span>Platform spins? ✅</li>
+    </ol></div>
+    <div class="wcard" style="flex:none;width:560px;height:1000px"><img src="deck-assets/build-final-hq.png" alt="The finished ride: drop tower with a spinning platform"></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide pic" data-notes='Leave this up while crews build: the tricky steps, big.||Step 11 platform · 13 gear under the platform · 15 band on the wheel · 16 slide it onto the post.||Done early? “How could riders get on and off the platform?”' data-t="2|1">
+  <h2 style="text-align:center">TRICKY STEPS</h2>
+  <div class="row" style="gap:24px">
+    <div class="wcard" style="flex:1;height:860px"><img src="deck-assets/build-step-11-hq.png" alt="Step 11: the platform"></div>
+    <div class="wcard" style="flex:1;height:860px"><img src="deck-assets/build-step-13-hq.png" alt="Step 13: the gear under the platform"></div>
+    <div class="wcard" style="flex:1;height:860px"><img src="deck-assets/build-step-15-hq.png" alt="Step 15: the band on the wheel"></div>
+    <div class="wcard" style="flex:1;height:860px"><img src="deck-assets/build-step-16-hq.png" alt="Step 16: slide it onto the post"></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide big pic" data-notes='⚡ BIGGER KIDS ONLY (yellow frame). Younglings: skip to slide 15.||Tablets face down. Starter: REPEAT 6 { right motor 1 rotation · wait 0.5 s } (climb). A loose REPEAT 4 { left motor 0.5 rotation · wait 0.5 s } (spin) + a note: “Place it inside the first loop.”||Ask: “Which motor climbs? Which one spins?” → RIGHT climbs, LEFT spins. “What happens if the spin loop goes INSIDE the climb loop?” → it spins at every step.||Why 4? REPEAT 4 × left motor 0.5 rotation = the platform turns half a turn, 4 times = 2 full spins at every step. And 6 = 6 climbing steps.' data-t="3|0">
+  <div class="row" style="align-items:center">
+    <div class="wcard" style="flex:none;width:1240px;height:960px"><img src="deck-assets/code-starter-hq.png" alt="Starter code: a climb loop and a loose spin loop"></div>
+    <div class="side" style="flex:1"><h2>PREDICT!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Tablets face down</li>
+      <li><span class="n">2</span>Which motor climbs?</li>
+      <li><span class="n">3</span>Which motor spins?</li>
+      <li><span class="n">4</span>Spin loop INSIDE? 🤔</li>
+    </ol></div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide young pic" data-notes='YOUNGLINGS ONLY. Bigger kids: skip.||NEW project → Icon blocks (not the bigger kids’ word-block project). Show this icon code.||Point: “The BIG loop (6) = the climb steps. The SMALL loop (4) = the spins.” Show it with your hands: a small circle inside a big circle.||Ask: “The small loop is INSIDE the big loop. What happens?” → it spins again and again at every step.' data-t="0|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:520px"><h2>PREDICT!</h2>
+    <ol class="steps"><li><span class="n">1</span>Big loop = climb ⬆️</li><li><span class="n">2</span>Small loop = spin 🌀</li><li><span class="n">3</span>Small INSIDE big? 🤔</li></ol></div>
+    <div class="wcard" style="flex:1;height:960px;padding:30px"><img src="deck-assets/code-icon-hq.png" alt="Icon code: start, a big repeat 6 around a small repeat 4 with motor turn 1, then motor back 1"></div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide big pic" data-notes='⚡ BIGGER KIDS ONLY. Coding Canvas, Word blocks, PIN 1307. One tablet per crew.||Press play first: it climbs in 6 steps, no spin.||Then drag the loose REPEAT 4 (left motor) INSIDE REPEAT 6, under the wait. Press play: it spins at every step.||Then change one number (spins, steps, wait) and test again.||🐞 Wrong part moves? That is a BUG: check LEFT (spin) / RIGHT (climb).' data-t="10|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:560px"><h2>TRY IT!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Connect + play ▶️</li>
+      <li><span class="n">2</span>Spin loop INSIDE!</li>
+      <li><span class="n">3</span>Change a number</li>
+    </ol>
+    <p class="frame" style="margin:0">🐞 Check LEFT / RIGHT!</p></div>
+    <div class="col" style="flex:1;gap:14px;align-items:center;justify-content:center">
+      <div class="wcard" style="width:100%;height:370px;padding:16px"><img src="deck-assets/code-starter-hq.png" alt="Before: a climb loop and a loose spin loop"></div>
+      <p class="t y" style="margin:0;font-size:46px">⬇️ drag the spin loop INSIDE</p>
+      <div class="wcard" style="width:640px;height:540px;padding:16px"><img src="deck-assets/code-nested-hq.png" alt="After: the spin loop inside the climb loop"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide young pic" data-notes='YOUNGLINGS ONLY: Icon blocks. NEW project → Icon blocks (not the bigger kids’ project). One tablet per crew.||Mentor builds it on the projector step by step; crews copy each step. 1) Play block + REPEAT with motor ↻ 1 inside, set the repeat to 4 (top picture). Press play: count 4 spins. 2) Put a BIG repeat around it, set it to 6, add motor ↺ 1 after the small loop (bottom picture). Press play and count the spins together.||Be honest: icon blocks can’t choose the left or right motor, so we don’t know which part of this ride the motor block moves (maybe both: it climbs while it spins). TEST IT ONCE BEFORE CLASS and tell the kids what to expect. If the tower reaches the top, change 6 to 2.' data-t="0|5">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:520px"><h2>TRY IT!</h2>
+    <ol class="steps"><li><span class="n">1</span>NEW → Icon blocks</li><li><span class="n">2</span>Copy the mentor 👀</li><li><span class="n">3</span>Play ▶️ count spins!</li></ol></div>
+    <div class="col" style="flex:1;gap:14px;align-items:center;justify-content:center">
+      <div class="wcard" style="width:760px;height:420px;padding:16px"><img src="deck-assets/code-icon-step1.png" alt="Step 1: start, repeat 4 with motor turn 1 inside"></div>
+      <p class="t y" style="margin:0;font-size:46px">⬇️ put it INSIDE a big loop</p>
+      <div class="wcard" style="width:100%;height:440px;padding:16px"><img src="deck-assets/code-icon-hq.png" alt="Step 2: a big repeat 6 around the small repeat 4, then motor back 1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide ad" data-notes='Ad break.' data-t="1|1">
+  <video src="deck-assets/sleep-ad-v1.mp4" playsinline preload="auto" onerror="this.closest('.slide').classList.add('vfail')"></video>
+  <div class="vfb"><span class="moon">🌙</span><span class="tag">SLEEP</span><span class="sub">Free. Every night. Try it tonight.</span><span class="fn">sleep-ad-v1.mp4 not found</span></div>
+</section>
+
+<!-- 19 -->
+<section class="slide pic" data-notes='Ask: “How did you use the nested loop?” “Which loop is inside which?” “What did you change?”||Point: “The inside loop spins again and again, and the outside loop repeats the WHOLE thing: climb, spin, climb, spin. Many moves, few blocks.”||Bigger kids: “What did you run, check and change?” → that is ITERATE: run it, check it, change one thing.||Younglings: one question: “How many times did it spin?”' data-t="4|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:600px"><h2>WHY A NESTED LOOP?</h2>
+    <ol class="steps"><li><span class="n">1</span>Which loop is inside?</li><li><span class="n">2</span>What did you change?</li></ol>
+    <p class="frame" style="margin:0"><span class="y">ITERATE</span> = run, check, change</p></div>
+    <div class="wcard" style="flex:1;height:980px;padding:20px"><img src="deck-assets/code-nested-hq.png" alt="A nested loop: the spin loop inside the climb loop"></div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide pic" data-notes='ONE task for the whole crew. Say: “Make your ride do THIS (point at the steps) and give it a theme: space, jungle or desert!”||Start the 14-min timer and step back. Don’t fix their code: point at the picture and ask “What does your ride do now? What’s missing?”||Load riders = a quarter turn of the platform at the bottom, 4 times (one rider gets on each time).||Success = it stops 4 times to load riders, climbs while spinning, beeps, drops fast, and looks like a space / jungle / desert ride.||Bigger kids: they code it all (load loop, spin inside the climb loop, beep, fast drop) and test it.||Younglings: decorate + pick a sound; the rest is already in the mentor’s code. About 3 min, stop the timer early.' data-t="15|3">
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="wcard" style="flex:none;width:560px;height:1000px"><img src="deck-assets/build-final-hq.png" alt="The spinning drop tower"></div>
+    <div class="col" style="gap:30px;justify-content:center">
+      <h2>MAKE IT EXCITING!</h2>
+      <div class="ladder" style="font-size:58px;gap:16px"><span>🔄 LOAD 4 RIDERS</span><span>⬆️🌀 UP + SPIN</span><span class="bp">🔔 BEEP!</span><span class="dr">⬇️ DROP!</span></div>
+      <p class="t" style="margin:0">Theme: 🚀 🌴 🌵</p>
+    </div>
+    <div class="clock" id="clock" data-round="840" data-rounds="1|1" style="flex:0 0 440px">
+      <div class="rnd" id="clkRound" style="display:none"></div>
+      <div class="dig" id="clkDigits">14:00</div>
+      <div class="btns">
+        <button type="button" id="clkStart">Start</button>
+        <button type="button" id="clkReset">Reset</button>
+        <button type="button" id="clkNext" style="display:none">Next</button>
+        <button type="button" id="clkMode" style="display:none">Rounds</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 -->
+<section class="slide pic" data-notes='Short. Ask ONE kid from every crew: “Was this hard? Was this cool? Where is your loop inside a loop?”||Younglings: thumbs up / down for the first two questions.' data-t="3|1">
+  <div class="row" style="align-items:center">
+    <div class="col center">
+      <h2>HOW WAS IT?</h2>
+      <p class="quote" style="margin:0">Was this hard? 😅</p>
+      <p class="quote y" style="margin:0">Was this cool? 😎</p>
+      <p class="quote" style="margin:0;font-size:64px">Where is your loop inside a loop? 🔁</p>
+    </div>
+    <div class="who" style="flex:none"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna" style="height:1000px"></div>
+  </div>
+</section>
+
+<!-- 22 -->
+<section class="slide big" data-notes='⚡ BIGGER KIDS ONLY. Program 1 of 3. Younglings: skip to slide 25.||Everyone stands. Say: “OK, QUICKFIRE GUESS: how many SPINS?” Kids guess on fingers → the mentor is the ride (UP = rise on your toes, SPIN = turn once on the spot) → shout FREEZE → everyone shows thumbs at once: 👍 right, 👎 BUG.||Point at the legend: right motor = UP, left motor = SPIN. We count SPINS only. Answer: 2 × 3 = 6 spins (+ 2 UPs = 8 moves).||BE THE BROKEN RIDE: UP, spin, spin (only 2!) · UP, spin, spin. Count the spins out loud: 1…4. FREEZE!||Thumbs DOWN = BUG: “Only 2 spins each time, the code says 3!” Next = answer.' data-t="3|0">
+  <div class="row" style="align-items:center;gap:60px">
+    <div class="col" style="flex:none;width:520px"><h2>PROGRAM 1</h2><p class="t y" style="margin:0">How many SPINS? ✋</p><p class="t" style="margin:0;font-size:40px;line-height:1.35">right motor = ⬆️ UP<br>left motor = 🔄 SPIN</p><p class="ans rv">6 spins<br>+ 2 UPs</p></div>
+    <div class="wcard" style="flex:none;width:1240px;padding:24px"><img src="deck-assets/game-p1.png" alt="Code: when clicked, repeat 2 times: run right motor 1 rotation, then repeat 3 times: run left motor 1 rotation" style="width:100%;height:auto"></div>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="slide big" data-notes='⚡ BIGGER KIDS ONLY. Program 2 of 3.||Kids guess on fingers (count SPINS only. Answer: 3 × 2 = 6 spins, + 3 UPs = 9 moves).||BE THE BROKEN RIDE: go UP too early: spin, UP, spin, UP, spin, UP (UP before the 2 spins are done). Count out loud. FREEZE!||Thumbs DOWN = BUG: “It went UP before it finished spinning!” Next = answer.' data-t="2|0">
+  <div class="row" style="align-items:center;gap:60px">
+    <div class="col" style="flex:none;width:520px"><h2>PROGRAM 2</h2><p class="t y" style="margin:0">How many SPINS? ✋</p><p class="t" style="margin:0;font-size:40px;line-height:1.35">right motor = ⬆️ UP<br>left motor = 🔄 SPIN</p><p class="ans rv">6 spins<br>+ 3 UPs</p></div>
+    <div class="wcard" style="flex:none;width:1240px;padding:24px"><img src="deck-assets/game-p2.png" alt="Code: when clicked, repeat 3 times: repeat 2 times: run left motor 1 rotation, then run right motor 1 rotation" style="width:100%;height:auto"></div>
+  </div>
+</section>
+
+<!-- 24 -->
+<section class="slide big" data-notes='⚡ BIGGER KIDS ONLY. Program 3 of 3.||Kids guess on fingers (count SPINS only. Answer: 2 × 4 = 8 spins, + 2 UPs = 10 moves).||NO BUG this time: spin, spin, spin, spin, UP · spin, spin, spin, spin, UP. Count out loud to 8. FREEZE!||Thumbs UP! Anyone who said bug: “Read it again: spins first, then UP.” Next = answer. Then go to slide 27.' data-t="2|0">
+  <div class="row" style="align-items:center;gap:60px">
+    <div class="col" style="flex:none;width:520px"><h2>PROGRAM 3</h2><p class="t y" style="margin:0">How many SPINS? ✋</p><p class="t" style="margin:0;font-size:40px;line-height:1.35">right motor = ⬆️ UP<br>left motor = 🔄 SPIN</p><p class="ans rv">8 spins<br>+ 2 UPs</p></div>
+    <div class="wcard" style="flex:none;width:1240px;padding:24px"><img src="deck-assets/game-p3.png" alt="Code: when clicked, repeat 2 times: repeat 4 times: run left motor 1 rotation, then run right motor 1 rotation" style="width:100%;height:auto"></div>
+  </div>
+</section>
+
+<!-- 25 -->
+<section class="slide young" data-notes='YOUNGLINGS. Ride 1 of 2. Bigger kids: skip.||Everyone stands. Say: “OK, QUICKFIRE GUESS: how many SPINS?” Kids guess on fingers → the mentor is the ride (SPIN = turn once on the spot) → shout FREEZE → thumbs at once: 👍 right, 👎 BUG.||Point: motor block = SPIN, repeat block with 2 = do it 2 times. Kids guess on fingers (answer: 2 spins).||BE THE BROKEN RIDE: spin 5 times! Count out loud: 1, 2, 3, 4, 5. FREEZE!||Thumbs DOWN = BUG: “5 spins, but the code says 2!” Next = answer.' data-t="0|1">
+  <div class="row" style="align-items:center;gap:60px">
+    <div class="col" style="flex:none;width:520px"><h2>RIDE 1</h2><p class="t y" style="margin:0">How many SPINS? ✋</p><p class="t" style="margin:0;font-size:40px">motor block = 🔄 SPIN</p><p class="ans rv">2 spins!</p></div>
+    <div class="wcard" style="flex:none;width:1240px;padding:24px"><img src="deck-assets/game-r1.png" alt="Icon code: start, repeat block with motor turn 1 inside, repeat 2" style="width:100%;height:auto"></div>
+  </div>
+</section>
+
+<!-- 26 -->
+<section class="slide young" data-notes='YOUNGLINGS. Ride 2 of 2: a loop inside a loop.||Kids guess on fingers (answer: 2 × 2 = 4 spins).||NO BUG: spin, spin · pause · spin, spin. Count to 4. FREEZE!||Thumbs UP! Next = answer.' data-t="0|1">
+  <div class="row" style="align-items:center;gap:60px">
+    <div class="col" style="flex:none;width:520px"><h2>RIDE 2</h2><p class="t y" style="margin:0">How many SPINS? ✋</p><p class="t" style="margin:0;font-size:40px">motor block = 🔄 SPIN</p><p class="ans rv">4 spins!</p></div>
+    <div class="wcard" style="flex:none;width:1240px;padding:24px"><img src="deck-assets/game-r2.png" alt="Icon code: start, repeat 2 around a repeat 2 around motor turn 1" style="width:100%;height:auto"></div>
+  </div>
+</section>
+
+<!-- 27 -->
+<section class="slide big pic" data-notes='⚡ BIGGER KIDS ONLY. Notebooks: write one or two lines.||“How did you use a nested loop?” “How did you test and change your code?”' data-t="2|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>SHOW WHAT YOU KNOW</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>How did you use a nested loop?</li>
+      <li><span class="n">2</span>How did you test it?</li>
+    </ol></div>
+    <img src="deck-assets/leo-notebook-hq.png" alt="Leo writing in his notebook" style="height:960px;flex:none">
+  </div>
+</section>
+
+<!-- 28 -->
+<section class="slide" data-notes='“TRUE?” Thumbs up or down.||Ask: “How does a loop inside a loop work?” One kid answers.||Younglings: thumbs only.' data-t="1|1">
+  <h2 style="text-align:center">YOU DID IT, FUTURE BUILDERS!</h2>
+  <div class="col center" style="flex:1">
+    <p class="quote" style="font-size:76px;margin:0">“I can put a loop inside a loop.”</p>
+    <p class="t y" style="margin:0">TRUE? 👍</p>
+  </div>
+</section>
+
+<!-- 29 -->
+<section class="slide mapfull" data-notes='“Our drop tower got better: now it SPINS!”||Point at the arrows: “Up, down, and round and round.”' data-t="1|1">
+  <img class="m" src="deck-assets/map-l9-end.png" alt="The Tomorrow Map: plane, supplies, helper robot and the drop tower, now with spin arrows around it">
+  <h2 class="mt">THE TOMORROW MAP</h2>
+  <span class="mlbl" style="left:73.1%;top:84%">IT SPINS!</span>
+</section>
+
+<!-- 30 -->
+<section class="slide pic" data-notes='Read it slowly, with a big yawn: “Spinning, dropping, laughing… we had so much fun we stayed up way too late. What happens tomorrow morning…?”||Don’t answer. Let them guess.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="who" style="flex:none"><img src="deck-assets/luna-full-hq.png" alt="Luna" style="height:1000px"></div>
+    <div class="col">
+      <p class="t c" style="margin:0">NEXT TIME…</p>
+      <p class="quote" style="text-align:left">“We stayed up <span class="y">way too late!</span> 🥱”</p>
+      <p class="t" style="margin:0">Tomorrow morning…?</p>
+    </div>
+  </div>
+</section>
+
+<!-- 31 -->
+<section class="slide pic" data-notes='Save the project. Take a photo of the ride.||Sort · close the box · high five. Charge the motors.' data-t="4|4">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>EVERY BRICK GOES HOME!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Save + take a photo 📸</li>
+      <li><span class="n">2</span>Sort by colour</li>
+      <li><span class="n">3</span>Close the box</li>
+      <li><span class="n">4</span>High five! ✋</li>
+    </ol></div>
+    <img src="deck-assets/image22-hq.png" alt="Luna" style="height:960px;flex:none">
+  </div>
+</section>
+
+</div></div>
+
+<div class="notes" id="notes" aria-live="polite"><h3>SPEAKER NOTES</h3><div id="nbody"></div></div>
+
+<script>
+/* Clock game: build the 3-sector circle from the 3 <img> in each .clk (sector 0 = 12–4 o'clock, 1 = 4–8, 2 = 8–12) */
+document.querySelectorAll('.clk').forEach(clk=>{
+  const imgs=[...clk.querySelectorAll('img')],ok=+clk.dataset.ok,R=450,C=450;
+  const pt=(deg,r)=>[C+r*Math.sin(deg*Math.PI/180),C-r*Math.cos(deg*Math.PI/180)];
+  let svg='<svg viewBox="0 0 900 900" aria-hidden="true">';
+  for(let k=0;k<3;k++){
+    const [x1,y1]=pt(k*120,R),[x2,y2]=pt(k*120+120,R);
+    svg+=`<path class="sec${k===ok?' ok':''}" d="M${C} ${C} L${x1.toFixed(1)} ${y1.toFixed(1)} A${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z"/>`;
+  }
+  svg+=`<circle class="hub" cx="${C}" cy="${C}" r="26"/></svg>`;
+  clk.insertAdjacentHTML('afterbegin',svg);
+  imgs.forEach((im,k)=>{
+    const [x,y]=pt(k*120+60,R*.55),w=document.createElement('div');
+    w.className='ic'+(k===ok?' ok':'');w.style.left=x+'px';w.style.top=y+'px';
+    im.replaceWith(w);w.appendChild(im);
+  });
+  const [tx,ty]=pt(ok*120+60,R*.86),t=document.createElement('div');
+  t.className='tick';t.textContent='✓';t.style.left=tx+'px';t.style.top=ty+'px';clk.appendChild(t);
+});
+
+const slides=[...document.querySelectorAll('.slide')];
+const stage=document.getElementById('stage'),vp=document.getElementById('vp');
+let i=0;
+function fit(){stage.style.transform=`scale(${vp.clientWidth/1920})`}
+const hasReveal=s=>!!s.querySelector('.rv,.clk');
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>{s.classList.toggle('on',k===i);s.classList.remove('shown');const v=s.querySelector('video');if(v){if(k===i){try{v.currentTime=0;const p=v.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}else v.pause()}});
+  document.getElementById('count').textContent=`${i+1} / ${slides.length}`;
+  const s=slides[i],t=(s.dataset.t||'').split('|'),notes=(s.dataset.notes||'').split('||');
+  const f=x=>x==='0'?'skip':x+' min';
+  document.getElementById('nbody').innerHTML='<ul>'+notes.map(x=>`<li>${x}</li>`).join('')+`</ul><p class="tm" style="margin:6px 0 0">90 min: ${f(t[0])} · 60 min: ${f(t[1])}</p>`;
+  try{history.replaceState(null,'','#s'+(i+1))}catch(e){}
+}
+function next(){const s=slides[i];if(hasReveal(s)&&!s.classList.contains('shown')){s.classList.add('shown');return}show(i+1)}
+document.getElementById('prev').onclick=()=>show(i-1);
+document.getElementById('next').onclick=next;
+document.getElementById('tn').onclick=()=>{const n=document.getElementById('notes');n.hidden=!n.hidden};
+vp.addEventListener('click',e=>{const r=vp.getBoundingClientRect();if(e.clientX-r.left>r.width/2)next();else show(i-1)});
+document.addEventListener('keydown',e=>{
+  if(e.target&&e.target.closest&&e.target.closest('.clock'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
+  else if(e.key==='n'||e.key==='N'){document.getElementById('tn').click()}
+});
+
+/* Swap countdown: no libraries; clicks and keys stay inside the timer */
+(function(){
+  const box=document.getElementById('clock');if(!box)return;
+  const dig=document.getElementById('clkDigits'),rnd=document.getElementById('clkRound'),
+    bs=document.getElementById('clkStart'),br=document.getElementById('clkReset'),
+    bn=document.getElementById('clkNext'),bm=document.getElementById('clkMode');
+  const ROUND=+box.dataset.round||300,[RA,RB]=(box.dataset.rounds||'4|1').split('|').map(Number);
+  let total=RA,cur=1,left=ROUND,timer=null,ctx=null;
+  ['click','keydown','keyup'].forEach(ev=>box.addEventListener(ev,e=>e.stopPropagation()));
+  function draw(){
+    const m=Math.floor(left/60),s=left%60;
+    dig.textContent=m+':'+String(s).padStart(2,'0');
+    dig.classList.toggle('end',left===0);
+    rnd.textContent='Swap '+cur+' of '+total;
+    bs.textContent=timer?'Pause':'Start';
+    bm.textContent='Rounds: '+total;
+    bn.textContent=cur>=total?'Done ✔':'Next';
+    bn.disabled=cur>=total;bn.style.opacity=bn.disabled?.5:1;
+  }
+  function beep(){
+    try{
+      ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+      [0,.35,.7].forEach(d=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.type='sine';o.frequency.value=660;o.connect(g);g.connect(ctx.destination);
+        const t=ctx.currentTime+d;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.15,t+.05);g.gain.linearRampToValueAtTime(0,t+.3);
+        o.start(t);o.stop(t+.32);
+      });
+    }catch(e){}
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null}}
+  function tick(){left--;if(left<=0){left=0;stop();beep()}draw()}
+  bs.onclick=()=>{
+    if(timer){stop()}
+    else if(left>0){
+      try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(e){}
+      timer=setInterval(tick,1000);
+    }
+    draw();
+  };
+  br.onclick=()=>{stop();left=ROUND;draw()};
+  bn.onclick=()=>{if(cur<total){stop();cur++;left=ROUND;draw()}};
+  bm.onclick=()=>{stop();total=total===RA?RB:RA;cur=1;left=ROUND;draw()};
+  draw();
+})();
+/* Missing picture → dashed box with the file name (assets still being made) */
+document.addEventListener('error',e=>{const im=e.target;if(!im||im.tagName!=='IMG'||im.dataset.missed)return;im.dataset.missed=1;const d=document.createElement('div');d.className='miss';d.textContent=(im.getAttribute('src')||'').replace('deck-assets/','');d.style.cssText=im.getAttribute('style')||'';im.replaceWith(d)},true);
+document.querySelectorAll('img').forEach(im=>{if(im.complete&&im.naturalWidth===0)im.dispatchEvent(new Event('error'))});
+document.querySelectorAll('.slide.ad video').forEach(v=>{if(v.error)v.closest('.slide').classList.add('vfail')});
+
+/* Own animations: nested-loop tower (word slide) + carousel (kindergarten picture). One loop, only the visible slide moves. */
+(function(){
+  const RC=['#4FD8FF','#FFC24B','#7CFC9A','#FF8A7D'];
+  const tw=document.getElementById('nestAnim');
+  let disc,riders=[],lo,li;
+  if(tw){
+    disc=document.createElement('div');disc.className='disc';tw.appendChild(disc);
+    RC.forEach(c=>{const r=document.createElement('div');r.className='rider';r.style.background=c;tw.appendChild(r);riders.push(r)});
+    lo=document.getElementById('loopOut');li=document.getElementById('loopIn');
+  }
+  const ca=document.getElementById('carouAnim'),horses=ca?[...ca.querySelectorAll('.horse')]:[];
+  function tower(t){
+    const H=tw.clientHeight,W=tw.clientWidth,cx=W/2,bottomY=H-180,stepH=(H-360)/6;
+    const c=t%13; let lvl,spin=false,climb=false,sp=0;
+    if(c<11.4){const k=Math.floor(c/1.9),f=c-1.9*k; if(f<0.5){lvl=k+f/0.5;climb=true}else{lvl=k+1;spin=true;sp=(f-0.5)/1.4}}
+    else if(c<11.8){lvl=6*(1-(c-11.4)/0.4)}else lvl=0;
+    const y=bottomY-lvl*stepH;
+    disc.style.top=(y-48)+'px';
+    const a=sp*Math.PI*4;
+    riders.forEach((r,k)=>{const ang=a+k*Math.PI/2,x=Math.cos(ang)*150,z=Math.sin(ang);
+      r.style.left=(cx+x)+'px';r.style.top=(y-10+z*30-24)+'px';r.style.zIndex=z>0?3:1;r.style.transform='scale('+(0.8+0.25*z)+')'});
+    disc.style.zIndex=2;
+    lo.classList.toggle('lit',climb);li.classList.toggle('lit',spin);
+  }
+  function carou(t){
+    const W=ca.clientWidth,H=ca.clientHeight,cx=W/2,cy=H-230;
+    horses.forEach((h,k)=>{const ang=t*0.6+k*2*Math.PI/horses.length,x=Math.cos(ang)*330,z=Math.sin(ang),bob=Math.sin(t*3+k*1.7)*45;
+      h.style.left=(cx+x)+'px';h.style.top=(cy-170+z*40+bob)+'px';h.style.zIndex=z>0?4:1;h.style.transform='scale('+(0.75+0.3*z)+')'+(Math.cos(ang+Math.PI/2)<0?' scaleX(-1)':'')});
+  }
+  function loop(ms){
+    const t=ms/1000;
+    if(tw&&tw.closest('.slide').classList.contains('on'))tower(t);
+    if(ca&&ca.closest('.slide').classList.contains('on'))carou(t);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+addEventListener('resize',fit);
+const m=/^#s(\d+)$/.exec(location.hash);
+fit();show(m?+m[1]-1:0);
+</script>
+</body></html>
