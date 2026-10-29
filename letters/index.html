@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Floating Letters</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --ink: #0f2a3a; --chip: rgba(255,255,255,.62); --chip-line: rgba(15,42,58,.18); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #9fd3e3; touch-action: none; user-select: none; -webkit-user-select: none; }
+  canvas { display: block; outline: none; cursor: grab; }
+  canvas.drag { cursor: grabbing; }
+  #grain { position: fixed; inset: -50%; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    animation: grain 0.9s steps(6) infinite; }
+  @keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-4%)} 60%{transform:translate(-4%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
+  #vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(8,40,60,.28) 100%); }
+  #dot { position: fixed; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
+    background: #fff; box-shadow: 0 0 0 1.5px rgba(15,42,58,.45), 0 1px 4px rgba(0,0,0,.25); pointer-events: none; transition: transform .15s, background .15s; }
+  #dot.on { transform: scale(1.9); background: #ffe36b; }
+  #dot.no { animation: no .3s; }
+  @keyframes no { 25%{margin-left:-9px} 75%{margin-left:1px} }
+  #hint { position: fixed; left: 16px; bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; pointer-events: none;
+    font: 600 13px/1 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
+  .grp { display: flex; align-items: center; gap: 4px; padding: 6px 8px; border-radius: 12px; background: var(--chip);
+    box-shadow: inset 0 0 0 1px var(--chip-line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 6px;
+    background: #fff; box-shadow: 0 2px 0 rgba(15,42,58,.25), inset 0 0 0 1px rgba(15,42,58,.15); font: 700 12px/1 system-ui, sans-serif; color: var(--ink); }
+  .grp svg { width: 18px; height: 18px; flex: none; }
+  #goal { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; pointer-events: none; }
+  #goal b { width: 46px; height: 54px; display: grid; place-items: center; border-radius: 10px; background: var(--chip);
+    box-shadow: inset 0 0 0 1.5px var(--chip-line); font: 400 34px/1 "Times New Roman", Tinos, serif; color: rgba(15,42,58,.35); transition: all .25s; }
+  #goal b.near { color: #111; background: #fff; box-shadow: inset 0 0 0 2px #111; }
+  #goal.win b { background: #ffe36b; color: #111; transform: translateY(-4px); }
+  #win { position: fixed; left: 50%; top: 86px; transform: translateX(-50%); pointer-events: none; opacity: 0; transition: opacity .4s; }
+  #win.show { opacity: 1; pointer-events: auto; }
+  #win h1 { margin: 0; font: 400 clamp(80px, 16vw, 170px)/1 "Times New Roman", Tinos, serif; color: #111; letter-spacing: .08em; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
+  #win.show h1 { animation-play-state: running; }
+  @keyframes pop { from { transform: scale(.3); } to { transform: scale(1); } }
+  #win button { font: 700 22px/1 system-ui, sans-serif; padding: 12px 22px; border-radius: 12px; border: 0; background: #111; color: #fff; cursor: pointer; }
+  #vrbtn { position: fixed; right: 16px; bottom: 16px; display: none; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; border: 0;
+    background: #111; color: #fff; font: 700 15px/1 system-ui, -apple-system, "Segoe UI", sans-serif; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+  #vrbtn.ok { display: flex; }
+  #vrbtn svg { width: 22px; height: 22px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="vignette"></div>
+<div id="grain"></div>
+<div id="dot"></div>
+<div id="goal" aria-label="Spell CAT"><b>C</b><b>A</b><b>T</b></div>
+<div id="win" aria-live="polite"><button id="again" type="button" aria-label="Play again">↻</button></div>
+<div id="hint" aria-label="Controls: two fingers or arrow keys to look around, press and drag a letter to move it">
+  <div class="grp" title="look around">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+    <kbd>✌</kbd><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd>
+  </div>
+  <div class="grp" title="press and drag a letter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V11M16 11V8a1.5 1.5 0 0 1 3 0v6a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7L3.6 14.6a1.5 1.5 0 0 1 2.4-1.8L7 14"/></svg>
+    <kbd>drag</kbd><kbd style="min-width:54px">+ Space</kbd>
+  </div>
+</div>
+<button id="vrbtn" type="button" aria-label="Enter VR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8h18v9h-6l-2-3h-2l-2 3H3z"/><circle cx="8" cy="12" r="1.6"/><circle cx="16" cy="12" r="1.6"/></svg><span>Enter VR</span></button>
+
+<script type="module">
+import * as THREE from 'three';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { XRHandModelFactory } from 'three/addons/webxr/XRHandModelFactory.js';
+
+// Tinos Bold (Apache 2.0, metric-compatible with Times New Roman), A–Z subset, three.js typeface JSON
+const FONT_JSON = {"glyphs":{"A":{"ha":1003,"x_min":14,"x_max":993,"o":"m 191 54 l 313 36 l 313 0 l 14 0 l 14 36 l 117 54 l 427 917 l 555 917 l 878 54 l 993 36 l 993 0 l 608 0 l 608 36 l 730 54 l 640 317 l 282 317 l 191 54 z m 619 378 l 458 819 l 302 378 l 619 378 z "},"B":{"ha":926,"x_min":40,"x_max":859,"o":"m 650 689 l 650 689 q 597 810 650 772 q 428 848 545 848 l 428 848 l 288 848 l 288 505 l 436 505 q 598 548 546 505 q 650 689 650 591 z m 718 259 l 718 259 q 654 399 718 355 q 450 444 591 444 l 450 444 l 288 444 l 288 61 q 487 57 381 57 l 487 57 q 661 106 603 57 q 718 259 718 155 z m 214 0 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 456 909 q 709 858 629 909 q 789 696 789 807 l 789 696 q 740 559 789 616 q 602 484 690 503 l 602 484 q 791 413 724 471 q 859 262 859 354 l 859 262 q 768 63 859 131 q 504 -4 677 -4 l 504 -4 l 214 0 z "},"C":{"ha":926,"x_min":57,"x_max":850,"o":"m 525 -14 l 525 -14 q 180 107 304 -14 q 57 444 57 227 l 57 444 q 176 799 57 679 q 528 920 294 920 l 528 920 q 832 885 669 920 l 832 885 l 836 686 l 791 686 l 771 804 q 661 849 724 833 q 533 865 598 865 l 533 865 q 279 763 359 865 q 199 446 199 661 l 199 446 q 282 143 199 248 q 526 39 366 39 l 526 39 q 672 57 604 39 q 781 107 741 76 l 781 107 l 806 243 l 850 243 l 846 29 q 525 -14 696 -14 z "},"D":{"ha":1003,"x_min":40,"x_max":947,"o":"m 806 461 l 806 461 q 703 750 806 652 q 410 848 600 848 l 410 848 l 288 848 l 288 64 q 481 58 369 58 l 481 58 q 727 157 648 58 q 806 461 806 255 z m 40 909 l 453 909 q 826 797 705 909 q 947 460 947 685 l 947 460 q 830 115 947 232 q 481 -3 713 -3 l 481 -3 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 z "},"E":{"ha":848,"x_min":40,"x_max":779,"o":"m 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 722 909 l 722 692 l 677 692 l 656 839 q 436 848 580 848 l 436 848 l 288 848 l 288 493 l 533 493 l 554 602 l 597 602 l 597 322 l 554 322 l 533 432 l 288 432 l 288 61 l 467 61 q 696 72 642 61 l 696 72 l 734 240 l 779 240 l 766 0 l 40 0 z "},"F":{"ha":772,"x_min":40,"x_max":722,"o":"m 555 408 l 288 408 l 288 54 l 439 36 l 439 0 l 49 0 l 49 36 l 157 54 l 157 856 l 40 873 l 40 909 l 722 909 l 722 692 l 677 692 l 656 839 q 436 848 580 848 l 436 848 l 288 848 l 288 469 l 555 469 l 576 578 l 618 578 l 618 298 l 576 298 l 555 408 z "},"G":{"ha":1003,"x_min":57,"x_max":960,"o":"m 871 343 l 871 47 q 707 4 792 22 q 525 -14 623 -14 l 525 -14 q 180 106 304 -14 q 57 444 57 225 l 57 444 q 177 801 57 683 q 528 920 296 920 l 528 920 q 847 879 693 920 l 847 879 l 847 684 l 802 684 l 783 796 q 671 847 736 829 q 533 865 606 865 l 533 865 q 279 762 359 865 q 199 446 199 659 l 199 446 q 281 142 199 245 q 526 39 364 39 l 526 39 q 646 52 583 39 q 741 85 708 66 l 741 85 l 741 343 l 624 361 l 624 397 l 960 397 l 960 361 l 871 343 z "},"H":{"ha":1003,"x_min":40,"x_max":962,"o":"m 404 0 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 404 909 l 404 873 l 288 856 l 288 498 l 715 498 l 715 856 l 599 873 l 599 909 l 962 909 l 962 873 l 846 856 l 846 54 l 962 36 l 962 0 l 599 0 l 599 36 l 715 54 l 715 437 l 288 437 l 288 54 l 404 36 l 404 0 z "},"I":{"ha":463,"x_min":50,"x_max":414,"o":"m 297 856 l 297 54 l 414 36 l 414 0 l 50 0 l 50 36 l 167 54 l 167 856 l 50 873 l 50 909 l 414 909 l 414 873 l 297 856 z "},"J":{"ha":541,"x_min":29,"x_max":511,"o":"m 278 174 l 278 856 l 161 873 l 161 909 l 511 909 l 511 873 l 408 856 l 408 293 q 380 134 408 202 q 296 26 353 66 q 170 -14 239 -14 l 170 -14 q 29 7 83 -14 l 29 7 l 29 172 l 74 172 l 94 78 q 131 54 107 62 q 183 45 155 45 l 183 45 q 278 174 278 45 l 278 174 z "},"K":{"ha":1003,"x_min":40,"x_max":989,"o":"m 633 909 l 918 909 l 918 873 l 812 856 l 502 552 l 890 54 l 989 36 l 989 0 l 766 0 l 410 460 l 288 361 l 288 54 l 418 36 l 418 0 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 404 909 l 404 873 l 288 856 l 288 427 l 723 856 l 633 873 l 633 909 z "},"L":{"ha":848,"x_min":40,"x_max":765,"o":"m 428 909 l 428 873 l 288 856 l 288 58 l 467 58 q 679 72 611 58 l 679 72 l 721 261 l 765 261 l 753 0 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 428 909 z "},"M":{"ha":1235,"x_min":40,"x_max":1194,"o":"m 947 782 l 585 0 l 561 0 l 228 782 l 228 54 l 350 36 l 350 0 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 315 909 l 611 218 l 934 909 l 1194 909 l 1194 873 l 1078 856 l 1078 54 l 1194 36 l 1194 0 l 825 0 l 825 36 l 947 54 l 947 782 z "},"N":{"ha":1003,"x_min":40,"x_max":971,"o":"m 783 236 l 783 856 l 661 873 l 661 909 l 971 909 l 971 873 l 854 856 l 854 0 l 789 0 l 228 818 l 228 54 l 350 36 l 350 0 l 40 0 l 40 36 l 157 54 l 157 856 l 40 873 l 40 909 l 315 909 l 783 236 z "},"O":{"ha":1003,"x_min":57,"x_max":946,"o":"m 199 456 l 199 456 q 272 138 199 237 q 501 40 345 40 l 501 40 q 730 138 656 40 q 804 456 804 237 l 804 456 q 731 769 804 673 q 501 865 657 865 l 501 865 q 272 769 345 865 q 199 456 199 673 z m 57 456 l 57 456 q 501 920 57 920 l 501 920 q 833 802 721 920 q 946 456 946 684 l 946 456 q 832 105 946 224 q 501 -14 718 -14 l 501 -14 q 171 105 285 -14 q 57 456 57 223 z "},"P":{"ha":772,"x_min":40,"x_max":717,"o":"m 582 640 l 582 640 q 530 800 582 752 q 354 848 477 848 l 354 848 l 288 848 l 288 418 l 358 418 q 527 470 473 418 q 582 640 582 522 z m 390 357 l 288 357 l 288 54 l 432 36 l 432 0 l 49 0 l 49 36 l 157 54 l 157 856 l 40 873 l 40 909 l 383 909 q 717 642 717 909 l 717 642 q 632 429 717 502 q 390 357 548 357 l 390 357 z "},"Q":{"ha":1003,"x_min":57,"x_max":979,"o":"m 199 454 l 199 454 q 272 138 199 235 q 501 40 345 40 l 501 40 q 730 137 656 40 q 804 454 804 234 l 804 454 q 730 769 804 673 q 501 865 656 865 l 501 865 q 272 769 345 865 q 199 454 199 672 z m 57 454 l 57 454 q 501 920 57 920 l 501 920 q 833 802 720 920 q 946 454 946 684 l 946 454 q 705 22 946 121 l 705 22 l 739 -20 q 841 -126 799 -94 q 924 -158 883 -158 l 924 -158 l 979 -155 l 979 -200 q 921 -216 964 -207 q 846 -225 878 -225 l 846 -225 q 760 -209 798 -225 q 685 -158 723 -193 q 558 -11 647 -123 l 558 -11 q 501 -14 534 -14 l 501 -14 q 170 105 283 -14 q 57 454 57 224 z "},"R":{"ha":926,"x_min":40,"x_max":924,"o":"m 451 399 l 288 399 l 288 54 l 425 36 l 425 0 l 49 0 l 49 36 l 157 54 l 157 856 l 40 873 l 40 909 l 433 909 q 685 852 604 909 q 766 667 766 794 l 766 667 q 717 510 766 576 q 580 418 667 444 l 580 418 l 826 54 l 924 36 l 924 0 l 707 0 l 451 399 z m 631 657 l 631 657 q 581 805 631 761 q 404 848 530 848 l 404 848 l 288 848 l 288 460 l 408 460 q 580 505 529 460 q 631 657 631 550 z "},"S":{"ha":772,"x_min":93,"x_max":686,"o":"m 94 35 l 94 245 l 138 245 l 162 122 q 249 66 187 90 q 370 41 310 41 l 370 41 q 518 90 465 41 q 571 224 571 138 l 571 224 q 550 304 571 273 q 496 358 530 336 q 420 396 463 380 q 332 427 377 411 q 244 461 287 442 q 168 509 201 480 q 114 582 134 538 q 93 688 93 625 l 93 688 q 174 858 93 796 q 400 920 256 920 l 400 920 q 639 890 510 920 l 639 890 l 639 701 l 595 701 l 571 812 q 400 863 502 863 l 400 863 q 258 826 309 863 q 207 724 207 789 l 207 724 q 228 650 207 680 q 282 601 248 621 q 358 565 315 580 q 447 534 401 550 q 535 498 492 518 q 611 447 578 478 q 666 372 645 416 q 686 262 686 328 l 686 262 q 606 59 686 131 q 373 -14 525 -14 l 373 -14 q 226 -1 300 -14 q 94 35 152 12 l 94 35 z "},"T":{"ha":848,"x_min":25,"x_max":825,"o":"m 633 0 l 214 0 l 214 36 l 358 54 l 358 851 l 323 851 q 89 838 152 851 l 89 838 l 71 696 l 25 696 l 25 909 l 825 909 l 825 696 l 779 696 l 761 838 q 672 846 741 842 q 522 850 604 850 l 522 850 l 489 850 l 489 54 l 633 36 l 633 0 z "},"U":{"ha":1003,"x_min":29,"x_max":974,"o":"m 786 307 l 786 856 l 664 873 l 664 909 l 974 909 l 974 873 l 857 856 l 857 313 q 767 68 857 149 q 507 -14 677 -14 l 507 -14 q 236 68 326 -14 q 146 300 146 150 l 146 300 l 146 856 l 29 873 l 29 909 l 393 909 l 393 873 l 276 856 l 276 310 q 517 62 276 62 l 517 62 q 716 124 647 62 q 786 307 786 186 l 786 307 z "},"V":{"ha":1003,"x_min":16,"x_max":987,"o":"m 692 909 l 987 909 l 987 873 l 888 856 l 522 -21 l 488 -21 l 118 856 l 16 873 l 16 909 l 383 909 l 383 873 l 261 856 l 536 186 l 811 856 l 692 873 l 692 909 z "},"W":{"ha":1311,"x_min":1,"x_max":1308,"o":"m 1229 856 l 932 -21 l 896 -21 l 660 606 l 418 -21 l 382 -21 l 81 856 l 1 873 l 1 909 l 349 909 l 349 873 l 215 856 l 431 215 l 676 846 l 707 846 l 943 215 l 1149 856 l 1007 873 l 1007 909 l 1308 909 l 1308 873 l 1229 856 z "},"X":{"ha":1003,"x_min":31,"x_max":978,"o":"m 479 407 l 215 54 l 328 36 l 328 0 l 31 0 l 31 36 l 131 54 l 440 465 l 176 856 l 74 873 l 74 909 l 449 909 l 449 873 l 334 856 l 522 575 l 733 856 l 621 873 l 621 909 l 918 909 l 918 873 l 818 856 l 562 515 l 875 54 l 978 36 l 978 0 l 603 0 l 603 36 l 718 54 l 479 407 z "},"Y":{"ha":1003,"x_min":16,"x_max":968,"o":"m 868 856 l 568 358 l 568 54 l 713 36 l 713 0 l 293 0 l 293 36 l 437 54 l 437 354 l 118 856 l 16 873 l 16 909 l 400 909 l 400 873 l 278 856 l 539 436 l 787 856 l 672 873 l 672 909 l 968 909 l 968 873 l 868 856 z "},"Z":{"ha":848,"x_min":66,"x_max":772,"o":"m 66 0 l 66 64 l 576 851 l 407 851 q 176 838 239 851 l 176 838 l 155 694 l 109 694 l 109 909 l 728 909 l 728 851 l 214 57 l 411 57 q 571 64 490 57 q 685 79 652 72 l 685 79 l 725 253 l 772 253 l 754 0 l 66 0 z "},"a":{"ha":616,"x_min":49,"x_max":597,"o":"m 315 652 l 315 652 q 469 609 420 652 q 518 478 518 566 l 518 478 l 518 47 l 597 31 l 597 0 l 422 0 l 410 64 q 212 -14 332 -14 l 212 -14 q 49 176 49 -14 l 49 176 q 74 282 49 240 q 153 346 98 323 q 310 370 207 368 l 310 370 l 406 372 l 406 472 q 381 569 406 538 q 307 600 357 600 l 307 600 q 183 568 239 600 l 183 568 l 160 489 l 122 489 l 122 628 q 315 652 232 652 z m 406 98 l 406 325 l 317 322 q 194 287 226 319 q 161 180 161 255 l 161 180 q 258 61 161 61 l 258 61 q 338 72 304 61 q 406 98 372 82 l 406 98 z "},"b":{"ha":694,"x_min":0,"x_max":642,"o":"m 519 336 l 519 336 q 476 522 519 461 q 342 583 433 583 l 342 583 q 262 576 302 583 q 205 561 223 569 l 205 561 l 205 56 q 342 45 262 45 l 342 45 q 477 118 435 45 q 519 336 519 191 z m 93 33 l 93 917 l 0 933 l 0 964 l 205 964 l 205 736 q 201 602 205 699 l 201 602 q 372 654 269 654 l 372 654 q 572 575 503 654 q 642 336 642 496 l 642 336 q 565 76 642 165 q 345 -14 489 -14 l 345 -14 q 216 -1 286 -14 q 93 33 146 12 l 93 33 z "},"c":{"ha":616,"x_min":53,"x_max":574,"o":"m 574 79 l 574 39 q 482 0 541 14 q 363 -14 424 -14 l 363 -14 q 53 323 53 -14 l 53 323 q 132 569 53 483 q 358 654 211 654 l 358 654 q 558 633 450 654 l 558 633 l 558 456 l 521 456 l 492 568 q 357 600 435 600 l 357 600 q 175 323 175 600 l 175 323 q 230 118 175 180 q 401 57 286 57 l 401 57 q 574 79 500 57 l 574 79 z "},"d":{"ha":694,"x_min":50,"x_max":677,"o":"m 498 0 l 490 47 q 311 -14 414 -14 l 311 -14 q 50 313 50 -14 l 50 313 q 124 567 50 480 q 342 654 198 654 l 342 654 q 490 639 415 654 l 490 639 q 486 751 486 661 l 486 751 l 486 917 l 379 933 l 379 964 l 599 964 l 599 47 l 677 31 l 677 0 l 498 0 z m 172 313 l 172 313 q 216 120 172 184 q 349 57 259 57 l 349 57 q 486 83 425 57 l 486 83 l 486 587 q 349 599 426 599 l 349 599 q 172 313 172 599 z "},"e":{"ha":616,"x_min":54,"x_max":568,"o":"m 568 321 l 176 321 l 176 309 q 197 163 176 215 q 261 84 218 111 q 374 57 304 57 l 374 57 q 460 63 410 57 q 543 77 511 69 l 543 77 l 543 39 q 455 2 511 18 q 340 -14 399 -14 l 340 -14 q 123 66 192 -14 q 54 323 54 146 l 54 323 q 124 572 54 490 q 323 654 194 654 l 323 654 q 568 376 568 654 l 568 376 l 568 321 z m 323 600 l 323 600 q 215 543 253 600 q 178 375 178 486 l 178 375 l 450 375 q 419 548 450 496 q 323 600 388 600 z "},"f":{"ha":463,"x_min":43,"x_max":463,"o":"m 153 53 l 153 581 l 43 581 l 43 614 l 153 640 l 153 685 q 209 902 153 826 q 366 978 264 978 l 366 978 q 463 965 418 978 l 463 965 l 463 826 l 429 826 l 399 909 q 343 924 376 924 l 343 924 q 283 886 300 924 q 265 743 265 848 l 265 743 l 265 637 l 435 637 l 435 581 l 265 581 l 265 53 l 403 31 l 403 0 l 58 0 l 58 31 l 153 53 z "},"g":{"ha":694,"x_min":60,"x_max":668,"o":"m 590 436 l 590 436 q 524 270 590 326 q 335 214 458 214 l 335 214 q 232 224 279 214 l 232 224 l 189 135 q 216 113 191 123 q 277 103 240 103 l 277 103 l 465 103 q 618 58 568 103 q 668 -65 668 14 l 668 -65 q 628 -189 668 -136 q 512 -271 589 -242 q 326 -300 435 -300 l 326 -300 q 128 -260 196 -300 q 60 -146 60 -220 l 60 -146 q 84 -75 60 -110 q 174 7 109 -40 l 174 7 q 109 51 135 20 q 82 118 82 82 l 82 118 l 189 239 q 82 436 82 289 l 82 436 q 148 597 82 541 q 340 654 214 654 l 340 654 q 405 649 366 654 q 465 637 444 644 l 465 637 l 615 713 l 639 684 l 545 586 q 590 436 590 535 z m 562 -86 l 562 -86 q 538 -26 562 -47 q 467 -4 515 -4 l 467 -4 l 220 -4 q 173 -66 191 -28 q 155 -136 155 -104 l 155 -136 q 197 -220 155 -195 q 326 -245 239 -245 l 326 -245 q 501 -203 439 -245 q 562 -86 562 -161 z m 336 265 l 336 265 q 441 308 410 265 q 472 436 472 350 l 472 436 q 440 565 472 526 q 338 603 408 603 l 338 603 q 233 564 267 603 q 200 436 200 526 l 200 436 q 233 306 200 347 q 336 265 265 265 z "},"h":{"ha":694,"x_min":14,"x_max":676,"o":"m 221 964 l 221 688 q 216 586 221 617 l 216 586 q 327 634 265 614 q 432 654 389 654 l 432 654 q 557 606 515 654 q 599 467 599 558 l 599 467 l 599 47 l 676 31 l 676 0 l 401 0 l 401 31 l 486 47 l 486 458 q 374 575 486 575 l 374 575 q 221 555 310 575 l 221 555 l 221 47 l 307 31 l 307 0 l 28 0 l 28 31 l 109 47 l 109 917 l 14 933 l 14 964 l 221 964 z "},"i":{"ha":386,"x_min":29,"x_max":359,"o":"m 257 846 l 257 846 q 235 794 257 816 q 183 772 214 772 l 183 772 q 132 794 153 772 q 110 846 110 816 l 110 846 q 132 898 110 876 q 183 920 153 920 l 183 920 q 235 898 214 920 q 257 846 257 876 z m 250 637 l 250 47 l 359 31 l 359 0 l 29 0 l 29 31 l 138 47 l 138 590 l 47 607 l 47 637 l 250 637 z "},"j":{"ha":386,"x_min":-40,"x_max":267,"o":"m 267 846 l 267 846 q 245 794 267 816 q 193 772 223 772 l 193 772 q 141 794 163 772 q 119 846 119 816 l 119 846 q 141 898 119 876 q 193 920 163 920 l 193 920 q 245 898 223 920 q 267 846 267 876 z m 260 637 l 260 -26 q 209 -227 260 -159 q 58 -296 157 -296 l 58 -296 q -40 -283 16 -296 l -40 -283 l -40 -149 l -8 -149 l 10 -222 q 66 -241 33 -241 l 66 -241 q 127 -199 106 -241 q 147 -61 147 -156 l 147 -61 l 147 590 l 52 607 l 52 637 l 260 637 z "},"k":{"ha":694,"x_min":26,"x_max":694,"o":"m 233 964 l 233 307 l 494 589 l 428 607 l 428 637 l 653 637 l 653 607 l 574 591 l 392 406 l 625 46 l 694 31 l 694 0 l 433 0 l 433 31 l 492 47 l 317 322 l 233 231 l 233 47 l 301 31 l 301 0 l 40 0 l 40 31 l 121 47 l 121 917 l 26 933 l 26 964 l 233 964 z "},"l":{"ha":386,"x_min":28,"x_max":358,"o":"m 249 964 l 249 47 l 358 31 l 358 0 l 28 0 l 28 31 l 136 47 l 136 917 l 28 933 l 28 964 l 249 964 z "},"m":{"ha":1080,"x_min":29,"x_max":1059,"o":"m 216 637 l 221 586 q 329 635 272 615 q 429 654 386 654 l 429 654 q 516 637 476 654 q 575 581 555 619 l 575 581 q 697 632 627 610 q 814 654 768 654 l 814 654 q 977 467 977 654 l 977 467 l 977 47 l 1059 31 l 1059 0 l 769 0 l 769 31 l 864 47 l 864 454 q 755 571 864 571 l 755 571 q 714 568 738 571 q 668 562 691 566 q 623 554 644 559 q 587 547 602 550 l 587 547 q 599 467 599 511 l 599 467 l 599 47 l 694 31 l 694 0 l 392 0 l 392 31 l 486 47 l 486 454 q 457 541 486 511 q 371 571 429 571 l 371 571 q 222 551 311 571 l 222 551 l 222 47 l 318 31 l 318 0 l 29 0 l 29 31 l 110 47 l 110 590 l 29 607 l 29 637 l 216 637 z "},"n":{"ha":694,"x_min":32,"x_max":673,"o":"m 214 637 l 220 586 q 331 635 272 616 q 429 654 390 654 l 429 654 q 554 606 512 654 q 596 467 596 558 l 596 467 l 596 47 l 673 31 l 673 0 l 399 0 l 399 31 l 484 47 l 484 454 q 456 543 484 511 q 371 575 429 575 l 371 575 q 221 555 310 575 l 221 555 l 221 47 l 307 31 l 307 0 l 32 0 l 32 31 l 109 47 l 109 590 l 32 607 l 32 637 l 214 637 z "},"o":{"ha":694,"x_min":53,"x_max":642,"o":"m 642 322 l 642 322 q 343 -14 642 -14 l 343 -14 q 126 73 199 -14 q 53 322 53 159 l 53 322 q 126 569 53 484 q 349 654 199 654 l 349 654 q 568 571 494 654 q 642 322 642 487 z m 519 322 l 519 322 q 477 534 519 469 q 343 600 434 600 l 343 600 q 215 537 254 600 q 175 322 175 474 l 175 322 q 215 104 175 168 q 343 40 256 40 l 343 40 q 476 106 433 40 q 519 322 519 173 z "},"p":{"ha":694,"x_min":22,"x_max":640,"o":"m 103 -248 l 103 590 l 31 607 l 31 637 l 210 637 l 211 600 q 287 640 239 625 q 385 654 335 654 l 385 654 q 573 570 507 654 q 640 326 640 485 l 640 326 q 567 75 640 164 q 357 -14 494 -14 l 357 -14 q 211 1 280 -14 l 211 1 q 215 -75 215 -47 l 215 -75 l 215 -248 l 326 -264 l 326 -296 l 22 -296 l 22 -264 l 103 -248 z m 518 326 l 518 326 q 476 520 518 456 q 347 583 433 583 l 347 583 q 215 561 268 583 l 215 561 l 215 52 q 347 40 275 40 l 347 40 q 518 326 518 40 z "},"q":{"ha":694,"x_min":50,"x_max":669,"o":"m 490 639 l 551 668 l 599 668 l 599 -248 l 669 -264 l 669 -296 l 399 -296 l 399 -264 l 486 -248 l 486 -71 q 493 43 486 -5 l 493 43 q 311 -14 420 -14 l 311 -14 q 50 317 50 -14 l 50 317 q 124 567 50 480 q 339 654 197 654 l 339 654 q 490 639 415 654 l 490 639 z m 172 317 l 172 317 q 215 122 172 187 q 349 57 258 57 l 349 57 q 428 64 389 57 q 486 79 467 71 l 486 79 l 486 587 q 349 599 426 599 l 349 599 q 172 317 172 599 z "},"r":{"ha":463,"x_min":28,"x_max":450,"o":"m 440 654 l 450 654 l 450 482 l 421 482 l 382 557 q 301 548 348 557 q 221 524 255 538 l 221 524 l 221 47 l 330 31 l 330 0 l 28 0 l 28 31 l 109 47 l 109 590 l 28 607 l 28 637 l 214 637 l 220 558 q 330 623 260 592 q 440 654 399 654 l 440 654 z "},"s":{"ha":541,"x_min":57,"x_max":490,"o":"m 490 179 l 490 179 q 430 35 490 84 q 253 -14 370 -14 l 253 -14 q 148 -4 205 -14 q 58 18 91 6 l 58 18 l 58 175 l 89 175 l 122 86 q 254 40 173 40 l 254 40 q 386 153 386 40 l 386 153 q 282 271 386 235 l 282 271 l 222 290 q 122 336 153 313 q 74 392 91 359 q 57 473 57 426 l 57 473 q 114 606 57 557 q 269 654 172 654 l 269 654 q 444 633 339 654 l 444 633 l 444 494 l 412 494 l 384 568 q 271 600 348 600 l 271 600 q 187 573 216 600 q 158 500 158 546 l 158 500 q 184 435 158 461 q 263 391 210 408 l 263 391 q 393 341 363 357 q 445 303 424 326 q 478 251 467 280 q 490 179 490 222 z "},"t":{"ha":386,"x_min":14,"x_max":378,"o":"m 227 -14 l 227 -14 q 129 25 161 -14 q 97 134 97 64 l 97 134 l 97 581 l 14 581 l 14 611 l 98 637 l 167 782 l 210 782 l 210 637 l 355 637 l 355 581 l 210 581 l 210 146 q 230 79 210 102 q 282 57 250 57 l 282 57 q 378 68 321 57 l 378 68 l 378 24 q 309 -3 354 7 q 227 -14 264 -14 z "},"u":{"ha":694,"x_min":18,"x_max":671,"o":"m 212 637 l 212 182 q 321 65 212 65 l 321 65 q 478 86 405 65 l 478 86 l 478 590 l 382 607 l 382 637 l 590 637 l 590 47 l 671 31 l 671 0 l 485 0 l 479 52 q 368 6 431 25 q 262 -14 305 -14 l 262 -14 q 100 174 100 -14 l 100 174 l 100 590 l 18 607 l 18 637 l 212 637 z "},"v":{"ha":694,"x_min":0,"x_max":694,"o":"m 633 593 l 378 -14 l 328 -14 l 65 590 l 0 607 l 0 637 l 297 637 l 297 607 l 196 589 l 382 149 l 559 590 l 458 607 l 458 637 l 694 637 l 694 607 l 633 593 z "},"w":{"ha":1003,"x_min":1,"x_max":997,"o":"m 926 593 l 713 -14 l 660 -14 l 503 407 l 347 -14 l 297 -14 l 77 590 l 1 607 l 1 637 l 304 637 l 304 607 l 199 589 l 350 158 l 504 574 l 561 574 l 714 155 l 859 590 l 754 607 l 754 637 l 997 637 l 997 607 l 926 593 z "},"x":{"ha":694,"x_min":12,"x_max":677,"o":"m 603 45 l 677 31 l 677 0 l 389 0 l 389 31 l 473 46 l 326 272 l 154 45 l 241 31 l 241 0 l 12 0 l 12 31 l 86 41 l 296 318 l 111 590 l 36 607 l 36 637 l 325 637 l 325 607 l 240 589 l 363 406 l 504 590 l 416 607 l 416 637 l 646 637 l 646 607 l 572 593 l 393 361 l 603 45 z "},"y":{"ha":694,"x_min":17,"x_max":689,"o":"m 135 -300 l 135 -300 q 31 -288 82 -300 l 31 -288 l 31 -150 l 62 -150 l 85 -215 q 143 -231 106 -231 l 143 -231 q 208 -210 178 -231 q 263 -150 238 -190 q 325 -7 288 -110 l 325 -7 l 82 590 l 17 607 l 17 637 l 313 637 l 313 607 l 212 589 l 385 143 l 551 590 l 452 607 l 452 637 l 689 637 l 689 607 l 623 593 l 374 -40 q 297 -201 330 -152 q 225 -275 264 -250 q 135 -300 186 -300 z "},"z":{"ha":616,"x_min":37,"x_max":578,"o":"m 561 0 l 37 0 l 37 31 l 387 583 l 237 583 q 164 577 199 583 q 115 559 129 570 l 115 559 l 94 468 l 62 468 l 62 637 l 533 637 l 533 604 l 183 54 l 370 54 q 451 63 408 54 q 511 86 494 73 l 511 86 l 546 220 l 578 220 l 561 0 z "}},"familyName":"Tinos","ascender":1238,"descender":-300,"underlinePosition":-151,"underlineThickness":68,"boundingBox":{"xMin":-755,"yMin":-541,"xMax":3885,"yMax":1402},"resolution":1000,"original_font_information":{"fontFamily":"Tinos","license":"Apache License 2.0 (Tinos, Google/Ascender)"}};
+
+const params = new URLSearchParams(location.search);
+const QUALITY = params.get('q') || 'auto'; // auto | high | low
+
+// ?emulate=1 → Meta's IWER fakes a Quest 3 (hands + controllers) in desktop Chrome. Must run BEFORE the renderer exists.
+let xrDevice = null;
+if (params.has('emulate')) {
+  try {
+    const { XRDevice, metaQuest3 } = await import('https://cdn.jsdelivr.net/npm/iwer@2.6.0/+esm');
+    xrDevice = new XRDevice(metaQuest3);
+    xrDevice.installRuntime({ forceInstall: true });
+    if (params.get('devui') !== '0') {
+      try { const { DevUI } = await import('https://cdn.jsdelivr.net/npm/@iwer/devui@2.6.0/+esm'); xrDevice.installDevUI(DevUI); }
+      catch (e) { console.info('IWER DevUI not loaded:', e.message); }
+    }
+    window.__iwer = xrDevice;
+  } catch (e) { console.info('IWER emulator not loaded:', e.message); }
+}
+
+// ---------- renderer / camera ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+let pixelRatio = Math.min(devicePixelRatio || 1, QUALITY === 'low' ? 1 : 1.5);
+renderer.setPixelRatio(pixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.domElement.tabIndex = 0;
+renderer.xr.enabled = true;
+renderer.xr.setReferenceSpaceType('local-floor');
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.05, 200);
+camera.rotation.order = 'YXZ';
+// player rig (holds the camera, hands, controllers). On desktop it sits at the origin, so nothing changes.
+const rig = new THREE.Group();
+rig.add(camera);
+scene.add(rig);
+// everything the game simulates lives in `world`. Desktop: identity. VR: scaled to metres and centred on the head.
+const world = new THREE.Group();
+scene.add(world);
+
+// ---------- softbox environment (toy-photo studio) ----------
+function buildEnvironment() {
+  const env = new THREE.Scene();
+  const room = new THREE.Mesh(new THREE.SphereGeometry(10, 32, 16), new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+    fragmentShader: 'varying vec3 vP; void main(){ float h = vP.y*.5+.5; vec3 c = mix(vec3(.015,.04,.06), vec3(.10,.18,.22), smoothstep(.1,.9,h)); gl_FragColor = vec4(c,1.); }'
+  }));
+  env.add(room);
+  const box = (w, h, intensity, pos, color = 0xffffff) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(intensity), side: THREE.DoubleSide }));
+    m.position.copy(pos); m.lookAt(0, 0, 0); env.add(m);
+  };
+  box(7, 5, 5.0, new THREE.Vector3(0, 8, 1));                 // big top softbox
+  box(3.5, 5, 9.0, new THREE.Vector3(-7, 2, 4), 0xfff4e6);     // warm key, front-left
+  box(1.2, 7, 8.0, new THREE.Vector3(7, 1, -2), 0xe6f6ff);     // rim strip, right
+  box(4, 2.2, 3.6, new THREE.Vector3(-3, 3, 8));         // front-left window (gloss streak on faces turned to you)               // soft front fill
+  box(6, 2, 1.0, new THREE.Vector3(0, -7, 0), 0x6fd0f0);       // aqua bounce from below
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const rt = pmrem.fromScene(env, 0.035);
+  pmrem.dispose();
+  return rt.texture;
+}
+scene.environment = buildEnvironment();
+
+const hemi = new THREE.HemisphereLight(0xeaf8ff, 0x2a5566, 0.2);
+scene.add(hemi);
+const key = new THREE.DirectionalLight(0xfff2e0, 1.1);
+key.position.set(-3, 5, 4);
+scene.add(key);
+
+// ---------- the blob: inside-out gradient sphere with caustic shimmer ----------
+const blobUniforms = { uT: { value: 0 } };
+const blob = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, uniforms: blobUniforms,
+  vertexShader: `varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader: `
+    uniform float uT; varying vec3 vD;
+    vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
+    void main(){
+      float h = vD.y*.5+.5;
+      vec3 deep = lin(vec3(.13,.36,.50)), mid = lin(vec3(.47,.76,.86)), top = lin(vec3(.88,.97,1.0));
+      vec3 col = mix(deep, mid, smoothstep(.0,.55,h));
+      col = mix(col, top, smoothstep(.55,1.,h));
+      // faint caustic shimmer, strongest overhead
+      vec3 p = vD*7.;
+      float a = sin(p.x*1.9 + uT*.55 + sin(p.z*1.4 + uT*.35)*1.6);
+      float b = sin(p.z*2.2 - uT*.45 + sin(p.x*1.7 - uT*.30)*1.6);
+      float c = pow(abs(a*b), 5.);
+      col += lin(vec3(1.)) * c * .10 * smoothstep(.35,1.,h);
+      // soft "membrane" glow toward the horizon ring
+      col += lin(vec3(.85,.97,1.)) * .06 * pow(1.-abs(vD.y), 6.);
+      gl_FragColor = vec4(col, 1.);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }`
+}));
+blob.renderOrder = -10;
+world.add(blob);
+
+// ---------- drifting bubbles + specks (all motion on GPU) ----------
+const bubbleUniforms = { uT: { value: 0 }, uScale: { value: 1 } };
+function buildBubbles(n) {
+  const pos = new Float32Array(n * 3), size = new Float32Array(n), speed = new Float32Array(n), phase = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const r = 3 + Math.pow(Math.random(), .7) * 24;
+    const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+    pos[i*3] = r * Math.sin(ph) * Math.cos(th); pos[i*3+1] = r * Math.cos(ph); pos[i*3+2] = r * Math.sin(ph) * Math.sin(th);
+    const big = Math.random() < .35;
+    size[i] = big ? .10 + Math.random() * .22 : .025 + Math.random() * .04;
+    speed[i] = big ? .18 + Math.random() * .25 : .05 + Math.random() * .1;
+    phase[i] = Math.random() * 100;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+  g.setAttribute('aSpeed', new THREE.BufferAttribute(speed, 1));
+  g.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
+  const m = new THREE.ShaderMaterial({
+    uniforms: bubbleUniforms, transparent: true, depthWrite: false,
+    vertexShader: `
+      attribute float aSize, aSpeed, aPhase; uniform float uT, uScale; varying float vA; varying float vS;
+      void main(){
+        vec3 p = position;
+        p.y = mod(p.y + uT*aSpeed + 28., 56.) - 28.;
+        p.x += sin(uT*.31 + aPhase)*.35; p.z += cos(uT*.27 + aPhase*1.3)*.35;
+        vec4 mv = modelViewMatrix*vec4(p,1.);
+        gl_PointSize = clamp(aSize*uScale / -mv.z, 1., 64.);
+        float d = length(p);
+        vA = smoothstep(27.,16.,d) * smoothstep(1.2,3.,d);
+        vS = aSize;
+        gl_Position = projectionMatrix*mv;
+      }`,
+    fragmentShader: `
+      varying float vA; varying float vS;
+      void main(){
+        vec2 c = gl_PointCoord*2.-1.; float r = length(c); if (r > 1.) discard;
+        float ring = smoothstep(.72,.93,r) * smoothstep(1.,.93,r);
+        float fill = .10*(1.-r);
+        float hl = smoothstep(.32,.0,length(c-vec2(-.35,-.38)));
+        float speck = 1.-smoothstep(.2,1.,r);
+        float isBubble = step(.08, vS);
+        float a = mix(speck*.55, ring*.75 + fill + hl*.9, isBubble) * vA;
+        gl_FragColor = vec4(vec3(1.), a);
+        #include <colorspace_fragment>
+      }`
+  });
+  const pts = new THREE.Points(g, m);
+  pts.frustumCulled = false;
+  return pts;
+}
+world.add(buildBubbles(QUALITY === 'low' ? 160 : 320));
+
+// ---------- letter factory ----------
+const font = new FontLoader().parse(FONT_JSON);
+const LETTER_SIZE = 1.6;
+function makeLetterGeometry(ch) {
+  let g = new TextGeometry(ch, {
+    font, size: LETTER_SIZE, height: 0.37, curveSegments: 10, // half the old total thickness (0.5 + 2×0.12 bevel)
+    bevelEnabled: false                                         // hard edges, no rounding
+  });
+  g.computeBoundingBox();
+  const c = new THREE.Vector3(); g.boundingBox.getCenter(c);
+  g.translate(-c.x, -c.y, -c.z);              // tumble around its own middle
+  g = toCreasedNormals(g, THREE.MathUtils.degToRad(35)); // smooth curves, hard corners
+  // keep the flat front/back faces perfectly flat (no smoothing streaks bleeding in from the bevel)
+  const P = g.attributes.position, N = g.attributes.normal;
+  let zHi = -Infinity, zLo = Infinity;
+  for (let i = 0; i < P.count; i++) { const z = P.getZ(i); if (z > zHi) zHi = z; if (z < zLo) zLo = z; }
+  for (let i = 0; i < P.count; i += 3) {
+    for (const [zz, nz] of [[zHi, 1], [zLo, -1]]) {
+      if (Math.abs(P.getZ(i) - zz) < 1e-4 && Math.abs(P.getZ(i + 1) - zz) < 1e-4 && Math.abs(P.getZ(i + 2) - zz) < 1e-4)
+        for (let k = 0; k < 3; k++) N.setXYZ(i + k, 0, 0, nz);
+    }
+  }
+  N.needsUpdate = true;
+  g.computeBoundingSphere();
+  return g;
+}
+const TOY_COLORS = {};
+// plain matte black: no gloss, no shadows; faint even light only so the thickness still reads
+function makeLetterMaterial(color) {
+  return new THREE.MeshStandardMaterial({ color, roughness: 1, metalness: 0, envMapIntensity: 0.8 });
+}
+
+// ---------- physics (no library; one body per letter) ----------
+const WORLD = { rMin: 3.2, rMax: 10.0, wall: 0.9, drag: 0.4, angDrag: 0.3, gap: 1.15 };
+const letters = [];
+const tmpV = new THREE.Vector3(), tmpV2 = new THREE.Vector3(), tmpQ = new THREE.Quaternion();
+
+function addLetter(ch, position, opts = {}) {
+  const mesh = new THREE.Mesh(makeLetterGeometry(ch), makeLetterMaterial(opts.color ?? TOY_COLORS[ch] ?? 0x161616));
+  mesh.position.copy(position);
+  mesh.quaternion.setFromEuler(new THREE.Euler(Math.random() - .5, Math.random() * Math.PI * 2, Math.random() - .5));
+  world.add(mesh);
+  const L = {
+    ch, mesh,
+    pos: mesh.position, vel: new THREE.Vector3(), angVel: new THREE.Vector3(.15, .25, .08),
+    seed: Math.random() * 1000, dragged: false, dragTarget: new THREE.Vector3(), releaseAt: -1e9,
+    squashT: 1e9, squashAxis: new THREE.Vector3(0, 0, 1)
+  };
+  mesh.userData.letter = L;
+  letters.push(L);
+  return L;
+}
+
+// smooth pseudo-noise "current" (sum of incommensurate sines; cheap and never repeats visibly)
+function current(L, t, out) {
+  const s = L.seed, p = L.pos;
+  out.set(
+    Math.sin(t * .13 + s + p.y * .35) + .6 * Math.sin(t * .071 + s * 1.7 + p.z * .28),
+    .7 * Math.sin(t * .11 + s * 2.3 + p.x * .31) + .5 * Math.sin(t * .053 + s * .7),
+    Math.sin(t * .09 + s * 3.1 + p.x * .27) + .6 * Math.sin(t * .067 + s * 1.1 + p.y * .33)
+  );
+  return out.multiplyScalar(.11);
+}
+
+function stepLetter(L, t, dt) {
+  const acc = tmpV.set(0, 0, 0);
+  if (L.dragged) {
+    // follow the pointer on a stiff spring; it keeps spinning while carried
+    const k = 70, c = 2 * Math.sqrt(k) * .9;
+    acc.copy(L.dragTarget).sub(L.pos).multiplyScalar(k).addScaledVector(L.vel, -c);
+    L.vel.addScaledVector(acc, dt);
+    L.angVel.multiplyScalar(Math.exp(-WORLD.angDrag * dt));
+  } else {
+    // current (ramps back in after release), gentle bob, soft shell walls, tiny wandering torque
+    const ramp = THREE.MathUtils.smoothstep(t - L.releaseAt, 0.4, 5.0);
+    acc.addScaledVector(current(L, t, tmpV2), ramp);
+    acc.y += Math.sin(t * .7 + L.seed) * .06 * ramp;
+    const r = L.pos.length();
+    if (r > WORLD.rMax) acc.addScaledVector(L.pos, -WORLD.wall * (r - WORLD.rMax) / r);
+    if (r < WORLD.rMin) acc.addScaledVector(L.pos, WORLD.wall * 2 * (WORLD.rMin - r) / Math.max(r, .001));
+    L.vel.addScaledVector(acc, dt);
+    L.vel.multiplyScalar(Math.exp(-WORLD.drag * dt));
+    const s = L.seed;
+    tmpV2.set(Math.sin(t * .21 + s), Math.sin(t * .17 + s * 2.1), Math.sin(t * .13 + s * 3.7)).multiplyScalar(.075 * ramp);
+    L.angVel.addScaledVector(tmpV2, dt);
+    L.angVel.multiplyScalar(Math.exp(-WORLD.angDrag * dt));
+  }
+  L.pos.addScaledVector(L.vel, dt);
+  const w = L.angVel.length();
+  if (w > 1e-5) {
+    tmpQ.setFromAxisAngle(tmpV2.copy(L.angVel).divideScalar(w), w * dt);
+    L.mesh.quaternion.premultiply(tmpQ).normalize();
+  }
+  // squash "boop": damped wobble along the hit direction (in local space)
+  const st = t - L.squashT;
+  if (st >= 0 && st < 1.2) {
+    const s = Math.exp(-5.5 * st) * Math.cos(st * 19) * .22;
+    const a = L.squashAxis; // local axis
+    // scale: shrink along axis, bulge perpendicular (approximate with per-axis weights)
+    const ax = Math.abs(a.x), ay = Math.abs(a.y), az = Math.abs(a.z);
+    L.mesh.scale.set(1 - s * ax + s * .5 * (1 - ax), 1 - s * ay + s * .5 * (1 - ay), 1 - s * az + s * .5 * (1 - az));
+  } else L.mesh.scale.set(1, 1, 1);
+}
+
+// ---------- ripple rings ----------
+const ripples = [];
+const ringGeo = new THREE.RingGeometry(.92, 1, 64);
+function spawnRipple(point, delay = 0, maxScale = 1.4) {
+  const m = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, toneMapped: false }));
+  m.position.copy(point); m.quaternion.copy(camera.quaternion); m.scale.setScalar(.01);
+  world.add(m); ripples.push({ m, t: -delay, maxScale });
+}
+function stepRipples(dt) {
+  for (let i = ripples.length - 1; i >= 0; i--) {
+    const r = ripples[i]; r.t += dt;
+    if (r.t < 0) continue;
+    const k = r.t / .75;
+    if (k >= 1) { world.remove(r.m); r.m.material.dispose(); ripples.splice(i, 1); continue; }
+    const e = 1 - Math.pow(1 - k, 3);
+    r.m.scale.setScalar(.1 + e * r.maxScale);
+    r.m.material.opacity = .85 * (1 - k);
+    r.m.quaternion.copy(camera.quaternion);
+  }
+}
+
+// ---------- sound (WebAudio, unlocked by first gesture) ----------
+let actx = null;
+function unlockAudio() {
+  if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { actx = null; } }
+  if (actx && actx.state === 'suspended') actx.resume();
+}
+function blip(f0, f1, dur, vol, type = 'sine') {
+  if (!actx) return;
+  const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain(), lp = actx.createBiquadFilter();
+  o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur * .8);
+  lp.type = 'lowpass'; lp.frequency.value = 2400;
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(lp).connect(g).connect(actx.destination); o.start(t); o.stop(t + dur + .02);
+}
+const sfx = {
+  plop() { blip(720, 170, .2, .35); setTimeout(() => blip(1100, 600, .07, .08), 60); },
+  grab() { blip(260, 820, .13, .22); },
+  drop() { blip(700, 260, .15, .2); },
+  pull() { blip(300, 900, .18, .2, 'triangle'); },
+  win() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => blip(f, f * 1.01, .45, .22, 'triangle'), i * 120)); }
+};
+
+// ---------- look controls (arrows + mouse drag), smoothed ----------
+const look = { yaw: 0, pitch: 0, tYaw: 0, tPitch: 0 };
+const PITCH_MAX = THREE.MathUtils.degToRad(80);
+const keys = new Set();
+const ARROW_SPEED = 1.7; // rad/s
+addEventListener('keydown', e => {
+  unlockAudio();
+  if (e.key.startsWith('Arrow')) { keys.add(e.key); e.preventDefault(); }
+  else if (e.key === 'Enter') { e.preventDefault(); if (!e.repeat && !renderer.xr.isPresenting) pokeAt(0, 0); }
+  else if (e.code === 'Space') { e.preventDefault(); if (!e.repeat) pullCloser(); }
+});
+addEventListener('keyup', e => keys.delete(e.key));
+addEventListener('blur', () => keys.clear());
+
+const ptr = { down: false, id: null, x: 0, y: 0, sx: 0, sy: 0, moved: 0 };
+const cv = renderer.domElement;
+// press on a letter and drag = carry it; press on empty space and drag = look around
+const toNdc = e => ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+const dragPlane = new THREE.Plane(), dragHit = new THREE.Vector3();
+const drag = { L: null, offset: new THREE.Vector3() };
+function dragTargetFrom(e) {
+  toNdc(e); ray.setFromCamera(ndc, camera);
+  if (ray.ray.intersectPlane(dragPlane, dragHit)) drag.L.dragTarget.copy(dragHit).add(drag.offset);
+}
+cv.addEventListener('pointerdown', e => {
+  unlockAudio(); cv.focus();
+  if (renderer.xr.isPresenting) return; // in VR the hands do the work
+  Object.assign(ptr, { down: true, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0 });
+  cv.setPointerCapture(e.pointerId);
+  toNdc(e); const h = pickLetter(ndc.x, ndc.y);
+  if (h) {
+    drag.L = h.L;
+    dragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(tmpV).negate(), h.point);
+    drag.offset.copy(h.L.pos).sub(h.point);
+    h.L.dragTarget.copy(h.L.pos);
+  }
+});
+cv.addEventListener('pointermove', e => {
+  if (!ptr.down || e.pointerId !== ptr.id) return;
+  const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
+  ptr.x = e.clientX; ptr.y = e.clientY;
+  const was = ptr.moved; ptr.moved += Math.abs(dx) + Math.abs(dy);
+  if (ptr.moved <= 6) return;
+  cv.classList.add('drag');
+  if (drag.L) {
+    if (was <= 6) { drag.L.dragged = true; sfx.grab(); stats.grabs++; }
+    dragTargetFrom(e);
+  } else {
+    const k = 2.4 / Math.max(innerHeight, 1);
+    look.tYaw += dx * k; look.tPitch += dy * k;
+    look.tPitch = THREE.MathUtils.clamp(look.tPitch, -PITCH_MAX, PITCH_MAX);
+  }
+});
+const endPtr = e => {
+  if (!ptr.down || e.pointerId !== ptr.id) return;
+  ptr.down = false; cv.classList.remove('drag');
+  const L = drag.L; drag.L = null;
+  if (L && L.dragged) {
+    // let go: keep the throw (inertia) and the spin; the water current takes over again
+    L.dragged = false;
+    if (L.vel.length() > 3) L.vel.setLength(3);
+    L.releaseAt = clock.t - 1.5;
+    sfx.drop(); stats.releases++;
+  } else if (ptr.moved <= 6) pokeAt((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+};
+cv.addEventListener('pointerup', endPtr);
+cv.addEventListener('pointercancel', e => {
+  ptr.down = false; cv.classList.remove('drag');
+  if (drag.L) { drag.L.dragged = false; drag.L.releaseAt = clock.t - 1.5; drag.L = null; }
+});
+// holding a letter + Space = bring it close, right under the pointer (spelling distance)
+const NEAR_DIST = 3.6;
+function pullCloser() {
+  if (!drag.L) return;
+  toNdc({ clientX: ptr.x, clientY: ptr.y }); ray.setFromCamera(ndc, camera);
+  const p = ray.ray.at(NEAR_DIST, new THREE.Vector3());
+  dragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(tmpV).negate(), p);
+  drag.offset.set(0, 0, 0);
+  drag.L.dragTarget.copy(p);
+  if (!drag.L.dragged) { drag.L.dragged = true; ptr.moved = 99; stats.grabs++; }
+  sfx.pull();
+}
+
+// two fingers on the touchpad (or the mouse wheel) = look around
+cv.addEventListener('wheel', e => {
+  e.preventDefault(); unlockAudio();
+  const k = (e.deltaMode === 1 ? 16 : 1) * 0.0025;
+  look.tYaw += e.deltaX * k; look.tPitch += e.deltaY * k;
+  look.tPitch = THREE.MathUtils.clamp(look.tPitch, -PITCH_MAX, PITCH_MAX);
+  if (drag.L) dragTargetFrom({ clientX: ptr.x, clientY: ptr.y });
+}, { passive: false });
+
+// ---------- interaction: poke + grab ----------
+const ray = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+const dotEl = document.getElementById('dot');
+function pickLetter(x, y) {
+  ndc.set(x, y); ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(letters.map(l => l.mesh), false)[0];
+  return hit ? { L: hit.object.userData.letter, point: hit.point } : null;
+}
+function pokeAt(x, y) {
+  const h = pickLetter(x, y);
+  if (!h) { dotEl.classList.remove('no'); void dotEl.offsetWidth; dotEl.classList.add('no'); return false; }
+  const { L, point } = h;
+  const dir = tmpV.copy(point).sub(camera.position).normalize();
+  L.vel.addScaledVector(dir, 2.3);
+  L.vel.x += (Math.random() - .5) * .5; L.vel.y += (Math.random() - .3) * .5;
+  // spin from off-centre hit: torque = r x F
+  const arm = tmpV2.copy(point).sub(L.pos);
+  const torque = new THREE.Vector3().crossVectors(arm, dir).multiplyScalar(3.2);
+  torque.add(new THREE.Vector3(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(1.2));
+  L.angVel.add(torque);
+  L.releaseAt = clock.t - 1.5; // current keeps blending in
+  // squash along hit direction in letter-local space
+  L.squashAxis.copy(dir).applyQuaternion(tmpQ.copy(L.mesh.quaternion).invert()).normalize();
+  L.squashT = clock.t;
+  spawnRipple(point, 0, 1.3); spawnRipple(point, .12, 2.0);
+  sfx.plop();
+  stats.pokes++;
+  return true;
+}
+
+// ---------- post (bloom) ----------
+let composer = null, bloom = null;
+function buildComposer() {
+  const size = renderer.getDrawingBufferSize(new THREE.Vector2());
+  const rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: 4 });
+  composer = new EffectComposer(renderer, rt);
+  composer.addPass(new RenderPass(scene, camera));
+  bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth / 2, innerHeight / 2), .32, .55, .92);
+  composer.addPass(bloom);
+  composer.addPass(new OutputPass());
+}
+let useBloom = QUALITY !== 'low';
+if (useBloom) buildComposer();
+
+function resize() {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setPixelRatio(pixelRatio); renderer.setSize(innerWidth, innerHeight);
+  if (composer) { composer.setPixelRatio(pixelRatio); composer.setSize(innerWidth, innerHeight); }
+  bubbleUniforms.uScale.value = (innerHeight * pixelRatio * .5) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+}
+addEventListener('resize', resize);
+resize();
+
+// ---------- the alphabet: A–Z and a–z, spread evenly all around the player ----------
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const shuffled = [...ALPHABET].sort(() => Math.random() - .5);
+shuffled.forEach((ch, i) => {
+  // fibonacci sphere for even directions, random depth inside the bubble shell
+  const n = shuffled.length, y = 1 - (i + .5) / n * 2, rr = Math.sqrt(1 - y * y), th = i * Math.PI * (3 - Math.sqrt(5));
+  const dir = new THREE.Vector3(Math.cos(th) * rr, y * .8, Math.sin(th) * rr).normalize();
+  const L = addLetter(ch, dir.multiplyScalar(4.5 + Math.random() * 4.5));
+  L.vel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.1);
+  L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.5);
+});
+// re-spread every letter on a fresh fibonacci shell between r0 and r1 (world units); used by VR start and VR replay
+function scatterLetters(r0, r1, ySquash = .8) {
+  const n = letters.length, order = letters.map((_, i) => i).sort(() => Math.random() - .5);
+  order.forEach((k, i) => {
+    const L = letters[k];
+    const y = 1 - (i + .5) / n * 2, rr = Math.sqrt(1 - y * y), th = i * Math.PI * (3 - Math.sqrt(5));
+    L.pos.set(Math.cos(th) * rr, y * ySquash, Math.sin(th) * rr).normalize().multiplyScalar(r0 + Math.random() * (r1 - r0));
+    L.vel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.1);
+    L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.5);
+    L.dragged = false; L.releaseAt = -1e9;
+  });
+}
+
+// letters gently push apart so they don't float through each other
+function separate(dt) {
+  for (let i = 0; i < letters.length; i++) for (let j = i + 1; j < letters.length; j++) {
+    const A = letters[i], B = letters[j];
+    tmpV.copy(A.pos).sub(B.pos); const d = tmpV.length();
+    if (d < WORLD.gap && d > 1e-4) {
+      tmpV.multiplyScalar((WORLD.gap - d) * 2.5 * dt / d);
+      if (!A.dragged) A.vel.add(tmpV);
+      if (!B.dragged) B.vel.sub(tmpV);
+    }
+  }
+}
+
+// ---------- goal: spell CAT (either case) in a row in front of you ----------
+// Letter size is 1.6 units per em: a capital is ~1.05 tall, C/A/T are ~1.0–1.15 wide,
+// so in a tight word their centres sit ~1.1 apart. We accept a "readable word":
+//   • each letter within 6 units of you and in front of you
+//   • reading order C → A → T from left to right on screen
+//   • neighbour centres 0.7–2.0 apart (touching up to about one letter-width gap)
+//   • roughly one line: up/down offset ≤ 0.6, depth offset ≤ 1.2 between neighbours
+//   • held true for 0.6 s with no letter in your hand, so it isn't a fly-by
+const WORD = 'CAT', WIN_RULE = { reach: 6, minGap: .7, maxGap: 2.0, maxDy: .6, maxDz: 1.2, hold: .6 };
+const goalEl = document.getElementById('goal'), winEl = document.getElementById('win');
+const goalTiles = [...goalEl.children];
+let winHold = 0, won = false;
+// letter centre in HEAD (camera) space, measured in world units: desktop → plain view space; VR → headset space ÷ world scale
+const camV = l => world.localToWorld(l.pos.clone()).applyMatrix4(camera.matrixWorldInverse).divideScalar(world.scale.x);
+function checkWord(dt) {
+  if (won) return;
+  const near = l => { const v = camV(l); return v.z < 0 && v.length() <= WIN_RULE.reach; };
+  const cands = [...WORD].map(ch => letters.filter(l => l.ch.toUpperCase() === ch));
+  cands.forEach((list, i) => goalTiles[i].classList.toggle('near', list.some(near)));
+  let ok = false;
+  for (const a of cands[0]) for (const b of cands[1]) for (const c of cands[2]) {
+    if (ok) break;
+    const row = [a, b, c];
+    if (!row.every(near) || row.some(l => l.dragged)) continue;
+    const v = row.map(camV);
+    let good = true;
+    for (let i = 0; i < 2 && good; i++) {
+      const d = v[i].distanceTo(v[i + 1]);
+      good = v[i].x < v[i + 1].x && d >= WIN_RULE.minGap && d <= WIN_RULE.maxGap &&
+             Math.abs(v[i].y - v[i + 1].y) <= WIN_RULE.maxDy && Math.abs(v[i].z - v[i + 1].z) <= WIN_RULE.maxDz;
+    }
+    ok = good;
+  }
+  winHold = ok ? winHold + dt : 0;
+  if (winHold >= WIN_RULE.hold) {
+    won = true; goalEl.classList.add('win'); winEl.classList.add('show'); sfx.win();
+    for (const l of letters) if ('CAT'.includes(l.ch.toUpperCase())) spawnRipple(l.pos.clone(), 0, 2.2);
+  }
+}
+document.getElementById('again').addEventListener('click', () => location.reload());
+// VR replay (a reload would throw you out of the headset): fresh scatter, goal cleared
+function resetGame() {
+  won = false; winHold = 0;
+  goalEl.classList.remove('win'); winEl.classList.remove('show');
+  for (const H of vr.hands) H.held = null;
+  scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
+}
+
+// ---------- WebXR (VR mode): hands, controllers, distance grab, push-away, floating goal panel ----------
+// The physics never changes: it runs in world units. In VR the `world` group is scaled so a capital is ~22 cm
+// and centred on the head at session start; everything measured in metres (VR_M) is divided by vr.S.
+const VR_M = {
+  letterH: .22, eyeMin: .35, eyeMax: 3.0, spawnMin: .5, spawnMax: 2.4,   // letter size, float shell, spawn shell
+  pinchOn: .02, pinchOff: .035, grabReach: .08, letterR: .09,               // pinch hysteresis, direct-grab reach, letter contact radius
+  tipR: .012, palmR: .035, ctrlR: .045,                                     // contact spheres
+  throwMax: 2.5, velWindow: .1, rayMax: 6, rayStub: .3, aimAssist: .09,     // throw clamp (m/s), velocity window (s), pointer ray
+  pushBase: .22, pushGain: 1.1, releaseGrace: .4,                           // push-away kick
+  panelDist: 1.0, panelDrop: .28, pokeR: .05                                // goal panel + replay button
+};
+const DESK_WORLD = { rMin: WORLD.rMin, rMax: WORLD.rMax };
+const capBox = (() => { const g = letters.find(l => l.ch === 'C').mesh.geometry; g.computeBoundingBox(); return g.boundingBox; })();
+const vr = {
+  S: VR_M.letterH / (capBox.max.y - capBox.min.y), anchored: false, hands: [], t: 0, resetAt: -9,
+  head: new THREE.Vector3(0, 1.6, 0), headQ: new THREE.Quaternion(), lit: new Set(), panelSig: ''
+};
+const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3(), vD = new THREE.Vector3(), qA = new THREE.Quaternion();
+const xrRay = new THREE.Raycaster();
+const TIPS = ['thumb-tip', 'index-finger-tip', 'middle-finger-tip', 'ring-finger-tip', 'pinky-finger-tip'];
+const handFactory = new XRHandModelFactory();
+const rayGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
+const AIM_GLOW = new THREE.Color(0x2f8fb8);
+sfx.touch = () => blip(560, 210, .14, .12);
+
+for (let i = 0; i < 2; i++) {
+  const ctrl = renderer.xr.getController(i), grip = renderer.xr.getControllerGrip(i), hand = renderer.xr.getHand(i);
+  rig.add(ctrl, grip, hand);
+  hand.add(handFactory.createHandModel(hand, 'spheres'));          // primitive spheres: no model download
+  const pad = new THREE.Mesh(new THREE.CapsuleGeometry(.02, .07, 4, 12), new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: .55 }));
+  pad.rotation.x = -Math.PI / 2; pad.visible = false; grip.add(pad);
+  const line = new THREE.Line(rayGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .5, depthWrite: false }));
+  line.visible = false; ctrl.add(line);
+  const dot = new THREE.Mesh(new THREE.SphereGeometry(.007, 12, 8), new THREE.MeshBasicMaterial({ color: 0xffe36b, toneMapped: false }));
+  dot.visible = false; scene.add(dot);
+  const H = { i, ctrl, grip, hand, pad, line, dot, kind: null, sel: false, sqz: false, pinch: false, wasPinch: false, tracked: false,
+              held: null, aimed: null, aimBtn: false, pt: new THREE.Vector3(), hist: [], vel: new THREE.Vector3(), prev: {} };
+  ctrl.addEventListener('connected', e => { H.kind = e.data && e.data.hand ? 'hand' : 'ctrl'; H.src = e.data; H.side = e.data ? e.data.handedness : ''; pad.visible = H.kind === 'ctrl'; H.hist.length = 0; H.prev = {}; });
+  ctrl.addEventListener('disconnected', () => { releaseHeld(H, false); H.kind = null; H.pinch = H.wasPinch = H.sel = H.sqz = false; line.visible = dot.visible = pad.visible = false; });
+  ctrl.addEventListener('selectstart', () => { H.sel = true; });
+  ctrl.addEventListener('selectend', () => { H.sel = false; });
+  ctrl.addEventListener('squeezestart', () => { H.sqz = true; });
+  ctrl.addEventListener('squeezeend', () => { H.sqz = false; });
+  vr.hands.push(H);
+}
+
+// goal panel: C A T tiles on a canvas texture, ~1 m ahead and a little low, follows your gaze lazily
+const panelCv = document.createElement('canvas'); panelCv.width = 512; panelCv.height = 200;
+const panelTex = new THREE.CanvasTexture(panelCv); panelTex.colorSpace = THREE.SRGBColorSpace;
+const panel = new THREE.Mesh(new THREE.PlaneGeometry(.36, .36 * 200 / 512),
+  new THREE.MeshBasicMaterial({ map: panelTex, transparent: true, toneMapped: false, depthWrite: false }));
+panel.visible = false; panel.renderOrder = 5; scene.add(panel);
+const btnCv = document.createElement('canvas'); btnCv.width = btnCv.height = 128;
+{ const c = btnCv.getContext('2d'); c.fillStyle = '#111'; c.beginPath(); c.arc(64, 64, 62, 0, Math.PI * 2); c.fill();
+  c.fillStyle = '#fff'; c.font = '700 76px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('↻', 64, 70); }
+const btnTex = new THREE.CanvasTexture(btnCv); btnTex.colorSpace = THREE.SRGBColorSpace;
+const replayBtn = new THREE.Mesh(new THREE.CircleGeometry(.04, 40), new THREE.MeshBasicMaterial({ map: btnTex, transparent: true, toneMapped: false }));
+replayBtn.position.set(0, -.11, .004); replayBtn.visible = false; panel.add(replayBtn);
+function drawPanel() {
+  const sig = goalTiles.map(t => t.classList.contains('near') ? 1 : 0).join('') + (won ? 'W' : '');
+  if (sig === vr.panelSig) return;
+  vr.panelSig = sig;
+  const c = panelCv.getContext('2d'); c.clearRect(0, 0, 512, 200);
+  const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
+  c.fillStyle = 'rgba(255,255,255,.35)'; rr(4, 4, 504, 192, 34); c.fill();
+  [...WORD].forEach((ch, i) => {
+    const near = sig[i] === '1', x = 46 + i * 150, y = won ? 16 : 26;
+    c.fillStyle = won ? '#ffe36b' : near ? '#fff' : 'rgba(255,255,255,.55)'; rr(x, y, 120, 148, 22); c.fill();
+    if (near || won) { c.lineWidth = 5; c.strokeStyle = '#111'; rr(x + 2.5, y + 2.5, 115, 143, 20); c.stroke(); }
+    c.fillStyle = near || won ? '#111' : 'rgba(15,42,58,.35)';
+    c.font = '400 112px "Times New Roman", Tinos, serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(ch, x + 60, y + 80);
+  });
+  panelTex.needsUpdate = true;
+  replayBtn.visible = won;
+}
+function placePanel(dt, snap) {
+  vA.set(0, 0, -1).applyQuaternion(vr.headQ); vA.y = 0;
+  if (vA.lengthSq() < 1e-4) vA.set(0, 0, -1);
+  vA.normalize();
+  vB.copy(vr.head).addScaledVector(vA, VR_M.panelDist); vB.y -= VR_M.panelDrop;
+  const k = snap ? 1 : 1 - Math.exp(-1.4 * dt);
+  panel.position.lerp(vB, k);
+  qA.copy(panel.quaternion); panel.lookAt(vr.head); const want = panel.quaternion.clone();
+  panel.quaternion.copy(qA).slerp(want, k);
+}
+
+function anchorWorld() {
+  world.position.copy(vr.head); world.scale.setScalar(vr.S); world.updateMatrixWorld(true);
+  WORLD.rMin = VR_M.eyeMin / vr.S; WORLD.rMax = VR_M.eyeMax / vr.S;
+  won = false; winHold = 0; goalEl.classList.remove('win'); winEl.classList.remove('show');
+  scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
+  vr.anchored = true; panel.visible = true; vr.panelSig = ''; placePanel(0, true);
+}
+const toLocal = p => world.worldToLocal(p);                          // scene metres → world units (in place)
+const toScene = (L, out) => world.localToWorld(out.copy(L.pos));    // letter centre in scene metres
+
+function grab(H, L, far) {
+  for (const o of vr.hands) if (o !== H && o.held === L) o.held = null;
+  H.held = L; L.dragged = true; L.vrFar = far;
+  L.dragTarget.copy(toLocal(vA.copy(H.pt)));
+  far ? sfx.pull() : sfx.grab(); stats.grabs++;
+}
+function releaseHeld(H, throwIt = true) {
+  const L = H.held; if (!L) return;
+  H.held = null; L.dragged = false;
+  if (throwIt && toScene(L, vA).distanceTo(H.pt) < .2) {
+    // a throw: the hand's velocity over the last ~100 ms, clamped; the spin it already had is kept
+    vB.copy(H.vel); if (vB.length() > VR_M.throwMax) vB.setLength(VR_M.throwMax);
+    L.vel.copy(vB).divideScalar(vr.S);
+  } else if (L.vel.length() > 3) L.vel.setLength(3);
+  L.releaseAt = clock.t - 1.5; L.vrReleaseT = vr.t;
+  sfx.drop(); stats.releases++;
+}
+
+function updateHand(H, dt) {
+  if (!H.kind) return;
+  // 1) pinch point + pinch state (hands: thumb tip ↔ index tip with hysteresis; controllers: trigger or squeeze)
+  if (H.kind === 'hand') {
+    const th = H.hand.joints['thumb-tip'], ix = H.hand.joints['index-finger-tip'];
+    H.tracked = !!(th && ix && th.visible && ix.visible);
+    if (H.tracked) {
+      th.getWorldPosition(vA); ix.getWorldPosition(vB);
+      const d = vA.distanceTo(vB);
+      H.pinch = H.pinch ? d < VR_M.pinchOff : d < VR_M.pinchOn;
+      H.pt.addVectors(vA, vB).multiplyScalar(.5);
+    } else H.pinch = false;
+  } else {
+    H.tracked = H.grip.visible || H.ctrl.visible;
+    (H.grip.visible ? H.grip : H.ctrl).getWorldPosition(H.pt);
+    H.pinch = H.tracked && (H.sel || H.sqz);
+  }
+  if (!H.tracked) { if (H.held) releaseHeld(H, false); H.line.visible = H.dot.visible = false; H.aimed = null; H.wasPinch = false; return; }
+  // 2) hand velocity, averaged over the last ~100 ms
+  H.hist.push({ t: vr.t, p: H.pt.clone() });
+  while (H.hist.length > 2 && vr.t - H.hist[0].t > VR_M.velWindow) H.hist.shift();
+  const h0 = H.hist[0], h1 = H.hist[H.hist.length - 1];
+  if (h1.t - h0.t > 1e-4) H.vel.subVectors(h1.p, h0.p).divideScalar(h1.t - h0.t); else H.vel.set(0, 0, 0);
+  // 3) pointer ray from the target-ray space (index-finger pointing on hands, the controller's nose otherwise)
+  H.aimed = null; H.aimBtn = false;
+  let len = VR_M.rayStub;
+  if (!H.held && H.ctrl.visible) {
+    H.ctrl.getWorldPosition(vC); vD.set(0, 0, -1).applyQuaternion(H.ctrl.getWorldQuaternion(qA));
+    xrRay.set(vC, vD); xrRay.far = VR_M.rayMax;
+    const targets = letters.filter(l => !l.dragged).map(l => l.mesh);
+    if (replayBtn.visible) targets.push(replayBtn);
+    let hit = xrRay.intersectObjects(targets, false)[0];
+    if (!hit) {
+      // aim assist: thin serif letters have holes, so also take the letter whose centre passes closest to the ray
+      let bestD = VR_M.aimAssist;
+      for (const L of letters) {
+        if (L.dragged) continue;
+        toScene(L, vA);
+        const along = vB.subVectors(vA, vC).dot(vD);
+        if (along < .1 || along > VR_M.rayMax) continue;
+        const off = vB.copy(vC).addScaledVector(vD, along).distanceTo(vA);
+        if (off < bestD) { bestD = off; hit = { distance: along, point: vA.clone(), object: L.mesh }; }
+      }
+    }
+    if (hit) {
+      len = hit.distance;
+      if (hit.object === replayBtn) H.aimBtn = true; else H.aimed = hit.object.userData.letter;
+      H.dot.position.copy(hit.point); H.dot.visible = true;
+    } else H.dot.visible = false;
+    H.line.scale.z = len; H.line.visible = true;
+  } else { H.line.visible = false; H.dot.visible = false; }
+  // 4) pinch edges: near letter first, else the aimed far letter flies to the hand (replaces Space)
+  if (H.pinch && !H.wasPinch) {
+    if (H.aimBtn && won) { resetGame(); sfx.grab(); }
+    else {
+      let best = null, bd = Infinity;
+      for (const L of letters) {
+        if (L.dragged) continue;
+        const d = toScene(L, vA).distanceTo(H.pt) - VR_M.letterR;
+        if (d < VR_M.grabReach && d < bd) { bd = d; best = L; }
+      }
+      if (best) grab(H, best, false); else if (H.aimed) grab(H, H.aimed, true);
+    }
+  }
+  if (!H.pinch && H.wasPinch) releaseHeld(H, true);
+  H.wasPinch = H.pinch;
+  // 5) carried letter follows the pinch point on the same spring as the desktop drag
+  if (H.held) H.held.dragTarget.copy(toLocal(vA.copy(H.pt)));
+}
+
+// every joint (palm + 5 fingertips, or the controller body) is a sphere; letters it touches get pushed away
+function contactSpheres(H, out) {
+  if (!H.kind || !H.tracked) return out;
+  if (H.kind === 'hand') {
+    const j = H.hand.joints;
+    const palm = j['middle-finger-metacarpal'];
+    if (palm && palm.visible) out.push({ H, key: 'palm', r: VR_M.palmR, p: palm.getWorldPosition(new THREE.Vector3()) });
+    for (const name of TIPS) { const o = j[name]; if (o && o.visible) out.push({ H, key: name, r: VR_M.tipR, p: o.getWorldPosition(new THREE.Vector3()) }); }
+  } else out.push({ H, key: 'grip', r: VR_M.ctrlR, p: H.pt.clone() });
+  return out;
+}
+function pushAway(dt) {
+  const spheres = [];
+  for (const H of vr.hands) contactSpheres(H, spheres);
+  for (const s of spheres) {
+    const prev = s.H.prev[s.key];
+    s.v = prev && dt > 0 ? s.p.clone().sub(prev).divideScalar(dt) : new THREE.Vector3();
+    if (s.v.length() > 6) s.v.setLength(6);
+    s.H.prev[s.key] = s.p.clone();
+  }
+  for (const L of letters) {
+    if (L.dragged || vr.t - (L.vrReleaseT ?? -9) < VR_M.releaseGrace) continue;
+    for (const s of spheres) {
+      toScene(L, vA);
+      const minD = s.r + VR_M.letterR, d = vA.distanceTo(s.p);
+      if (d >= minD || d < 1e-5) continue;
+      const n = vB.subVectors(vA, s.p).divideScalar(d);
+      L.pos.addScaledVector(n, (minD - d) / vr.S);                       // out of the hand
+      const closing = s.v.dot(n) - L.vel.dot(n) * vr.S;                   // m/s toward the letter
+      const fresh = vr.t - (L.vrTouchT ?? -9) > .35;
+      const kick = Math.max(0, closing) * VR_M.pushGain + (fresh ? VR_M.pushBase : 0);
+      L.vel.addScaledVector(n, kick / vr.S).addScaledVector(s.v, .25 / vr.S);
+      L.releaseAt = clock.t - 1.5;
+      if (fresh) {
+        L.vrTouchT = vr.t;
+        L.angVel.add(vC.crossVectors(n, s.v).multiplyScalar(5)).add(vD.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.8));
+        L.squashAxis.copy(n).applyQuaternion(qA.copy(L.mesh.quaternion).invert()).normalize(); L.squashT = clock.t;
+        spawnRipple(toLocal(vC.copy(s.p).addScaledVector(n, s.r)), 0, .9);
+        sfx.touch(); stats.pushes = (stats.pushes || 0) + 1;
+      }
+    }
+  }
+}
+
+function xrUpdate(xrFrame, dt) {
+  vr.t += dt;
+  const ref = renderer.xr.getReferenceSpace();
+  const pose = xrFrame && ref ? xrFrame.getViewerPose(ref) : null;
+  if (pose) {
+    const p = pose.transform.position, o = pose.transform.orientation;
+    vr.head.set(p.x, p.y, p.z); vr.headQ.set(o.x, o.y, o.z, o.w);
+    camera.position.copy(vr.head); camera.quaternion.copy(vr.headQ);   // fresh head pose for WIN_RULE (renderer sets the same)
+  }
+  rig.updateMatrixWorld(true);
+  if (!vr.anchored) { if (!pose) return; anchorWorld(); }
+  for (const H of vr.hands) updateHand(H, dt);
+  pushAway(dt);
+  // aim highlight
+  for (const L of vr.lit) L.mesh.material.emissive.setRGB(0, 0, 0);
+  vr.lit.clear();
+  for (const H of vr.hands) if (H.aimed) { H.aimed.mesh.material.emissive.copy(AIM_GLOW); vr.lit.add(H.aimed); }
+  // goal panel + poke-able replay
+  placePanel(dt, false); drawPanel();
+  if (won && replayBtn.visible && vr.t - vr.resetAt > 1) {
+    replayBtn.getWorldPosition(vC);
+    for (const H of vr.hands) {
+      if (!H.tracked) continue;
+      const tip = H.kind === 'hand' ? H.hand.joints['index-finger-tip'] : null;
+      (tip && tip.visible ? tip.getWorldPosition(vD) : vD.copy(H.pt));
+      if (vD.distanceTo(vC) < VR_M.pokeR) { vr.resetAt = vr.t; resetGame(); sfx.grab(); break; }
+    }
+  }
+}
+
+const vrBtn = document.getElementById('vrbtn');
+if (navigator.xr && navigator.xr.isSessionSupported) {
+  navigator.xr.isSessionSupported('immersive-vr').then(ok => vrBtn.classList.toggle('ok', ok)).catch(() => {});
+}
+vrBtn.addEventListener('click', async () => {
+  unlockAudio();
+  const cur = renderer.xr.getSession();
+  if (cur) { cur.end(); return; }
+  try {
+    const s = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor', 'hand-tracking'] });
+    await renderer.xr.setSession(s);
+  } catch (e) { console.info('VR session not started:', e.message); }
+});
+renderer.xr.addEventListener('sessionstart', () => {
+  vr.anchored = false; vr.t = 0; vrBtn.querySelector('span').textContent = 'Exit VR';
+});
+renderer.xr.addEventListener('sessionend', () => {
+  for (const H of vr.hands) { releaseHeld(H, false); H.kind = null; H.line.visible = H.dot.visible = false; }
+  for (const L of vr.lit) L.mesh.material.emissive.setRGB(0, 0, 0);
+  vr.lit.clear(); vr.anchored = false; panel.visible = false;
+  world.position.set(0, 0, 0); world.scale.setScalar(1); world.updateMatrixWorld(true);
+  WORLD.rMin = DESK_WORLD.rMin; WORLD.rMax = DESK_WORLD.rMax;
+  won = false; winHold = 0; goalEl.classList.remove('win'); winEl.classList.remove('show');
+  scatterLetters(4.5, 9, .8);
+  camera.position.set(0, 0, 0); camera.fov = 62; camera.zoom = 1; resize();
+  vrBtn.querySelector('span').textContent = 'Enter VR';
+});
+
+// ---------- loop ----------
+const clock = { t: 0, scale: 1, paused: false };
+const stats = { pokes: 0, grabs: 0, releases: 0, frames: 0, counted: 0, realT: 0, fps: 0, decided: false, quality: useBloom ? 'bloom' : 'plain' };
+let last = performance.now();
+const fwd = new THREE.Vector3();
+function frame(now, xrFrame) {
+  // driven by renderer.setAnimationLoop: window rAF on desktop, the headset's frame loop in VR
+  const rawDt = Math.max(0, (now - last) / 1000); last = now;
+  const rdt = Math.min(rawDt, 1 / 20);
+  const dt = clock.paused ? 0 : rdt * clock.scale;
+  clock.t += dt;
+  const inXR = renderer.xr.isPresenting;
+
+  // auto quality: measure ~3 s after warm-up; under ~40 fps → drop bloom and pixel ratio
+  if (QUALITY === 'auto' && !stats.decided && !inXR) {
+    stats.frames++;
+    if (stats.frames > 10) { stats.realT += Math.min(rawDt, .5); stats.counted++; }
+    if (stats.realT > 3) {
+      stats.decided = true; stats.fps = Math.round(stats.counted / stats.realT);
+      if (stats.fps < 40 && useBloom) { useBloom = false; stats.quality = 'plain'; pixelRatio = 1; resize(); }
+    }
+  }
+
+  if (inXR) xrUpdate(xrFrame, rdt); // head pose comes from the headset; hands grab / push / throw
+  else {
+    // look
+    const ky = (keys.has('ArrowLeft') ? 1 : 0) - (keys.has('ArrowRight') ? 1 : 0);
+    const kp = (keys.has('ArrowUp') ? 1 : 0) - (keys.has('ArrowDown') ? 1 : 0);
+    look.tYaw += ky * ARROW_SPEED * rdt;
+    look.tPitch = THREE.MathUtils.clamp(look.tPitch + kp * ARROW_SPEED * .8 * rdt, -PITCH_MAX, PITCH_MAX);
+    const a = 1 - Math.exp(-9 * rdt);
+    look.yaw += (look.tYaw - look.yaw) * a;
+    look.pitch += (look.tPitch - look.pitch) * a;
+    camera.rotation.set(look.pitch, look.yaw, 0);
+    camera.updateMatrixWorld();
+  }
+
+  separate(dt);
+  checkWord(rdt);
+  for (const L of letters) stepLetter(L, clock.t, dt);
+  stepRipples(dt);
+  blobUniforms.uT.value = clock.t; bubbleUniforms.uT.value = clock.t;
+
+  if (inXR) { renderer.render(scene, camera); return; } // no bloom composer in WebXR
+
+  // crosshair feedback
+  dotEl.classList.toggle('on', !!pickLetter(0, 0));
+
+  if (useBloom && composer) composer.render(); else renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(frame);
+
+// test hooks (QA only)
+window.__fl = {
+  letters, clock, stats, look, pokeAt,
+  get held() { return !!drag.L; },
+  advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; for (const L of letters) stepLetter(L, clock.t, h); stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
+  setLook(yawDeg, pitchDeg) { look.tYaw = look.yaw = THREE.MathUtils.degToRad(yawDeg); look.tPitch = look.pitch = THREE.MathUtils.degToRad(pitchDeg); },
+  screenPos(L = letters[0]) { const v = L.pos.clone().project(camera); return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight, front: v.z < 1 }; },
+  vr: {
+    state: vr, VR_M, world, panel, replayBtn, resetGame,
+    get won() { return won; },
+    side(name) { return vr.hands.findIndex(H => H.side === name); },
+    ray(i) { const H = vr.hands[i]; const o = H.ctrl.getWorldPosition(new THREE.Vector3()), d = new THREE.Vector3(0, 0, -1).applyQuaternion(H.ctrl.getWorldQuaternion(new THREE.Quaternion())); return { o: o.toArray(), d: d.toArray(), visible: H.line.visible }; },
+    // put a letter at a point in scene metres, at rest
+    placeScene(ch, x, y, z) { const L = letters.find(l => l.ch === ch); L.pos.copy(toLocal(new THREE.Vector3(x, y, z))); L.vel.set(0, 0, 0); L.angVel.set(0, 0, 0); L.mesh.quaternion.copy(vr.headQ); L.releaseAt = clock.t; },
+    replayPos() { return replayBtn.getWorldPosition(new THREE.Vector3()).toArray(); },
+    tip(i) { const j = vr.hands[i].hand.joints['index-finger-tip']; return j ? j.getWorldPosition(new THREE.Vector3()).toArray() : null; },
+    hand(i) { const H = vr.hands[i]; return { kind: H.kind, side: H.side, tracked: H.tracked, pinch: H.pinch, held: H.held ? H.held.ch : null, aimed: H.aimed ? H.aimed.ch : null, aimBtn: H.aimBtn, pt: H.pt.toArray(), vel: H.vel.toArray() }; },
+    letterScene(ch) { const L = letters.find(l => l.ch === ch); return toScene(L, new THREE.Vector3()).toArray(); },
+    letterInfo(ch) { const L = letters.find(l => l.ch === ch); return { scene: toScene(L, new THREE.Vector3()).toArray(), velMs: L.vel.length() * world.scale.x, dragged: L.dragged, spin: L.angVel.length() }; },
+    // put a letter at a point given in HEAD space (metres), facing you, at rest
+    placeInHead(ch, x, y, z) {
+      const L = letters.find(l => l.ch === ch);
+      const p = new THREE.Vector3(x, y, z).applyQuaternion(vr.headQ).add(vr.head);
+      L.pos.copy(toLocal(p)); L.vel.set(0, 0, 0); L.angVel.set(0, 0, 0); L.mesh.quaternion.copy(vr.headQ); L.dragged = false; L.releaseAt = clock.t;
+      return p.toArray();
+    },
+    headPose() { return { p: vr.head.toArray(), q: vr.headQ.toArray() }; }
+  },
+  info() { const L = letters[0]; return { pos: L.pos.toArray().map(n => +n.toFixed(2)), vel: +L.vel.length().toFixed(3), spin: +L.angVel.length().toFixed(3), held: L.dragged, quality: stats.quality, t: +clock.t.toFixed(2) }; }
+};
+</script>
+</body>
+</html>
