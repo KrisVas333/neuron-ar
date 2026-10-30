@@ -431,7 +431,8 @@ function nz(B, t, { f = 3000, q = 2, dur = .03, vol = .3, att = .0015, type = 'b
   const c = B.ctx, src = c.createBufferSource(), bp = c.createBiquadFilter(), g = c.createGain();
   src.buffer = B.noise; src.playbackRate.value = rnd(.85, 1.15);
   bp.type = type; bp.frequency.value = f; bp.Q.value = q;
-  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + att); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
+  const v = type === 'bandpass' ? vol * 2.2 : vol;               // a narrow band of noise is quiet: lift it to sit with the thunks
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + att); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
   src.connect(bp).connect(g).connect(B.in); src.start(t, Math.random() * .4); src.stop(t + dur + .02);
 }
 // resonant thunk: a sine with a fast pitch drop (the key bottoming out / the typebar hitting the platen)
@@ -1495,7 +1496,8 @@ window.__fl = {
     pressPlus, pressMinus, pressWord, rackS, RACK, group: rack,
     // put a free letter (exact char first, then any case) into box i: centre + random offset (jitter = fraction of the half-size), random turn, drifting
     placeInSlot(ch, i, jitter = 0) {
-      const L = letters.find(l => !l.word && l.ch === ch) || letters.find(l => !l.word && fold(l.ch) === fold(ch)); if (!L) return null;
+      rackOccupancy(); const busy = new Set(cubes.map(c => c.occ).filter(Boolean)); // with 2 of each letter: never take one that already sits in another box
+      const L = letters.find(l => !l.word && !busy.has(l) && l.ch === ch) || letters.find(l => !l.word && !busy.has(l) && fold(l.ch) === fold(ch)); if (!L) return null;
       rackMatrices(); const c = cubes[i];
       const h = RACK.E / 2 * jitter, off = new THREE.Vector3((Math.random() * 2 - 1) * h, (Math.random() * 2 - 1) * h, (Math.random() * 2 - 1) * h * .5);
       const m = new THREE.Matrix4().copy(c.inv).invert();
