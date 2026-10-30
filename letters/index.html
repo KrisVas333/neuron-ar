@@ -260,7 +260,8 @@ function makeLetterGeometry(ch) {
     }
   }
   N.needsUpdate = true;
-  g.computeBoundingSphere();
+  g.computeBoundingSphere(); g.computeBoundingBox();
+  g.userData.glyphCentre = c; // where the middle sat above the baseline (lines a spelled word up)
   return g;
 }
 const TOY_COLORS = {};
@@ -330,7 +331,10 @@ function stepLetter(L, t, dt) {
     tmpQ.setFromAxisAngle(tmpV2.copy(L.angVel).divideScalar(w), w * dt);
     L.mesh.quaternion.premultiply(tmpQ).normalize();
   }
-  // squash "boop": damped wobble along the hit direction (in local space)
+  applySquash(L, t);
+}
+// squash "boop": damped wobble along the hit direction (in local space)
+function applySquash(L, t) {
   const st = t - L.squashT;
   if (st >= 0 && st < 1.2) {
     const s = Math.exp(-5.5 * st) * Math.cos(st * 19) * .22;
@@ -415,10 +419,11 @@ cv.addEventListener('pointerdown', e => {
   cv.setPointerCapture(e.pointerId);
   toNdc(e); const h = pickLetter(ndc.x, ndc.y);
   if (h) {
-    drag.L = h.L;
+    const B = h.L.word || h.L; // a spelled word is carried whole
+    drag.L = B;
     dragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(tmpV).negate(), h.point);
-    drag.offset.copy(h.L.pos).sub(h.point);
-    h.L.dragTarget.copy(h.L.pos);
+    drag.offset.copy(B.pos).sub(h.point);
+    B.dragTarget.copy(B.pos);
   }
 });
 cv.addEventListener('pointermove', e => {
@@ -488,7 +493,7 @@ function pickLetter(x, y) {
 function pokeAt(x, y) {
   const h = pickLetter(x, y);
   if (!h) { dotEl.classList.remove('no'); void dotEl.offsetWidth; dotEl.classList.add('no'); return false; }
-  const { L, point } = h;
+  const { L: hitL, point } = h, L = hitL.word || hitL;
   const dir = tmpV.copy(point).sub(camera.position).normalize();
   L.vel.addScaledVector(dir, 2.3);
   L.vel.x += (Math.random() - .5) * .5; L.vel.y += (Math.random() - .3) * .5;
@@ -496,11 +501,11 @@ function pokeAt(x, y) {
   const arm = tmpV2.copy(point).sub(L.pos);
   const torque = new THREE.Vector3().crossVectors(arm, dir).multiplyScalar(3.2);
   torque.add(new THREE.Vector3(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(1.2));
-  L.angVel.add(torque);
+  L.angVel.add(L.members ? torque.divideScalar(L.members.length) : torque);
   L.releaseAt = clock.t - 1.5; // current keeps blending in
   // squash along hit direction in letter-local space
-  L.squashAxis.copy(dir).applyQuaternion(tmpQ.copy(L.mesh.quaternion).invert()).normalize();
-  L.squashT = clock.t;
+  hitL.squashAxis.copy(dir).applyQuaternion(tmpQ.copy(hitL.mesh.quaternion).invert()).normalize();
+  hitL.squashT = clock.t;
   spawnRipple(point, 0, 1.3); spawnRipple(point, .12, 2.0);
   sfx.plop();
   stats.pokes++;
@@ -543,6 +548,7 @@ shuffled.forEach((ch, i) => {
 });
 // re-spread every letter on a fresh fibonacci shell between r0 and r1 (world units); used by VR start and VR replay
 function scatterLetters(r0, r1, ySquash = .8) {
+  breakWords();
   const n = letters.length, order = letters.map((_, i) => i).sort(() => Math.random() - .5);
   order.forEach((k, i) => {
     const L = letters[k];
@@ -558,13 +564,62 @@ function scatterLetters(r0, r1, ySquash = .8) {
 function separate(dt) {
   for (let i = 0; i < letters.length; i++) for (let j = i + 1; j < letters.length; j++) {
     const A = letters[i], B = letters[j];
+    if (A.word && A.word === B.word) continue;
     tmpV.copy(A.pos).sub(B.pos); const d = tmpV.length();
     if (d < WORLD.gap && d > 1e-4) {
       tmpV.multiplyScalar((WORLD.gap - d) * 2.5 * dt / d);
-      if (!A.dragged) A.vel.add(tmpV);
-      if (!B.dragged) B.vel.sub(tmpV);
+      const a = A.word || A, b = B.word || B; // a word is heavier than one letter
+      if (!a.dragged) a.vel.addScaledVector(tmpV, A.word ? 1 / A.word.members.length : 1);
+      if (!b.dragged) b.vel.addScaledVector(tmpV, B.word ? -1 / B.word.members.length : -1);
     }
   }
+}
+
+// ---------- a spelled word sticks together and floats on as one body ----------
+// The letters keep their own meshes; every frame they're placed rigidly around the word body, which runs the
+// same physics as a single letter. Grab, poke or push any one of its letters and the whole word moves.
+const words = [];
+const WORD_SNAP = .45, WORD_GAP = .06; // seconds to click into a line; space between letters (world units)
+function formWord(row) {
+  const W = { ch: row.map(l => l.ch).join(''), members: row, mesh: new THREE.Object3D(), vel: new THREE.Vector3(), angVel: new THREE.Vector3(),
+    seed: Math.random() * 1000, dragged: false, dragTarget: new THREE.Vector3(), releaseAt: clock.t,
+    squashT: 1e9, squashAxis: new THREE.Vector3(0, 0, 1), formT: clock.t, slots: [] };
+  W.pos = W.mesh.position;
+  camera.getWorldQuaternion(W.mesh.quaternion); // facing you
+  // lay the letters out like typed text: side by side on one baseline
+  let x = 0;
+  const lay = row.map(L => {
+    const g = L.mesh.geometry, w = g.boundingBox.max.x - g.boundingBox.min.x;
+    const p = { x: x + w / 2, y: g.userData.glyphCentre.y }; x += w + WORD_GAP; return p;
+  });
+  const midX = (x - WORD_GAP) / 2, midY = lay.reduce((a, p) => a + p.y, 0) / row.length;
+  for (const L of row) { W.pos.add(L.pos); W.vel.add(L.vel); }
+  W.pos.divideScalar(row.length); W.vel.divideScalar(row.length);
+  row.forEach((L, i) => {
+    L.word = W; L.dragged = false;
+    W.slots.push({ off: new THREE.Vector3(lay[i].x - midX, lay[i].y - midY, 0), p0: L.pos.clone(), q0: L.mesh.quaternion.clone() });
+  });
+  words.push(W);
+  return W;
+}
+function syncWord(W, t) {
+  const k = THREE.MathUtils.smoothstep(t - W.formT, 0, WORD_SNAP);
+  W.members.forEach((L, i) => {
+    const s = W.slots[i];
+    tmpV2.copy(s.off).applyQuaternion(W.mesh.quaternion).add(W.pos);
+    L.pos.lerpVectors(s.p0, tmpV2, k);
+    L.mesh.quaternion.slerpQuaternions(s.q0, W.mesh.quaternion, k);
+    L.vel.copy(W.vel); L.dragged = W.dragged;
+    applySquash(L, t);
+  });
+}
+function breakWords() {
+  for (const W of words) for (const L of W.members) { L.word = null; L.dragged = false; L.vel.copy(W.vel); L.angVel.copy(W.angVel); }
+  words.length = 0;
+}
+function stepAll(t, dt) {
+  for (const L of letters) if (!L.word) stepLetter(L, t, dt);
+  for (const W of words) { stepLetter(W, t, dt); syncWord(W, t); }
 }
 
 // ---------- goal: spell CAT (either case) in a row in front of you ----------
@@ -651,7 +706,7 @@ for (let i = 0; i < 2; i++) {
   const dot = new THREE.Mesh(new THREE.SphereGeometry(.007, 12, 8), new THREE.MeshBasicMaterial({ color: 0xffe36b, toneMapped: false }));
   dot.visible = false; scene.add(dot);
   const H = { i, ctrl, grip, hand, pad, line, dot, kind: null, sel: false, sqz: false, pinch: false, wasPinch: false, tracked: false,
-              held: null, aimed: null, aimBtn: false, pt: new THREE.Vector3(), hist: [], vel: new THREE.Vector3(), prev: {} };
+              held: null, aimed: null, aimBtn: false, pt: new THREE.Vector3(), grabOff: new THREE.Vector3(), hist: [], vel: new THREE.Vector3(), prev: {} };
   ctrl.addEventListener('connected', e => { H.kind = e.data && e.data.hand ? 'hand' : 'ctrl'; H.src = e.data; H.side = e.data ? e.data.handedness : ''; pad.visible = H.kind === 'ctrl'; H.hist.length = 0; H.prev = {}; });
   ctrl.addEventListener('disconnected', () => { releaseHeld(H, false); H.kind = null; H.pinch = H.wasPinch = H.sel = H.sqz = false; line.visible = dot.visible = pad.visible = false; });
   ctrl.addEventListener('selectstart', () => { H.sel = true; });
@@ -711,16 +766,20 @@ function anchorWorld() {
 const toLocal = p => world.worldToLocal(p);                          // scene metres → world units (in place)
 const toScene = (L, out) => world.localToWorld(out.copy(L.pos));    // letter centre in scene metres
 
-function grab(H, L, far) {
+function grab(H, hitL, far) {
+  const L = hitL.word || hitL; // a spelled word is carried whole
   for (const o of vr.hands) if (o !== H && o.held === L) o.held = null;
   H.held = L; L.dragged = true; L.vrFar = far;
-  L.dragTarget.copy(toLocal(vA.copy(H.pt)));
+  // a word keeps the spot you pinched (its middle isn't under your fingers); single letters snap to the pinch
+  H.grabOff.set(0, 0, 0);
+  if (L.members && !far) H.grabOff.copy(L.pos).sub(toLocal(vA.copy(H.pt)));
+  L.dragTarget.copy(toLocal(vA.copy(H.pt))).add(H.grabOff);
   far ? sfx.pull() : sfx.grab(); stats.grabs++;
 }
 function releaseHeld(H, throwIt = true) {
   const L = H.held; if (!L) return;
   H.held = null; L.dragged = false;
-  if (throwIt && toScene(L, vA).distanceTo(H.pt) < .2) {
+  if (throwIt && toScene(L, vA).distanceTo(H.pt) < .2 + H.grabOff.length() * vr.S) {
     // a throw: the hand's velocity over the last ~100 ms, clamped; the spin it already had is kept
     vB.copy(H.vel); if (vB.length() > VR_M.throwMax) vB.setLength(VR_M.throwMax);
     L.vel.copy(vB).divideScalar(vr.S);
@@ -796,7 +855,7 @@ function updateHand(H, dt) {
   if (!H.pinch && H.wasPinch) releaseHeld(H, true);
   H.wasPinch = H.pinch;
   // 5) carried letter follows the pinch point on the same spring as the desktop drag
-  if (H.held) H.held.dragTarget.copy(toLocal(vA.copy(H.pt)));
+  if (H.held) H.held.dragTarget.copy(toLocal(vA.copy(H.pt))).add(H.grabOff);
 }
 
 // every joint (palm + 5 fingertips, or the controller body) is a sphere; letters it touches get pushed away
@@ -820,21 +879,23 @@ function pushAway(dt) {
     s.H.prev[s.key] = s.p.clone();
   }
   for (const L of letters) {
-    if (L.dragged || vr.t - (L.vrReleaseT ?? -9) < VR_M.releaseGrace) continue;
+    const B = L.word || L, m = B === L ? 1 : 1 / B.members.length; // touching a word's letter shoves the whole (heavier) word
+    if (B.dragged || vr.t - (B.vrReleaseT ?? -9) < VR_M.releaseGrace) continue;
     for (const s of spheres) {
       toScene(L, vA);
       const minD = s.r + VR_M.letterR, d = vA.distanceTo(s.p);
       if (d >= minD || d < 1e-5) continue;
       const n = vB.subVectors(vA, s.p).divideScalar(d);
-      L.pos.addScaledVector(n, (minD - d) / vr.S);                       // out of the hand
-      const closing = s.v.dot(n) - L.vel.dot(n) * vr.S;                   // m/s toward the letter
+      B.pos.addScaledVector(n, (minD - d) / vr.S);                       // out of the hand
+      if (B !== L) L.pos.addScaledVector(n, (minD - d) / vr.S);
+      const closing = s.v.dot(n) - B.vel.dot(n) * vr.S;                   // m/s toward the letter
       const fresh = vr.t - (L.vrTouchT ?? -9) > .35;
       const kick = Math.max(0, closing) * VR_M.pushGain + (fresh ? VR_M.pushBase : 0);
-      L.vel.addScaledVector(n, kick / vr.S).addScaledVector(s.v, .25 / vr.S);
-      L.releaseAt = clock.t - 1.5;
+      B.vel.addScaledVector(n, kick * m / vr.S).addScaledVector(s.v, .25 * m / vr.S);
+      B.releaseAt = clock.t - 1.5;
       if (fresh) {
         L.vrTouchT = vr.t;
-        L.angVel.add(vC.crossVectors(n, s.v).multiplyScalar(5)).add(vD.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.8));
+        B.angVel.add(vC.crossVectors(n, s.v).multiplyScalar(5 * m)).add(vD.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.8));
         L.squashAxis.copy(n).applyQuaternion(qA.copy(L.mesh.quaternion).invert()).normalize(); L.squashT = clock.t;
         spawnRipple(toLocal(vC.copy(s.p).addScaledVector(n, s.r)), 0, .9);
         sfx.touch(); stats.pushes = (stats.pushes || 0) + 1;
@@ -859,7 +920,7 @@ function xrUpdate(xrFrame, dt) {
   // aim highlight
   for (const L of vr.lit) L.mesh.material.emissive.setRGB(0, 0, 0);
   vr.lit.clear();
-  for (const H of vr.hands) if (H.aimed) { H.aimed.mesh.material.emissive.copy(AIM_GLOW); vr.lit.add(H.aimed); }
+  for (const H of vr.hands) if (H.aimed) for (const L of H.aimed.word ? H.aimed.word.members : [H.aimed]) { L.mesh.material.emissive.copy(AIM_GLOW); vr.lit.add(L); }
   // goal panel + poke-able replay
   placePanel(dt, false); drawPanel();
   if (won && replayBtn.visible && vr.t - vr.resetAt > 1) {
@@ -940,7 +1001,7 @@ function frame(now, xrFrame) {
 
   separate(dt);
   checkWord(rdt);
-  for (const L of letters) stepLetter(L, clock.t, dt);
+  stepAll(clock.t, dt);
   stepRipples(dt);
   blobUniforms.uT.value = clock.t; bubbleUniforms.uT.value = clock.t;
 
@@ -957,7 +1018,8 @@ renderer.setAnimationLoop(frame);
 window.__fl = {
   letters, clock, stats, look, pokeAt,
   get held() { return !!drag.L; },
-  advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; for (const L of letters) stepLetter(L, clock.t, h); stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
+  get words() { return words; },
+  advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; stepAll(clock.t, h); stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
   setLook(yawDeg, pitchDeg) { look.tYaw = look.yaw = THREE.MathUtils.degToRad(yawDeg); look.tPitch = look.pitch = THREE.MathUtils.degToRad(pitchDeg); },
   screenPos(L = letters[0]) { const v = L.pos.clone().project(camera); return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight, front: v.z < 1 }; },
   vr: {
