@@ -1121,7 +1121,6 @@ function updateHand(H, dt) {
   if (H.pinch && !H.wasPinch) {
     if (H.aimBtn === replayBtn && won) { vr.resetAt = vr.t; resetGame(); sfx.grab(); }
     else if (H.aimBtn === doneBtn && !won) { vr.resetAt = vr.t; endRound(); }
-    else if (H.aimBtn && H.aimBtn.userData.rackBtn) pressRackBtn(H.aimBtn);
     else {
       let best = null, bd = Infinity;
       for (const L of letters) {
@@ -1129,7 +1128,7 @@ function updateHand(H, dt) {
         const d = toScene(L, vA).distanceTo(H.pt) - VR_M.letterR;
         if (d < VR_M.grabReach && d < bd) { bd = d; best = L; }
       }
-      if (best) grab(H, best, false); else if (H.aimed) grab(H, H.aimed, true);
+      if (best) grab(H, best, false); else if (H.aimBtn && H.aimBtn.userData.rackBtn) pressRackBtn(H.aimBtn); else if (H.aimed) grab(H, H.aimed, true);
     }
   }
   if (!H.pinch && H.wasPinch) releaseHeld(H, true);
