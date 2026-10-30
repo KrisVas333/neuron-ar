@@ -758,7 +758,7 @@ function endRound() {
   sm.textContent = (n === 1 ? 'word' : 'words') + (left ? ` · ${left} letters left` : ' · every letter used!');
   sumEl.appendChild(sm);
   winEl.classList.add('show'); sfx.win();
-  for (const W of words) for (const l of W.members) spawnRipple(l.pos.clone(), Math.random() * .3, 2.2);
+  for (const W of words) spawnRipple(W.pos.clone(), Math.random() * .3, 2.6);
   vr.panelSig = '';
 }
 document.getElementById('again').addEventListener('click', () => resetGame());
@@ -1173,7 +1173,9 @@ window.__fl = {
     return used;
   },
   // QA: glue every free letter into words (3s, last group up to 5), bypassing the dictionary → ends the round
-  formAll() { const free = letters.filter(l => !l.word); while (free.length >= 3) { const k = free.length <= 5 ? free.length : 3; madeWord(formWord(free.splice(0, k))); } return lettersLeft(); },
+  formAll() { const free = letters.filter(l => !l.word); while (free.length >= 3) { const k = free.length <= 5 ? free.length : 3; madeWord(formWord(free.splice(0, k))); }
+    if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); else scatterLetters(4.5, 9, .8, true);
+    return lettersLeft(); },
   advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; stepAll(clock.t, h); stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
   setLook(yawDeg, pitchDeg) { look.tYaw = look.yaw = THREE.MathUtils.degToRad(yawDeg); look.tPitch = look.pitch = THREE.MathUtils.degToRad(pitchDeg); },
   screenPos(L = letters[0]) { const v = L.pos.clone().project(camera); return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight, front: v.z < 1 }; },
