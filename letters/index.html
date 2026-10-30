@@ -1340,9 +1340,9 @@ window.__fl = {
       rackMatrices(); const c = cubes[i];
       const h = RACK.E / 2 * jitter, off = new THREE.Vector3((Math.random() * 2 - 1) * h, (Math.random() * 2 - 1) * h, (Math.random() * 2 - 1) * h * .5);
       const m = new THREE.Matrix4().copy(c.inv).invert();
-      L.pos.copy(off.applyMatrix4(m)); L.vel.set(0, 0, 0);
+      L.pos.copy(off.applyMatrix4(m)); L.vel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.25 * rack.scale.x);
       L.mesh.quaternion.setFromEuler(new THREE.Euler((Math.random() - .5) * jitter * 1.4, rack.rotation.y + (Math.random() - .5) * jitter * 1.4, (Math.random() - .5) * jitter * 1.4));
-      L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.3); L.dragged = false; L.releaseAt = clock.t - 1.5;
+      L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.3); L.dragged = false; L.releaseAt = -1e9; // already floating: full current
       return L.ch;
     },
     // scene-space (metres in VR) position of box i / a button ('plus' | 'minus' | 'word')
