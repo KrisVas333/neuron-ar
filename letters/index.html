@@ -195,13 +195,13 @@ scene.add(rig);
 const world = new THREE.Group();
 scene.add(world);
 
-// ---------- softbox environment (toy-photo studio) ----------
+// ---------- studio environment (lights the letters; tinted like the BC deck sky) ----------
 function buildEnvironment() {
   const env = new THREE.Scene();
   const room = new THREE.Mesh(new THREE.SphereGeometry(10, 32, 16), new THREE.ShaderMaterial({
     side: THREE.BackSide,
     vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }',
-    fragmentShader: 'varying vec3 vP; void main(){ float h = vP.y*.5+.5; vec3 c = mix(vec3(.015,.04,.06), vec3(.10,.18,.22), smoothstep(.1,.9,h)); gl_FragColor = vec4(c,1.); }'
+    fragmentShader: 'varying vec3 vP; void main(){ float h = vP.y*.5+.5; vec3 c = mix(vec3(.03,.05,.16), vec3(.16,.04,.20), smoothstep(.1,.9,h)); gl_FragColor = vec4(c,1.); }'
   }));
   env.add(room);
   const box = (w, h, intensity, pos, color = 0xffffff) => {
@@ -209,10 +209,11 @@ function buildEnvironment() {
     m.position.copy(pos); m.lookAt(0, 0, 0); env.add(m);
   };
   box(7, 5, 5.0, new THREE.Vector3(0, 8, 1));                 // big top softbox
-  box(3.5, 5, 9.0, new THREE.Vector3(-7, 2, 4), 0xfff4e6);     // warm key, front-left
-  box(1.2, 7, 8.0, new THREE.Vector3(7, 1, -2), 0xe6f6ff);     // rim strip, right
-  box(4, 2.2, 3.6, new THREE.Vector3(-3, 3, 8));         // front-left window (gloss streak on faces turned to you)               // soft front fill
-  box(6, 2, 1.0, new THREE.Vector3(0, -7, 0), 0x6fd0f0);       // aqua bounce from below
+  box(3.5, 5, 8.0, new THREE.Vector3(-7, 2, 4), 0xfff4e6);     // warm key, front-left
+  box(1.2, 7, 6.0, new THREE.Vector3(7, 1, -2), 0xd9ccff);     // lilac rim strip, right
+  box(4, 2.2, 4.0, new THREE.Vector3(-3, 3, 8));               // front fill (faces turned to you stay bright)
+  box(4, 3, 4.0, new THREE.Vector3(2, -1, 8));                 // low front fill
+  box(6, 2, 1.2, new THREE.Vector3(0, -7, 0), 0x4a6cff);       // blue bounce from below (the deck's lower sky)
   const pmrem = new THREE.PMREMGenerator(renderer);
   const rt = pmrem.fromScene(env, 0.035);
   pmrem.dispose();
@@ -220,13 +221,13 @@ function buildEnvironment() {
 }
 scene.environment = buildEnvironment();
 
-const hemi = new THREE.HemisphereLight(0xeaf8ff, 0x2a5566, 0.2);
+const hemi = new THREE.HemisphereLight(0xe6dcff, 0x26307a, 0.35);
 scene.add(hemi);
 const key = new THREE.DirectionalLight(0xfff2e0, 1.1);
 key.position.set(-3, 5, 4);
 scene.add(key);
 
-// ---------- the blob: inside-out gradient sphere with caustic shimmer ----------
+// ---------- the sky: the BC slide-deck nebula (magenta on top → violet → royal blue below), soft clouds ----------
 const blobUniforms = { uT: { value: 0 } };
 const blob = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), new THREE.ShaderMaterial({
   side: THREE.BackSide, depthWrite: false, uniforms: blobUniforms,
@@ -234,19 +235,22 @@ const blob = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), new THREE.Shad
   fragmentShader: `
     uniform float uT; varying vec3 vD;
     vec3 lin(vec3 c){ return pow(c, vec3(2.2)); }
+    float hash(vec3 p){ p = fract(p*.3183099 + .1); p *= 17.; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+    float noise(vec3 x){ vec3 i = floor(x), f = fract(x); f = f*f*(3.-2.*f);
+      return mix(mix(mix(hash(i), hash(i+vec3(1,0,0)), f.x), mix(hash(i+vec3(0,1,0)), hash(i+vec3(1,1,0)), f.x), f.y),
+                 mix(mix(hash(i+vec3(0,0,1)), hash(i+vec3(1,0,1)), f.x), mix(hash(i+vec3(0,1,1)), hash(i+vec3(1,1,1)), f.x), f.y), f.z); }
+    float fbm(vec3 p){ float a = .5, s = 0.; for (int k = 0; k < 4; k++) { s += a*noise(p); p *= 2.03; a *= .5; } return s; }
     void main(){
       float h = vD.y*.5+.5;
-      vec3 deep = lin(vec3(.13,.36,.50)), mid = lin(vec3(.47,.76,.86)), top = lin(vec3(.88,.97,1.0));
-      vec3 col = mix(deep, mid, smoothstep(.0,.55,h));
-      col = mix(col, top, smoothstep(.55,1.,h));
-      // faint caustic shimmer, strongest overhead
-      vec3 p = vD*7.;
-      float a = sin(p.x*1.9 + uT*.55 + sin(p.z*1.4 + uT*.35)*1.6);
-      float b = sin(p.z*2.2 - uT*.45 + sin(p.x*1.7 - uT*.30)*1.6);
-      float c = pow(abs(a*b), 5.);
-      col += lin(vec3(1.)) * c * .10 * smoothstep(.35,1.,h);
-      // soft "membrane" glow toward the horizon ring
-      col += lin(vec3(.85,.97,1.)) * .06 * pow(1.-abs(vD.y), 6.);
+      // the deck background: #1a3a8f (low) → #3a1f86 (middle) → #4a0d5e (top)
+      vec3 lo = lin(vec3(.090,.200,.540)), mid = lin(vec3(.215,.130,.520)), top = lin(vec3(.300,.050,.380));
+      vec3 col = mix(lo, mid, smoothstep(.15,.55,h));
+      col = mix(col, top, smoothstep(.55,.95,h));
+      // soft nebula clouds, drifting very slowly
+      vec3 q = vD*2.2 + vec3(uT*.004, 0., uT*.003);
+      float n = fbm(q + fbm(q*1.7)*.8);
+      col *= .80 + .45*n;
+      col += lin(vec3(.45,.30,.85)) * .05 * smoothstep(.55,.85,n);
       gl_FragColor = vec4(col, 1.);
       #include <tonemapping_fragment>
       #include <colorspace_fragment>
@@ -255,7 +259,42 @@ const blob = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), new THREE.Shad
 blob.renderOrder = -10;
 world.add(blob);
 
-// ---------- drifting bubbles + specks (all motion on GPU) ----------
+// star specks fixed on the sky (tiny, screen-size points) + faint lilac sci-fi rings far away (like the deck corners)
+function buildStars(n) {
+  const pos = new Float32Array(n * 3), a = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), r = 36;
+    pos[i*3] = r * Math.sin(ph) * Math.cos(th); pos[i*3+1] = r * Math.cos(ph); pos[i*3+2] = r * Math.sin(ph) * Math.sin(th);
+    a[i] = .25 + Math.pow(Math.random(), 3) * .75;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('aA', new THREE.BufferAttribute(a, 1));
+  const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { uPx: { value: 1 } },
+    vertexShader: `attribute float aA; uniform float uPx; varying float vA; void main(){ vA = aA; gl_PointSize = (1. + aA*1.6)*uPx; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+    fragmentShader: `varying float vA; void main(){ vec2 c = gl_PointCoord*2.-1.; float r = dot(c,c); if (r > 1.) discard; gl_FragColor = vec4(vec3(.93,.91,1.), vA*(1.-r)*.8); }` });
+  const pts = new THREE.Points(g, m); pts.frustumCulled = false; pts.renderOrder = -9; pts.userData.px = m.uniforms.uPx;
+  return pts;
+}
+const stars = buildStars(IS_MOBILE ? 500 : 900);
+world.add(stars);
+function ringTexture(seed) {
+  const c = document.createElement('canvas'); c.width = c.height = 512; const x = c.getContext('2d');
+  x.strokeStyle = 'rgba(201,190,234,1)'; x.translate(256, 256);
+  const arc = (r, a0, a1, w = 2, dash = null) => { x.lineWidth = w; x.setLineDash(dash || []); x.beginPath(); x.arc(0, 0, r, a0, a1); x.stroke(); };
+  arc(246, 0, 6.283, 1.5);
+  for (let i = 0; i < 120; i++) { const a = i / 120 * 6.283, l = i % 10 ? 8 : 18; x.lineWidth = 1.5; x.beginPath(); x.moveTo(Math.cos(a) * 228, Math.sin(a) * 228); x.lineTo(Math.cos(a) * (228 - l), Math.sin(a) * (228 - l)); x.stroke(); }
+  arc(185, .4 + seed, 4.6 + seed, 2, [10, 9]);
+  arc(120, 1 + seed, 5.6 + seed, 5);
+  arc(90, 3 + seed, 7.4 + seed, 2);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+for (const [dx, dy, dz, size, op, seed] of [[.75, .45, -.5, 13, .22, 0], [-.85, -.35, -.4, 9, .18, 1.7], [.2, .55, .8, 11, .16, 3.1], [-.4, .2, .9, 7, .15, 4.4]]) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), new THREE.MeshBasicMaterial({ map: ringTexture(seed), transparent: true, opacity: op, depthWrite: false, toneMapped: false }));
+  m.position.set(dx, dy, dz).normalize().multiplyScalar(34); m.lookAt(0, 0, 0); m.renderOrder = -9; world.add(m);
+}
+
+// ---------- drifting dust specks (all motion on GPU): pale lilac, very subtle ----------
 const bubbleUniforms = { uT: { value: 0 }, uScale: { value: 1 } };
 function buildBubbles(n) {
   const pos = new Float32Array(n * 3), size = new Float32Array(n), speed = new Float32Array(n), phase = new Float32Array(n);
@@ -263,9 +302,8 @@ function buildBubbles(n) {
     const r = 3 + Math.pow(Math.random(), .7) * 24;
     const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
     pos[i*3] = r * Math.sin(ph) * Math.cos(th); pos[i*3+1] = r * Math.cos(ph); pos[i*3+2] = r * Math.sin(ph) * Math.sin(th);
-    const big = Math.random() < .35;
-    size[i] = big ? .10 + Math.random() * .22 : .025 + Math.random() * .04;
-    speed[i] = big ? .18 + Math.random() * .25 : .05 + Math.random() * .1;
+    size[i] = .03 + Math.random() * .06;
+    speed[i] = .05 + Math.random() * .12;
     phase[i] = Math.random() * 100;
   }
   const g = new THREE.BufferGeometry();
@@ -276,29 +314,22 @@ function buildBubbles(n) {
   const m = new THREE.ShaderMaterial({
     uniforms: bubbleUniforms, transparent: true, depthWrite: false,
     vertexShader: `
-      attribute float aSize, aSpeed, aPhase; uniform float uT, uScale; varying float vA; varying float vS;
+      attribute float aSize, aSpeed, aPhase; uniform float uT, uScale; varying float vA;
       void main(){
         vec3 p = position;
         p.y = mod(p.y + uT*aSpeed + 28., 56.) - 28.;
         p.x += sin(uT*.31 + aPhase)*.35; p.z += cos(uT*.27 + aPhase*1.3)*.35;
         vec4 mv = modelViewMatrix*vec4(p,1.);
-        gl_PointSize = clamp(aSize*uScale / -mv.z, 1., 64.);
+        gl_PointSize = clamp(aSize*uScale / -mv.z, 1., 24.);
         float d = length(p);
-        vA = smoothstep(27.,16.,d) * smoothstep(1.2,3.,d);
-        vS = aSize;
+        vA = smoothstep(27.,16.,d) * smoothstep(1.2,3.,d) * (.5 + .5*sin(uT*.8 + aPhase));
         gl_Position = projectionMatrix*mv;
       }`,
     fragmentShader: `
-      varying float vA; varying float vS;
+      varying float vA;
       void main(){
         vec2 c = gl_PointCoord*2.-1.; float r = length(c); if (r > 1.) discard;
-        float ring = smoothstep(.72,.93,r) * smoothstep(1.,.93,r);
-        float fill = .10*(1.-r);
-        float hl = smoothstep(.32,.0,length(c-vec2(-.35,-.38)));
-        float speck = 1.-smoothstep(.2,1.,r);
-        float isBubble = step(.08, vS);
-        float a = mix(speck*.55, ring*.75 + fill + hl*.9, isBubble) * vA;
-        gl_FragColor = vec4(vec3(1.), a);
+        gl_FragColor = vec4(vec3(.85,.80,1.), (1.-smoothstep(.15,1.,r)) * .45 * vA);
         #include <colorspace_fragment>
       }`
   });
@@ -306,7 +337,7 @@ function buildBubbles(n) {
   pts.frustumCulled = false;
   return pts;
 }
-world.add(buildBubbles(QUALITY === 'low' ? 160 : 320));
+world.add(buildBubbles(QUALITY === 'low' || IS_MOBILE ? 120 : 220));
 
 // ---------- letter factory ----------
 const font = new FontLoader().parse(FONT_JSON);
