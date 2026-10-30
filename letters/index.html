@@ -1013,7 +1013,7 @@ layoutRack(false);
 // ---------- the typed sheet: every word you spell, typed line by line on a big sheet far away, fixed in the world ----------
 // (Kris round 5: "just a list of your words somewhere in the distance (also not moving)"). Newest line at the bottom, like a
 // typewriter; the new word types itself in letter by letter. Desktop and VR: placed once, ahead and up, and never moved.
-const SHEET = { w: 1536, h: 1024, rows: 7, cols: 2, deskDist: 30, deskUp: 9.0, deskW: 20, vrDist: 6.5, vrUp: 1.38, vrW: 3.6, typeMs: 75 };
+const SHEET = { w: 1536, h: 1024, rows: 7, cols: 2, deskDist: 30, deskUp: 9.6, deskW: 20, vrDist: 6.5, vrUp: 1.38, vrW: 3.6, typeMs: 75 };
 const sheetCv = document.createElement('canvas'); sheetCv.width = SHEET.w; sheetCv.height = SHEET.h;
 const sheetTex = new THREE.CanvasTexture(sheetCv); sheetTex.colorSpace = THREE.SRGBColorSpace; sheetTex.anisotropy = 4;
 const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, SHEET.h / SHEET.w), new THREE.MeshBasicMaterial({ map: sheetTex, transparent: true, toneMapped: false, depthWrite: false }));
