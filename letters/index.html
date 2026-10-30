@@ -643,52 +643,116 @@ function stepAll(t, dt) {
   for (const W of words) { stepLetter(W, t, dt); syncWord(W, t); }
 }
 
-// ---------- goal: spell CAT (either case) in a row in front of you ----------
-// Letter size is 1.6 units per em: a capital is ~1.05 tall, C/A/T are ~1.0–1.15 wide,
-// so in a tight word their centres sit ~1.1 apart. We accept a "readable word":
-//   • each letter within 6 units of you and in front of you
-//   • reading order C → A → T from left to right on screen
+// ---------- goal: build any real word (3+ letters) until the letters run out ----------
+// Letter size is 1.6 units per em: a capital is ~1.05 tall, most letters ~0.6–1.4 wide,
+// so in a tight word their centres sit ~1.1 apart. A row of FREE letters (not in a word, not in your hand) counts when:
+//   • each letter is within 6 units of you and in front of you
+//   • reading order left → right on screen (head-space x)
 //   • neighbour centres 0.7–2.0 apart (touching up to about one letter-width gap)
 //   • roughly one line: up/down offset ≤ 0.6, depth offset ≤ 1.2 between neighbours
-//   • held true for 0.6 s with no letter in your hand, so it isn't a fly-by
-const WORD = 'CAT', WIN_RULE = { reach: 6, minGap: .7, maxGap: 2.0, maxDy: .6, maxDz: 1.2, hold: .6 };
-const goalEl = document.getElementById('goal'), winEl = document.getElementById('win');
-const goalTiles = [...goalEl.children];
-let winHold = 0, won = false;
+//   • the same letters stay lined up for 0.6 s, so it isn't a fly-by
+// Any chain of such neighbours is read left to right; the longest run of 3+ letters in it that is a real
+// English or Lithuanian word (any mix of capitals and small letters) clicks together into one floating word.
+// No new letters ever appear: the round ends when every letter is in a word (or you press "done").
+const WIN_RULE = { reach: 6, minGap: .7, maxGap: 2.0, maxDy: .6, maxDz: 1.2, hold: .6 };
+const DICT = (() => {
+  const d = JSON.parse(document.getElementById('dict').textContent);
+  const en = d.en.split(' '), lt = d.lt.split(' ');
+  const all = en.concat(lt).sort();
+  return { en: en.length, lt: lt.length, set: new Set(all), sorted: all };
+})();
+const fold = s => s.toLocaleLowerCase('lt');
+const isWord = s => DICT.set.has(fold(s));
+function hasPrefix(p) { // binary search in the sorted list: is any word starting with p?
+  const a = DICT.sorted; let lo = 0, hi = a.length;
+  while (lo < hi) { const m = (lo + hi) >> 1; if (a[m] < p) lo = m + 1; else hi = m; }
+  return lo < a.length && a[lo].startsWith(p);
+}
+const hudEl = document.getElementById('hud'), leftEl = document.getElementById('left'), leftNum = leftEl.querySelector('b');
+const wordsEl = document.getElementById('words'), winEl = document.getElementById('win'), sumEl = winEl.querySelector('.sum');
+let won = false; // true = round over (all letters used, or "done"); the name stays for the QA hooks
+const cand = { key: '', hold: 0 };
+const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
 // letter centre in HEAD (camera) space, measured in world units: desktop → plain view space; VR → headset space ÷ world scale
 const camV = l => world.localToWorld(l.pos.clone()).applyMatrix4(camera.matrixWorldInverse).divideScalar(world.scale.x);
+function findWord() {
+  const near = [];
+  for (const l of letters) {
+    if (l.word || l.dragged) continue;
+    const v = camV(l);
+    if (v.z < 0 && v.length() <= WIN_RULE.reach) near.push({ l, v, s: fold(l.ch), nx: [] });
+  }
+  if (near.length < 3) return null;
+  near.sort((a, b) => a.v.x - b.v.x);
+  for (let i = 0; i < near.length; i++) for (let j = i + 1; j < near.length; j++) {
+    const a = near[i].v, b = near[j].v, d = a.distanceTo(b);
+    if (a.x < b.x && d >= WIN_RULE.minGap && d <= WIN_RULE.maxGap && Math.abs(a.y - b.y) <= WIN_RULE.maxDy && Math.abs(a.z - b.z) <= WIN_RULE.maxDz) near[i].nx.push(near[j]);
+  }
+  // every left→right path through neighbours, from every start (so every contiguous run of a chain is tried);
+  // a path stops growing as soon as no word starts with it
+  let best = null, steps = 0;
+  const path = [];
+  const walk = (n, str) => {
+    if (++steps > 4000) return;
+    path.push(n.l); str += n.s;
+    if (path.length >= 3 && DICT.set.has(str) && (!best || path.length > best.length)) best = path.slice();
+    if (path.length < 10) for (const m of n.nx) if (hasPrefix(str + m.s)) walk(m, str);
+    path.pop();
+  };
+  for (const n of near) if (n.nx.length) walk(n, '');
+  return best;
+}
 function checkWord(dt) {
   if (won) return;
-  const near = l => { const v = camV(l); return v.z < 0 && v.length() <= WIN_RULE.reach; };
-  const cands = [...WORD].map(ch => letters.filter(l => l.ch.toUpperCase() === ch));
-  cands.forEach((list, i) => goalTiles[i].classList.toggle('near', list.some(near)));
-  let ok = false;
-  for (const a of cands[0]) for (const b of cands[1]) for (const c of cands[2]) {
-    if (ok) break;
-    const row = [a, b, c];
-    if (!row.every(near) || row.some(l => l.dragged)) continue;
-    const v = row.map(camV);
-    let good = true;
-    for (let i = 0; i < 2 && good; i++) {
-      const d = v[i].distanceTo(v[i + 1]);
-      good = v[i].x < v[i + 1].x && d >= WIN_RULE.minGap && d <= WIN_RULE.maxGap &&
-             Math.abs(v[i].y - v[i + 1].y) <= WIN_RULE.maxDy && Math.abs(v[i].z - v[i + 1].z) <= WIN_RULE.maxDz;
-    }
-    ok = good;
-  }
-  winHold = ok ? winHold + dt : 0;
-  if (winHold >= WIN_RULE.hold) {
-    won = true; goalEl.classList.add('win'); winEl.classList.add('show'); sfx.win();
-    for (const l of letters) if ('CAT'.includes(l.ch.toUpperCase())) spawnRipple(l.pos.clone(), 0, 2.2);
-  }
+  const row = findWord();
+  const key = row ? row.map(l => letters.indexOf(l)).join(',') : '';
+  cand.hold = key && key === cand.key ? cand.hold + dt : 0;
+  cand.key = key;
+  if (row && cand.hold >= WIN_RULE.hold) { cand.key = ''; cand.hold = 0; madeWord(formWord(row)); }
 }
-document.getElementById('again').addEventListener('click', () => location.reload());
-// VR replay (a reload would throw you out of the headset): fresh scatter, goal cleared
+function madeWord(W) {
+  sfx.word();
+  W.members.forEach((l, i) => spawnRipple(l.pos.clone(), i * .06, 2.0));
+  renderHud(true);
+  if (lettersLeft() === 0) setTimeout(() => endRound(), 700);
+}
+function renderHud(fresh) {
+  const n = lettersLeft();
+  if (leftNum.textContent !== String(n)) { leftNum.textContent = n; leftEl.classList.remove('bump'); void leftEl.offsetWidth; leftEl.classList.add('bump'); }
+  wordsEl.textContent = '';
+  for (let i = words.length - 1; i >= 0; i--) {
+    const s = document.createElement('span'); s.textContent = words[i].ch;
+    if (fresh && i === words.length - 1) s.className = 'new';
+    wordsEl.appendChild(s);
+  }
+  vr.panelSig = '';
+}
+function endRound() {
+  if (won) return;
+  won = true; hudEl.classList.add('end');
+  const n = words.length, left = lettersLeft();
+  sumEl.innerHTML = '';
+  sumEl.append(String(n));
+  const sm = document.createElement('small');
+  sm.textContent = (n === 1 ? 'word' : 'words') + (left ? ` · ${left} letters left` : ' · every letter used!');
+  sumEl.appendChild(sm);
+  winEl.classList.add('show'); sfx.win();
+  for (const W of words) for (const l of W.members) spawnRipple(l.pos.clone(), Math.random() * .3, 2.2);
+  vr.panelSig = '';
+}
+document.getElementById('again').addEventListener('click', () => resetGame());
+document.getElementById('done').addEventListener('click', () => { unlockAudio(); endRound(); });
+// new round, same 70 letters: words break up and everything is scattered again (desktop and VR)
 function resetGame() {
-  won = false; winHold = 0;
-  goalEl.classList.remove('win'); winEl.classList.remove('show');
+  won = false; cand.key = ''; cand.hold = 0;
+  hudEl.classList.remove('end'); winEl.classList.remove('show');
   for (const H of vr.hands) H.held = null;
-  scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
+  if (drag.L) { drag.L.dragged = false; drag.L = null; }
+  ptr.down = false;
+  breakWords();
+  if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
+  else scatterLetters(4.5, 9, .8);
+  renderHud(false);
 }
 
 // ---------- WebXR (VR mode): hands, controllers, distance grab, push-away, floating goal panel ----------
