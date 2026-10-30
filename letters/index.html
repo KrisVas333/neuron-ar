@@ -241,21 +241,23 @@ const blob = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), new THREE.Shad
                  mix(mix(hash(i+vec3(0,0,1)), hash(i+vec3(1,0,1)), f.x), mix(hash(i+vec3(0,1,1)), hash(i+vec3(1,1,1)), f.x), f.y), f.z); }
     float fbm(vec3 p){ float a = .5, s = 0.; for (int k = 0; k < 4; k++) { s += a*noise(p); p *= 2.03; a *= .5; } return s; }
     void main(){
-      float h = vD.y*.5+.5;
-      // the deck background: #1a3a8f (low) → #3a1f86 (middle) → #4a0d5e (top)
-      vec3 lo = lin(vec3(.090,.200,.540)), mid = lin(vec3(.215,.130,.520)), top = lin(vec3(.300,.050,.380));
-      vec3 col = mix(lo, mid, smoothstep(.15,.55,h));
-      col = mix(col, top, smoothstep(.55,.95,h));
+      // the deck background (sampled from deck_bg.png): #0e2c6d (low) → #1e2a70 → #321a68 (eye level) → #45105a → #46074d (top)
+      float y = vD.y;
+      vec3 col = lin(vec3(.055,.172,.427));
+      col = mix(col, lin(vec3(.118,.165,.439)), smoothstep(-.65,-.25,y));
+      col = mix(col, lin(vec3(.196,.102,.408)), smoothstep(-.25,.02,y));
+      col = mix(col, lin(vec3(.271,.063,.353)), smoothstep(.02,.32,y));
+      col = mix(col, lin(vec3(.275,.027,.302)), smoothstep(.32,.7,y));
       // soft nebula clouds, drifting very slowly
       vec3 q = vD*2.2 + vec3(uT*.004, 0., uT*.003);
       float n = fbm(q + fbm(q*1.7)*.8);
-      col *= .80 + .45*n;
-      col += lin(vec3(.45,.30,.85)) * .05 * smoothstep(.55,.85,n);
+      col *= .72 + .55*n;
+      col += lin(vec3(.42,.30,.70)) * .035 * smoothstep(.55,.85,n);
       gl_FragColor = vec4(col, 1.);
-      #include <tonemapping_fragment>
       #include <colorspace_fragment>
     }`
 }));
+blob.material.toneMapped = false;   // the deck colours as they are (no filmic curve on the sky)
 blob.renderOrder = -10;
 world.add(blob);
 
@@ -989,7 +991,7 @@ const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
 // of the last extra box takes one away. "word!" reads the solid boxes left to right. In VR the boxes sit on a gentle arc around you,
 // so every box is the same distance away (arm's reach in VR). The rack is placed once and stays fixed in the world.
 const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.7, min: 3, max: 7, tol: .06, pull: .3,
-  dist: 3.6, drop: .1, sDesk: .62, sTouch: .5, fill: .9,   // desktop / phone (world units): at the Space-pull distance, scaled to fit the view
+  dist: 3.6, drop: .1, sDesk: .62, sTouch: .5, fill: .8,   // desktop / phone (world units): at the Space-pull distance, scaled to fit the view
   vrCube: .34, vrDist: .72, vrDrop: .3 };   // VR (metres)
 const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shakes on a miss
 rack.name = 'rack'; rack.add(rackInner); world.add(rack);
@@ -1220,6 +1222,7 @@ const sheetS = { typed: 0, nextAt: 0, sig: '' };
 function placeSheet(inXR) {
   const o = new THREE.Vector3(); let yaw = 0, dist = SHEET.deskDist, up = SHEET.deskUp, w = SHEET.deskW;
   if (inXR) { const f = new THREE.Vector3(0, 0, -1).applyQuaternion(vr.headQ); yaw = Math.atan2(-f.x, -f.z); o.copy(vr.head); dist = SHEET.vrDist; up = SHEET.vrUp; w = SHEET.vrW; }
+  if (!inXR && IS_MOBILE) w = Math.min(w, 2 * dist * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect * .86);
   sheet.position.set(o.x - Math.sin(yaw) * dist, o.y + up, o.z - Math.cos(yaw) * dist);
   sheet.scale.setScalar(w);
   sheet.lookAt(o);                       // faces the player's start spot (tilted down toward the eyes)
