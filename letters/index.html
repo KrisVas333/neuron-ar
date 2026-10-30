@@ -27,12 +27,29 @@
   kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 6px;
     background: #fff; box-shadow: 0 2px 0 rgba(15,42,58,.25), inset 0 0 0 1px rgba(15,42,58,.15); font: 700 12px/1 system-ui, sans-serif; color: var(--ink); }
   .grp svg { width: 18px; height: 18px; flex: none; }
-  #goal { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; pointer-events: none; }
-  #goal b { width: 46px; height: 54px; display: grid; place-items: center; border-radius: 10px; background: var(--chip);
-    box-shadow: inset 0 0 0 1.5px var(--chip-line); font: 400 34px/1 "Times New Roman", Tinos, serif; color: rgba(15,42,58,.35); transition: all .25s; }
-  #goal b.near { color: #111; background: #fff; box-shadow: inset 0 0 0 2px #111; }
-  #goal.win b { background: #ffe36b; color: #111; transform: translateY(-4px); }
-  #win { position: fixed; left: 50%; top: 86px; transform: translateX(-50%); pointer-events: none; opacity: 0; transition: opacity .4s; }
+  /* HUD: letters left + the words you built (newest first) + finish early */
+  #hud { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); width: min(760px, calc(100vw - 32px)); display: flex; align-items: flex-start; gap: 8px; pointer-events: none;
+    font: 600 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
+  #left { flex: none; display: flex; align-items: center; gap: 7px; height: 38px; padding: 0 12px 0 6px; border-radius: 12px; background: var(--chip);
+    box-shadow: inset 0 0 0 1.5px var(--chip-line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  #left i { width: 26px; height: 28px; display: grid; place-items: center; border-radius: 7px; background: #fff; box-shadow: inset 0 0 0 1.5px #111;
+    font: 400 20px/1 "Times New Roman", Tinos, serif; font-style: normal; color: #111; }
+  #left b { font: 700 20px/1 system-ui, sans-serif; min-width: 24px; text-align: right; font-variant-numeric: tabular-nums; }
+  #left.bump b { animation: bump .45s; }
+  @keyframes bump { 40% { transform: scale(1.35); } }
+  #words { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 6px; max-height: 82px; overflow: hidden; }
+  #words span { height: 38px; display: inline-flex; align-items: center; padding: 0 11px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1.5px #111;
+    font: 400 26px/1 "Times New Roman", Tinos, serif; color: #111; white-space: nowrap; }
+  #words span.new { animation: chip .6s cubic-bezier(.3,1.6,.5,1) both; background: #ffe36b; }
+  @keyframes chip { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  #done { flex: none; pointer-events: auto; height: 38px; padding: 0 13px; border-radius: 12px; border: 0; background: #111; color: #fff; cursor: pointer;
+    font: 700 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #hud.end #done { visibility: hidden; }
+  #win .sum { margin: 0 0 14px; text-align: center; font: 400 clamp(54px, 10vw, 110px)/1 "Times New Roman", Tinos, serif; color: #111; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
+  #win.show .sum { animation-play-state: running; }
+  #win .sum small { display: block; margin-top: 6px; font: 700 18px/1.2 system-ui, sans-serif; color: var(--ink); }
+  #win { text-align: center; }
+  #win { position: fixed; left: 50%; top: 128px; transform: translateX(-50%); pointer-events: none; opacity: 0; transition: opacity .4s; }
   #win.show { opacity: 1; pointer-events: auto; }
   #win h1 { margin: 0; font: 400 clamp(80px, 16vw, 170px)/1 "Times New Roman", Tinos, serif; color: #111; letter-spacing: .08em; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
   #win.show h1 { animation-play-state: running; }
@@ -54,8 +71,12 @@
 <div id="vignette"></div>
 <div id="grain"></div>
 <div id="dot"></div>
-<div id="goal" aria-label="Spell CAT"><b>C</b><b>A</b><b>T</b></div>
-<div id="win" aria-live="polite"><button id="again" type="button" aria-label="Play again">↻</button></div>
+<div id="hud" aria-label="Build words from the floating letters">
+  <div id="left" title="letters left"><i>a</i><b>70</b></div>
+  <div id="words" aria-live="polite"></div>
+  <button id="done" type="button" aria-label="Finish">done ✓</button>
+</div>
+<div id="win" aria-live="polite"><div class="sum"></div><button id="again" type="button" aria-label="Play again">↻</button></div>
 <div id="hint" aria-label="Controls: two fingers or arrow keys to look around, press and drag a letter to move it">
   <div class="grp" title="look around">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
