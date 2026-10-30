@@ -173,7 +173,7 @@ if (params.has('emulate')) {
 
 // ---------- renderer / camera ----------
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-let pixelRatio = Math.min(devicePixelRatio || 1, QUALITY === 'low' ? 1 : 1.5);
+let pixelRatio = Math.min(devicePixelRatio || 1, QUALITY === 'low' ? 1 : IS_MOBILE ? 1.25 : 1.5);
 renderer.setPixelRatio(pixelRatio);
 renderer.setSize(innerWidth, innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -708,7 +708,7 @@ function buildComposer() {
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 }
-let useBloom = QUALITY !== 'low';
+let useBloom = QUALITY !== 'low' && !IS_MOBILE;
 if (useBloom) buildComposer();
 
 function resize() {
