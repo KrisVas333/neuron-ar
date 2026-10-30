@@ -538,6 +538,8 @@ const SFX = {
     nz(B, t + .001, { f: rnd(5000, 7000), q: 5, dur: .015, vol: .45 });
     thunk(B, t, { f: rnd(110, 160), drop: .5, dur: rnd(.06, .08), vol: .5 });
   },
+  // a held letter knocks another out of the way (round 7): a soft, quick typewriter key
+  knock(B, t) { keyClick(B, t, rnd(.38, .5)); },
   // hand / letter touch in VR: a light tick
   touch(B, t) { nz(B, t, { f: rnd(3000, 5000), q: rnd(2, 4), dur: .016, vol: .5 }); thunk(B, t, { f: rnd(220, 320), dur: .025, vol: .14 }); },
   // distance grab / Space: a key press with a quick little ratchet as it flies in
@@ -937,6 +939,58 @@ function uprightWord(W, dt) {
   W.angVel.y += uprightQ.y / sn * ang * WORD_UPRIGHT * dt;
   W.angVel.z += uprightQ.z / sn * ang * WORD_UPRIGHT * dt;
   W.angVel.multiplyScalar(Math.exp(-1.2 * dt));                     // settles instead of swinging forever
+}
+// ---------- round 7: a held letter (or word) is a bat ----------
+// While you carry something (mouse, finger, VR hand / controller), every free letter it touches is knocked out of the way:
+// pushed out of the overlap + a kick along the contact normal from the held letter's closing speed (its real frame-to-frame
+// motion on the drag spring), a small minimum kick so even a slow sweep clears space, a bit of its sideways motion, and spin.
+// Letters sitting in a word box are left alone (you are building a word there); a hit word moves as a heavier body.
+const BAT = { r: 1.5, gain: 1.2, min: 1.4, side: .3, spin: .5, vMax: 9, batMax: 30, fresh: .3, clickGap: 1 / 12 };
+const batS = { n: 0, lastClick: -9 };
+const batN = new THREE.Vector3(), batT = new THREE.Vector3(), batW = new THREE.Vector3();
+function batSweep(dt) {
+  batS.n++;
+  if (dt <= 0) return;
+  const bats = [];
+  for (const L of letters) if (!L.word && L.dragged) bats.push(L);
+  for (const W of words) if (W.dragged) bats.push(W);
+  if (!bats.length) return;
+  for (const B of bats) {                                  // velocity from the body's actual motion since the last frame
+    if (!B.batPrev || B.batN !== batS.n - 1) { B.batPrev = B.pos.clone(); B.batVel = new THREE.Vector3(); }
+    else { B.batVel.subVectors(B.pos, B.batPrev).divideScalar(dt); if (B.batVel.length() > BAT.batMax) B.batVel.setLength(BAT.batMax); B.batPrev.copy(B.pos); }
+    B.batN = batS.n;
+  }
+  const inBox = new Set();
+  if (rack.visible) for (let i = 0; i < rackS.n; i++) if (cubes[i].occ) inBox.add(cubes[i].occ);
+  const r2 = BAT.r * BAT.r, now = performance.now() / 1000;
+  for (const B of bats) {
+    const tips = B.members || [B];
+    for (const O of letters) {
+      const T = O.word || O;
+      if (T.dragged || inBox.has(O)) continue;
+      for (const c of tips) {
+        const dx = O.pos.x - c.pos.x, dy = O.pos.y - c.pos.y, dz = O.pos.z - c.pos.z, dd = dx * dx + dy * dy + dz * dz;
+        if (dd >= r2 || dd < 1e-8) continue;
+        const d = Math.sqrt(dd), n = batN.set(dx, dy, dz).divideScalar(d), m = T.members ? 1 / T.members.length : 1;
+        T.pos.addScaledVector(n, (BAT.r - d) * (T.members ? .5 : 1));                 // out of the bat
+        const vn = B.batVel.dot(n), closing = vn - T.vel.dot(n);
+        const fresh = clock.t - (O.batT ?? -9) > BAT.fresh;
+        const kick = Math.max(0, closing) * BAT.gain + (fresh ? BAT.min : 0);
+        if (kick > 0) T.vel.addScaledVector(n, kick * m);
+        if (fresh) {
+          batT.copy(B.batVel).addScaledVector(n, -vn);                                // the bat's sideways motion
+          T.vel.addScaledVector(batT, BAT.side * m);
+          if (T.vel.length() > BAT.vMax) T.vel.setLength(BAT.vMax);
+          T.angVel.add(batW.crossVectors(n, B.batVel).multiplyScalar(BAT.spin * m)).add(batW.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(1.2 * m));
+          O.batT = clock.t; T.releaseAt = clock.t - 1.5;
+          O.squashAxis.copy(n).applyQuaternion(tmpQ.copy(O.mesh.quaternion).invert()).normalize(); O.squashT = clock.t;
+          if (now - batS.lastClick >= BAT.clickGap) { batS.lastClick = now; sfx.knock(); }
+          stats.knocks = (stats.knocks || 0) + 1;
+        } else if (T.vel.length() > BAT.vMax) T.vel.setLength(BAT.vMax);
+        break;
+      }
+    }
+  }
 }
 function stepAll(t, dt) {
   for (const L of letters) if (!L.word) stepLetter(L, t, dt);
@@ -1672,6 +1726,7 @@ function frame(now, xrFrame) {
   rackUpdate(rdt, inXR);
   sheetUpdate(inXR);
   stepAll(clock.t, dt);
+  batSweep(dt);
   stepRipples(dt);
   blobUniforms.uT.value = clock.t; bubbleUniforms.uT.value = clock.t;
 
@@ -1695,7 +1750,7 @@ window.__fl = {
   get lettersLeft() { return lettersLeft(); },
   get ended() { return won; },
   dict: { get en() { return DICT.en; }, get lt() { return DICT.lt; }, isWord },
-  endRound, resetGame, sfx, renderSfx, sfxNames: Object.keys(SFX), aim: AIM,
+  endRound, resetGame, sfx, renderSfx, BAT, sfxNames: Object.keys(SFX), aim: AIM,
   sheet: { mesh: sheet, get typed() { return sheetS.typed; }, png() { return sheetCv.toDataURL(); }, scenePos() { sheet.updateMatrixWorld(true); return sheet.getWorldPosition(new THREE.Vector3()).toArray(); } },
   rackScenePos() { rack.updateMatrixWorld(true); return rack.getWorldPosition(new THREE.Vector3()).toArray(); },
   get geometries() { return GEO_CACHE.size; },
