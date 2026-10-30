@@ -27,7 +27,7 @@
   kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 6px;
     background: #fff; box-shadow: 0 2px 0 rgba(15,42,58,.25), inset 0 0 0 1px rgba(15,42,58,.15); font: 700 12px/1 system-ui, sans-serif; color: var(--ink); }
   .grp svg { width: 18px; height: 18px; flex: none; }
-  /* HUD: letters left + the words you built (newest first) + finish early */
+  /* HUD: letters left (the words you built are typed on the far sheet in the 3D world) */
   #hud { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); width: min(760px, calc(100vw - 32px)); display: flex; align-items: flex-start; gap: 8px; pointer-events: none;
     font: 600 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
   #left { flex: none; display: flex; align-items: center; gap: 7px; height: 38px; padding: 0 12px 0 6px; border-radius: 12px; background: var(--chip);
@@ -42,9 +42,6 @@
     font: 400 26px/1 "Times New Roman", Tinos, serif; color: #111; white-space: nowrap; }
   #words span.new { animation: chip .6s cubic-bezier(.3,1.6,.5,1) both; background: #ffe36b; }
   @keyframes chip { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  #done { flex: none; pointer-events: auto; height: 38px; padding: 0 13px; border-radius: 12px; border: 0; background: #111; color: #fff; cursor: pointer;
-    font: 700 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  #hud.end #done { visibility: hidden; }
   #win .sum { margin: 0 0 14px; text-align: center; font: 400 clamp(54px, 10vw, 110px)/1 "Times New Roman", Tinos, serif; color: #111; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
   #win.show .sum { animation-play-state: running; }
   #win .sum small { display: block; margin-top: 6px; font: 700 18px/1.2 system-ui, sans-serif; color: var(--ink); }
@@ -79,9 +76,8 @@
 <div id="grain"></div>
 <div id="dot"></div>
 <div id="hud" aria-label="Build words from the floating letters">
-  <div id="left" title="letters left"><i>a</i><b>70</b></div>
-  <div id="words" aria-live="polite"></div>
-  <button id="done" type="button" aria-label="Finish">done ✓</button>
+  <div id="left" title="letters left"><i>a</i><b>140</b></div>
+  <div id="words" aria-live="polite" hidden></div>
 </div>
 <div id="win" aria-live="polite"><div class="sum"></div><button id="again" type="button" aria-label="Play again">↻</button></div>
 <div id="hint" aria-label="Controls: two fingers or arrow keys to look around, press and drag a letter to move it">
@@ -302,6 +298,11 @@ const TOY_COLORS = {};
 function makeLetterMaterial(color) {
   return new THREE.MeshStandardMaterial({ color, roughness: 1, metalness: 0, envMapIntensity: 0.8 });
 }
+// 140 letters share 70 geometries (one per character) and one material; the VR aim glow swaps in a second shared material
+const GEO_CACHE = new Map();
+const letterGeo = ch => { if (!GEO_CACHE.has(ch)) GEO_CACHE.set(ch, makeLetterGeometry(ch)); return GEO_CACHE.get(ch); };
+const LETTER_MAT = makeLetterMaterial(0x161616);
+const LETTER_MAT_AIM = makeLetterMaterial(0x161616); LETTER_MAT_AIM.emissive.set(0x2f8fb8);
 
 // ---------- physics (no library; one body per letter) ----------
 const WORLD = { rMin: 3.2, rMax: 10.0, wall: 0.9, drag: 0.4, angDrag: 0.3, gap: 1.15 };
@@ -309,7 +310,7 @@ const letters = [];
 const tmpV = new THREE.Vector3(), tmpV2 = new THREE.Vector3(), tmpQ = new THREE.Quaternion();
 
 function addLetter(ch, position, opts = {}) {
-  const mesh = new THREE.Mesh(makeLetterGeometry(ch), makeLetterMaterial(opts.color ?? TOY_COLORS[ch] ?? 0x161616));
+  const mesh = new THREE.Mesh(letterGeo(ch), opts.color != null ? makeLetterMaterial(opts.color) : LETTER_MAT);
   mesh.position.copy(position);
   mesh.quaternion.setFromEuler(new THREE.Euler(Math.random() - .5, Math.random() * Math.PI * 2, Math.random() - .5));
   world.add(mesh);
@@ -519,10 +520,32 @@ cv.addEventListener('wheel', e => {
 const ray = new THREE.Raycaster();
 const ndc = new THREE.Vector2();
 const dotEl = document.getElementById('dot');
+// Aim assist (Kris round 5: "clicking on distant letters is hard"): if the ray misses every letter, take the letter whose
+// centre lies inside a cone around the ray (AIM.cone, never narrower than a fixed radius), closest to the ray in angle, then nearest.
+const AIM = { cone: THREE.MathUtils.degToRad(2.8), deskMin: .45 };
+const aimC = new THREE.Vector3(), aimO = new THREE.Vector3();
+function assistPick(o, d, minR, maxAlong, skip) {  // o, d: ray in scene space; minR: smallest accepted offset (scene units)
+  let best = null, bestA = Infinity, bestAlong = Infinity;
+  for (const L of letters) {
+    if (skip && skip(L)) continue;
+    world.localToWorld(aimC.copy(L.pos));
+    const along = aimO.subVectors(aimC, o).dot(d);
+    if (along < .05 || along > maxAlong) continue;
+    const off = aimO.copy(o).addScaledVector(d, along).distanceTo(aimC);
+    const tol = Math.max(minR, along * Math.tan(AIM.cone));
+    if (off > tol) continue;
+    const a = Math.atan2(off, along);
+    // closest in angle first; letters within ~0.4° of each other: the nearer one wins
+    if (a < bestA - .007 || (Math.abs(a - bestA) <= .007 && along < bestAlong)) { bestA = a; bestAlong = along; best = { L, point: aimC.clone(), distance: along, object: L.mesh }; }
+  }
+  return best;
+}
 function pickLetter(x, y) {
   ndc.set(x, y); ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(letters.map(l => l.mesh), false)[0];
-  return hit ? { L: hit.object.userData.letter, point: hit.point } : null;
+  if (hit) return { L: hit.object.userData.letter, point: hit.point };
+  const a = assistPick(ray.ray.origin, ray.ray.direction, AIM.deskMin, 200);
+  return a ? { L: a.L, point: a.point } : null;
 }
 function pokeAt(x, y) {
   const b = pickRackBtn(x, y);
@@ -571,8 +594,9 @@ function resize() {
 addEventListener('resize', resize);
 resize();
 
-// ---------- the alphabet: A–Z, a–z and the 18 Lithuanian letters, spread evenly all around the player ----------
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + 'ĄČĘĖĮŠŲŪŽąčęėįšųūž'; // + Lithuanian (Kris 2026-10-30)
+// ---------- the alphabet ×2: A–Z, a–z and the 18 Lithuanian letters, two of each (140), spread evenly all around the player ----------
+const ALPHABET1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' + 'ĄČĘĖĮŠŲŪŽąčęėįšųūž'; // + Lithuanian (Kris 2026-10-30)
+const ALPHABET = ALPHABET1 + ALPHABET1;                                                                   // 2 capitals + 2 small of each (Kris round 5)
 const shuffled = [...ALPHABET].sort(() => Math.random() - .5);
 shuffled.forEach((ch, i) => {
   // fibonacci sphere for even directions, random depth inside the bubble shell
@@ -600,15 +624,22 @@ function scatterLetters(r0, r1, ySquash = .8, keepWords = false) {
 
 // letters gently push apart so they don't float through each other
 function separate(dt) {
-  for (let i = 0; i < letters.length; i++) for (let j = i + 1; j < letters.length; j++) {
-    const A = letters[i], B = letters[j];
+  const G = WORLD.gap, n = letters.length;
+  for (let i = 0; i < n; i++) {
+    const A = letters[i], ax = A.pos.x, ay = A.pos.y, az = A.pos.z;
+    for (let j = i + 1; j < n; j++) {
+    const B = letters[j];
+    const dx = ax - B.pos.x; if (dx > G || dx < -G) continue;   // far apart: skip cheaply (O(n²) stays ~10k cheap checks at 140)
+    const dy = ay - B.pos.y; if (dy > G || dy < -G) continue;
+    const dz = az - B.pos.z; if (dz > G || dz < -G) continue;
     if (A.word && A.word === B.word) continue;
-    tmpV.copy(A.pos).sub(B.pos); const d = tmpV.length();
+    tmpV.set(dx, dy, dz); const d = tmpV.length();
     if (d < WORLD.gap && d > 1e-4) {
       tmpV.multiplyScalar((WORLD.gap - d) * 2.5 * dt / d);
       const a = A.word || A, b = B.word || B; // a word is heavier than one letter
       if (!a.dragged) a.vel.addScaledVector(tmpV, A.word ? 1 / A.word.members.length : 1);
       if (!b.dragged) b.vel.addScaledVector(tmpV, B.word ? -1 / B.word.members.length : -1);
+    }
     }
   }
 }
@@ -908,7 +939,6 @@ function endRound() {
   vr.panelSig = '';
 }
 document.getElementById('again').addEventListener('click', () => resetGame());
-document.getElementById('done').addEventListener('click', () => { unlockAudio(); endRound(); });
 // new round, same 70 letters: words break up and everything is scattered again (desktop and VR)
 function resetGame() {
   won = false;
