@@ -5,63 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Floating Letters</title>
 <link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;500;700&family=Tinos:wght@400;700&display=swap">
 <style>
-  :root { --ink: #0f2a3a; --chip: rgba(255,255,255,.62); --chip-line: rgba(15,42,58,.18); }
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #9fd3e3; touch-action: none; user-select: none; -webkit-user-select: none; }
-  canvas { display: block; outline: none; cursor: grab; }
+  /* BrAIn Club slide-deck look (deck/BC_L9_deck_draft1.html tokens) */
+  :root { --bg: #05030f; --stage: #0b0820; --panel: rgba(14,10,40,.80); --line: rgba(201,190,234,.45); --lilac: #C9BEEA; --yellow: #FBBF24; --bubble: #F5D130;
+    --cyan: #5EE6E6; --magenta: #E21FD1; --blue: #2F4FE0; --red: #FF6B6B; --white: #FFFFFF; --fg: #ECE8FA;
+    --pixel: "Press Start 2P", ui-monospace, monospace; --read: Rubik, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--stage); touch-action: none; user-select: none; -webkit-user-select: none;
+    overscroll-behavior: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  body { position: fixed; inset: 0; }
+  canvas { display: block; outline: none; cursor: grab; touch-action: none; }
   canvas.drag { cursor: grabbing; }
-  #grain { position: fixed; inset: -50%; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    animation: grain 0.9s steps(6) infinite; }
-  @keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-4%)} 60%{transform:translate(-4%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
-  #vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(8,40,60,.28) 100%); }
+  #vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, rgba(5,3,15,0) 60%, rgba(5,3,15,.45) 100%); }
   #dot { position: fixed; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
-    background: #fff; box-shadow: 0 0 0 1.5px rgba(15,42,58,.45), 0 1px 4px rgba(0,0,0,.25); pointer-events: none; transition: transform .15s, background .15s; }
-  #dot.on { transform: scale(1.9); background: #ffe36b; }
+    background: var(--fg); box-shadow: 0 0 0 1.5px rgba(5,3,15,.6), 0 0 6px rgba(201,190,234,.6); pointer-events: none; transition: transform .15s, background .15s; }
+  #dot.on { transform: scale(1.9); background: var(--yellow); }
   #dot.no { animation: no .3s; }
   @keyframes no { 25%{margin-left:-9px} 75%{margin-left:1px} }
+  .grp, #left, #wc, #gyro { background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
   #hint { position: fixed; left: 16px; bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; pointer-events: none;
-    font: 600 13px/1 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
-  .grp { display: flex; align-items: center; gap: 4px; padding: 6px 8px; border-radius: 12px; background: var(--chip);
-    box-shadow: inset 0 0 0 1px var(--chip-line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 6px;
-    background: #fff; box-shadow: 0 2px 0 rgba(15,42,58,.25), inset 0 0 0 1px rgba(15,42,58,.15); font: 700 12px/1 system-ui, sans-serif; color: var(--ink); }
-  .grp svg { width: 18px; height: 18px; flex: none; }
+    font: 500 13px/1 var(--read); color: var(--fg); transition: opacity 1s; }
+  .grp { display: flex; align-items: center; gap: 5px; padding: 6px 9px; border-radius: 10px; }
+  kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; box-sizing: border-box; border-radius: 5px;
+    background: transparent; box-shadow: inset 0 0 0 1.5px var(--yellow); font: 500 12px/1 var(--read); color: var(--yellow); }
+  .grp svg { width: 18px; height: 18px; flex: none; color: var(--lilac); }
+  .grp span { color: var(--fg); white-space: nowrap; }
+  .touch { display: none !important; }
+  body.mobile .desk { display: none !important; }
+  body.mobile .touch { display: flex !important; }
+  body.mobile #dot { display: none; }
+  body.mobile #hint { left: 8px; right: 8px; bottom: max(10px, env(safe-area-inset-bottom)); gap: 6px; justify-content: center; font-size: 12px; }
+  body.mobile #hint.dim { opacity: .45; }
+  body.mobile .grp { padding: 6px 8px; }
   /* HUD: letters left (the words you built are typed on the far sheet in the 3D world) */
-  #hud { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); width: min(760px, calc(100vw - 32px)); display: flex; align-items: flex-start; gap: 8px; pointer-events: none;
-    font: 600 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
-  #left { flex: none; display: flex; align-items: center; gap: 7px; height: 38px; padding: 0 12px 0 6px; border-radius: 12px; background: var(--chip);
-    box-shadow: inset 0 0 0 1.5px var(--chip-line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  #left i { width: 26px; height: 28px; display: grid; place-items: center; border-radius: 7px; background: #fff; box-shadow: inset 0 0 0 1.5px #111;
-    font: 400 20px/1 "Times New Roman", Tinos, serif; font-style: normal; color: #111; }
-  #left b { font: 700 20px/1 system-ui, sans-serif; min-width: 24px; text-align: right; font-variant-numeric: tabular-nums; }
-  #left.bump b { animation: bump .45s; }
+  #hud { position: fixed; top: max(14px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: min(760px, calc(100vw - 32px)); display: flex; align-items: flex-start; gap: 8px; pointer-events: none;
+    font: 500 14px/1 var(--read); color: var(--fg); }
+  #left, #wc { flex: none; display: flex; align-items: center; gap: 7px; height: 38px; padding: 0 12px 0 6px; border-radius: 10px; box-sizing: border-box; }
+  #wc { padding: 0 12px; }
+  #left i { width: 26px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: transparent; box-shadow: inset 0 0 0 1.5px var(--yellow);
+    font: 400 20px/1 Tinos, "Times New Roman", serif; font-style: normal; color: var(--yellow); }
+  #left b, #wc b { font: 400 13px/1 var(--pixel); min-width: 24px; text-align: right; font-variant-numeric: tabular-nums; color: var(--white); }
+  #wc b { color: var(--yellow); min-width: 0; }
+  #wc span { font: 500 13px/1 var(--read); color: var(--fg); }
+  #left.bump b, #wc.bump b { animation: bump .45s; }
   @keyframes bump { 40% { transform: scale(1.35); } }
+  #gyro { pointer-events: auto; margin-left: auto; width: 44px; height: 44px; margin-top: -3px; border: 0; border-radius: 10px; display: none; place-items: center; color: var(--lilac); padding: 0; }
+  body.mobile #gyro.ok { display: grid; }
+  #gyro.on { box-shadow: inset 0 0 0 2px var(--yellow), 0 0 12px rgba(251,191,36,.45); color: var(--yellow); }
+  #gyro svg { width: 24px; height: 24px; }
   #words { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 6px; max-height: 82px; overflow: hidden; }
-  #words span { height: 38px; display: inline-flex; align-items: center; padding: 0 11px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1.5px #111;
-    font: 400 26px/1 "Times New Roman", Tinos, serif; color: #111; white-space: nowrap; }
-  #words span.new { animation: chip .6s cubic-bezier(.3,1.6,.5,1) both; background: #ffe36b; }
+  #words span { height: 38px; display: inline-flex; align-items: center; padding: 0 11px; border-radius: 10px; background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--line);
+    font: 400 26px/1 Tinos, "Times New Roman", serif; color: var(--fg); white-space: nowrap; }
+  #words span.new { animation: chip .6s cubic-bezier(.3,1.6,.5,1) both; box-shadow: inset 0 0 0 2px var(--yellow); color: var(--yellow); }
   @keyframes chip { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  #win .sum { margin: 0 0 14px; text-align: center; font: 400 clamp(54px, 10vw, 110px)/1 "Times New Roman", Tinos, serif; color: #111; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
-  #win.show .sum { animation-play-state: running; }
-  #win .sum small { display: block; margin-top: 6px; font: 700 18px/1.2 system-ui, sans-serif; color: var(--ink); }
-  #win { text-align: center; }
-  #win { position: fixed; left: 50%; top: 128px; transform: translateX(-50%); pointer-events: none; opacity: 0; transition: opacity .4s; }
+  #win { position: fixed; left: 50%; top: 128px; transform: translateX(-50%); pointer-events: none; opacity: 0; transition: opacity .4s; text-align: center;
+    padding: 26px 40px 30px; border-radius: 16px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line), 0 10px 40px rgba(5,3,15,.5); }
   #win.show { opacity: 1; pointer-events: auto; }
-  #win h1 { margin: 0; font: 400 clamp(80px, 16vw, 170px)/1 "Times New Roman", Tinos, serif; color: #111; letter-spacing: .08em; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
-  #win.show h1 { animation-play-state: running; }
+  #win .sum { margin: 0 0 18px; text-align: center; font: 400 clamp(40px, 8vw, 80px)/1 var(--pixel); color: var(--yellow); text-shadow: 0 0 18px rgba(251,191,36,.35); animation: pop .7s cubic-bezier(.3,1.6,.5,1) both paused; }
+  #win.show .sum { animation-play-state: running; }
+  #win .sum small { display: block; margin-top: 16px; font: 500 18px/1.3 var(--read); color: var(--fg); text-shadow: none; }
   @keyframes pop { from { transform: scale(.3); } to { transform: scale(1); } }
-  #win button { font: 700 22px/1 system-ui, sans-serif; padding: 12px 22px; border-radius: 12px; border: 0; background: #111; color: #fff; cursor: pointer; }
+  #win button { font: 400 26px/1 var(--read); min-width: 64px; min-height: 56px; padding: 12px 22px; border-radius: 12px; border: 0; background: transparent; color: var(--yellow);
+    box-shadow: inset 0 0 0 3px var(--yellow); cursor: pointer; }
   #vrbtn { position: fixed; right: 16px; bottom: 16px; display: none; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; border: 0;
-    background: #111; color: #fff; font: 700 15px/1 system-ui, -apple-system, "Segoe UI", sans-serif; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.25); z-index: 10; }
+    background: var(--panel); color: var(--yellow); box-shadow: inset 0 0 0 2px var(--yellow); font: 500 15px/1 var(--read); cursor: pointer; z-index: 10; }
   #vrbtn.ok { display: flex; }
   #vrbtn svg { width: 22px; height: 22px; }
   /* in a headset browser the button is the whole point: big, centred, impossible to miss */
   #vrbtn.big { left: 50%; right: auto; bottom: 50%; transform: translate(-50%, 50%); padding: 26px 44px; gap: 16px; border-radius: 22px; font-size: 34px;
-    box-shadow: 0 0 0 4px #fff, 0 8px 40px rgba(0,0,0,.35); }
+    box-shadow: inset 0 0 0 4px var(--yellow), 0 8px 40px rgba(5,3,15,.5); }
   #vrbtn.big svg { width: 48px; height: 48px; }
-  #vrmsg { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); max-width: 90vw; padding: 8px 14px; border-radius: 10px; background: #fff; color: #111;
-    font: 600 15px/1.3 system-ui, sans-serif; display: none; z-index: 10; }
+  #vrmsg { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); max-width: 90vw; padding: 8px 14px; border-radius: 10px; background: var(--panel); color: var(--fg);
+    box-shadow: inset 0 0 0 1.5px var(--line); font: 500 15px/1.3 var(--read); display: none; z-index: 10; }
   #lovable-badge { display: none !important; }
 </style>
 <script type="importmap">
@@ -73,21 +90,35 @@
 </head>
 <body>
 <div id="vignette"></div>
-<div id="grain"></div>
 <div id="dot"></div>
 <div id="hud" aria-label="Build words from the floating letters">
   <div id="left" title="letters left"><i>a</i><b>140</b></div>
+  <div id="wc" class="touch" title="words"><b>0</b><span>words</span></div>
   <div id="words" aria-live="polite" hidden></div>
+  <button id="gyro" type="button" aria-label="Look by moving the phone" title="move the phone to look"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/><path d="M3 9a9 9 0 0 0 0 6M21 9a9 9 0 0 1 0 6"/></svg></button>
 </div>
 <div id="win" aria-live="polite"><div class="sum"></div><button id="again" type="button" aria-label="Play again">↻</button></div>
-<div id="hint" aria-label="Controls: two fingers or arrow keys to look around, press and drag a letter to move it">
-  <div class="grp" title="look around">
+<div id="hint" aria-label="Controls">
+  <div class="grp desk" title="look around">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
     <kbd>✌</kbd><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd>
   </div>
-  <div class="grp" title="press and drag a letter">
+  <div class="grp desk" title="press and drag a letter">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V11M16 11V8a1.5 1.5 0 0 1 3 0v6a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7L3.6 14.6a1.5 1.5 0 0 1 2.4-1.8L7 14"/></svg>
     <kbd>drag</kbd><kbd style="min-width:54px">+ Space</kbd>
+  </div>
+  <!-- touch: one chip per gesture -->
+  <div class="grp touch" title="drag the sky to look around">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>drag sky</span>
+  </div>
+  <div class="grp touch" title="drag a letter to move it">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v6M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.8-2.4L4 15.5a1.5 1.5 0 0 1 2.4-1.8L9 15"/></svg><span>drag letter</span>
+  </div>
+  <div class="grp touch" title="tap a letter twice to bring it close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="2.2"/><circle cx="12" cy="8" r="5.5" stroke-dasharray="2 2.5"/><path d="M12 15v6M9 18l3 3 3-3"/></svg><span>tap tap = come</span>
+  </div>
+  <div class="grp touch" title="tap a letter to push it away">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="16" r="2.2"/><path d="M11 13l8-8M14 5h5v5"/></svg><span>tap = push</span>
   </div>
 </div>
 <button id="vrbtn" type="button" aria-label="Enter VR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 8h18v9h-6l-2-3h-2l-2 3H3z"/><circle cx="8" cy="12" r="1.6"/><circle cx="16" cy="12" r="1.6"/></svg><span>Enter VR</span></button>
@@ -116,6 +147,14 @@ const FONT_JSON = {"glyphs":{"Ą":{"ha":1003,"x_min":14,"x_max":993,"o":"m 191 5
 
 const params = new URLSearchParams(location.search);
 const QUALITY = params.get('q') || 'auto'; // auto | high | low
+// phones / tablets (touch first, not a headset): touch controls, closer rack, no bloom, lower pixel ratio. ?mobile=1 / ?mobile=0 forces it.
+const IN_HEADSET_UA = /OculusBrowser|Quest|Pico|Wolvic|MetaQuest/i.test(navigator.userAgent);
+const IS_MOBILE = params.has('mobile') ? params.get('mobile') !== '0'
+  : !IN_HEADSET_UA && ((matchMedia('(pointer: coarse)').matches && !matchMedia('(pointer: fine)').matches) || (navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) < 820 && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)));
+if (IS_MOBILE) document.body.classList.add('mobile');
+// no page scroll / pinch zoom / pull-to-refresh / iOS double-tap zoom
+for (const ev of ['gesturestart', 'gesturechange', 'dblclick']) document.addEventListener(ev, e => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', e => { if (e.target.closest && e.target.closest('#win')) return; e.preventDefault(); }, { passive: false });
 
 // ?emulate=1 → Meta's IWER fakes a Quest 3 (hands + controllers) in desktop Chrome. Must run BEFORE the renderer exists.
 let xrDevice = null;
