@@ -451,7 +451,7 @@ cv.addEventListener('pointerdown', e => {
   if (renderer.xr.isPresenting) return; // in VR the hands do the work
   Object.assign(ptr, { down: true, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0 });
   cv.setPointerCapture(e.pointerId);
-  toNdc(e); const h = pickLetter(ndc.x, ndc.y);
+  toNdc(e); const onBtn = pickRackBtn(ndc.x, ndc.y); const h = onBtn ? null : pickLetter(ndc.x, ndc.y);
   if (h) {
     const B = h.L.word || h.L; // a spelled word is carried whole
     drag.L = B;
@@ -525,6 +525,8 @@ function pickLetter(x, y) {
   return hit ? { L: hit.object.userData.letter, point: hit.point } : null;
 }
 function pokeAt(x, y) {
+  const b = pickRackBtn(x, y);
+  if (b) { pressRackBtn(b); return true; }
   const h = pickLetter(x, y);
   if (!h) { dotEl.classList.remove('no'); void dotEl.offsetWidth; dotEl.classList.add('no'); return false; }
   const { L: hitL, point } = h, L = hitL.word || hitL;
@@ -873,6 +875,7 @@ function pickRackBtn(x, y) {
   const hit = ray.intersectObjects(live, false)[0];
   return hit ? hit.object : null;
 }
+layoutRack(false);
 function madeWord(W) {
   sfx.word();
   W.members.forEach((l, i) => spawnRipple(l.pos.clone(), i * .06, 2.0));
@@ -907,12 +910,13 @@ document.getElementById('again').addEventListener('click', () => resetGame());
 document.getElementById('done').addEventListener('click', () => { unlockAudio(); endRound(); });
 // new round, same 70 letters: words break up and everything is scattered again (desktop and VR)
 function resetGame() {
-  won = false; cand.key = ''; cand.hold = 0;
+  won = false;
   hudEl.classList.remove('end'); winEl.classList.remove('show');
   for (const H of vr.hands) H.held = null;
   if (drag.L) { drag.L.dragged = false; drag.L = null; }
   ptr.down = false;
   breakWords();
+  rackS.n = RACK.min; layoutRack(false);
   if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
   else scatterLetters(4.5, 9, .8);
   renderHud(false);
@@ -927,7 +931,7 @@ const VR_M = {
   tipR: .012, palmR: .035, ctrlR: .045,                                     // contact spheres
   throwMax: 2.5, velWindow: .1, rayMax: 6, rayStub: .3, aimAssist: .09,     // throw clamp (m/s), velocity window (s), pointer ray
   pushBase: .22, pushGain: 1.1, releaseGrace: .4,                           // push-away kick
-  panelDist: 1.0, panelDrop: .28, pokeR: .05                                // goal panel + replay button
+  panelDist: 1.0, panelDrop: .02, pokeR: .05                                // goal panel + replay button
 };
 const DESK_WORLD = { rMin: WORLD.rMin, rMax: WORLD.rMax };
 const capBox = (() => { const g = letters.find(l => l.ch === 'C').mesh.geometry; g.computeBoundingBox(); return g.boundingBox; })();
@@ -1005,7 +1009,7 @@ function drawPanel() {
     c.font = '700 56px system-ui, sans-serif'; c.fillText(String(n), 85, 136);
     // newest words, newest on top
     c.textAlign = 'left';
-    if (!recent.length) { c.fillStyle = 'rgba(15,42,58,.5)'; c.font = '700 26px system-ui, sans-serif'; c.fillText('line up 3+ letters', 172, 100); }
+    if (!recent.length) { c.fillStyle = 'rgba(15,42,58,.5)'; c.font = '700 26px system-ui, sans-serif'; c.fillText('fill the boxes · word!', 172, 100); }
     recent.forEach((w, i) => {
       c.font = '400 40px "Times New Roman", Tinos, serif';
       const tw = Math.min(c.measureText(w).width, 300), y = 22 + i * 54;
@@ -1033,6 +1037,7 @@ function anchorWorld() {
   WORLD.rMin = VR_M.eyeMin / vr.S; WORLD.rMax = VR_M.eyeMax / vr.S;
   scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); // the round (and its words) carries on in VR
   vr.anchored = true; panel.visible = true; vr.panelSig = ''; placePanel(0, true);
+  setRackVR(true);
 }
 const toLocal = p => world.worldToLocal(p);                          // scene metres → world units (in place)
 const toScene = (L, out) => world.localToWorld(out.copy(L.pos));    // letter centre in scene metres
@@ -1091,6 +1096,7 @@ function updateHand(H, dt) {
     const targets = letters.filter(l => !l.dragged).map(l => l.mesh);
     if (replayBtn.visible) targets.push(replayBtn);
     if (doneBtn.visible) targets.push(doneBtn);
+    targets.push(...rackBtnLive());
     let hit = xrRay.intersectObjects(targets, false)[0];
     if (!hit) {
       // aim assist: thin serif letters have holes, so also take the letter whose centre passes closest to the ray
@@ -1106,7 +1112,7 @@ function updateHand(H, dt) {
     }
     if (hit) {
       len = hit.distance;
-      if (hit.object === replayBtn || hit.object === doneBtn) H.aimBtn = hit.object; else H.aimed = hit.object.userData.letter;
+      if (hit.object === replayBtn || hit.object === doneBtn || hit.object.userData.rackBtn) H.aimBtn = hit.object; else H.aimed = hit.object.userData.letter;
       H.dot.position.copy(hit.point); H.dot.visible = true;
     } else H.dot.visible = false;
     H.line.scale.z = len; H.line.visible = true;
@@ -1115,6 +1121,7 @@ function updateHand(H, dt) {
   if (H.pinch && !H.wasPinch) {
     if (H.aimBtn === replayBtn && won) { vr.resetAt = vr.t; resetGame(); sfx.grab(); }
     else if (H.aimBtn === doneBtn && !won) { vr.resetAt = vr.t; endRound(); }
+    else if (H.aimBtn && H.aimBtn.userData.rackBtn) pressRackBtn(H.aimBtn);
     else {
       let best = null, bd = Infinity;
       for (const L of letters) {
@@ -1177,6 +1184,25 @@ function pushAway(dt) {
   }
 }
 
+const pokeV = new THREE.Vector3();
+function rackPoke() {
+  const live = rackBtnLive(), zTol = .035 / (vr.S * rack.scale.x); // button-local units
+  for (const H of vr.hands) {
+    const inNow = new Set();
+    if (H.tracked && !H.held) {
+      const tip = H.kind === 'hand' ? H.hand.joints['index-finger-tip'] : null;
+      if (tip && tip.visible) tip.getWorldPosition(pokeV); else pokeV.copy(H.pt);
+      for (const b of live) {
+        const p = b.worldToLocal(pokeV.clone());
+        if (Math.abs(p.z) > zTol) continue;
+        const g = b.geometry.parameters, inside = g.radius ? Math.hypot(p.x, p.y) < g.radius * 1.15 : Math.abs(p.x) < g.width / 2 && Math.abs(p.y) < g.height / 2;
+        if (inside) inNow.add(b);
+      }
+    }
+    for (const b of inNow) if (!(H.rackIn && H.rackIn.has(b))) { pressRackBtn(b); break; }
+    H.rackIn = inNow;
+  }
+}
 function xrUpdate(xrFrame, dt) {
   vr.t += dt;
   const ref = renderer.xr.getReferenceSpace();
@@ -1184,7 +1210,7 @@ function xrUpdate(xrFrame, dt) {
   if (pose) {
     const p = pose.transform.position, o = pose.transform.orientation;
     vr.head.set(p.x, p.y, p.z); vr.headQ.set(o.x, o.y, o.z, o.w);
-    camera.position.copy(vr.head); camera.quaternion.copy(vr.headQ);   // fresh head pose for WIN_RULE (renderer sets the same)
+    camera.position.copy(vr.head); camera.quaternion.copy(vr.headQ);   // fresh head pose for the rack / words (renderer sets the same)
   }
   rig.updateMatrixWorld(true);
   if (!vr.anchored) { if (!pose) return; anchorWorld(); }
@@ -1206,6 +1232,7 @@ function xrUpdate(xrFrame, dt) {
       if (vD.distanceTo(vC) < VR_M.pokeR) { vr.resetAt = vr.t; if (won) { resetGame(); sfx.grab(); } else endRound(); break; }
     }
   }
+  rackPoke();
 }
 
 const vrBtn = document.getElementById('vrbtn');
@@ -1235,6 +1262,7 @@ renderer.xr.addEventListener('sessionend', () => {
   vr.lit.clear(); vr.anchored = false; panel.visible = false;
   world.position.set(0, 0, 0); world.scale.setScalar(1); world.updateMatrixWorld(true);
   WORLD.rMin = DESK_WORLD.rMin; WORLD.rMax = DESK_WORLD.rMax;
+  setRackVR(false);
   scatterLetters(4.5, 9, .8, true);
   camera.position.set(0, 0, 0); camera.fov = 62; camera.zoom = 1; resize();
   vrBtn.querySelector('span').textContent = 'Enter VR'; if (IN_HEADSET) vrBtn.classList.add('big');
@@ -1278,7 +1306,7 @@ function frame(now, xrFrame) {
   }
 
   separate(dt);
-  checkWord(rdt);
+  rackUpdate(rdt, inXR);
   stepAll(clock.t, dt);
   stepRipples(dt);
   blobUniforms.uT.value = clock.t; bubbleUniforms.uT.value = clock.t;
@@ -1301,8 +1329,27 @@ window.__fl = {
   get lettersLeft() { return lettersLeft(); },
   get ended() { return won; },
   dict: { get en() { return DICT.en; }, get lt() { return DICT.lt; }, isWord },
-  findWord: () => { const r = findWord(); return r ? r.map(l => l.ch).join('') : null; },
   endRound, resetGame,
+  rack: {
+    get state() { rackOccupancy(); return { n: rackS.n, max: RACK.max, dashed: rackS.n < RACK.max, visible: rack.visible, word: rackWord(), presses: rackS.pressN, misses: rackS.missN,
+      slots: cubes.slice(0, rackTotal()).map((c, i) => ({ i, solid: i < rackS.n, occ: c.occ ? c.occ.ch : null, count: c.occN, lit: +c.lit.toFixed(2) })) }; },
+    pressPlus, pressMinus, pressWord, rackS, RACK,
+    // put a free letter (exact char first, then any case) into box i: centre + random offset (jitter = fraction of the half-size), random turn, drifting
+    placeInSlot(ch, i, jitter = 0) {
+      const L = letters.find(l => !l.word && l.ch === ch) || letters.find(l => !l.word && fold(l.ch) === fold(ch)); if (!L) return null;
+      rackMatrices(); const c = cubes[i];
+      const h = RACK.E / 2 * jitter, off = new THREE.Vector3((Math.random() * 2 - 1) * h, (Math.random() * 2 - 1) * h, (Math.random() * 2 - 1) * h * .5);
+      const m = new THREE.Matrix4().copy(c.inv).invert();
+      L.pos.copy(off.applyMatrix4(m)); L.vel.set(0, 0, 0);
+      L.mesh.quaternion.setFromEuler(new THREE.Euler((Math.random() - .5) * jitter * 1.4, rack.rotation.y + (Math.random() - .5) * jitter * 1.4, (Math.random() - .5) * jitter * 1.4));
+      L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.3); L.dragged = false; L.releaseAt = clock.t - 1.5;
+      return L.ch;
+    },
+    // scene-space (metres in VR) position of box i / a button ('plus' | 'minus' | 'word')
+    slotScene(i) { rack.updateMatrixWorld(true); return cubes[i].o.getWorldPosition(new THREE.Vector3()).toArray(); },
+    btnScene(k) { rack.updateMatrixWorld(true); const b = rackButtons.find(b => b.userData.rackBtn === k); return b.visible ? b.getWorldPosition(new THREE.Vector3()).toArray() : null; },
+    btnScreen(k) { rack.updateMatrixWorld(true); const b = rackButtons.find(b => b.userData.rackBtn === k); const v = b.getWorldPosition(new THREE.Vector3()).project(camera); return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight }; }
+  },
   pickAt(px, py) { const h = pickLetter(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); return h ? { ch: h.L.ch, word: h.L.word ? h.L.word.ch : null } : null; },
   // put free letters spelling `str` in a tidy row in front of you (head space, world units), at rest; returns the letters used
   tryWord(str, { z = -4, y = 0, gap = 1.15 } = {}) {
