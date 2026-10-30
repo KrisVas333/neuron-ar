@@ -979,6 +979,7 @@ const DICT = (() => {
 const fold = s => s.toLocaleLowerCase('lt');
 const isWord = s => DICT.has(fold(s));
 const hudEl = document.getElementById('hud'), leftEl = document.getElementById('left'), leftNum = leftEl.querySelector('b');
+const wcEl = document.getElementById('wc'), wcNum = wcEl.querySelector('b'), wcSpan = wcEl.querySelector('span');
 const wordsEl = document.getElementById('words'), winEl = document.getElementById('win'), sumEl = winEl.querySelector('.sum');
 let won = false; // true = round over (all letters used, or "done"); the name stays for the QA hooks
 const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
@@ -1232,32 +1233,35 @@ function drawSheet() {
   const c = sheetCv.getContext('2d'), SW = SHEET.w, SH = SHEET.h;
   const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
   c.clearRect(0, 0, SW, SH);
-  c.fillStyle = 'rgba(255,255,255,.6)'; rr(6, 6, SW - 12, SH - 12, 46); c.fill();
-  c.lineWidth = 6; c.strokeStyle = 'rgba(17,17,17,.55)'; rr(9, 9, SW - 18, SH - 18, 44); c.stroke();
+  // BC deck panel: dark translucent, lilac line border; labels in Press Start 2P, words in Tinos; newest word in yellow
+  const PIX = '"Press Start 2P", ui-monospace, monospace', SERIF = 'Tinos, "Times New Roman", serif';
+  c.fillStyle = 'rgba(14,10,40,.80)'; rr(6, 6, SW - 12, SH - 12, 40); c.fill();
+  c.lineWidth = 6; c.strokeStyle = 'rgba(201,190,234,.6)'; rr(9, 9, SW - 18, SH - 18, 38); c.stroke();
   // header: how many words (left) · letters left with the "a" tile, like the desktop counter (right)
-  c.textBaseline = 'middle'; c.fillStyle = '#111'; c.textAlign = 'left';
-  c.font = '400 110px "Times New Roman", Tinos, serif'; c.fillText(String(words.length), 64, 84);
+  c.textBaseline = 'middle'; c.fillStyle = '#FBBF24'; c.textAlign = 'left';
+  c.font = '400 76px ' + PIX; c.fillText(String(words.length), 64, 92);
   const nw = c.measureText(String(words.length)).width;
-  c.font = '700 46px system-ui, -apple-system, "Segoe UI", sans-serif'; c.fillText(words.length === 1 ? 'word' : 'words', 82 + nw, 94);
-  c.font = '700 64px system-ui, -apple-system, "Segoe UI", sans-serif';
-  const ns = String(n), tw = c.measureText(ns).width, tx = SW - 64 - tw - 24 - 76;
-  c.fillText(ns, SW - 64 - tw, 90);
-  c.fillStyle = '#fff'; rr(tx, 40, 76, 92, 14); c.fill(); c.lineWidth = 4; c.strokeStyle = '#111'; rr(tx + 2, 42, 72, 88, 13); c.stroke();
-  c.fillStyle = '#111'; c.textAlign = 'center'; c.font = '400 66px "Times New Roman", Tinos, serif'; c.fillText('a', tx + 38, 82);
-  c.fillStyle = 'rgba(17,17,17,.35)'; c.fillRect(56, 158, SW - 112, 4);
+  c.fillStyle = '#ECE8FA'; c.font = '400 34px ' + PIX; c.fillText(words.length === 1 ? 'word' : 'words', 92 + nw, 98);
+  c.font = '400 50px ' + PIX;
+  const ns = String(n), tw = c.measureText(ns).width, tx = SW - 64 - tw - 28 - 76;
+  c.fillStyle = '#FFFFFF'; c.fillText(ns, SW - 64 - tw, 94);
+  c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(tx + 2, 42, 72, 88, 13); c.stroke();
+  c.fillStyle = '#FBBF24'; c.textAlign = 'center'; c.font = '400 66px ' + SERIF; c.fillText('a', tx + 38, 82);
+  c.fillStyle = 'rgba(201,190,234,.45)'; c.fillRect(56, 160, SW - 112, 4);
   // typed lines: oldest top-left, newest last (bottom of the column it lands in), the most recent rows × cols words
   const top = 178, lh = (SH - top - 30) / SHEET.rows, colW = (SW - 112) / SHEET.cols, per = SHEET.rows * SHEET.cols;
   const shown = words.slice(-per);
-  c.textAlign = 'left'; c.font = '400 96px "Times New Roman", Tinos, serif';
-  if (!shown.length) { c.fillStyle = 'rgba(17,17,17,.38)'; c.font = '400 76px "Times New Roman", Tinos, serif'; c.fillText(won ? '—' : 'your words', 84, top + lh * .5); }
+  c.textAlign = 'left'; c.font = '400 96px ' + SERIF;
+  if (!shown.length) { c.fillStyle = 'rgba(201,190,234,.6)'; c.font = '400 76px ' + SERIF; c.fillText(won ? '—' : 'your words', 84, top + lh * .5); }
   shown.forEach((W, i) => {
     const col = Math.floor(i / SHEET.rows), row = i % SHEET.rows, x = 56 + col * colW + 28, y = top + lh * (row + .5), isLast = W === last;
     const txt = isLast && typing ? W.ch.slice(0, sheetS.typed) : W.ch;
-    if (isLast) { c.fillStyle = '#ffe36b'; rr(x - 22, y - lh * .44, Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), lh * .88, 16); c.fill(); }
-    c.fillStyle = '#111'; c.fillText(txt, x, y + 6, colW - 60);
+    c.font = '400 96px ' + SERIF;
+    if (isLast) { c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(x - 22, y - lh * .44, Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), lh * .88, 16); c.stroke(); }
+    c.fillStyle = isLast ? '#FBBF24' : '#ECE8FA'; c.fillText(txt, x, y + 6, colW - 60);
     if (isLast && typing) { const cw = Math.min(c.measureText(txt).width, colW - 60); c.fillRect(x + cw + 6, y - 38, 6, 80); }   // the carriage
   });
-  if (won) { c.fillStyle = '#111'; c.textAlign = 'right'; c.font = '700 40px system-ui, sans-serif'; c.fillText(n ? n + ' letters left' : 'every letter used!', SW - 64, SH - 50); }
+  if (won) { c.fillStyle = '#ECE8FA'; c.textAlign = 'right'; c.font = '400 30px ' + PIX; c.fillText(n ? n + ' letters left' : 'every letter used!', SW - 64, SH - 50); }
   sheetTex.needsUpdate = true;
 }
 function sheetUpdate(inXR) {
@@ -1267,6 +1271,7 @@ function sheetUpdate(inXR) {
   drawSheet();
 }
 placeSheet(false);
+if (document.fonts) document.fonts.load('40px "Press Start 2P"').then(() => document.fonts.load('40px Tinos')).then(() => { sheetS.sig = ''; drawSheet(); vr.panelSig = ''; }).catch(() => {});
 function madeWord(W) {
   sfx.word();
   W.members.forEach((l, i) => spawnRipple(l.pos.clone(), i * .06, 2.0));
@@ -1277,6 +1282,7 @@ function madeWord(W) {
 function renderHud(fresh) {
   const n = lettersLeft();
   if (leftNum.textContent !== String(n)) { leftNum.textContent = n; leftEl.classList.remove('bump'); void leftEl.offsetWidth; leftEl.classList.add('bump'); }
+  if (wcNum.textContent !== String(words.length)) { wcNum.textContent = words.length; wcSpan.textContent = words.length === 1 ? 'word' : 'words'; wcEl.classList.remove('bump'); void wcEl.offsetWidth; wcEl.classList.add('bump'); }
   if (!fresh) { const last = words[words.length - 1]; sheetS.typed = last ? last.ch.length : 0; }
   sheetS.sig = ''; drawSheet();
   vr.panelSig = '';
@@ -1361,8 +1367,9 @@ const panel = new THREE.Mesh(new THREE.PlaneGeometry(.36, .36 * 200 / 512),
   new THREE.MeshBasicMaterial({ map: panelTex, transparent: true, toneMapped: false, depthWrite: false }));
 panel.visible = false; panel.renderOrder = 5; scene.add(panel);
 const btnCv = document.createElement('canvas'); btnCv.width = btnCv.height = 128;
-{ const c = btnCv.getContext('2d'); c.fillStyle = '#111'; c.beginPath(); c.arc(64, 64, 62, 0, Math.PI * 2); c.fill();
-  c.fillStyle = '#fff'; c.font = '700 76px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('↻', 64, 70); }
+{ const c = btnCv.getContext('2d'); c.fillStyle = 'rgba(14,10,40,.9)'; c.beginPath(); c.arc(64, 64, 62, 0, Math.PI * 2); c.fill();
+  c.lineWidth = 6; c.strokeStyle = '#FBBF24'; c.beginPath(); c.arc(64, 64, 58, 0, Math.PI * 2); c.stroke();
+  c.fillStyle = '#FBBF24'; c.font = '700 76px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('↻', 64, 70); }
 const btnTex = new THREE.CanvasTexture(btnCv); btnTex.colorSpace = THREE.SRGBColorSpace;
 const replayBtn = new THREE.Mesh(new THREE.CircleGeometry(.04, 40), new THREE.MeshBasicMaterial({ map: btnTex, transparent: true, toneMapped: false }));
 replayBtn.position.set(0, -.11, .004); replayBtn.visible = false; panel.add(replayBtn);
@@ -1374,12 +1381,11 @@ function drawPanel() {
   const c = panelCv.getContext('2d'); c.clearRect(0, 0, 512, 200);
   const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
   if (won) {
-    c.fillStyle = 'rgba(255,255,255,.35)'; rr(4, 4, 504, 192, 34); c.fill();
     c.textBaseline = 'middle';
-    c.fillStyle = '#ffe36b'; rr(20, 20, 472, 160, 26); c.fill(); c.lineWidth = 5; c.strokeStyle = '#111'; rr(22.5, 22.5, 467, 155, 24); c.stroke();
-    c.fillStyle = '#111'; c.textAlign = 'center';
-    c.font = '400 92px "Times New Roman", Tinos, serif'; c.fillText(String(words.length), 256, 82);
-    c.font = '700 26px system-ui, sans-serif'; c.fillText((words.length === 1 ? 'word' : 'words') + (n ? ` · ${n} letters left` : ' · every letter used!'), 256, 150);
+    c.fillStyle = 'rgba(14,10,40,.85)'; rr(6, 6, 500, 188, 28); c.fill(); c.lineWidth = 4; c.strokeStyle = 'rgba(201,190,234,.7)'; rr(8, 8, 496, 184, 26); c.stroke();
+    c.fillStyle = '#FBBF24'; c.textAlign = 'center';
+    c.font = '400 64px "Press Start 2P", ui-monospace, monospace'; c.fillText(String(words.length), 256, 84);
+    c.fillStyle = '#ECE8FA'; c.font = '500 26px Rubik, system-ui, sans-serif'; c.fillText((words.length === 1 ? 'word' : 'words') + (n ? ` · ${n} letters left` : ' · every letter used!'), 256, 150);
   }
   panelTex.needsUpdate = true;
   replayBtn.visible = won;
@@ -1653,7 +1659,9 @@ function frame(now, xrFrame) {
     const a = 1 - Math.exp(-9 * rdt);
     look.yaw += (look.tYaw - look.yaw) * a;
     look.pitch += (look.tPitch - look.pitch) * a;
-    camera.rotation.set(look.pitch, look.yaw, 0);
+    if (gyro.on && gyro.has) {                       // magic window: the phone's orientation, plus the finger's yaw on top
+      camera.quaternion.setFromAxisAngle(THREE.Object3D.DEFAULT_UP, look.yaw).multiply(gyro.q);
+    } else camera.rotation.set(look.pitch, look.yaw, 0);
     camera.updateMatrixWorld();
   }
 
@@ -1667,7 +1675,7 @@ function frame(now, xrFrame) {
   if (inXR) { renderer.render(scene, camera); return; } // no bloom composer in WebXR
 
   // crosshair feedback
-  dotEl.classList.toggle('on', !!pickLetter(0, 0));
+  if (!IS_MOBILE) dotEl.classList.toggle('on', !!pickLetter(0, 0));
 
   if (useBloom && composer) composer.render(); else renderer.render(scene, camera);
 }
@@ -1675,7 +1683,9 @@ renderer.setAnimationLoop(frame);
 
 // test hooks (QA only)
 window.__fl = {
-  letters, clock, stats, look, pokeAt,
+  letters, clock, stats, look, pokeAt, mobile: IS_MOBILE, POKE_KICK, camera, gyro,
+  get rackDist() { return rackS.dist; }, get rackScale() { return rackS.s; },
+  get nearDist() { return nearDist(); }, get dragging() { return drag.L ? { ch: drag.L.ch, near: drag.near, dragged: drag.L.dragged } : null; },
   get held() { return !!drag.L; },
   get words() { return words; },
   get wordList() { return words.map(W => W.ch); },
