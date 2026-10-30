@@ -700,7 +700,7 @@ const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.7, min: 3, max: 7, tol: .06, pull: .
   dist: 8.6, drop: .6,                      // desktop (world units)
   vrCube: .34, vrDist: .72, vrDrop: .3 };   // VR (metres)
 const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shakes on a miss
-rack.add(rackInner); world.add(rack);
+rack.name = 'rack'; rack.add(rackInner); world.add(rack);
 const rackS = { n: RACK.min, R: 1000, yaw: 0, following: true, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0 };
 const rackTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
 const rackDisc = sym => rackTex(256, 256, c => { c.fillStyle = '#fff'; c.beginPath(); c.arc(128, 128, 124, 0, 7); c.fill(); c.fillStyle = '#111'; c.fillRect(70, 116, 116, 24); if (sym === '+') c.fillRect(116, 70, 24, 116); });
@@ -1333,7 +1333,7 @@ window.__fl = {
   rack: {
     get state() { rackOccupancy(); return { n: rackS.n, max: RACK.max, dashed: rackS.n < RACK.max, visible: rack.visible, word: rackWord(), presses: rackS.pressN, misses: rackS.missN,
       slots: cubes.slice(0, rackTotal()).map((c, i) => ({ i, solid: i < rackS.n, occ: c.occ ? c.occ.ch : null, count: c.occN, lit: +c.lit.toFixed(2) })) }; },
-    pressPlus, pressMinus, pressWord, rackS, RACK,
+    pressPlus, pressMinus, pressWord, rackS, RACK, group: rack,
     // put a free letter (exact char first, then any case) into box i: centre + random offset (jitter = fraction of the half-size), random turn, drifting
     placeInSlot(ch, i, jitter = 0) {
       const L = letters.find(l => !l.word && l.ch === ch) || letters.find(l => !l.word && fold(l.ch) === fold(ch)); if (!L) return null;
