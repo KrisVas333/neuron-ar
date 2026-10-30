@@ -994,31 +994,40 @@ const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shak
 rack.name = 'rack'; rack.add(rackInner); world.add(rack);
 const rackS = { n: RACK.min, R: 1000, yaw: 0, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0, dist: RACK.dist, s: 1, vr: false };
 const rackTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
-const rackDisc = sym => rackTex(256, 256, c => { c.fillStyle = '#fff'; c.beginPath(); c.arc(128, 128, 124, 0, 7); c.fill(); c.fillStyle = '#111'; c.fillRect(70, 116, 116, 24); if (sym === '+') c.fillRect(116, 70, 24, 116); });
+// BC deck label style: no fill, yellow outline, yellow sign (a faint dark disc behind so it reads over any letter)
+const rackDisc = sym => rackTex(256, 256, c => { c.fillStyle = 'rgba(14,10,40,.55)'; c.beginPath(); c.arc(128, 128, 120, 0, 7); c.fill();
+  c.lineWidth = 14; c.strokeStyle = '#FBBF24'; c.beginPath(); c.arc(128, 128, 116, 0, 7); c.stroke();
+  c.fillStyle = '#FBBF24'; c.fillRect(72, 116, 112, 24); if (sym === '+') c.fillRect(116, 72, 24, 112); });
+const RACK_LINE = new THREE.Color(0xE4DCFF), RACK_LIT = new THREE.Color(0xFBBF24);
 const rackBoxGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(RACK.E, RACK.E, RACK.D));
 const rackDashGeo = rackBoxGeo.clone();
-const rackDashMat = new THREE.LineDashedMaterial({ color: 0xffffff, dashSize: .18, gapSize: .13, transparent: true, opacity: .9, toneMapped: false });
+const rackDashMat = new THREE.LineDashedMaterial({ color: 0xC9BEEA, dashSize: .18, gapSize: .13, transparent: true, opacity: .9, toneMapped: false });
 const rackFaceGeo = new THREE.PlaneGeometry(RACK.E, RACK.E);
 const cubes = [];
 for (let i = 0; i < RACK.max; i++) {
   const o = new THREE.Group();
-  const mat = new THREE.LineBasicMaterial({ color: 0xe8e8e8, transparent: true, opacity: .95, toneMapped: false });
+  const mat = new THREE.LineBasicMaterial({ color: RACK_LINE, transparent: true, opacity: .95, toneMapped: false });
   const solid = new THREE.LineSegments(rackBoxGeo, mat);
   const thick = new THREE.LineSegments(rackBoxGeo, mat); thick.scale.setScalar(.982); // doubled edge = "thicker" when filled
   const dash = new THREE.LineSegments(rackDashGeo, rackDashMat);
   if (i === 0) dash.computeLineDistances();   // the dashed geometry is shared: distances once
-  const faceMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .10, depthWrite: false, toneMapped: false });
+  const faceMat = new THREE.MeshBasicMaterial({ color: 0x0e0a28, transparent: true, opacity: .10, depthWrite: false, toneMapped: false });
   const face = new THREE.Mesh(rackFaceGeo, faceMat); face.position.z = -RACK.D / 2; // faint back face so the box reads as a slot
   o.add(solid, thick, dash, face); o.visible = false; rackInner.add(o);
   cubes.push({ i, o, mat, solid, thick, dash, face, faceMat, occ: null, occN: 0, occD: Infinity, lit: 0, centre: new THREE.Vector3(), inv: new THREE.Matrix4() });
 }
-const plusBtn = new THREE.Mesh(new THREE.CircleGeometry(.5, 48), new THREE.MeshBasicMaterial({ color: 0xc8c8c8, map: rackDisc('+'), transparent: true, toneMapped: false }));
+const plusBtn = new THREE.Mesh(new THREE.CircleGeometry(.5, 48), new THREE.MeshBasicMaterial({ map: rackDisc('+'), transparent: true, toneMapped: false, depthWrite: false }));
 plusBtn.position.z = .05; plusBtn.userData.rackBtn = 'plus';
-const minusBtn = new THREE.Mesh(new THREE.CircleGeometry(.27, 40), new THREE.MeshBasicMaterial({ color: 0xc8c8c8, map: rackDisc('-'), transparent: true, toneMapped: false }));
+const minusBtn = new THREE.Mesh(new THREE.CircleGeometry(.27, 40), new THREE.MeshBasicMaterial({ map: rackDisc('-'), transparent: true, toneMapped: false, depthWrite: false }));
 minusBtn.position.set(RACK.E / 2 - .4, RACK.E / 2 - .4, RACK.D / 2); minusBtn.userData.rackBtn = 'minus';
-const wordBtn = new THREE.Mesh(new THREE.PlaneGeometry(2.6, .87), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, toneMapped: false, depthWrite: false,
-  map: rackTex(600, 200, c => { c.font = '700 150px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
-    c.lineWidth = 9; c.strokeStyle = 'rgba(15,42,58,.8)'; c.strokeText('word!', 300, 108); c.fillStyle = '#fff'; c.fillText('word!', 300, 108); }) }));
+// "word!": yellow BC label text, no background (Press Start 2P once the font has loaded; redrawn then)
+const drawWordBtn = c => { c.clearRect(0, 0, 600, 200); c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  const pix = document.fonts && document.fonts.check('40px "Press Start 2P"');
+  c.font = pix ? '400 92px "Press Start 2P"' : '700 150px Rubik, system-ui, sans-serif';
+  c.lineWidth = 14; c.strokeStyle = 'rgba(14,10,40,.85)'; c.strokeText('word!', 300, pix ? 112 : 108); c.fillStyle = '#FBBF24'; c.fillText('word!', 300, pix ? 112 : 108); };
+const wordTex = rackTex(600, 200, drawWordBtn);
+const wordBtn = new THREE.Mesh(new THREE.PlaneGeometry(2.6, .87), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, toneMapped: false, depthWrite: false, map: wordTex }));
+if (document.fonts) document.fonts.load('40px "Press Start 2P"').then(() => { drawWordBtn(wordTex.image.getContext('2d')); wordTex.needsUpdate = true; }).catch(() => {});
 wordBtn.userData.rackBtn = 'word'; rackInner.add(wordBtn);
 const rackButtons = [plusBtn, minusBtn, wordBtn];
 const rackBtnLive = () => rack.visible ? rackButtons.filter(b => b.visible && b.parent && b.parent.visible) : [];
@@ -1047,7 +1056,7 @@ function layoutRack(carry = true) {
     if (i < total) arcPlace(c.o, i, total);
     const isSolid = i < rackS.n;
     c.solid.visible = isSolid; c.dash.visible = !isSolid; c.thick.visible = false; c.lit = 0;
-    c.faceMat.opacity = isSolid ? .10 : .04;
+    c.faceMat.opacity = isSolid ? .22 : .08; c.mat.color.copy(RACK_LINE); c.faceMat.color.set(0x0e0a28);
   });
   if (rackS.n < RACK.max) { cubes[rackS.n].o.add(plusBtn); plusBtn.visible = true; } else plusBtn.visible = false;
   if (rackS.n > RACK.min) { cubes[rackS.n - 1].o.add(minusBtn); minusBtn.visible = true; } else minusBtn.visible = false;
@@ -1142,8 +1151,10 @@ function rackUpdate(dt, inXR) {
     const c = cubes[i], want = c.occ ? 1 : 0;
     c.lit += (want - c.lit) * (1 - Math.exp(-10 * dt));
     c.mat.opacity = Math.min(1, .6 + .4 * c.lit + .4 * flash);
+    c.mat.color.copy(RACK_LINE).lerp(RACK_LIT, c.lit);                 // a filled box glows BC yellow
     c.thick.visible = c.lit > .5;
-    c.faceMat.opacity = .07 + .15 * c.lit + .2 * flash * (1 - want);
+    c.faceMat.color.set(c.lit > .5 ? 0xFBBF24 : 0x0e0a28);
+    c.faceMat.opacity = c.lit > .5 ? .10 + .06 * c.lit : .22 + .2 * flash * (1 - want);
     if (c.occ && !c.occ.dragged && dt > 0) c.occ.vel.addScaledVector(rkV2.copy(c.centre).sub(c.occ.pos), RACK.pull * dt);
   }
 }
