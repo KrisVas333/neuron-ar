@@ -443,25 +443,25 @@ function thunk(B, t, { f = 180, drop = .55, dur = .05, vol = .25, type = 'sine' 
 }
 // one typewriter key: press click + thunk
 function keyClick(B, t, k = 1) {
-  nz(B, t, { f: rnd(2600, 4200), q: rnd(1.6, 3.5), dur: rnd(.022, .035), vol: .32 * k });
-  nz(B, t + .002, { f: rnd(6500, 8500), q: rnd(4, 8), dur: .012, vol: .12 * k });
-  thunk(B, t + .003, { f: rnd(150, 230), dur: rnd(.035, .055), vol: .26 * k });
+  nz(B, t, { f: rnd(2600, 4200), q: rnd(1.6, 3.5), dur: rnd(.022, .035), vol: 1.1 * k });
+  nz(B, t + .002, { f: rnd(6500, 8500), q: rnd(4, 8), dur: .012, vol: .4 * k });
+  thunk(B, t + .003, { f: rnd(150, 230), dur: rnd(.035, .055), vol: .42 * k });
 }
 const SFX = {
   // grab a letter: a full, firm key press
-  grab(B, t) { keyClick(B, t, 1); nz(B, t + rnd(.045, .06), { f: rnd(1800, 2600), q: 2, dur: .02, vol: .1 }); },
+  grab(B, t) { keyClick(B, t, 1); nz(B, t + rnd(.045, .06), { f: rnd(1800, 2600), q: 2, dur: .02, vol: .3 }); },
   // let go: the lighter, higher key-release click
-  drop(B, t) { nz(B, t, { f: rnd(3600, 5200), q: rnd(2, 4), dur: .02, vol: .22 }); thunk(B, t + .002, { f: rnd(260, 340), dur: .03, vol: .12 }); },
+  drop(B, t) { nz(B, t, { f: rnd(3600, 5200), q: rnd(2, 4), dur: .02, vol: .8 }); thunk(B, t + .002, { f: rnd(260, 340), dur: .03, vol: .22 }); },
   // poke / hit a letter: the typebar striking the platen, sharper and with more body
   plop(B, t) {
-    nz(B, t, { f: rnd(1800, 2800), q: rnd(1, 2), dur: rnd(.04, .055), vol: .38 });
-    nz(B, t + .001, { f: rnd(5000, 7000), q: 5, dur: .015, vol: .16 });
-    thunk(B, t, { f: rnd(110, 160), drop: .5, dur: rnd(.06, .08), vol: .34 });
+    nz(B, t, { f: rnd(1800, 2800), q: rnd(1, 2), dur: rnd(.04, .055), vol: 1.1 });
+    nz(B, t + .001, { f: rnd(5000, 7000), q: 5, dur: .015, vol: .45 });
+    thunk(B, t, { f: rnd(110, 160), drop: .5, dur: rnd(.06, .08), vol: .5 });
   },
   // hand / letter touch in VR: a light tick
-  touch(B, t) { nz(B, t, { f: rnd(3000, 5000), q: rnd(2, 4), dur: .016, vol: .14 }); thunk(B, t, { f: rnd(220, 320), dur: .025, vol: .07 }); },
+  touch(B, t) { nz(B, t, { f: rnd(3000, 5000), q: rnd(2, 4), dur: .016, vol: .5 }); thunk(B, t, { f: rnd(220, 320), dur: .025, vol: .14 }); },
   // distance grab / Space: a key press with a quick little ratchet as it flies in
-  pull(B, t) { keyClick(B, t, .9); for (let i = 0; i < 4; i++) nz(B, t + .05 + i * .028, { f: rnd(3500, 4500), q: 4, dur: .012, vol: .09 }); },
+  pull(B, t) { keyClick(B, t, .9); for (let i = 0; i < 4; i++) nz(B, t + .05 + i * .028, { f: rnd(3500, 4500), q: 4, dur: .012, vol: .32 }); },
   // "+" / "-": a key
   click(B, t) { keyClick(B, t, .85); },
   // "word!" but no word: a dull double clack (keys jammed)
@@ -475,7 +475,7 @@ const SFX = {
   bell(B, t, k = 1) {
     const c = B.ctx, f0 = rnd(2250, 2450);
     nz(B, t, { f: 7000, q: 2, dur: .01, vol: .12 * k });  // the hammer
-    for (const [r, a, dec] of [[1, .22, 1.25], [2.32, .12, .8], [4.25, .07, .5], [6.63, .04, .32], [1.007, .1, 1.1]]) {
+    for (const [r, a, dec] of [[1, .22, 1.7], [2.32, .12, .95], [4.25, .07, .55], [6.63, .04, .35], [1.007, .1, 1.45]]) {
       const o = c.createOscillator(), g = c.createGain();
       o.frequency.value = f0 * r;
       g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(a * k, t + .002); g.gain.exponentialRampToValueAtTime(.0003, t + dec);
@@ -488,11 +488,11 @@ const SFX = {
     const n = 15, t0 = t + .1; let tt = t0;
     for (let i = 0; i < n; i++) {
       const u = i / (n - 1), gap = .016 + .012 * Math.sin(u * Math.PI);
-      nz(B, tt, { f: rnd(2800, 3800), q: rnd(3, 6), dur: .011, vol: .1 + .06 * Math.sin(u * Math.PI) });
+      nz(B, tt, { f: rnd(2800, 3800), q: rnd(3, 6), dur: .011, vol: .34 + .2 * Math.sin(u * Math.PI) });
       tt += gap;
     }
-    nz(B, t0, { f: 1200, q: .7, dur: tt - t0, vol: .05, att: .05 });  // the slide
-    thunk(B, tt + .01, { f: 120, drop: .55, dur: .09, vol: .32 }); nz(B, tt + .01, { f: 1500, q: 1.2, dur: .05, vol: .25 });
+    nz(B, t0, { f: 1200, q: .7, dur: tt - t0, vol: .12, att: .05 });  // the slide
+    thunk(B, tt + .01, { f: 120, drop: .55, dur: .09, vol: .32 }); nz(B, tt + .01, { f: 1500, q: 1.2, dur: .05, vol: .6 });
   },
   // round over: a return and a second bell
   win(B, t) { SFX.word(B, t); SFX.bell(B, t + .75, .8); }
