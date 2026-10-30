@@ -752,7 +752,7 @@ const ndc = new THREE.Vector2();
 const dotEl = document.getElementById('dot');
 // Aim assist (Kris round 5: "clicking on distant letters is hard"): if the ray misses every letter, take the letter whose
 // centre lies inside a cone around the ray (AIM.cone, never narrower than a fixed radius), closest to the ray in angle, then nearest.
-const AIM = { cone: THREE.MathUtils.degToRad(2.8), deskMin: .45 };
+const AIM = { cone: THREE.MathUtils.degToRad(2.8), deskMin: .45, touchMin: .8 };
 const aimC = new THREE.Vector3(), aimO = new THREE.Vector3();
 function assistPick(o, d, minR, maxAlong, skip) {  // o, d: ray in scene space; minR: smallest accepted offset (scene units)
   let best = null, bestA = Infinity, bestAlong = Infinity;
@@ -774,7 +774,7 @@ function pickLetter(x, y) {
   ndc.set(x, y); ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(letters.map(l => l.mesh), false)[0];
   if (hit) return { L: hit.object.userData.letter, point: hit.point };
-  const a = assistPick(ray.ray.origin, ray.ray.direction, AIM.deskMin, 200);
+  const a = assistPick(ray.ray.origin, ray.ray.direction, IS_MOBILE ? AIM.touchMin : AIM.deskMin, 200);
   return a ? { L: a.L, point: a.point } : null;
 }
 const POKE_KICK = 5.2; // was 2.3 (round 6: a tap must clear space)
@@ -982,11 +982,11 @@ const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
 // of the last extra box takes one away. "word!" reads the solid boxes left to right. In VR the boxes sit on a gentle arc around you,
 // so every box is the same distance away (arm's reach in VR). The rack is placed once and stays fixed in the world.
 const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.7, min: 3, max: 7, tol: .06, pull: .3,
-  dist: 8.6, drop: .6,                      // desktop (world units)
+  dist: 3.6, drop: .1, sDesk: .62, sTouch: .5, fill: .9,   // desktop / phone (world units): at the Space-pull distance, scaled to fit the view
   vrCube: .34, vrDist: .72, vrDrop: .3 };   // VR (metres)
 const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shakes on a miss
 rack.name = 'rack'; rack.add(rackInner); world.add(rack);
-const rackS = { n: RACK.min, R: 1000, yaw: 0, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0 };
+const rackS = { n: RACK.min, R: 1000, yaw: 0, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0, dist: RACK.dist, s: 1, vr: false };
 const rackTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
 const rackDisc = sym => rackTex(256, 256, c => { c.fillStyle = '#fff'; c.beginPath(); c.arc(128, 128, 124, 0, 7); c.fill(); c.fillStyle = '#111'; c.fillRect(70, 116, 116, 24); if (sym === '+') c.fillRect(116, 70, 24, 116); });
 const rackBoxGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(RACK.E, RACK.E, RACK.D));
@@ -1035,6 +1035,7 @@ function layoutRack(carry = true) {
   rackMatrices();
   const before = cubes.map(c => c.occ && carry ? { L: c.occ, p: c.centre.clone() } : null);
   const total = rackTotal();
+  if (!rackS.vr) fitDeskRack(total);
   cubes.forEach((c, i) => {
     c.o.visible = i < total;
     if (i < total) arcPlace(c.o, i, total);
@@ -1044,7 +1045,7 @@ function layoutRack(carry = true) {
   });
   if (rackS.n < RACK.max) { cubes[rackS.n].o.add(plusBtn); plusBtn.visible = true; } else plusBtn.visible = false;
   if (rackS.n > RACK.min) { cubes[rackS.n - 1].o.add(minusBtn); minusBtn.visible = true; } else minusBtn.visible = false;
-  arcPlace(wordBtn, (total - 1) / 2, total, -2.05); wordBtn.position.z += .1;
+  arcPlace(wordBtn, (total - 1) / 2, total, -1.65 - .4 * wordBtn.scale.y); wordBtn.position.z += .1;
   rackMatrices();
   cubes.forEach((c, i) => { const b = before[i]; if (b && !b.L.word && c.o.visible) b.L.pos.add(c.centre.clone().sub(b.p)); });
   rackOccupancy();
@@ -1123,7 +1124,7 @@ function rackUpdate(dt, inXR) {
     if (inXR) {
       rkV.set(vr.head.x + fx * RACK.vrDist, vr.head.y - RACK.vrDrop, vr.head.z + fz * RACK.vrDist);
       world.worldToLocal(rkV); rack.position.copy(rkV);
-    } else rack.position.set(fx * RACK.dist, -RACK.drop, fz * RACK.dist);
+    } else deskRackPlace();
     rack.rotation.set(0, rackS.yaw, 0);
   }
   // shake on a miss
@@ -1141,16 +1142,50 @@ function rackUpdate(dt, inXR) {
   }
 }
 function setRackVR(on) {
+  rackS.vr = on;
   if (on) { rack.scale.setScalar(RACK.vrCube / (RACK.E * vr.S)); rackS.R = RACK.vrDist / (vr.S * rack.scale.x); }
-  else { rack.scale.setScalar(1); rackS.R = 1000; }   // desktop: a flat row (like the mock); VR: an arc at arm's reach
+  else { rackS.R = 1000; }   // desktop: a flat row (like the mock), sized by fitDeskRack; VR: an arc at arm's reach
   rackS.snap = true; layoutRack(false);
+}
+// desktop + phone: the rack sits at the Space-pull / double-tap distance (desktop NEAR_DIST 3.6; a phone in portrait moves it back
+// just enough that boxes stay about letter-sized) and is scaled so every box fits across the screen (Kris round 6).
+function fitDeskRack(total) {
+  const htan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect;
+  const span = n => n * RACK.gap - (RACK.gap - RACK.E);           // rack-local width of n boxes
+  const sPref = IS_MOBILE ? RACK.sTouch : RACK.sDesk;
+  let d = NEAR_DIST;
+  if (IS_MOBILE) d = THREE.MathUtils.clamp(span(RACK.min + 1) * sPref / (2 * htan * RACK.fill), NEAR_DIST, 8);
+  const s = Math.min(sPref, 2 * htan * d * RACK.fill / span(total));
+  rackS.dist = d; rackS.s = s;
+  rack.scale.setScalar(s);
+  const btn = IS_MOBILE ? 1.4 : 1;                                // bigger "+" / "word!" on a phone (≥48 px tap targets)
+  plusBtn.scale.setScalar(btn); wordBtn.scale.setScalar(btn); minusBtn.scale.setScalar(IS_MOBILE ? 1.5 : 1);
+  deskRackPlace();
+}
+function deskRackPlace() {
+  const fx = -Math.sin(rackS.yaw), fz = -Math.cos(rackS.yaw), d = rackS.dist;
+  rack.position.set(fx * d, -d * RACK.drop, fz * d);
 }
 // desktop: which rack button is under a screen point (NDC)
 function pickRackBtn(x, y) {
   const live = rackBtnLive(); if (!live.length) return null;
   ndc.set(x, y); ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(live, false)[0];
-  return hit ? hit.object : null;
+  if (hit || !IS_MOBILE) return hit ? hit.object : null;
+  // touch: a finger is fat, so any tap within ~34 px of a button (or inside its drawn size) presses it
+  const px = (x - ndc.x, 0), W = innerWidth, H = innerHeight, sx = (x + 1) / 2 * W, sy = (1 - y) / 2 * H;
+  let best = null, bd = Infinity;
+  for (const b of live) {
+    b.updateMatrixWorld(true);
+    const c = b.getWorldPosition(new THREE.Vector3()), v = c.clone().project(camera); if (v.z > 1) continue;
+    const g = b.geometry.parameters, half = (g.radius || Math.max(g.width, g.height) / 2) * b.getWorldScale(new THREE.Vector3()).x;
+    const e = c.clone().add(new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0).multiplyScalar(half)).project(camera);
+    const rPx = Math.abs(e.x - v.x) / 2 * W, bx = (v.x + 1) / 2 * W, by = (1 - v.y) / 2 * H;
+    const d = Math.hypot(sx - bx, sy - by), lim = g.radius ? Math.max(rPx, 34) : null;
+    const inside = g.radius ? d < lim : Math.abs(sx - bx) < Math.max(rPx, 60) && Math.abs(sy - by) < Math.max(rPx * g.height / g.width, 34);
+    if (inside && d < bd) { bd = d; best = b; }
+  }
+  return best;
 }
 layoutRack(false);
 
