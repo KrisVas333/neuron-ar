@@ -801,7 +801,7 @@ for (let i = 0; i < 2; i++) {
   vr.hands.push(H);
 }
 
-// goal panel: C A T tiles on a canvas texture, ~1 m ahead and a little low, follows your gaze lazily
+// goal panel: letters left + your newest words on a canvas texture, ~1 m ahead and a little low, follows your gaze lazily
 const panelCv = document.createElement('canvas'); panelCv.width = 512; panelCv.height = 200;
 const panelTex = new THREE.CanvasTexture(panelCv); panelTex.colorSpace = THREE.SRGBColorSpace;
 const panel = new THREE.Mesh(new THREE.PlaneGeometry(.36, .36 * 200 / 512),
@@ -813,22 +813,46 @@ const btnCv = document.createElement('canvas'); btnCv.width = btnCv.height = 128
 const btnTex = new THREE.CanvasTexture(btnCv); btnTex.colorSpace = THREE.SRGBColorSpace;
 const replayBtn = new THREE.Mesh(new THREE.CircleGeometry(.04, 40), new THREE.MeshBasicMaterial({ map: btnTex, transparent: true, toneMapped: false }));
 replayBtn.position.set(0, -.11, .004); replayBtn.visible = false; panel.add(replayBtn);
+// "done" (finish early): small dark pill under the panel's right end
+const doneCv = document.createElement('canvas'); doneCv.width = 192; doneCv.height = 96;
+{ const c = doneCv.getContext('2d'); c.fillStyle = '#111'; c.beginPath(); c.roundRect ? c.roundRect(2, 2, 188, 92, 30) : c.rect(2, 2, 188, 92); c.fill();
+  c.fillStyle = '#fff'; c.font = '700 40px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('done ✓', 96, 50); }
+const doneTex = new THREE.CanvasTexture(doneCv); doneTex.colorSpace = THREE.SRGBColorSpace;
+const doneBtn = new THREE.Mesh(new THREE.PlaneGeometry(.07, .035), new THREE.MeshBasicMaterial({ map: doneTex, transparent: true, toneMapped: false }));
+doneBtn.position.set(.135, -.095, .004); doneBtn.visible = false; panel.add(doneBtn);
 function drawPanel() {
-  const sig = goalTiles.map(t => t.classList.contains('near') ? 1 : 0).join('') + (won ? 'W' : '');
+  const n = lettersLeft(), recent = words.slice(-3).reverse().map(W => W.ch);
+  const sig = n + '|' + words.length + '|' + (won ? 'W' : '');
   if (sig === vr.panelSig) return;
   vr.panelSig = sig;
   const c = panelCv.getContext('2d'); c.clearRect(0, 0, 512, 200);
   const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
   c.fillStyle = 'rgba(255,255,255,.35)'; rr(4, 4, 504, 192, 34); c.fill();
-  [...WORD].forEach((ch, i) => {
-    const near = sig[i] === '1', x = 46 + i * 150, y = won ? 16 : 26;
-    c.fillStyle = won ? '#ffe36b' : near ? '#fff' : 'rgba(255,255,255,.55)'; rr(x, y, 120, 148, 22); c.fill();
-    if (near || won) { c.lineWidth = 5; c.strokeStyle = '#111'; rr(x + 2.5, y + 2.5, 115, 143, 20); c.stroke(); }
-    c.fillStyle = near || won ? '#111' : 'rgba(15,42,58,.35)';
-    c.font = '400 112px "Times New Roman", Tinos, serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(ch, x + 60, y + 80);
-  });
+  c.textBaseline = 'middle';
+  if (won) {
+    c.fillStyle = '#ffe36b'; rr(20, 20, 472, 160, 26); c.fill(); c.lineWidth = 5; c.strokeStyle = '#111'; rr(22.5, 22.5, 467, 155, 24); c.stroke();
+    c.fillStyle = '#111'; c.textAlign = 'center';
+    c.font = '400 92px "Times New Roman", Tinos, serif'; c.fillText(String(words.length), 256, 82);
+    c.font = '700 26px system-ui, sans-serif'; c.fillText((words.length === 1 ? 'word' : 'words') + (n ? ` · ${n} letters left` : ' · every letter used!'), 256, 150);
+  } else {
+    // letters-left tile
+    c.fillStyle = '#fff'; rr(20, 20, 130, 160, 24); c.fill(); c.lineWidth = 5; c.strokeStyle = '#111'; rr(22.5, 22.5, 125, 155, 22); c.stroke();
+    c.fillStyle = '#111'; c.textAlign = 'center';
+    c.font = '400 60px "Times New Roman", Tinos, serif'; c.fillText('a', 85, 66);
+    c.font = '700 56px system-ui, sans-serif'; c.fillText(String(n), 85, 136);
+    // newest words, newest on top
+    c.textAlign = 'left';
+    if (!recent.length) { c.fillStyle = 'rgba(15,42,58,.5)'; c.font = '700 26px system-ui, sans-serif'; c.fillText('line up 3+ letters', 172, 100); }
+    recent.forEach((w, i) => {
+      c.font = '400 40px "Times New Roman", Tinos, serif';
+      const tw = Math.min(c.measureText(w).width, 300), y = 22 + i * 54;
+      c.fillStyle = i === 0 ? '#ffe36b' : '#fff'; rr(170, y, tw + 32, 46, 12); c.fill();
+      c.lineWidth = 3; c.strokeStyle = '#111'; rr(171.5, y + 1.5, tw + 29, 43, 11); c.stroke();
+      c.fillStyle = '#111'; c.fillText(w, 186, y + 25, 300);
+    });
+  }
   panelTex.needsUpdate = true;
-  replayBtn.visible = won;
+  replayBtn.visible = won; doneBtn.visible = !won;
 }
 function placePanel(dt, snap) {
   vA.set(0, 0, -1).applyQuaternion(vr.headQ); vA.y = 0;
@@ -844,8 +868,7 @@ function placePanel(dt, snap) {
 function anchorWorld() {
   world.position.copy(vr.head); world.scale.setScalar(vr.S); world.updateMatrixWorld(true);
   WORLD.rMin = VR_M.eyeMin / vr.S; WORLD.rMax = VR_M.eyeMax / vr.S;
-  won = false; winHold = 0; goalEl.classList.remove('win'); winEl.classList.remove('show');
-  scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
+  scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); // the round (and its words) carries on in VR
   vr.anchored = true; panel.visible = true; vr.panelSig = ''; placePanel(0, true);
 }
 const toLocal = p => world.worldToLocal(p);                          // scene metres → world units (in place)
@@ -1041,8 +1064,7 @@ renderer.xr.addEventListener('sessionend', () => {
   vr.lit.clear(); vr.anchored = false; panel.visible = false;
   world.position.set(0, 0, 0); world.scale.setScalar(1); world.updateMatrixWorld(true);
   WORLD.rMin = DESK_WORLD.rMin; WORLD.rMax = DESK_WORLD.rMax;
-  won = false; winHold = 0; goalEl.classList.remove('win'); winEl.classList.remove('show');
-  scatterLetters(4.5, 9, .8);
+  scatterLetters(4.5, 9, .8, true);
   camera.position.set(0, 0, 0); camera.fov = 62; camera.zoom = 1; resize();
   vrBtn.querySelector('span').textContent = 'Enter VR';
 });
