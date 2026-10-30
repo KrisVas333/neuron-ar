@@ -400,28 +400,111 @@ function stepRipples(dt) {
   }
 }
 
-// ---------- sound (WebAudio, unlocked by first gesture) ----------
-let actx = null;
+// ---------- sound: a typewriter, synthesised with WebAudio (no files), unlocked by the first gesture ----------
+// Every sound is built from a few parts: a noise burst through a band-pass (the key / typebar click), a tiny resonant
+// thunk (sine with a fast pitch drop), the carriage ratchet (a train of clicks) and the bell (inharmonic partials).
+// Pitch, filter and level are randomised on every hit so repeats never sound identical. Everything goes through a
+// compressor + limiter on the master bus so a flurry of clicks never clips.
+let actx = null, bus = null;
+function makeBus(ctx) {
+  const comp = ctx.createDynamicsCompressor();
+  comp.threshold.value = -14; comp.knee.value = 8; comp.ratio.value = 6; comp.attack.value = .002; comp.release.value = .12;
+  const lim = ctx.createDynamicsCompressor();
+  lim.threshold.value = -4; lim.knee.value = 0; lim.ratio.value = 20; lim.attack.value = .001; lim.release.value = .08;
+  const master = ctx.createGain(); master.gain.value = .7;
+  const out = ctx.createGain(); out.gain.value = .85;
+  master.connect(comp).connect(lim).connect(out).connect(ctx.destination);
+  const len = Math.floor(ctx.sampleRate * .5), nb = ctx.createBuffer(1, len, ctx.sampleRate), d = nb.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  return { ctx, in: master, noise: nb };
+}
 function unlockAudio() {
-  if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { actx = null; } }
+  if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); bus = makeBus(actx); } catch (e) { actx = null; bus = null; } }
   if (actx && actx.state === 'suspended') actx.resume();
 }
-function blip(f0, f1, dur, vol, type = 'sine') {
-  if (!actx) return;
-  const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain(), lp = actx.createBiquadFilter();
-  o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur * .8);
-  lp.type = 'lowpass'; lp.frequency.value = 2400;
-  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  o.connect(lp).connect(g).connect(actx.destination); o.start(t); o.stop(t + dur + .02);
+const rnd = (a, b) => a + Math.random() * (b - a);
+// filtered noise burst: the "tick" of a key or a typebar
+function nz(B, t, { f = 3000, q = 2, dur = .03, vol = .3, att = .0015, type = 'bandpass' } = {}) {
+  const c = B.ctx, src = c.createBufferSource(), bp = c.createBiquadFilter(), g = c.createGain();
+  src.buffer = B.noise; src.playbackRate.value = rnd(.85, 1.15);
+  bp.type = type; bp.frequency.value = f; bp.Q.value = q;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + att); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
+  src.connect(bp).connect(g).connect(B.in); src.start(t, Math.random() * .4); src.stop(t + dur + .02);
 }
-const sfx = {
-  plop() { blip(720, 170, .2, .35); setTimeout(() => blip(1100, 600, .07, .08), 60); },
-  grab() { blip(260, 820, .13, .22); },
-  drop() { blip(700, 260, .15, .2); },
-  pull() { blip(300, 900, .18, .2, 'triangle'); },
-  word() { [659, 880, 1175].forEach((f, i) => setTimeout(() => blip(f, f * 1.01, .32, .16, 'triangle'), i * 90)); },
-  win() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => blip(f, f * 1.01, .45, .22, 'triangle'), i * 120)); }
+// resonant thunk: a sine with a fast pitch drop (the key bottoming out / the typebar hitting the platen)
+function thunk(B, t, { f = 180, drop = .55, dur = .05, vol = .25, type = 'sine' } = {}) {
+  const c = B.ctx, o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f * drop, t + dur);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .002); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
+  o.connect(g).connect(B.in); o.start(t); o.stop(t + dur + .02);
+}
+// one typewriter key: press click + thunk
+function keyClick(B, t, k = 1) {
+  nz(B, t, { f: rnd(2600, 4200), q: rnd(1.6, 3.5), dur: rnd(.022, .035), vol: .32 * k });
+  nz(B, t + .002, { f: rnd(6500, 8500), q: rnd(4, 8), dur: .012, vol: .12 * k });
+  thunk(B, t + .003, { f: rnd(150, 230), dur: rnd(.035, .055), vol: .26 * k });
+}
+const SFX = {
+  // grab a letter: a full, firm key press
+  grab(B, t) { keyClick(B, t, 1); nz(B, t + rnd(.045, .06), { f: rnd(1800, 2600), q: 2, dur: .02, vol: .1 }); },
+  // let go: the lighter, higher key-release click
+  drop(B, t) { nz(B, t, { f: rnd(3600, 5200), q: rnd(2, 4), dur: .02, vol: .22 }); thunk(B, t + .002, { f: rnd(260, 340), dur: .03, vol: .12 }); },
+  // poke / hit a letter: the typebar striking the platen, sharper and with more body
+  plop(B, t) {
+    nz(B, t, { f: rnd(1800, 2800), q: rnd(1, 2), dur: rnd(.04, .055), vol: .38 });
+    nz(B, t + .001, { f: rnd(5000, 7000), q: 5, dur: .015, vol: .16 });
+    thunk(B, t, { f: rnd(110, 160), drop: .5, dur: rnd(.06, .08), vol: .34 });
+  },
+  // hand / letter touch in VR: a light tick
+  touch(B, t) { nz(B, t, { f: rnd(3000, 5000), q: rnd(2, 4), dur: .016, vol: .14 }); thunk(B, t, { f: rnd(220, 320), dur: .025, vol: .07 }); },
+  // distance grab / Space: a key press with a quick little ratchet as it flies in
+  pull(B, t) { keyClick(B, t, .9); for (let i = 0; i < 4; i++) nz(B, t + .05 + i * .028, { f: rnd(3500, 4500), q: 4, dur: .012, vol: .09 }); },
+  // "+" / "-": a key
+  click(B, t) { keyClick(B, t, .85); },
+  // "word!" but no word: a dull double clack (keys jammed)
+  no(B, t) {
+    for (const [dt, k] of [[0, 1], [.11, .8]]) {
+      nz(B, t + dt, { f: rnd(700, 1000), q: 1.2, dur: .06, vol: .34 * k, type: 'lowpass' });
+      thunk(B, t + dt, { f: rnd(95, 120), drop: .7, dur: .08, vol: .34 * k, type: 'triangle' });
+    }
+  },
+  // the bell: inharmonic partials, ~1.2 s ring
+  bell(B, t, k = 1) {
+    const c = B.ctx, f0 = rnd(2250, 2450);
+    nz(B, t, { f: 7000, q: 2, dur: .01, vol: .12 * k });  // the hammer
+    for (const [r, a, dec] of [[1, .22, 1.25], [2.32, .12, .8], [4.25, .07, .5], [6.63, .04, .32], [1.007, .1, 1.1]]) {
+      const o = c.createOscillator(), g = c.createGain();
+      o.frequency.value = f0 * r;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(a * k, t + .002); g.gain.exponentialRampToValueAtTime(.0003, t + dec);
+      o.connect(g).connect(B.in); o.start(t); o.stop(t + dec + .02);
+    }
+  },
+  // a word! carriage return: the bell "cling", the ratchet "zzzip" of the carriage, and the clunk as it stops
+  word(B, t) {
+    SFX.bell(B, t);
+    const n = 15, t0 = t + .1; let tt = t0;
+    for (let i = 0; i < n; i++) {
+      const u = i / (n - 1), gap = .016 + .012 * Math.sin(u * Math.PI);
+      nz(B, tt, { f: rnd(2800, 3800), q: rnd(3, 6), dur: .011, vol: .1 + .06 * Math.sin(u * Math.PI) });
+      tt += gap;
+    }
+    nz(B, t0, { f: 1200, q: .7, dur: tt - t0, vol: .05, att: .05 });  // the slide
+    thunk(B, tt + .01, { f: 120, drop: .55, dur: .09, vol: .32 }); nz(B, tt + .01, { f: 1500, q: 1.2, dur: .05, vol: .25 });
+  },
+  // round over: a return and a second bell
+  win(B, t) { SFX.word(B, t); SFX.bell(B, t + .75, .8); }
 };
+const sfx = {};
+for (const k of Object.keys(SFX)) sfx[k] = () => { if (bus && actx.state !== 'closed') { try { SFX[k](bus, actx.currentTime + .005); } catch (e) {} } };
+// QA: render one sound (or a burst of them) offline and report its level
+async function renderSfx(names, { repeat = 1, gap = .02, sec = 2 } = {}) {
+  const c = new OfflineAudioContext(1, Math.ceil(44100 * sec), 44100), B = makeBus(c);
+  [].concat(names).forEach((n, j) => { for (let i = 0; i < repeat; i++) SFX[n](B, .01 + (i + j * repeat) * gap); });
+  const buf = await c.startRendering(), d = buf.getChannelData(0);
+  let peak = 0, sum = 0; for (let i = 0; i < d.length; i++) { const a = Math.abs(d[i]); if (a > peak) peak = a; sum += d[i] * d[i]; }
+  let lastLoud = 0; for (let i = d.length - 1; i >= 0; i--) if (Math.abs(d[i]) > .003) { lastLoud = i; break; }
+  return { peak: +peak.toFixed(3), rms: +Math.sqrt(sum / d.length).toFixed(4), ringsFor: +(lastLoud / 44100).toFixed(2) };
+}
 
 // ---------- look controls (arrows + mouse drag), smoothed ----------
 const look = { yaw: 0, pitch: 0, tYaw: 0, tPitch: 0 };
@@ -821,8 +904,6 @@ function rackOccupancy() {
   }
 }
 const rackWord = () => cubes.slice(0, rackS.n).map(c => c.occ ? c.occ.ch : '_').join('');
-sfx.no = () => { blip(240, 150, .2, .18, 'triangle'); setTimeout(() => blip(200, 130, .2, .14, 'triangle'), 120); };
-sfx.click = () => blip(520, 880, .09, .14);
 function rackMiss(reason, str) {
   rackS.shakeT = rackS.t; rackS.missN++;
   sfx.no(); dotEl.classList.remove('no'); void dotEl.offsetWidth; dotEl.classList.add('no');
@@ -976,7 +1057,6 @@ const TIPS = ['thumb-tip', 'index-finger-tip', 'middle-finger-tip', 'ring-finger
 const handFactory = new XRHandModelFactory();
 const rayGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
 const AIM_GLOW = new THREE.Color(0x2f8fb8);
-sfx.touch = () => blip(560, 210, .14, .12);
 
 for (let i = 0; i < 2; i++) {
   const ctrl = renderer.xr.getController(i), grip = renderer.xr.getControllerGrip(i), hand = renderer.xr.getHand(i);
