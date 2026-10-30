@@ -816,11 +816,17 @@ function buildComposer() {
 let useBloom = QUALITY !== 'low' && !IS_MOBILE;
 if (useBloom) buildComposer();
 
+var rackReady = false;
 function resize() {
-  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  camera.aspect = innerWidth / innerHeight;
+  // phones: a wider view (portrait especially) so the rack and enough letters fit on a narrow screen
+  if (!renderer.xr.isPresenting) camera.fov = IS_MOBILE ? (camera.aspect < 1 ? 76 : 66) : 62;
+  camera.updateProjectionMatrix();
   renderer.setPixelRatio(pixelRatio); renderer.setSize(innerWidth, innerHeight);
   if (composer) { composer.setPixelRatio(pixelRatio); composer.setSize(innerWidth, innerHeight); }
   bubbleUniforms.uScale.value = (innerHeight * pixelRatio * .5) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  stars.userData.px.value = pixelRatio;
+  if (rackReady && !renderer.xr.isPresenting) { layoutRack(true); if (typeof placeSheet === 'function') placeSheet(false); }
 }
 addEventListener('resize', resize);
 resize();
@@ -1173,7 +1179,7 @@ function pickRackBtn(x, y) {
   const hit = ray.intersectObjects(live, false)[0];
   if (hit || !IS_MOBILE) return hit ? hit.object : null;
   // touch: a finger is fat, so any tap within ~34 px of a button (or inside its drawn size) presses it
-  const px = (x - ndc.x, 0), W = innerWidth, H = innerHeight, sx = (x + 1) / 2 * W, sy = (1 - y) / 2 * H;
+  const W = innerWidth, H = innerHeight, sx = (x + 1) / 2 * W, sy = (1 - y) / 2 * H;
   let best = null, bd = Infinity;
   for (const b of live) {
     b.updateMatrixWorld(true);
@@ -1188,6 +1194,7 @@ function pickRackBtn(x, y) {
   return best;
 }
 layoutRack(false);
+rackReady = true;
 
 // ---------- the typed sheet: every word you spell, typed line by line on a big sheet far away, fixed in the world ----------
 // (Kris round 5: "just a list of your words somewhere in the distance (also not moving)"). Newest line at the bottom, like a
@@ -1598,7 +1605,7 @@ renderer.xr.addEventListener('sessionend', () => {
   WORLD.rMin = DESK_WORLD.rMin; WORLD.rMax = DESK_WORLD.rMax;
   setRackVR(false); placeSheet(false); sheetS.sig = '';
   scatterLetters(4.5, 9, .8, true);
-  camera.position.set(0, 0, 0); camera.fov = 62; camera.zoom = 1; resize();
+  camera.position.set(0, 0, 0); camera.zoom = 1; resize();
   vrBtn.querySelector('span').textContent = 'Enter VR'; if (IN_HEADSET) vrBtn.classList.add('big');
 });
 
