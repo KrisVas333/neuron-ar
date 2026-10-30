@@ -540,6 +540,8 @@ const SFX = {
   },
   // a held letter knocks another out of the way (round 7): a soft, quick typewriter key
   knock(B, t) { keyClick(B, t, rnd(.38, .5)); },
+  // two floating letters bump: a light key tick, quieter for slow contacts (k = 0..1)
+  clack(B, t, k = .5) { const v = .15 + .45 * k; nz(B, t, { f: rnd(2400, 3800), q: rnd(2, 4), dur: rnd(.014, .022), vol: .8 * v }); thunk(B, t + .002, { f: rnd(200, 300), dur: .03, vol: .3 * v }); },
   // hand / letter touch in VR: a light tick
   touch(B, t) { nz(B, t, { f: rnd(3000, 5000), q: rnd(2, 4), dur: .016, vol: .5 }); thunk(B, t, { f: rnd(220, 320), dur: .025, vol: .14 }); },
   // distance grab / Space: a key press with a quick little ratchet as it flies in
@@ -580,7 +582,7 @@ const SFX = {
   win(B, t) { SFX.word(B, t); SFX.bell(B, t + .75, .8); }
 };
 const sfx = {};
-for (const k of Object.keys(SFX)) sfx[k] = () => { if (bus && actx.state !== 'closed') { try { SFX[k](bus, actx.currentTime + .005); } catch (e) {} } };
+for (const k of Object.keys(SFX)) sfx[k] = (...args) => { if (bus && actx.state !== 'closed') { try { SFX[k](bus, actx.currentTime + .005, ...args); } catch (e) {} } };
 // QA: render one sound (or a burst of them) offline and report its level
 async function renderSfx(names, { repeat = 1, gap = .02, sec = 2 } = {}) {
   const c = new OfflineAudioContext(1, Math.ceil(44100 * sec), 44100), B = makeBus(c);
@@ -863,26 +865,112 @@ function scatterLetters(r0, r1, ySquash = .8, keepWords = false) {
   });
 }
 
-// letters gently push apart so they don't float through each other
-function separate(dt) {
-  const G = WORLD.gap, n = letters.length;
-  for (let i = 0; i < n; i++) {
-    const A = letters[i], ax = A.pos.x, ay = A.pos.y, az = A.pos.z;
-    for (let j = i + 1; j < n; j++) {
-    const B = letters[j];
-    const dx = ax - B.pos.x; if (dx > G || dx < -G) continue;   // far apart: skip cheaply (O(n²) stays ~10k cheap checks at 140)
-    const dy = ay - B.pos.y; if (dy > G || dy < -G) continue;
-    const dz = az - B.pos.z; if (dz > G || dz < -G) continue;
-    if (A.word && A.word === B.word) continue;
-    tmpV.set(dx, dy, dz); const d = tmpV.length();
-    if (d < WORLD.gap && d > 1e-4) {
-      tmpV.multiplyScalar((WORLD.gap - d) * 2.5 * dt / d);
-      const a = A.word || A, b = B.word || B; // a word is heavier than one letter
-      if (!a.dragged) a.vel.addScaledVector(tmpV, A.word ? 1 / A.word.members.length : 1);
-      if (!b.dragged) b.vel.addScaledVector(tmpV, B.word ? -1 / B.word.members.length : -1);
-    }
+// ---------- round 7: letters collide like floating objects (bounce + spin) ----------
+// Every free letter is a sphere sized from its glyph (wide M/W bigger than i/l), mass ~ glyph area; a word is one heavier
+// rigid body made of its letters' spheres. Contacts get a normal impulse with restitution (bouncy, like zero-g in water),
+// a friction impulse at the contact point (glancing hits change spin on both), and a soft positional correction so
+// resting neighbours sit still. Broad phase: a spatial hash (cell = largest diameter). The held letter is the kinematic
+// bat (batSweep, below). Letters in a word box still collide, but as heavy, soft bodies (only nudged).
+const COL = { e: .7, eRest: .12, eBox: .2, boxMass: 4, mu: .35, slop: .02, push: .6, spinMax: 6, vMax: 9, clickV: .5, clickGap: 1 / 10 };
+const colS = { lastClick: -9, contacts: 0, impulses: 0, ms: 0 };
+for (const L of letters) {
+  const bb = L.mesh.geometry.boundingBox, w = bb.max.x - bb.min.x, h = bb.max.y - bb.min.y;
+  L.colR = .5 * (.65 * Math.max(w, h) + .35 * Math.min(w, h));
+  L.mass = Math.max(w * h, .25);
+  L.inertia = .4 * L.mass * L.colR * L.colR;
+}
+letters.forEach((L, i) => { L.id = i; });
+const COL_CELL = 2 * Math.max(...letters.map(L => L.colR));
+const colGrid = new Map(), colPool = [];
+const cA = new THREE.Vector3(), cB = new THREE.Vector3(), cN = new THREE.Vector3(), cV = new THREE.Vector3(), cJ = new THREE.Vector3(), cT = new THREE.Vector3(), cX = new THREE.Vector3(), cW = new THREE.Vector3();
+function bodyMass(T) {
+  if (!T.members) return T.mass;
+  if (T.massN !== T.members.length) { T.massN = T.members.length; T.mass = 0; for (const L of T.members) T.mass += L.mass; }
+  return T.mass;
+}
+function bodyInertia(T) { // a word: its letters' spheres around the word's middle (isotropic, good enough)
+  if (!T.members) return T.inertia;
+  let I = 0; for (const L of T.members) I += L.mass * (L.pos.distanceToSquared(T.pos) + .4 * L.colR * L.colR); return I;
+}
+const pointVel = (T, arm, out) => out.crossVectors(T.angVel, arm).add(T.vel); // velocity of body T at (its middle + arm)
+const colKey = (x, y, z) => ((x + 512) * 1024 + (y + 512)) * 1024 + (z + 512);
+function collide(dt, inBox) {
+  if (dt <= 0) return;
+  const t0 = performance.now(), C = COL_CELL;
+  for (const a of colGrid.values()) { a.length = 0; colPool.push(a); }
+  colGrid.clear();
+  for (const L of letters) {
+    if ((L.word || L).dragged) continue;      // the held one is the bat (batSweep)
+    const k = colKey(Math.floor(L.pos.x / C), Math.floor(L.pos.y / C), Math.floor(L.pos.z / C));
+    let a = colGrid.get(k); if (!a) { a = colPool.pop() || []; colGrid.set(k, a); } a.push(L);
+  }
+  const now = performance.now() / 1000;
+  let nC = 0;
+  for (const A of letters) {
+    const TA = A.word || A; if (TA.dragged) continue;
+    const ix = Math.floor(A.pos.x / C), iy = Math.floor(A.pos.y / C), iz = Math.floor(A.pos.z / C);
+    for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) for (let oz = -1; oz <= 1; oz++) {
+      const cell = colGrid.get(colKey(ix + ox, iy + oy, iz + oz)); if (!cell) continue;
+      for (const B of cell) {
+        if (B.id <= A.id) continue;            // each pair once
+        const TB = B.word || B; if (TA === TB) continue;
+        const R = A.colR + B.colR;
+        cN.subVectors(B.pos, A.pos); const dd = cN.lengthSq();
+        if (dd >= R * R || dd < 1e-10) continue;
+        const d = Math.sqrt(dd); cN.divideScalar(d); nC++;
+        const boxA = inBox.has(A), boxB = inBox.has(B);
+        const mA = bodyMass(TA) * (boxA ? COL.boxMass : 1), mB = bodyMass(TB) * (boxB ? COL.boxMass : 1);
+        const iA = 1 / mA, iB = 1 / mB;
+        const IA = 1 / (bodyInertia(TA) * (boxA ? COL.boxMass : 1)), IB = 1 / (bodyInertia(TB) * (boxB ? COL.boxMass : 1));
+        // positional correction (split by inverse mass), only the part beyond the slop, softly: no jitter
+        const pen = R - d - COL.slop;
+        if (pen > 0) {
+          const s = pen * COL.push / (iA + iB);
+          TA.pos.addScaledVector(cN, -s * iA); TB.pos.addScaledVector(cN, s * iB);
+          if (TA !== A) A.pos.addScaledVector(cN, -s * iA);
+          if (TB !== B) B.pos.addScaledVector(cN, s * iB);
+        }
+        // contact point between the two spheres; arms from each body's middle
+        cX.copy(A.pos).addScaledVector(cN, A.colR * d / R);
+        cA.subVectors(cX, TA.pos); cB.subVectors(cX, TB.pos);
+        pointVel(TB, cB, cV); cV.sub(pointVel(TA, cA, cW));             // B relative to A at the contact
+        const vn = cV.dot(cN);
+        if (vn >= 0) continue;                  // already separating
+        const hit = -vn;
+        const e = boxA || boxB ? COL.eBox : hit < COL.eRest ? 0 : COL.e;  // resting contacts don't bounce (no jitter)
+        const kA = cW.crossVectors(cA, cN).lengthSq() * IA, kB = cW.crossVectors(cB, cN).lengthSq() * IB;
+        const jn = (1 + e) * hit / (iA + iB + kA + kB);
+        cJ.copy(cN).multiplyScalar(jn);
+        // friction along the sliding direction, capped by mu * jn (Coulomb): glancing hits spin both letters
+        cT.copy(cV).addScaledVector(cN, -vn); const vt = cT.length();
+        if (vt > 1e-5) {
+          cT.divideScalar(vt);
+          const kt = iA + iB + cW.crossVectors(cA, cT).lengthSq() * IA + cW.crossVectors(cB, cT).lengthSq() * IB;
+          cJ.addScaledVector(cT, -Math.min(COL.mu * jn, vt / kt));
+        }
+        // apply: +J on B, -J on A (linear + angular)
+        TB.vel.addScaledVector(cJ, iB); TA.vel.addScaledVector(cJ, -iA);
+        TB.angVel.add(cW.crossVectors(cB, cJ).multiplyScalar(IB)); TA.angVel.sub(cW.crossVectors(cA, cJ).multiplyScalar(IA));
+        if (hit > COL.clickV) {
+          // a real knock: letters aren't balls, so their corners add a little tumble; boop + click
+          const tw = Math.min(hit, 4) * .25, fa = mB / (mA + mB), fb = mA / (mA + mB);
+          TA.angVel.x += (Math.random() - .5) * tw * fa; TA.angVel.y += (Math.random() - .5) * tw * fa;
+          TB.angVel.z += (Math.random() - .5) * tw * fb; TB.angVel.y += (Math.random() - .5) * tw * fb;
+          A.squashAxis.copy(cN).negate().applyQuaternion(tmpQ.copy(A.mesh.quaternion).invert()).normalize(); A.squashT = clock.t;
+          B.squashAxis.copy(cN).applyQuaternion(tmpQ.copy(B.mesh.quaternion).invert()).normalize(); B.squashT = clock.t;
+          TA.releaseAt = Math.min(TA.releaseAt, clock.t - 1.5); TB.releaseAt = Math.min(TB.releaseAt, clock.t - 1.5);
+          if (now - colS.lastClick >= COL.clickGap) { colS.lastClick = now; sfx.clack(Math.min(1, hit / 4)); }
+          colS.impulses++;
+        }
+        for (const T of [TA, TB]) {
+          if (T.vel.lengthSq() > COL.vMax * COL.vMax) T.vel.setLength(COL.vMax);
+          if (T.angVel.lengthSq() > COL.spinMax * COL.spinMax) T.angVel.setLength(COL.spinMax);
+        }
+      }
     }
   }
+  colS.contacts = nC;
+  colS.ms = colS.ms * .95 + (performance.now() - t0) * .05;
 }
 
 // ---------- a spelled word sticks together and floats on as one body ----------
@@ -948,7 +1036,12 @@ function uprightWord(W, dt) {
 const BAT = { r: 1.5, gain: 1.2, min: 1.4, side: .3, spin: .5, vMax: 9, batMax: 30, fresh: .3, clickGap: 1 / 12 };
 const batS = { n: 0, lastClick: -9 };
 const batN = new THREE.Vector3(), batT = new THREE.Vector3(), batW = new THREE.Vector3();
-function batSweep(dt) {
+function boxOccupants() {
+  const inBox = new Set();
+  if (rack.visible) for (let i = 0; i < rackS.n; i++) if (cubes[i].occ) inBox.add(cubes[i].occ);
+  return inBox;
+}
+function batSweep(dt, inBox) {
   batS.n++;
   if (dt <= 0) return;
   const bats = [];
@@ -960,8 +1053,6 @@ function batSweep(dt) {
     else { B.batVel.subVectors(B.pos, B.batPrev).divideScalar(dt); if (B.batVel.length() > BAT.batMax) B.batVel.setLength(BAT.batMax); B.batPrev.copy(B.pos); }
     B.batN = batS.n;
   }
-  const inBox = new Set();
-  if (rack.visible) for (let i = 0; i < rackS.n; i++) if (cubes[i].occ) inBox.add(cubes[i].occ);
   const r2 = BAT.r * BAT.r, now = performance.now() / 1000;
   for (const B of bats) {
     const tips = B.members || [B];
@@ -1722,11 +1813,10 @@ function frame(now, xrFrame) {
     camera.updateMatrixWorld();
   }
 
-  separate(dt);
   rackUpdate(rdt, inXR);
   sheetUpdate(inXR);
   stepAll(clock.t, dt);
-  batSweep(dt);
+  { const inBox = boxOccupants(); batSweep(dt, inBox); collide(dt, inBox); }
   stepRipples(dt);
   blobUniforms.uT.value = clock.t; bubbleUniforms.uT.value = clock.t;
 
@@ -1750,7 +1840,7 @@ window.__fl = {
   get lettersLeft() { return lettersLeft(); },
   get ended() { return won; },
   dict: { get en() { return DICT.en; }, get lt() { return DICT.lt; }, isWord },
-  endRound, resetGame, sfx, renderSfx, BAT, sfxNames: Object.keys(SFX), aim: AIM,
+  endRound, resetGame, sfx, renderSfx, BAT, COL, colS, batS, collide, boxOccupants, sfxNames: Object.keys(SFX), aim: AIM,
   sheet: { mesh: sheet, get typed() { return sheetS.typed; }, png() { return sheetCv.toDataURL(); }, scenePos() { sheet.updateMatrixWorld(true); return sheet.getWorldPosition(new THREE.Vector3()).toArray(); } },
   rackScenePos() { rack.updateMatrixWorld(true); return rack.getWorldPosition(new THREE.Vector3()).toArray(); },
   get geometries() { return GEO_CACHE.size; },
@@ -1796,7 +1886,7 @@ window.__fl = {
   formAll() { const free = letters.filter(l => !l.word); while (free.length >= 3) { const k = free.length <= 5 ? free.length : 3; madeWord(formWord(free.splice(0, k))); }
     if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); else scatterLetters(4.5, 9, .8, true);
     return lettersLeft(); },
-  advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; stepAll(clock.t, h); stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
+  advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; stepAll(clock.t, h); if (this.advCollide) { const b = boxOccupants(); batSweep(h, b); collide(h, b); } stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
   setLook(yawDeg, pitchDeg) { look.tYaw = look.yaw = THREE.MathUtils.degToRad(yawDeg); look.tPitch = look.pitch = THREE.MathUtils.degToRad(pitchDeg); },
   screenPos(L = letters[0]) { const v = L.pos.clone().project(camera); return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight, front: v.z < 1 }; },
   vr: {
