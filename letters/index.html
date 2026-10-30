@@ -1013,10 +1013,10 @@ layoutRack(false);
 // ---------- the typed sheet: every word you spell, typed line by line on a big sheet far away, fixed in the world ----------
 // (Kris round 5: "just a list of your words somewhere in the distance (also not moving)"). Newest line at the bottom, like a
 // typewriter; the new word types itself in letter by letter. Desktop and VR: placed once, ahead and up, and never moved.
-const SHEET = { px: 1024, lines: 9, deskDist: 30, deskUp: 9.7, deskW: 14, vrDist: 6.5, vrUp: 2.1, vrW: 3.0, typeMs: 75 };
-const sheetCv = document.createElement('canvas'); sheetCv.width = sheetCv.height = SHEET.px;
+const SHEET = { w: 1536, h: 1024, rows: 7, cols: 2, deskDist: 30, deskUp: 9.0, deskW: 20, vrDist: 6.5, vrUp: 1.38, vrW: 3.6, typeMs: 75 };
+const sheetCv = document.createElement('canvas'); sheetCv.width = SHEET.w; sheetCv.height = SHEET.h;
 const sheetTex = new THREE.CanvasTexture(sheetCv); sheetTex.colorSpace = THREE.SRGBColorSpace; sheetTex.anisotropy = 4;
-const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: sheetTex, transparent: true, toneMapped: false, depthWrite: false }));
+const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, SHEET.h / SHEET.w), new THREE.MeshBasicMaterial({ map: sheetTex, transparent: true, toneMapped: false, depthWrite: false }));
 sheet.name = 'sheet'; sheet.renderOrder = 2; scene.add(sheet);
 const sheetS = { typed: 0, nextAt: 0, sig: '' };
 function placeSheet(inXR) {
@@ -1032,35 +1032,35 @@ function drawSheet() {
   const sig = n + '|' + words.length + '|' + sheetS.typed + '|' + (won ? 'W' : '');
   if (sig === sheetS.sig) return;
   sheetS.sig = sig;
-  const c = sheetCv.getContext('2d'), S = SHEET.px;
+  const c = sheetCv.getContext('2d'), SW = SHEET.w, SH = SHEET.h;
   const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
-  c.clearRect(0, 0, S, S);
-  c.fillStyle = 'rgba(255,255,255,.58)'; rr(6, 6, S - 12, S - 12, 46); c.fill();
-  c.lineWidth = 6; c.strokeStyle = 'rgba(17,17,17,.55)'; rr(9, 9, S - 18, S - 18, 44); c.stroke();
-  // header: how many words · letters left (tile with an "a", like the desktop counter)
-  c.textBaseline = 'middle'; c.fillStyle = '#111';
-  c.textAlign = 'left'; c.font = '400 92px "Times New Roman", Tinos, serif';
-  c.fillText(String(words.length), 60, 92);
+  c.clearRect(0, 0, SW, SH);
+  c.fillStyle = 'rgba(255,255,255,.6)'; rr(6, 6, SW - 12, SH - 12, 46); c.fill();
+  c.lineWidth = 6; c.strokeStyle = 'rgba(17,17,17,.55)'; rr(9, 9, SW - 18, SH - 18, 44); c.stroke();
+  // header: how many words (left) · letters left with the "a" tile, like the desktop counter (right)
+  c.textBaseline = 'middle'; c.fillStyle = '#111'; c.textAlign = 'left';
+  c.font = '400 110px "Times New Roman", Tinos, serif'; c.fillText(String(words.length), 64, 84);
   const nw = c.measureText(String(words.length)).width;
-  c.font = '700 40px system-ui, -apple-system, "Segoe UI", sans-serif'; c.fillText(words.length === 1 ? 'word' : 'words', 72 + nw, 100);
-  c.textAlign = 'right'; c.font = '700 56px system-ui, sans-serif'; c.fillText(String(n), S - 60, 96);
-  const tw = c.measureText(String(n)).width;
-  c.fillStyle = '#fff'; rr(S - 60 - tw - 92, 52, 70, 82, 14); c.fill(); c.lineWidth = 4; c.strokeStyle = '#111'; rr(S - 60 - tw - 90, 54, 66, 78, 13); c.stroke();
-  c.fillStyle = '#111'; c.textAlign = 'center'; c.font = '400 58px "Times New Roman", Tinos, serif'; c.fillText('a', S - 60 - tw - 57, 90);
-  c.fillStyle = 'rgba(17,17,17,.35)'; c.fillRect(54, 166, S - 108, 4);
-  // typed lines: oldest at the top, newest at the bottom
-  const top = 190, lh = (S - top - 40) / SHEET.lines;
-  const shown = words.slice(-SHEET.lines);
-  c.textAlign = 'left'; c.font = '400 76px "Times New Roman", Tinos, serif';
-  if (!shown.length) { c.fillStyle = 'rgba(17,17,17,.38)'; c.font = '400 60px "Times New Roman", Tinos, serif'; c.fillText(won ? '—' : 'your words', 80, top + lh * .5); }
+  c.font = '700 46px system-ui, -apple-system, "Segoe UI", sans-serif'; c.fillText(words.length === 1 ? 'word' : 'words', 82 + nw, 94);
+  c.font = '700 64px system-ui, -apple-system, "Segoe UI", sans-serif';
+  const ns = String(n), tw = c.measureText(ns).width, tx = SW - 64 - tw - 24 - 76;
+  c.fillText(ns, SW - 64 - tw, 90);
+  c.fillStyle = '#fff'; rr(tx, 40, 76, 92, 14); c.fill(); c.lineWidth = 4; c.strokeStyle = '#111'; rr(tx + 2, 42, 72, 88, 13); c.stroke();
+  c.fillStyle = '#111'; c.textAlign = 'center'; c.font = '400 66px "Times New Roman", Tinos, serif'; c.fillText('a', tx + 38, 82);
+  c.fillStyle = 'rgba(17,17,17,.35)'; c.fillRect(56, 158, SW - 112, 4);
+  // typed lines: oldest top-left, newest last (bottom of the column it lands in), the most recent rows × cols words
+  const top = 178, lh = (SH - top - 30) / SHEET.rows, colW = (SW - 112) / SHEET.cols, per = SHEET.rows * SHEET.cols;
+  const shown = words.slice(-per);
+  c.textAlign = 'left'; c.font = '400 96px "Times New Roman", Tinos, serif';
+  if (!shown.length) { c.fillStyle = 'rgba(17,17,17,.38)'; c.font = '400 76px "Times New Roman", Tinos, serif'; c.fillText(won ? '—' : 'your words', 84, top + lh * .5); }
   shown.forEach((W, i) => {
-    const y = top + lh * (i + .5), isLast = W === last;
+    const col = Math.floor(i / SHEET.rows), row = i % SHEET.rows, x = 56 + col * colW + 28, y = top + lh * (row + .5), isLast = W === last;
     const txt = isLast && typing ? W.ch.slice(0, sheetS.typed) : W.ch;
-    if (isLast) { c.fillStyle = '#ffe36b'; rr(58, y - lh * .44, Math.max(60, c.measureText(W.ch).width + 44), lh * .88, 14); c.fill(); }
-    c.fillStyle = '#111'; c.fillText(txt, 80, y + 4, S - 160);
-    if (isLast && typing) { const cw = c.measureText(txt).width; c.fillRect(84 + cw, y - 30, 5, 62); }  // the carriage
+    if (isLast) { c.fillStyle = '#ffe36b'; rr(x - 22, y - lh * .44, Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), lh * .88, 16); c.fill(); }
+    c.fillStyle = '#111'; c.fillText(txt, x, y + 6, colW - 60);
+    if (isLast && typing) { const cw = Math.min(c.measureText(txt).width, colW - 60); c.fillRect(x + cw + 6, y - 38, 6, 80); }   // the carriage
   });
-  if (won) { c.fillStyle = '#111'; c.textAlign = 'right'; c.font = '700 34px system-ui, sans-serif'; c.fillText(n ? n + ' letters left' : 'every letter used!', S - 60, S - 52); }
+  if (won) { c.fillStyle = '#111'; c.textAlign = 'right'; c.font = '700 40px system-ui, sans-serif'; c.fillText(n ? n + ' letters left' : 'every letter used!', SW - 64, SH - 50); }
   sheetTex.needsUpdate = true;
 }
 function sheetUpdate(inXR) {
@@ -1486,7 +1486,7 @@ window.__fl = {
   get ended() { return won; },
   dict: { get en() { return DICT.en; }, get lt() { return DICT.lt; }, isWord },
   endRound, resetGame, sfx, renderSfx, sfxNames: Object.keys(SFX), aim: AIM,
-  sheet: { mesh: sheet, get typed() { return sheetS.typed; }, scenePos() { sheet.updateMatrixWorld(true); return sheet.getWorldPosition(new THREE.Vector3()).toArray(); } },
+  sheet: { mesh: sheet, get typed() { return sheetS.typed; }, png() { return sheetCv.toDataURL(); }, scenePos() { sheet.updateMatrixWorld(true); return sheet.getWorldPosition(new THREE.Vector3()).toArray(); } },
   rackScenePos() { rack.updateMatrixWorld(true); return rack.getWorldPosition(new THREE.Vector3()).toArray(); },
   get geometries() { return GEO_CACHE.size; },
   renderInfo() { return { calls: renderer.info.render.calls, tris: renderer.info.render.triangles, geos: renderer.info.memory.geometries, programs: renderer.info.programs.length }; },
