@@ -818,8 +818,9 @@ function pressWord() {
   return { ok: true, str };
 }
 function pressRackBtn(b) {
-  if (rackS.t - rackS.lastPress < .35) return null;
-  rackS.lastPress = rackS.t;
+  const now = performance.now() / 1000;
+  if (now - rackS.lastPress < .35) return null;
+  rackS.lastPress = now;
   const k = b.userData.rackBtn;
   return k === 'plus' ? pressPlus() : k === 'minus' ? pressMinus() : pressWord();
 }
