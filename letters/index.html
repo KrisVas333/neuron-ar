@@ -1060,6 +1060,8 @@ function releaseHeld(H, throwIt = true) {
     // a throw: the hand's velocity over the last ~100 ms, clamped; the spin it already had is kept
     vB.copy(H.vel); if (vB.length() > VR_M.throwMax) vB.setLength(VR_M.throwMax);
     L.vel.copy(vB).divideScalar(vr.S);
+    // let go gently inside a word box = place it there (a real throw, faster than ~0.6 m/s, still flies)
+    if (!L.members && vB.length() < .6) { rackOccupancy(); if (cubes.slice(0, rackS.n).some(c => c.occ === L)) L.vel.multiplyScalar(.2); }
   } else if (L.vel.length() > 3) L.vel.setLength(3);
   L.releaseAt = clock.t - 1.5; L.vrReleaseT = vr.t;
   sfx.drop(); stats.releases++;
@@ -1084,7 +1086,9 @@ function updateHand(H, dt) {
   }
   if (!H.tracked) { if (H.held) releaseHeld(H, false); H.line.visible = H.dot.visible = false; H.aimed = null; H.wasPinch = false; return; }
   // 2) hand velocity, averaged over the last ~100 ms
-  H.hist.push({ t: vr.t, p: H.pt.clone() });
+  // hands: velocity from the wrist, so opening the fingers to let go (which moves the pinch point) is not read as a throw
+  const wr = H.kind === 'hand' ? H.hand.joints['wrist'] : null;
+  H.hist.push({ t: vr.t, p: wr && wr.visible ? wr.getWorldPosition(new THREE.Vector3()) : H.pt.clone() });
   while (H.hist.length > 2 && vr.t - H.hist[0].t > VR_M.velWindow) H.hist.shift();
   const h0 = H.hist[0], h1 = H.hist[H.hist.length - 1];
   if (h1.t - h0.t > 1e-4) H.vel.subVectors(h1.p, h0.p).divideScalar(h1.t - h0.t); else H.vel.set(0, 0, 0);
