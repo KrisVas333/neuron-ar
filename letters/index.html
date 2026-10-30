@@ -1156,6 +1156,7 @@ window.__fl = {
   dict: { get en() { return DICT.en; }, get lt() { return DICT.lt; }, isWord },
   findWord: () => { const r = findWord(); return r ? r.map(l => l.ch).join('') : null; },
   endRound, resetGame,
+  pickAt(px, py) { const h = pickLetter(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); return h ? { ch: h.L.ch, word: h.L.word ? h.L.word.ch : null } : null; },
   // put free letters spelling `str` in a tidy row in front of you (head space, world units), at rest; returns the letters used
   tryWord(str, { z = -4, y = 0, gap = 1.15 } = {}) {
     const used = [], chars = [...str];
