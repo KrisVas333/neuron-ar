@@ -694,14 +694,14 @@ const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
 
 // ---------- word rack: white outline boxes (Kris 2026-10-30, qa/mock-word-slots-2.png) ----------
 // 3 solid boxes + 1 dashed box with "+". "+" makes the dashed box solid and adds a new dashed one; the small "-" in the corner
-// of the last extra box takes one away. "word!" reads the solid boxes left to right. The boxes sit on a gentle arc around you,
+// of the last extra box takes one away. "word!" reads the solid boxes left to right. In VR the boxes sit on a gentle arc around you,
 // so every box is the same distance away (arm's reach in VR). The rack lazily turns to where you look, never while you hold a letter.
 const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.7, min: 3, max: 7, tol: .06, pull: .3, follow: 1.2, startFollow: .35,
   dist: 8.6, drop: .6,                      // desktop (world units)
   vrCube: .34, vrDist: .72, vrDrop: .3 };   // VR (metres)
 const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shakes on a miss
 rack.add(rackInner); world.add(rack);
-const rackS = { n: RACK.min, R: RACK.dist, yaw: 0, following: true, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0 };
+const rackS = { n: RACK.min, R: 1000, yaw: 0, following: true, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0 };
 const rackTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
 const rackDisc = sym => rackTex(256, 256, c => { c.fillStyle = '#fff'; c.beginPath(); c.arc(128, 128, 124, 0, 7); c.fill(); c.fillStyle = '#111'; c.fillRect(70, 116, 116, 24); if (sym === '+') c.fillRect(116, 70, 24, 116); });
 const rackBoxGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(RACK.E, RACK.E, RACK.D));
@@ -866,7 +866,7 @@ function rackUpdate(dt, inXR) {
 }
 function setRackVR(on) {
   if (on) { rack.scale.setScalar(RACK.vrCube / (RACK.E * vr.S)); rackS.R = RACK.vrDist / (vr.S * rack.scale.x); }
-  else { rack.scale.setScalar(1); rackS.R = RACK.dist; }
+  else { rack.scale.setScalar(1); rackS.R = 1000; }   // desktop: a flat row (like the mock); VR: an arc at arm's reach
   rackS.snap = true; rackS.placed = false; layoutRack(false);
 }
 // desktop: which rack button is under a screen point (NDC)
