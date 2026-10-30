@@ -672,17 +672,11 @@ function stepAll(t, dt) {
 }
 
 // ---------- goal: build any real word (3+ letters) until the letters run out ----------
-// Letter size is 1.6 units per em: a capital is ~1.05 tall, most letters ~0.6–1.4 wide,
-// so in a tight word their centres sit ~1.1 apart. A row of FREE letters (not in a word, not in your hand) counts when:
-//   • each letter is within 6 units of you and in front of you
-//   • reading order left → right on screen (head-space x)
-//   • neighbour centres 0.7–2.0 apart (touching up to about one letter-width gap)
-//   • roughly one line: up/down offset ≤ 0.6, depth offset ≤ 1.2 between neighbours
-//   • the same letters stay lined up for 0.6 s, so it isn't a fly-by
-// Any chain of such neighbours is read left to right; the longest run of 3+ letters in it that is a real
-// English or Lithuanian word (any mix of capitals and small letters) clicks together into one floating word.
+// A word is built in the WORD RACK (below): white outline boxes in front of you. Push / carry one letter into each solid box,
+// then press "word!". Letters are never snapped or frozen: they keep floating and turning inside the boxes, and a letter
+// counts for a box while any part of it is inside or touching that box. If the boxes spell a real English or Lithuanian word
+// (any mix of capitals and small letters) the letters click together into one floating word.
 // No new letters ever appear: the round ends when every letter is in a word (or you press "done").
-const WIN_RULE = { reach: 6, minGap: .7, maxGap: 2.0, maxDy: .6, maxDz: 1.2, hold: .6 };
 const DICT = (() => {
   const d = JSON.parse(document.getElementById('dict').textContent);
   const en = d.en.split(' '), lt = d.lt.split(' ');
@@ -691,52 +685,193 @@ const DICT = (() => {
 })();
 const fold = s => s.toLocaleLowerCase('lt');
 const isWord = s => DICT.set.has(fold(s));
-function hasPrefix(p) { // binary search in the sorted list: is any word starting with p?
-  const a = DICT.sorted; let lo = 0, hi = a.length;
-  while (lo < hi) { const m = (lo + hi) >> 1; if (a[m] < p) lo = m + 1; else hi = m; }
-  return lo < a.length && a[lo].startsWith(p);
-}
 const hudEl = document.getElementById('hud'), leftEl = document.getElementById('left'), leftNum = leftEl.querySelector('b');
 const wordsEl = document.getElementById('words'), winEl = document.getElementById('win'), sumEl = winEl.querySelector('.sum');
 let won = false; // true = round over (all letters used, or "done"); the name stays for the QA hooks
-const cand = { key: '', hold: 0 };
 const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
-// letter centre in HEAD (camera) space, measured in world units: desktop → plain view space; VR → headset space ÷ world scale
-const camV = l => world.localToWorld(l.pos.clone()).applyMatrix4(camera.matrixWorldInverse).divideScalar(world.scale.x);
-function findWord() {
-  const near = [];
-  for (const l of letters) {
-    if (l.word || l.dragged) continue;
-    const v = camV(l);
-    if (v.z < 0 && v.length() <= WIN_RULE.reach) near.push({ l, v, s: fold(l.ch), nx: [] });
-  }
-  if (near.length < 3) return null;
-  near.sort((a, b) => a.v.x - b.v.x);
-  for (let i = 0; i < near.length; i++) for (let j = i + 1; j < near.length; j++) {
-    const a = near[i].v, b = near[j].v, d = a.distanceTo(b);
-    if (a.x < b.x && d >= WIN_RULE.minGap && d <= WIN_RULE.maxGap && Math.abs(a.y - b.y) <= WIN_RULE.maxDy && Math.abs(a.z - b.z) <= WIN_RULE.maxDz) near[i].nx.push(near[j]);
-  }
-  // every left→right path through neighbours, from every start (so every contiguous run of a chain is tried);
-  // a path stops growing as soon as no word starts with it
-  let best = null, steps = 0;
-  const path = [];
-  const walk = (n, str) => {
-    if (++steps > 4000) return;
-    path.push(n.l); str += n.s;
-    if (path.length >= 3 && DICT.set.has(str) && (!best || path.length > best.length)) best = path.slice();
-    if (path.length < 10) for (const m of n.nx) if (hasPrefix(str + m.s)) walk(m, str);
-    path.pop();
-  };
-  for (const n of near) if (n.nx.length) walk(n, '');
-  return best;
+
+// ---------- word rack: white outline boxes (Kris 2026-10-30, qa/mock-word-slots-2.png) ----------
+// 3 solid boxes + 1 dashed box with "+". "+" makes the dashed box solid and adds a new dashed one; the small "-" in the corner
+// of the last extra box takes one away. "word!" reads the solid boxes left to right. The boxes sit on a gentle arc around you,
+// so every box is the same distance away (arm's reach in VR). The rack lazily turns to where you look, never while you hold a letter.
+const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.7, min: 3, max: 7, tol: .06, pull: .3, follow: 1.2, startFollow: .35,
+  dist: 8.6, drop: .6,                      // desktop (world units)
+  vrCube: .34, vrDist: .72, vrDrop: .3 };   // VR (metres)
+const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shakes on a miss
+rack.add(rackInner); world.add(rack);
+const rackS = { n: RACK.min, R: RACK.dist, yaw: 0, following: true, snap: true, t: 0, shakeT: -9, lastPress: -9, pressN: 0, missN: 0 };
+const rackTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
+const rackDisc = sym => rackTex(256, 256, c => { c.fillStyle = '#fff'; c.beginPath(); c.arc(128, 128, 124, 0, 7); c.fill(); c.fillStyle = '#111'; c.fillRect(70, 116, 116, 24); if (sym === '+') c.fillRect(116, 70, 24, 116); });
+const rackBoxGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(RACK.E, RACK.E, RACK.D));
+const rackDashGeo = rackBoxGeo.clone();
+const rackDashMat = new THREE.LineDashedMaterial({ color: 0xffffff, dashSize: .18, gapSize: .13, transparent: true, opacity: .9, toneMapped: false });
+const rackFaceGeo = new THREE.PlaneGeometry(RACK.E, RACK.E);
+const cubes = [];
+for (let i = 0; i < RACK.max; i++) {
+  const o = new THREE.Group();
+  const mat = new THREE.LineBasicMaterial({ color: 0xe8e8e8, transparent: true, opacity: .95, toneMapped: false });
+  const solid = new THREE.LineSegments(rackBoxGeo, mat);
+  const thick = new THREE.LineSegments(rackBoxGeo, mat); thick.scale.setScalar(.982); // doubled edge = "thicker" when filled
+  const dash = new THREE.LineSegments(rackDashGeo, rackDashMat);
+  if (i === 0) dash.computeLineDistances();   // the dashed geometry is shared: distances once
+  const faceMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .10, depthWrite: false, toneMapped: false });
+  const face = new THREE.Mesh(rackFaceGeo, faceMat); face.position.z = -RACK.D / 2; // faint back face so the box reads as a slot
+  o.add(solid, thick, dash, face); o.visible = false; rackInner.add(o);
+  cubes.push({ i, o, mat, solid, thick, dash, face, faceMat, occ: null, occN: 0, occD: Infinity, lit: 0, centre: new THREE.Vector3(), inv: new THREE.Matrix4() });
 }
-function checkWord(dt) {
-  if (won) return;
-  const row = findWord();
-  const key = row ? row.map(l => letters.indexOf(l)).join(',') : '';
-  cand.hold = key && key === cand.key ? cand.hold + dt : 0;
-  cand.key = key;
-  if (row && cand.hold >= WIN_RULE.hold) { cand.key = ''; cand.hold = 0; madeWord(formWord(row)); }
+const plusBtn = new THREE.Mesh(new THREE.CircleGeometry(.5, 48), new THREE.MeshBasicMaterial({ color: 0xc8c8c8, map: rackDisc('+'), transparent: true, toneMapped: false }));
+plusBtn.position.z = .05; plusBtn.userData.rackBtn = 'plus';
+const minusBtn = new THREE.Mesh(new THREE.CircleGeometry(.27, 40), new THREE.MeshBasicMaterial({ color: 0xc8c8c8, map: rackDisc('-'), transparent: true, toneMapped: false }));
+minusBtn.position.set(RACK.E / 2 - .4, RACK.E / 2 - .4, RACK.D / 2); minusBtn.userData.rackBtn = 'minus';
+const wordBtn = new THREE.Mesh(new THREE.PlaneGeometry(2.6, .87), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, toneMapped: false, depthWrite: false,
+  map: rackTex(600, 200, c => { c.font = '700 150px system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+    c.lineWidth = 9; c.strokeStyle = 'rgba(15,42,58,.8)'; c.strokeText('word!', 300, 108); c.fillStyle = '#fff'; c.fillText('word!', 300, 108); }) }));
+wordBtn.userData.rackBtn = 'word'; rackInner.add(wordBtn);
+const rackButtons = [plusBtn, minusBtn, wordBtn];
+const rackBtnLive = () => rack.visible ? rackButtons.filter(b => b.visible && b.parent && b.parent.visible) : [];
+// box k of `total` on an arc of radius R around the viewer (who sits at rack-local (0, 0, R)), facing the viewer
+function arcPlace(o, k, total, y = 0) {
+  const R = rackS.R, th = (k - (total - 1) / 2) * RACK.gap / R;
+  o.position.set(R * Math.sin(th), y, R - R * Math.cos(th)); o.rotation.set(0, -th, 0);
+}
+const rackTotal = () => rackS.n + (rackS.n < RACK.max ? 1 : 0);
+function rackMatrices() {
+  rack.updateMatrix(); rackInner.updateMatrix();
+  for (const c of cubes) {
+    c.o.updateMatrix();
+    c.inv.multiplyMatrices(rack.matrix, rackInner.matrix).multiply(c.o.matrix);  // box -> world-local
+    c.centre.setFromMatrixPosition(c.inv); c.inv.invert();                       // world-local -> box
+  }
+}
+// lay the boxes out; a letter sitting in a box that moves is carried along by the same amount (so "+" never kicks it out)
+function layoutRack(carry = true) {
+  rackMatrices();
+  const before = cubes.map(c => c.occ && carry ? { L: c.occ, p: c.centre.clone() } : null);
+  const total = rackTotal();
+  cubes.forEach((c, i) => {
+    c.o.visible = i < total;
+    if (i < total) arcPlace(c.o, i, total);
+    const isSolid = i < rackS.n;
+    c.solid.visible = isSolid; c.dash.visible = !isSolid; c.thick.visible = false; c.lit = 0;
+    c.faceMat.opacity = isSolid ? .10 : .04;
+  });
+  if (rackS.n < RACK.max) { cubes[rackS.n].o.add(plusBtn); plusBtn.visible = true; } else plusBtn.visible = false;
+  if (rackS.n > RACK.min) { cubes[rackS.n - 1].o.add(minusBtn); minusBtn.visible = true; } else minusBtn.visible = false;
+  arcPlace(wordBtn, (total - 1) / 2, total, -2.05); wordBtn.position.z += .1;
+  rackMatrices();
+  cubes.forEach((c, i) => { const b = before[i]; if (b && !b.L.word && c.o.visible) b.L.pos.add(c.centre.clone().sub(b.p)); });
+  rackOccupancy();
+}
+// which free letter is in which box: the letter's own (oriented) bounding box is tested against each box with a small
+// tolerance, so "touching the edge" counts. A letter belongs to at most one box (the nearest one it touches); a box holding
+// several letters reads the one closest to its centre.
+const rkM = new THREE.Matrix4(), rkBox = new THREE.Box3(), rkC = new THREE.Vector3();
+function rackOccupancy() {
+  for (const c of cubes) { c.occ = null; c.occN = 0; c.occD = Infinity; }
+  if (!rack.visible) return;
+  rackMatrices();
+  const total = rackTotal(), hx = RACK.E / 2 + RACK.tol, hz = RACK.D / 2 + RACK.tol;
+  const reach = (Math.hypot(RACK.E, RACK.E, RACK.D) / 2) * rack.scale.x + 1.2;
+  for (const L of letters) {
+    if (L.word) continue;
+    let best = null, bd = Infinity;
+    for (let i = 0; i < total; i++) {
+      const c = cubes[i];
+      if (L.pos.distanceTo(c.centre) > reach) continue;
+      rkM.compose(L.pos, L.mesh.quaternion, L.mesh.scale).premultiply(c.inv);
+      rkBox.copy(L.mesh.geometry.boundingBox).applyMatrix4(rkM);
+      if (rkBox.max.x < -hx || rkBox.min.x > hx || rkBox.max.y < -hx || rkBox.min.y > hx || rkBox.max.z < -hz || rkBox.min.z > hz) continue;
+      const d = rkBox.getCenter(rkC).length();
+      if (d < bd) { bd = d; best = c; }
+    }
+    if (best) { best.occN++; if (bd < best.occD) { best.occD = bd; best.occ = L; } }
+  }
+}
+const rackWord = () => cubes.slice(0, rackS.n).map(c => c.occ ? c.occ.ch : '_').join('');
+sfx.no = () => { blip(240, 150, .2, .18, 'triangle'); setTimeout(() => blip(200, 130, .2, .14, 'triangle'), 120); };
+sfx.click = () => blip(520, 880, .09, .14);
+function rackMiss(reason, str) {
+  rackS.shakeT = rackS.t; rackS.missN++;
+  sfx.no(); dotEl.classList.remove('no'); void dotEl.offsetWidth; dotEl.classList.add('no');
+  return { ok: false, reason, str: str ?? rackWord() };
+}
+function pressPlus() { if (won || rackS.n >= RACK.max) return false; rackS.n++; layoutRack(); sfx.click(); return true; }
+function pressMinus() { if (won || rackS.n <= RACK.min) return false; rackS.n--; layoutRack(); sfx.click(); return true; }
+function pressWord() {
+  if (won || !rack.visible) return { ok: false, reason: 'off' };
+  rackS.pressN++;
+  rackOccupancy();
+  const row = [];
+  for (let i = 0; i < rackS.n; i++) { if (!cubes[i].occ) return rackMiss('empty'); row.push(cubes[i].occ); }
+  const str = row.map(l => l.ch).join('');
+  if (!isWord(str)) return rackMiss('not a word', str);
+  // a letter still in a hand / on the mouse joins the word: let go of it first
+  for (const H of vr.hands) if (H.held && row.includes(H.held)) H.held = null;
+  if (drag.L && row.includes(drag.L)) drag.L = null;
+  for (const L of row) L.dragged = false;
+  const W = formWord(row);
+  W.vel.y += .8; // a little lift so the new word floats up out of the boxes
+  madeWord(W);
+  rackS.n = RACK.min; layoutRack(false);
+  return { ok: true, str };
+}
+function pressRackBtn(b) {
+  if (rackS.t - rackS.lastPress < .35) return null;
+  rackS.lastPress = rackS.t;
+  const k = b.userData.rackBtn;
+  return k === 'plus' ? pressPlus() : k === 'minus' ? pressMinus() : pressWord();
+}
+const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a));
+const rkV = new THREE.Vector3(), rkV2 = new THREE.Vector3();
+// every frame: follow the gaze (yaw only), occupancy, feedback, a very weak pull toward the middle of a filled box
+function rackUpdate(dt, inXR) {
+  rackS.t += dt;
+  rack.visible = !won && (!inXR || vr.anchored);
+  if (!rack.visible) return;
+  let yawT, frozen;
+  if (inXR) {
+    rkV.set(0, 0, -1).applyQuaternion(vr.headQ); yawT = Math.atan2(-rkV.x, -rkV.z);
+    frozen = vr.hands.some(H => H.held);
+  } else { yawT = look.yaw; frozen = !!(drag.L && drag.L.dragged); }
+  if (rackS.snap) { rackS.yaw = yawT; rackS.snap = false; frozen = false; }
+  const d = wrapA(yawT - rackS.yaw);
+  if (Math.abs(d) > RACK.startFollow) rackS.following = true;
+  if (Math.abs(d) < .03) rackS.following = false;
+  if (!frozen) {
+    if (rackS.following) rackS.yaw += d * (1 - Math.exp(-RACK.follow * dt));
+    const fx = -Math.sin(rackS.yaw), fz = -Math.cos(rackS.yaw);
+    if (inXR) {
+      rkV.set(vr.head.x + fx * RACK.vrDist, vr.head.y - RACK.vrDrop, vr.head.z + fz * RACK.vrDist);
+      world.worldToLocal(rkV);
+      if (rackS.placed) rack.position.lerp(rkV, 1 - Math.exp(-RACK.follow * 2 * dt)); else { rack.position.copy(rkV); rackS.placed = true; }
+    } else rack.position.set(fx * RACK.dist, -RACK.drop, fz * RACK.dist);
+    rack.rotation.set(0, rackS.yaw, 0);
+  }
+  // shake on a miss
+  const st = rackS.t - rackS.shakeT;
+  rackInner.position.x = st < .6 ? Math.sin(st * 45) * Math.exp(-7 * st) * .3 : 0;
+  rackOccupancy();
+  const flash = st < .6 ? Math.exp(-5 * st) : 0;
+  for (let i = 0; i < rackS.n; i++) {
+    const c = cubes[i], want = c.occ ? 1 : 0;
+    c.lit += (want - c.lit) * (1 - Math.exp(-10 * dt));
+    c.mat.opacity = Math.min(1, .6 + .4 * c.lit + .4 * flash);
+    c.thick.visible = c.lit > .5;
+    c.faceMat.opacity = .07 + .15 * c.lit + .2 * flash * (1 - want);
+    if (c.occ && !c.occ.dragged && dt > 0) c.occ.vel.addScaledVector(rkV2.copy(c.centre).sub(c.occ.pos), RACK.pull * dt);
+  }
+}
+function setRackVR(on) {
+  if (on) { rack.scale.setScalar(RACK.vrCube / (RACK.E * vr.S)); rackS.R = RACK.vrDist / (vr.S * rack.scale.x); }
+  else { rack.scale.setScalar(1); rackS.R = RACK.dist; }
+  rackS.snap = true; rackS.placed = false; layoutRack(false);
+}
+// desktop: which rack button is under a screen point (NDC)
+function pickRackBtn(x, y) {
+  const live = rackBtnLive(); if (!live.length) return null;
+  ndc.set(x, y); ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(live, false)[0];
+  return hit ? hit.object : null;
 }
 function madeWord(W) {
   sfx.word();
