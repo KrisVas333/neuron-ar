@@ -1488,6 +1488,7 @@ window.__fl = {
   sheet: { mesh: sheet, get typed() { return sheetS.typed; }, scenePos() { sheet.updateMatrixWorld(true); return sheet.getWorldPosition(new THREE.Vector3()).toArray(); } },
   rackScenePos() { rack.updateMatrixWorld(true); return rack.getWorldPosition(new THREE.Vector3()).toArray(); },
   get geometries() { return GEO_CACHE.size; },
+  renderInfo() { return { calls: renderer.info.render.calls, tris: renderer.info.render.triangles, geos: renderer.info.memory.geometries, programs: renderer.info.programs.length }; },
   rack: {
     get state() { rackOccupancy(); return { n: rackS.n, max: RACK.max, dashed: rackS.n < RACK.max, visible: rack.visible, word: rackWord(), presses: rackS.pressN, misses: rackS.missN,
       slots: cubes.slice(0, rackTotal()).map((c, i) => ({ i, solid: i < rackS.n, occ: c.occ ? c.occ.ch : null, count: c.occN, lit: +c.lit.toFixed(2) })) }; },
