@@ -601,28 +601,45 @@ addEventListener('keydown', e => {
 addEventListener('keyup', e => keys.delete(e.key));
 addEventListener('blur', () => keys.clear());
 
-const ptr = { down: false, id: null, x: 0, y: 0, sx: 0, sy: 0, moved: 0 };
+const ptr = { down: false, id: null, x: 0, y: 0, sx: 0, sy: 0, moved: 0, touch: false };
 const cv = renderer.domElement;
 // press on a letter and drag = carry it; press on empty space and drag = look around
+// touch (phones): tap = push away (waits a moment in case a second tap comes), tap twice on a letter = it comes close
+// (to the rack's distance) under your finger and stays on it while you hold; a second finger while carrying does the same.
 const toNdc = e => ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
 const dragPlane = new THREE.Plane(), dragHit = new THREE.Vector3();
-const drag = { L: null, offset: new THREE.Vector3() };
+const drag = { L: null, offset: new THREE.Vector3(), near: false };
+const TAP = { win: .38, px: 70, moveTouch: 12, moveMouse: 6 };
+const tapS = { t: -9, x: 0, y: 0, L: null, timer: 0 };
+const moveTol = () => ptr.touch ? TAP.moveTouch : TAP.moveMouse;
 function dragTargetFrom(e) {
   toNdc(e); ray.setFromCamera(ndc, camera);
   if (ray.ray.intersectPlane(dragPlane, dragHit)) drag.L.dragTarget.copy(dragHit).add(drag.offset);
 }
+function cancelPendingPoke() { if (tapS.timer) { clearTimeout(tapS.timer); tapS.timer = 0; } }
 cv.addEventListener('pointerdown', e => {
   unlockAudio(); cv.focus();
   if (renderer.xr.isPresenting) return; // in VR the hands do the work
-  Object.assign(ptr, { down: true, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0 });
-  cv.setPointerCapture(e.pointerId);
+  hintSeen();
+  // a second finger while carrying a letter = pull it close (like Space)
+  if (ptr.down && e.pointerId !== ptr.id) { if (drag.L && e.pointerType === 'touch') pullCloser(); return; }
+  Object.assign(ptr, { down: true, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0, touch: e.pointerType === 'touch' });
+  try { cv.setPointerCapture(e.pointerId); } catch (_) {}
   toNdc(e); const onBtn = pickRackBtn(ndc.x, ndc.y); const h = onBtn ? null : pickLetter(ndc.x, ndc.y);
+  drag.near = false;
   if (h) {
     const B = h.L.word || h.L; // a spelled word is carried whole
     drag.L = B;
     dragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(tmpV).negate(), h.point);
     drag.offset.copy(B.pos).sub(h.point);
     B.dragTarget.copy(B.pos);
+    // touch: second tap on the same letter soon after the first = bring it close and keep it on the finger
+    const now = performance.now() / 1000;
+    if (ptr.touch && now - tapS.t < TAP.win && tapS.L && (tapS.L === B || Math.hypot(e.clientX - tapS.x, e.clientY - tapS.y) < TAP.px)) {
+      cancelPendingPoke(); tapS.t = -9;
+      if (tapS.L !== B && tapS.L.pos) { drag.L = tapS.L; tapS.L.dragTarget.copy(tapS.L.pos); }  // a fast first tap may have nudged it: same letter
+      pullCloser(); stats.doubleTaps = (stats.doubleTaps || 0) + 1;
+    }
   }
 });
 cv.addEventListener('pointermove', e => {
@@ -630,45 +647,68 @@ cv.addEventListener('pointermove', e => {
   const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
   ptr.x = e.clientX; ptr.y = e.clientY;
   const was = ptr.moved; ptr.moved += Math.abs(dx) + Math.abs(dy);
-  if (ptr.moved <= 6) return;
+  if (ptr.moved <= moveTol()) return;
   cv.classList.add('drag');
   if (drag.L) {
-    if (was <= 6) { drag.L.dragged = true; sfx.grab(); stats.grabs++; }
+    if (was <= moveTol() && !drag.L.dragged) { drag.L.dragged = true; sfx.grab(); stats.grabs++; }
     dragTargetFrom(e);
   } else {
-    const k = 2.4 / Math.max(innerHeight, 1);
+    const k = (ptr.touch ? 3.0 : 2.4) / Math.max(innerHeight, 1);
     look.tYaw += dx * k; look.tPitch += dy * k;
     look.tPitch = THREE.MathUtils.clamp(look.tPitch, -PITCH_MAX, PITCH_MAX);
   }
 });
+// let go inside a word box (gently) = it stays there: almost no throw, and the current comes back slowly
+function settleIfInBox(L) {
+  if (L.members) return false;
+  rackOccupancy();
+  if (!cubes.slice(0, rackS.n).some(c => c.occ === L)) return false;
+  L.vel.multiplyScalar(.15); L.releaseAt = clock.t; return true;
+}
 const endPtr = e => {
   if (!ptr.down || e.pointerId !== ptr.id) return;
   ptr.down = false; cv.classList.remove('drag');
   const L = drag.L; drag.L = null;
+  const wasNear = drag.near; drag.near = false;
   if (L && L.dragged) {
     // let go: keep the throw (inertia) and the spin; the water current takes over again
     L.dragged = false;
     if (L.vel.length() > 3) L.vel.setLength(3);
     L.releaseAt = clock.t - 1.5;
+    if (!settleIfInBox(L) && wasNear) { L.vel.multiplyScalar(.2); L.releaseAt = clock.t; } // pulled close and let go: it waits close by
     sfx.drop(); stats.releases++;
-  } else if (ptr.moved <= 6) pokeAt((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  } else if (ptr.moved <= moveTol()) {
+    const x = (e.clientX / innerWidth) * 2 - 1, y = -(e.clientY / innerHeight) * 2 + 1;
+    if (ptr.touch && L && !pickRackBtn(x, y)) {
+      // touch on a letter: wait to see if a second tap comes (double tap = pull), else push it away
+      cancelPendingPoke();
+      Object.assign(tapS, { t: performance.now() / 1000, x: e.clientX, y: e.clientY, L });
+      tapS.timer = setTimeout(() => { tapS.timer = 0; pokeAt(x, y); }, TAP.win * 1000);
+    } else pokeAt(x, y);
+  }
 };
 cv.addEventListener('pointerup', endPtr);
 cv.addEventListener('pointercancel', e => {
-  ptr.down = false; cv.classList.remove('drag');
+  if (e.pointerId !== ptr.id) return;
+  ptr.down = false; cv.classList.remove('drag'); drag.near = false;
   if (drag.L) { drag.L.dragged = false; drag.L.releaseAt = clock.t - 1.5; drag.L = null; }
 });
-// holding a letter + Space = bring it close, right under the pointer (spelling distance)
+// holding a letter + Space = bring it close, right under the pointer (spelling distance = the rack's distance)
 const NEAR_DIST = 3.6;
+const nearDist = () => rackS.dist || NEAR_DIST;
+const camFwd = new THREE.Vector3();
 function pullCloser() {
   if (!drag.L) return;
   toNdc({ clientX: ptr.x, clientY: ptr.y }); ray.setFromCamera(ndc, camera);
-  const p = ray.ray.at(NEAR_DIST, new THREE.Vector3());
-  dragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(tmpV).negate(), p);
-  drag.offset.set(0, 0, 0);
+  // the letter lands on the camera-facing plane at the rack's depth, so a pulled letter dragged over a box sits inside it
+  camera.getWorldDirection(camFwd);
+  dragPlane.setFromNormalAndCoplanarPoint(tmpV.copy(camFwd).negate(), tmpV2.copy(camera.position).addScaledVector(camFwd, nearDist()));
+  const p = new THREE.Vector3();
+  if (!ray.ray.intersectPlane(dragPlane, p)) ray.ray.at(nearDist(), p);
+  drag.offset.set(0, 0, 0); drag.near = true;
   drag.L.dragTarget.copy(p);
-  if (!drag.L.dragged) { drag.L.dragged = true; ptr.moved = 99; stats.grabs++; }
-  sfx.pull();
+  if (!drag.L.dragged) { drag.L.dragged = true; ptr.moved = Math.max(ptr.moved, 99); stats.grabs++; }
+  sfx.pull(); stats.pulls = (stats.pulls || 0) + 1;
 }
 
 // two fingers on the touchpad (or the mouse wheel) = look around
@@ -679,6 +719,32 @@ cv.addEventListener('wheel', e => {
   look.tPitch = THREE.MathUtils.clamp(look.tPitch, -PITCH_MAX, PITCH_MAX);
   if (drag.L) dragTargetFrom({ clientX: ptr.x, clientY: ptr.y });
 }, { passive: false });
+
+// phones: optional "magic window" (move the phone to look). Off by default; iOS asks permission on the tap.
+const gyro = { on: false, ok: false, q: new THREE.Quaternion(), has: false, alpha0: null, screen: 0 };
+const gyroBtn = document.getElementById('gyro');
+if (IS_MOBILE && 'DeviceOrientationEvent' in window) { gyro.ok = true; gyroBtn.classList.add('ok'); }
+const gyroE = new THREE.Euler(), gyroQ1 = new THREE.Quaternion(-Math.sqrt(.5), 0, 0, Math.sqrt(.5)), gyroQ0 = new THREE.Quaternion(), gyroZ = new THREE.Vector3(0, 0, 1);
+function onOrient(e) {
+  if (e.alpha == null) return;
+  const D = THREE.MathUtils.DEG2RAD, orient = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+  gyroE.set(e.beta * D, e.alpha * D, -e.gamma * D, 'YXZ');
+  gyro.q.setFromEuler(gyroE).multiply(gyroQ1).multiply(gyroQ0.setFromAxisAngle(gyroZ, -orient * D));
+  gyro.has = true;
+}
+gyroBtn.addEventListener('click', async e => {
+  e.stopPropagation(); unlockAudio();
+  if (gyro.on) { gyro.on = false; gyroBtn.classList.remove('on'); removeEventListener('deviceorientation', onOrient); look.tPitch = look.pitch = 0; return; }
+  try {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function' && (await DeviceOrientationEvent.requestPermission()) !== 'granted') return;
+  } catch (_) { return; }
+  gyro.on = true; gyro.has = false; gyroBtn.classList.add('on'); addEventListener('deviceorientation', onOrient);
+  look.tYaw = look.yaw = 0; look.tPitch = look.pitch = 0;
+});
+// the touch hint chips fade a little once the kid has started playing
+let hintT = 0;
+const hintEl = document.getElementById('hint');
+function hintSeen() { if (IS_MOBILE && !hintT) hintT = setTimeout(() => hintEl.classList.add('dim'), 12000); }
 
 // ---------- interaction: poke + grab ----------
 const ray = new THREE.Raycaster();
@@ -711,6 +777,7 @@ function pickLetter(x, y) {
   const a = assistPick(ray.ray.origin, ray.ray.direction, AIM.deskMin, 200);
   return a ? { L: a.L, point: a.point } : null;
 }
+const POKE_KICK = 5.2; // was 2.3 (round 6: a tap must clear space)
 function pokeAt(x, y) {
   const b = pickRackBtn(x, y);
   if (b) { pressRackBtn(b); return true; }
@@ -718,7 +785,7 @@ function pokeAt(x, y) {
   if (!h) { dotEl.classList.remove('no'); void dotEl.offsetWidth; dotEl.classList.add('no'); return false; }
   const { L: hitL, point } = h, L = hitL.word || hitL;
   const dir = tmpV.copy(point).sub(camera.position).normalize();
-  L.vel.addScaledVector(dir, 2.3);
+  L.vel.addScaledVector(dir, POKE_KICK);
   L.vel.x += (Math.random() - .5) * .5; L.vel.y += (Math.random() - .3) * .5;
   // spin from off-centre hit: torque = r x F
   const arm = tmpV2.copy(point).sub(L.pos);
