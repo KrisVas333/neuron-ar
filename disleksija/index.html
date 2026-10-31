@@ -8,6 +8,8 @@
 <meta property="og:title" content="Disleksijos lęšis · Dyslexia Lens">
 <meta property="og:description" content="Nukreipk kamerą į knygą: 6 lygiai, kaip jaučiasi skaitantis žmogus su disleksija. Point your phone at a book: 6 levels of what reading with dyslexia can feel like.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://krisvas333.github.io/neuron-ar/disleksija/">
+<link rel="canonical" href="https://krisvas333.github.io/neuron-ar/disleksija/">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
@@ -77,6 +79,16 @@ footer{border-top:1px solid var(--line);margin-top:28px;padding-top:14px;font-si
 footer p{margin:0 0 10px}
 .refs li{margin-bottom:6px}
 .hide{display:none!important}
+.about{border-top:1px solid var(--line);margin-top:30px;padding-top:6px}
+.eyebrow{display:inline-block;font:800 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-top:18px}
+.about h2{margin-top:6px;font-size:24px}
+.about h2 b{color:var(--red)}
+.arrows{list-style:none;padding:0;margin:0 0 12px}
+.arrows li{padding-left:24px;position:relative;margin-bottom:6px}
+.arrows li:before{content:'→';position:absolute;left:0;color:var(--red);font-weight:800}
+.creator{background:var(--soft);border-top:4px solid var(--red);border-radius:4px;padding:6px 18px 18px;margin-top:30px}
+.cta{display:inline-block;margin-top:4px;font:800 16px var(--mono);background:var(--ink);color:#fff;text-decoration:none;border-radius:4px;padding:12px 18px}
+.cta:hover{background:var(--red)}
 </style>
 </head>
 <body>
@@ -144,6 +156,32 @@ footer p{margin:0 0 10px}
   <h2 data-t="whyh">Kodėl lygiai yra sluoksniai</h2>
   <p data-t="why">Kiekvienas lygis prideda vieną sunkumą, kurį aprašo mokslas arba patys žmonės su disleksija. Tikrovėje kiekvienas turi savo derinį: kam nors svarbiausia lėtumas, kam nors garsai. Raidės, kurios nuolat šokinėja, yra tik 6 lygyje, nes tai patiria tik <b>dalis</b> žmonių, o mokslas to nepatvirtina.</p>
 
+  <section class="about" id="apie">
+    <span class="eyebrow" data-t="ab0">Apie projektą</span>
+    <h2 data-t="abh">Minutė, kurią tavo vaikas jaučia kiekvieną dieną</h2>
+    <p data-t="ab1">Disleksijos lęšis yra trumpas eksperimentas. Nukreipi telefoną į knygą, ir tekstas pasikeičia taip, kaip skaitymas gali jaustis žmogui su disleksija.</p>
+    <ul class="arrows">
+      <li data-t="ab2">6 lygiai, kiekvienas su mokslo šaltiniu ir įvertinimu A, B arba C</li>
+      <li data-t="ab3">veikia bet kuriame telefone, be prisijungimo, niekas niekur nesiunčiama</li>
+      <li data-t="ab4">lietuviškai ir angliškai</li>
+    </ul>
+    <p data-t="ab5">Tai pirmas įrankis serijoje apie neuroįvairovę. Toliau: VR versija Meta Quest 3 akiniams, ADHD, autizmas.</p>
+    <p class="src"><a href="https://github.com/KrisVas333/neuron-ar/tree/main/disleksija" target="_blank" rel="noopener" data-kv="github">GitHub</a> · <span data-t="ab6">atviras kodas, MIT licencija</span></p>
+  </section>
+
+  <section class="about creator" id="kurejas">
+    <span class="eyebrow" data-t="me0">Apie mane</span>
+    <h2>Kristijonas <b>Vasiliauskas</b></h2>
+    <div data-t="me1">
+      <p>Mokykloje viename diktante padariau 30 klaidų.</p>
+      <p>Turiu disleksiją. Šiandien knygas „skaitau“ ausimis: per metus daugiau nei 40 audioknygų. O savo knygą diktuoju.</p>
+      <p>Daugiau nei dešimtmetį kuriu būrelius, kuriuose vaikai technologijas STATO. Įkūriau Robotikos Akademiją (12 000+ vaikų per metus), esu ExoClass bendraįkūrėjas ir BrAIn Club kūrėjas.</p>
+      <p>Šį įrankį pastačiau per vieną rytą su savo „antrosiomis smegenimis“ ir Claude. Norėjau, kad tėtis ar mama bent minutę pajaustų tai, ką jų vaikas jaučia kasdien.</p>
+      <p><b>Ką tavo vaikui sunkiausia skaityti?</b> Parašyk man 👇</p>
+    </div>
+    <a class="cta" href="https://krisvas.lt/?src=disleksija" target="_blank" rel="noopener" data-kv="cta" data-kv-p="krisvas">krisvas.lt →</a>
+  </section>
+
   <footer>
     <p data-t="vr">🥽 Kuriama: <b>VR versija Meta Quest 3</b> akiniams (WebXR).</p>
     <p data-t="how">Kaip sukurta: Kris BrAIn (antrosios smegenys) + Claude · teksto atpažinimas Tesseract.js tavo telefone · 0 € serverių.</p>
@@ -188,7 +226,13 @@ var T={
   vr:'🥽 In progress: a <b>VR version for Meta Quest 3</b> (WebXR).',
   how:'How it was built: Kris BrAIn (second brain) + Claude · text recognition by Tesseract.js on your phone · €0 in servers.',
   disc:'⚗️ Experimental prototype, built with AI. It can be wrong, so check important things with a specialist. Free. Found a mistake? Write to me: <a href="https://krisvas.lt/?src=disleksija" target="_blank" rel="noopener">krisvas.lt</a>',
-  refh:'<b>Sources</b>',r1:'wider letter spacing made reading faster.',r2:'crowding and slow reading.',r3:'mirror letters (b/d).',r4:'letter position dyslexia.',r5:'phonological difficulty as the core.',r6:'evidence for coloured overlays and “visual stress” is weak.',r7:'why “jumping letters” simulations mislead.',r8:'about 5–10% of people have dyslexia, depending on the criteria.',r9:'what people with dyslexia see (there is no single pattern).'
+  refh:'<b>Sources</b>',r1:'wider letter spacing made reading faster.',r2:'crowding and slow reading.',r3:'mirror letters (b/d).',r4:'letter position dyslexia.',r5:'phonological difficulty as the core.',r6:'evidence for coloured overlays and “visual stress” is weak.',r7:'why “jumping letters” simulations mislead.',r8:'about 5–10% of people have dyslexia, depending on the criteria.',r9:'what people with dyslexia see (there is no single pattern).',
+  ab0:'About the project',abh:'One minute of what your kid feels every day',
+  ab1:'Dyslexia Lens is a short experiment. Point your phone at a book and the text changes to show how reading can feel for someone with dyslexia.',
+  ab2:'6 levels, each with a research source and an A, B or C grade',ab3:'works on any phone, no login, nothing is sent anywhere',ab4:'in Lithuanian and English',
+  ab5:'It’s the first tool in a series about neurodiversity. Next up: a VR version for Meta Quest 3, ADHD, autism.',ab6:'open source, MIT licence',
+  me0:'About me',
+  me1:'<p>I couldn’t read a page properly until I was 11.</p><p>I’m dyslexic. At school I once made 30 mistakes in a single dictation. Today I read with my ears, 40+ audiobooks a year. And I’m dictating my own book.</p><p>For more than a decade I’ve built after-school clubs where kids BUILD technology. I founded Robotikos Akademija (12,000+ kids a year), co-founded ExoClass and created BrAIn Club.</p><p>I built this tool in one morning with my second brain and Claude. I wanted a mum or dad to feel, for one minute, what their kid feels every day.</p><p><b>What’s the hardest thing for your kid to read?</b> Tell me 👇</p>'
  }
 };
 var S={
@@ -223,7 +267,7 @@ var LV={
   {n:'Shimmer',see:'Words wave, move, and “ghost” lines appear next to them.',feel:'Some people say that when tired, words shimmer or disappear and reading is exhausting.',g:'C',sci:'Only personal accounts and contested theories (e.g. visual stress, Griffiths et al., 2016). Only some people report it, and research has not confirmed it.'}
  ]
 };
-var lang=(navigator.language||'lt').slice(0,2)==='lt'?'lt':'en';
+var lang='lt';/* Lithuanian is the main language; English only via ?lang=en, /en/ or the EN button */
 try{var q=new URLSearchParams(location.search);if(q.get('lang')==='en'||q.get('lang')==='lt')lang=q.get('lang');}catch(e){}
 document.querySelectorAll('[data-t]').forEach(function(el){T.lt[el.getAttribute('data-t')]=el.innerHTML;});
 function applyLang(){
@@ -231,6 +275,7 @@ function applyLang(){
   document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');var v=T[lang][k];if(v!=null)el.innerHTML=v;});
   $('lt').setAttribute('aria-pressed',lang==='lt');$('en').setAttribute('aria-pressed',lang==='en');
   document.title=lang==='lt'?'Disleksijos lęšis':'Dyslexia Lens';
+  try{var u=new URL(location.href);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');history.replaceState(null,'',u.pathname+u.search+u.hash);}catch(e){}
   if(mode==='text'&&!userEdited){$('txt').value=S[lang].demo;layoutText();}
   renderCard();
 }
