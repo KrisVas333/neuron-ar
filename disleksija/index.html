@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Disleksijos lęšis</title>
+<meta name="description" content="Nukreipk telefono kamerą į knygą ir pažiūrėk, kaip skaitymas gali jaustis su disleksija. 6 lygiai, paremti mokslu. Be prisijungimo.">
+<meta property="og:title" content="Disleksijos lęšis · Dyslexia Lens">
+<meta property="og:description" content="Nukreipk kamerą į knygą: 6 lygiai, kaip skaitymas gali jaustis su disleksija. Point your phone at a book: 6 levels of what reading with dyslexia can feel like.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="kris" data-artifact="disleksija" data-kind="tool"></script>
+<!-- Microsoft Clarity (krisvas.lt project) loads ONLY after „Leisti" via kv-track.js consent banner; without consent only anonymous cookieless events -->
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-ev.js" data-page="disleksija" data-mode="full" defer></script>
+<style>
+:root{--bg:#FFFFFF;--soft:#F7F7F5;--ink:#0A0A0A;--muted:#55555A;--line:#E4E4E0;--red:#D90429;--red2:#FF0000;--ok:#1B7F3B;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;--sans:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.6;-webkit-text-size-adjust:100%}
+body{padding:0 0 env(safe-area-inset-bottom)}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+h1,h2,h3{font-family:var(--mono);line-height:1.2;letter-spacing:-.01em;margin:0}
+h1{font-size:30px;font-weight:800}
+h1 b{color:var(--red)}
+h2{font-size:21px;margin:26px 0 10px}
+p{margin:0 0 12px}
+a{color:var(--red)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.lang{display:flex;gap:4px}
+.lang button{font:700 14px var(--mono);border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.lang button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lead{font-size:19px;color:var(--ink)}
+.note{background:var(--soft);border-left:4px solid var(--red);border-radius:4px;padding:12px 14px;margin:14px 0;font-size:16px}
+.modes{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0}
+@media(min-width:560px){.modes{grid-template-columns:repeat(3,1fr)}}
+.mode{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:2px solid var(--ink);background:var(--bg);border-radius:4px;padding:14px 16px;cursor:pointer;font:600 18px var(--sans);color:var(--ink)}
+.mode small{font-weight:400;font-size:14px;color:var(--muted)}
+.mode.primary{background:var(--red);border-color:var(--red);color:#fff}
+.mode.primary small{color:#fff;opacity:.9}
+.mode:active{transform:translateY(1px)}
+#stage{display:none}
+#stage.on{display:block}
+.stagebar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0 10px}
+.btn{font:700 15px var(--mono);border:2px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:4px;padding:10px 14px;cursor:pointer;min-height:46px}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn[aria-pressed=true]{background:var(--ink);color:#fff}
+.btn:disabled{opacity:.45}
+.canvasbox{position:relative;background:#111;border-radius:4px;overflow:hidden;min-height:200px}
+canvas#view{display:block;width:100%;height:auto}
+.status{position:absolute;left:8px;right:8px;bottom:8px;background:rgba(10,10,10,.82);color:#fff;font:600 14px var(--sans);padding:8px 10px;border-radius:4px;display:none}
+.status.on{display:block}
+.timer{position:absolute;top:8px;right:8px;background:var(--red);color:#fff;font:800 26px var(--mono);padding:4px 12px;border-radius:4px;display:none}
+.timer.on{display:block}
+.levels{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0 6px}
+.lv{font:800 18px var(--mono);border:2px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:4px;min-height:52px;cursor:pointer;padding:0}
+.lv[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.lvlabel{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+.iso{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--muted);margin:6px 0 4px}
+.iso input{width:20px;height:20px;accent-color:var(--red)}
+.card{border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin:10px 0;background:var(--bg)}
+.card h3{font-size:20px;margin-bottom:8px}
+.card .row{margin:6px 0}
+.card .k{font:700 13px var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block}
+.grade{display:inline-block;font:800 13px var(--mono);border-radius:4px;padding:1px 7px;margin-right:6px;color:#fff;background:var(--ink)}
+.grade.A{background:var(--ok)}.grade.B{background:#1F4FA8}.grade.C{background:#8A6D00}
+.src{font-size:14px;color:var(--muted)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+textarea{width:100%;min-height:130px;font:18px/1.6 Georgia,serif;border:2px solid var(--ink);border-radius:4px;padding:10px;color:var(--ink);background:var(--bg)}
+.vote{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.vote button{font:600 15px var(--sans);border:2px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:4px;padding:9px 12px;cursor:pointer}
+.vote button[aria-pressed=true]{background:var(--ink);color:#fff}
+.thanks{color:var(--ok);font-weight:600;font-size:15px;margin-top:6px;display:none}
+footer{border-top:1px solid var(--line);margin-top:28px;padding-top:14px;font-size:14px;color:var(--muted)}
+footer p{margin:0 0 10px}
+.refs li{margin-bottom:6px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1 data-t="title">Disleksijos <b>lęšis</b></h1>
+    <div class="lang" role="group" aria-label="Kalba / Language">
+      <button id="lt" aria-pressed="true">LT</button><button id="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
+  <section id="home">
+    <p class="lead" data-t="lead">Nukreipk telefono kamerą į knygą. Pasirink lygį nuo 1 iki 6 ir pažiūrėk, kaip skaitymas gali <b>jaustis</b> žmogui su disleksija.</p>
+    <div class="note" data-t="honest"><b>Svarbu:</b> disleksija nėra „blogos akys“. Tai smegenų skirtumas: sunkiau greitai susieti raides su garsais. Čia tai parodyta vaizdu, kad galėtum pajausti pastangas. Kiekvienas žmogus skirtingas. Tai ne diagnozė.</div>
+    <div class="modes">
+      <button class="mode primary" id="m-cam" data-kv="mode" data-kv-p="camera"><span data-t="m1">📷 Kamera</span><small data-t="m1s">Knyga, lapas ar ekranas</small></button>
+      <button class="mode" id="m-photo" data-kv="mode" data-kv-p="photo"><span data-t="m2">🖼️ Nuotrauka</span><small data-t="m2s">Įkelk nuotrauką ar ekrano kopiją</small></button>
+      <button class="mode" id="m-text" data-kv="mode" data-kv-p="text"><span data-t="m3">✍️ Tekstas</span><small data-t="m3s">Įklijuok bet kokį tekstą</small></button>
+    </div>
+    <input type="file" id="file" accept="image/*" class="hide">
+    <p class="src" data-t="privacy">🔒 Be prisijungimo. Kamera ir tekstas apdorojami tik tavo telefone, niekur nesiunčiami.</p>
+  </section>
+
+  <section id="stage" aria-live="polite">
+    <div class="stagebar">
+      <button class="btn" id="back" data-t="back">← Atgal</button>
+      <div class="tools" style="margin:0">
+        <button class="btn red" id="scan" data-t="scan">✨ Skenuoti</button>
+        <button class="btn" id="live" aria-pressed="false" data-t="live">🔁 Gyvai</button>
+      </div>
+    </div>
+    <div id="textbox" class="hide">
+      <textarea id="txt" aria-label="Tekstas"></textarea>
+      <div class="tools"><button class="btn red" id="render" data-t="render">Rodyti tekstą</button></div>
+    </div>
+    <div class="canvasbox">
+      <canvas id="view" width="1000" height="700" data-clarity-mask="true"></canvas>
+      <div class="status" id="status"></div>
+      <div class="timer" id="timer">20</div>
+    </div>
+
+    <div class="lvlabel"><span data-t="lvlow">0 = įprastai</span><span data-t="lvhigh">6 = visi sluoksniai</span></div>
+    <div class="levels" role="group" aria-label="Lygis" id="levels"></div>
+    <label class="iso"><input type="checkbox" id="iso"> <span data-t="iso">Rodyti tik šio lygio sluoksnį</span></label>
+
+    <div class="card" id="card"></div>
+
+    <div class="tools">
+      <button class="btn" id="challenge" data-t="chal">⏱️ Iššūkis: perskaityk garsiai per 20 s</button>
+      <button class="btn" id="share" data-t="share">↗ Dalintis</button>
+    </div>
+
+    <div class="card">
+      <h3 data-t="vq">Turi disleksiją? Ar šis lygis panašus į tavo patirtį?</h3>
+      <div class="vote" id="vote">
+        <button data-v="yes" data-t="v1">Taip, labai</button>
+        <button data-v="partly" data-t="v2">Iš dalies</button>
+        <button data-v="no" data-t="v3">Ne, visai ne taip</button>
+        <button data-v="none" data-t="v4">Neturiu disleksijos</button>
+      </div>
+      <div class="thanks" id="thanks" data-t="thx">Ačiū. Anonimiški atsakymai padeda šį įrankį padaryti tikslesnį.</div>
+    </div>
+  </section>
+
+  <h2 data-t="whyh">Kodėl lygiai yra sluoksniai</h2>
+  <p data-t="why">Kiekvienas lygis prideda vieną sunkumą, kurį aprašo mokslas arba patys žmonės su disleksija. Tikrovėje kiekvienas turi savo derinį: kam nors svarbiausia lėtumas, kam nors garsai. Raidės, kurios nuolat šokinėja, yra tik 6 lygyje, nes dauguma žmonių su disleksija jų <b>nemato</b>.</p>
+
+  <footer>
+    <p data-t="vr">🥽 Kuriama: <b>VR versija Meta Quest 3</b> akiniams (WebXR).</p>
+    <p data-t="how">Kaip sukurta: Kris BrAIn (antrosios smegenys) + Claude · teksto atpažinimas Tesseract.js tavo telefone · 0 € serverių.</p>
+    <p data-t="disc">⚗️ Eksperimentinis prototipas, sukurtas su AI. Gali klysti, todėl svarbius dalykus pasitikrinkite pas specialistą. Nemokamas. Radote klaidą? Parašykite: <a href="https://krisvas.lt/?src=disleksija" target="_blank" rel="noopener">krisvas.lt</a></p>
+    <p data-t="refh"><b>Šaltiniai</b></p>
+    <ul class="refs">
+      <li><a href="https://pubmed.ncbi.nlm.nih.gov/22665803/" target="_blank" rel="noopener">Zorzi ir kt., 2012, PNAS</a>: <span data-t="r1">didesni tarpai tarp raidžių pagreitino skaitymą.</span></li>
+      <li><a href="https://iris.uniroma1.it/handle/11573/364327" target="_blank" rel="noopener">Martelli ir kt., 2009, Journal of Vision</a>: <span data-t="r2">susigrūdimas ir lėtas skaitymas.</span></li>
+      <li><a href="https://link.springer.com/article/10.1038/s41598-025-21092-5" target="_blank" rel="noopener">Scientific Reports, 2025</a>: <span data-t="r3">veidrodinės raidės (b/d).</span></li>
+      <li><a href="https://researchers.mq.edu.au/en/publications/letter-position-dyslexia/" target="_blank" rel="noopener">Friedmann &amp; Rahamim, 2007</a>: <span data-t="r4">raidžių pozicijos disleksija.</span></li>
+      <li><a href="https://www.frontiersin.org/articles/10.3389/feduc.2020.00118/full" target="_blank" rel="noopener">Frontiers in Education, 2020</a>: <span data-t="r5">fonologinis sunkumas kaip šerdis.</span></li>
+      <li><a href="https://pubmed.ncbi.nlm.nih.gov/27580753/" target="_blank" rel="noopener">Griffiths ir kt., 2016</a>: <span data-t="r6">spalvotų plėvelių ir „vizualinio streso“ įrodymai silpni.</span></li>
+      <li><a href="https://dyslexiaida.org/online-dyslexia-simulation-is-compelling-powerful-and-wrong" target="_blank" rel="noopener">International Dyslexia Association</a>: <span data-t="r7">kodėl „šokinėjančių raidžių“ simuliacijos klaidina.</span></li>
+      <li><a href="https://www.eurekalert.org/news-releases/691417" target="_blank" rel="noopener">Peterson &amp; Pennington, 2012, The Lancet</a>: <span data-t="r8">disleksiją turi apie 7 % žmonių.</span></li>
+      <li><a href="https://www.dyslexia.com/question/what-dyslexics-see/" target="_blank" rel="noopener">dyslexia.com</a>: <span data-t="r9">ką mato žmonės su disleksija (nėra vieno modelio).</span></li>
+    </ul>
+    <p>Kristijonas Vasiliauskas · <a href="https://krisvas.lt/?src=disleksija" target="_blank" rel="noopener">krisvas.lt</a></p>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js" defer></script>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+
+/* ---------- i18n ---------- */
+var T={
+ lt:{},
+ en:{
+  title:'Dyslexia <b>Lens</b>',
+  lead:'Point your phone camera at a book. Pick a level from 1 to 6 and see how reading can <b>feel</b> for someone with dyslexia.',
+  honest:'<b>Important:</b> dyslexia is not “bad eyes”. It is a brain difference: linking letters to sounds quickly is harder. Here it is shown as a picture so you can feel the effort. Every person is different. This is not a diagnosis.',
+  m1:'📷 Camera',m1s:'A book, a page or a screen',m2:'🖼️ Photo',m2s:'Upload a photo or screenshot',m3:'✍️ Text',m3s:'Paste any text',
+  privacy:'🔒 No login. The camera and text are processed only on your phone and never sent anywhere.',
+  back:'← Back',scan:'✨ Scan',live:'🔁 Live',render:'Show text',lvlow:'0 = typical',lvhigh:'6 = all layers',
+  iso:'Show only this level’s layer',chal:'⏱️ Challenge: read it aloud in 20 s',share:'↗ Share',
+  vq:'Do you have dyslexia? Does this level feel like your experience?',v1:'Yes, very',v2:'Partly',v3:'No, not at all',v4:'I don’t have dyslexia',
+  thx:'Thank you. Anonymous answers help make this tool more accurate.',
+  whyh:'Why the levels are layers',
+  why:'Each level adds one difficulty described by research or by people with dyslexia themselves. In real life everyone has their own mix: for some it is mostly slowness, for others it is sounds. Letters that keep jumping around appear only at level 6, because most people with dyslexia do <b>not</b> see that.',
+  vr:'🥽 In progress: a <b>VR version for Meta Quest 3</b> (WebXR).',
+  how:'How it was built: Kris BrAIn (second brain) + Claude · text recognition by Tesseract.js on your phone · €0 in servers.',
+  disc:'⚗️ Experimental prototype, built with AI. It can be wrong, so check important things with a specialist. Free. Found a mistake? Write to me: <a href="https://krisvas.lt/?src=disleksija" target="_blank" rel="noopener">krisvas.lt</a>',
+  refh:'<b>Sources</b>',r1:'wider letter spacing made reading faster.',r2:'crowding and slow reading.',r3:'mirror letters (b/d).',r4:'letter position dyslexia.',r5:'phonological difficulty as the core.',r6:'evidence for coloured overlays and “visual stress” is weak.',r7:'why “jumping letters” simulations mislead.',r8:'about 7% of people have dyslexia.',r9:'what people with dyslexia see (there is no single pattern).'
+ }
+};
+var S={
+ lt:{loading:'Kraunu teksto atpažinimą (~5 MB, tik pirmą kartą)…',reading:'Ieškau žodžių…',found:'Rasta žodžių: ',none:'Nerandu teksto. Priartink, daugiau šviesos, laikyk telefoną tiesiai.',
+   camErr:'Kamera neatsidarė. Leisk kamerą naršyklės nustatymuose arba rinkis „Nuotrauka“.',aim:'Nukreipk į tekstą ir spausk ✨ Skenuoti',hold:'Laikyk telefoną ramiai…',
+   timeup:'Laikas! Kaip jauteisi? Atsakyk žemiau 👇',shareT:'Pažiūrėk, kaip skaitymas gali jaustis su disleksija',copied:'Nuoroda nukopijuota',
+   see:'Ką matai',feel:'Kaip jaučiasi',sci:'Mokslas',
+   demo:'Skaityti mokomės ne iš karto. Vaikas sujungia raides į garsus, garsus į žodžius, o žodžius į mintį. Daugumai tai po kelerių metų tampa automatiška. Žmogui su disleksija kiekvienas žodis gali kainuoti daugiau pastangų, nors jis yra toks pat protingas ir smalsus. Todėl jam reikia laiko, kantrybės ir tinkamų įrankių, o ne pastabos „skaityk greičiau“.'},
+ en:{loading:'Loading text recognition (~5 MB, first time only)…',reading:'Looking for words…',found:'Words found: ',none:'No text found. Move closer, add light, hold the phone straight.',
+   camErr:'The camera did not open. Allow the camera in your browser settings or choose “Photo”.',aim:'Point at text and tap ✨ Scan',hold:'Hold the phone still…',
+   timeup:'Time! How did it feel? Answer below 👇',shareT:'See how reading can feel with dyslexia',copied:'Link copied',
+   see:'What you see',feel:'What it feels like',sci:'Science',
+   demo:'Nobody learns to read all at once. A child links letters to sounds, sounds to words, and words to meaning. For most people this becomes automatic after a few years. For a person with dyslexia every word can cost more effort, even though they are just as smart and curious. That is why they need time, patience and the right tools, not the comment “read faster”.'}
+};
+var LV={
+ lt:[
+  {n:'Įprastai',see:'Taip tekstą mato dauguma skaitytojų. Raidės stovi vietoje, žodžiai atpažįstami iš karto.',feel:'Skaitymas vyksta beveik savaime.',g:'',sci:'Atskaitos taškas palyginimui.'},
+  {n:'Susigrūdimas',see:'Raidės sulimpa su kaimynėmis, žodis tampa neryškia dėme.',feel:'Reikia prisimerkti ir sustoti prie kiekvieno žodžio.',g:'B',sci:'Zorzi ir kt., 2012 (PNAS): didesni tarpai tarp raidžių pagreitino skaitymą vaikams su disleksija.'},
+  {n:'Lėtas skaitymas',see:'Aiškus tik vienas žodis vienu metu, kiti laukia rūke. Pradžia vėl blunka.',feel:'Skaitai, bet tai darbas. Kol pasieki sakinio galą, pradžia jau pasimiršta.',g:'A',sci:'Lėtas ir pastangų reikalaujantis skaitymas yra vienas patikimiausių disleksijos požymių (Martelli ir kt., 2009).'},
+  {n:'Veidrodinės raidės',see:'Kartais b virsta d, p virsta q.',feel:'Žinai, kad čia „b“ arba „d“, bet kiekvieną kartą reikia sustoti ir spręsti.',g:'B',sci:'Dažna visiems pradedantiems skaitytojams; su disleksija gali užsilikti ilgiau (Scientific Reports, 2025). Ne visi tai patiria.'},
+  {n:'Raidžių vieta',see:'Žodžio viduryje dvi raidės susikeičia vietomis: „kalba“ tampa „klaba“.',feel:'Žodis atrodo pažįstamas, bet „ne visai tas“.',g:'B',sci:'Raidžių pozicijos disleksija yra atskiras potipis (Friedmann ir Rahamim, 2007).'},
+  {n:'Garsai',see:'Raidės virsta panašiai skambančiomis: b ir p, d ir t, s ir z.',feel:'Raides matai, bet sunku greitai „išgirsti“ žodį galvoje. Tai arčiausiai disleksijos šerdies.',g:'A',sci:'Fonologinis sunkumas laikomas pagrindiniu disleksijos mechanizmu (Frontiers in Education, 2020). Tikrovėje tai vyksta galvoje, ne akyse, o čia parodyta vaizdu.'},
+  {n:'Mirgėjimas',see:'Žodžiai banguoja, juda, šalia atsiranda „šešėlinės“ eilutės.',feel:'Kai kurie žmonės sako, kad pavargus žodžiai mirga ar dingsta, o skaitymas labai vargina.',g:'C',sci:'Tik asmeniniai pasakojimai ir ginčytinos teorijos (pvz., vizualinis stresas, Griffiths ir kt., 2016). Dauguma žmonių su disleksija raidžių judant nemato.'}
+ ],
+ en:[
+  {n:'Typical',see:'This is how most readers see text. Letters stay put, words are recognised at once.',feel:'Reading happens almost by itself.',g:'',sci:'A baseline for comparison.'},
+  {n:'Crowding',see:'Letters stick to their neighbours and a word becomes a blurry blob.',feel:'You have to squint and stop at every word.',g:'B',sci:'Zorzi et al., 2012 (PNAS): wider letter spacing made children with dyslexia read faster.'},
+  {n:'Slow reading',see:'Only one word is clear at a time, the rest wait in a fog. The start fades again.',feel:'You are reading, but it is work. By the end of the sentence the start is already gone.',g:'A',sci:'Slow, effortful reading is one of the most reliable signs of dyslexia (Martelli et al., 2009).'},
+  {n:'Mirror letters',see:'Sometimes b turns into d, and p into q.',feel:'You know it is “b” or “d”, but every time you have to stop and decide.',g:'B',sci:'Common in all beginning readers; with dyslexia it can last longer (Scientific Reports, 2025). Not everyone has it.'},
+  {n:'Letter position',see:'Two letters in the middle of a word swap places: “form” becomes “from”.',feel:'The word looks familiar, but “not quite right”.',g:'B',sci:'Letter position dyslexia is a distinct subtype (Friedmann & Rahamim, 2007).'},
+  {n:'Sounds',see:'Letters turn into similar-sounding ones: b and p, d and t, s and z.',feel:'You see the letters, but it is hard to quickly “hear” the word in your head. This is closest to the core of dyslexia.',g:'A',sci:'A phonological difficulty is considered the core mechanism of dyslexia (Frontiers in Education, 2020). In real life it happens in the head, not the eyes; here it is shown as a picture.'},
+  {n:'Shimmer',see:'Words wave, move, and “ghost” lines appear next to them.',feel:'Some people say that when tired, words shimmer or disappear and reading is exhausting.',g:'C',sci:'Only personal accounts and contested theories (e.g. visual stress, Griffiths et al., 2016). Most people with dyslexia do not see letters move.'}
+ ]
+};
+var lang=(navigator.language||'lt').slice(0,2)==='lt'?'lt':'en';
+try{var q=new URLSearchParams(location.search);if(q.get('lang')==='en'||q.get('lang')==='lt')lang=q.get('lang');}catch(e){}
+document.querySelectorAll('[data-t]').forEach(function(el){T.lt[el.getAttribute('data-t')]=el.innerHTML;});
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');var v=T[lang][k];if(v!=null)el.innerHTML=v;});
+  $('lt').setAttribute('aria-pressed',lang==='lt');$('en').setAttribute('aria-pressed',lang==='en');
+  document.title=lang==='lt'?'Disleksijos lęšis':'Dyslexia Lens';
+  if(mode==='text'&&!userEdited){$('txt').value=S[lang].demo;layoutText();}
+  renderCard();
+}
+$('lt').onclick=function(){lang='lt';applyLang();ev('lang',{v:'lt'});};
+$('en').onclick=function(){lang='en';applyLang();ev('lang',{v:'en'});};
+
+/* ---------- tracking (anonymous; never text or images) ---------- */
+function ev(name,p){try{if(window.kvEv)window.kvEv(name,p||{});}catch(e){} try{if(window.bt)window.bt(name==='level'||name==='scan_ok'?'value':name,Object.assign({e:name},p||{}));}catch(e){}}
+
+/* ---------- state ---------- */
+var cv=$('view'),ctx=cv.getContext('2d');
+var mode=null,level=3,iso=false,words=[],base=null,baseKind=null,video=null,stream=null,liveOn=false,busy=false,worker=null,workerP=null,userEdited=false,t0=performance.now(),challengeEnd=0;
+var FONT='Georgia,"Times New Roman",serif';
+
+/* levels UI */
+for(var i=0;i<=6;i++){(function(n){var b=document.createElement('button');b.className='lv';b.textContent=n;b.setAttribute('aria-pressed',n===level);b.onclick=function(){setLevel(n);};$('levels').appendChild(b);})(i);}
+function setLevel(n){level=n;t0=performance.now();[].forEach.call($('levels').children,function(b,i){b.setAttribute('aria-pressed',i===n);});renderCard();ev('level',{v:n,mode:mode,iso:iso});}
+$('iso').onchange=function(){iso=this.checked;ev('iso',{on:iso});};
+function renderCard(){
+  var d=LV[lang][level],s=S[lang];
+  $('card').innerHTML='<h3>'+level+' · '+d.n+'</h3>'+
+   '<div class="row"><span class="k">'+s.see+'</span>'+d.see+'</div>'+
+   '<div class="row"><span class="k">'+s.feel+'</span>'+d.feel+'</div>'+
+   '<div class="row src"><span class="k">'+s.sci+'</span>'+(d.g?'<span class="grade '+d.g+'">'+d.g+'</span>':'')+d.sci+'</div>';
+}
+function feats(){
+  var f={crowd:false,slow:false,mirror:false,trans:false,sound:false,shimmer:false};
+  var keys=[null,'crowd','slow','mirror','trans','sound','shimmer'];
+  for(var i=1;i<=level;i++){if(!iso||i===level)f[keys[i]]=true;}
+  return f;
+}
+
+/* ---------- status ---------- */
+function status(msg,ms){var s=$('status');if(!msg){s.classList.remove('on');return;}s.textContent=msg;s.classList.add('on');clearTimeout(status._t);if(ms)status._t=setTimeout(function(){s.classList.remove('on');},ms);}
+
+/* ---------- modes ---------- */
+function showStage(m){
+  mode=m;$('home').classList.add('hide');$('stage').classList.add('on');
+  $('textbox').classList.toggle('hide',m!=='text');
+  $('scan').classList.toggle('hide',m==='text');$('live').classList.toggle('hide',m!=='camera');
+  if(m==='photo')$('scan').textContent=lang==='lt'?'🖼️ Kita nuotrauka':'🖼️ Another photo';
+  else $('scan').innerHTML=T[lang].scan||T.lt.scan;
+  window.scrollTo(0,0);
+}
+$('m-cam').onclick=function(){showStage('camera');startCam();ensureWorker();};
+$('m-photo').onclick=function(){$('file').click();};
+$('m-text').onclick=function(){showStage('text');if(!$('txt').value)$('txt').value=S[lang].demo;layoutText();};
+$('back').onclick=function(){stopCam();liveOn=false;$('live').setAttribute('aria-pressed',false);mode=null;words=[];base=null;$('stage').classList.remove('on');$('home').classList.remove('hide');status('');};
+$('file').onchange=function(){
+  var f=this.files&&this.files[0];if(!f)return;
+  showStage('photo');ensureWorker();
+  var img=new Image();img.onload=function(){
+    var k=Math.min(1,1400/Math.max(img.width,img.height));
+    var c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(img.src);
+    base=c;baseKind='still';cv.width=c.width;cv.height=c.height;words=[];ocr(c);
+  };img.src=URL.createObjectURL(f);this.value='';
+};
+$('scan').onclick=function(){
+  if(mode==='photo'){$('file').click();return;}
+  if(!video||!video.videoWidth){status(S[lang].aim,2500);return;}
+  liveOn=false;$('live').setAttribute('aria-pressed',false);
+  var c=grab();base=c;baseKind='still';words=[];ocr(c);
+};
+$('live').onclick=function(){
+  liveOn=!liveOn;this.setAttribute('aria-pressed',liveOn);ev('live',{on:liveOn});
+  if(liveOn){baseKind='video';status(S[lang].hold,2000);liveLoop();}
+};
+$('txt').oninput=function(){userEdited=true;};
+$('render').onclick=function(){layoutText();ev('text_render',{len:Math.min(9999,$('txt').value.length)});};
+
+/* ---------- camera ---------- */
+function startCam(){
+  video=document.createElement('video');video.setAttribute('playsinline','');video.muted=true;video.autoplay=true;
+  status(S[lang].aim);
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){status(S[lang].camErr);ev('cam_error',{v:'unsupported'});return;}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false}).then(function(s){
+    stream=s;video.srcObject=s;video.play();baseKind='video';
+    video.onloadedmetadata=function(){var k=Math.min(1,1280/Math.max(video.videoWidth,video.videoHeight));cv.width=Math.round(video.videoWidth*k);cv.height=Math.round(video.videoHeight*k);};
+    ev('cam_ok',{});
+  }).catch(function(e){status(S[lang].camErr);ev('cam_error',{v:String(e&&e.name).slice(0,30)});});
+}
+function stopCam(){if(stream){stream.getTracks().forEach(function(t){t.stop();});}stream=null;video=null;}
+function grab(){var c=document.createElement('canvas');c.width=cv.width;c.height=cv.height;c.getContext('2d').drawImage(video,0,0,c.width,c.height);return c;}
+function liveLoop(){if(!liveOn||mode!=='camera')return;if(busy||!video||!video.videoWidth){setTimeout(liveLoop,400);return;}var c=grab();ocr(c,true).then(function(){setTimeout(liveLoop,250);});}
+
+/* ---------- OCR ---------- */
+function ensureWorker(){
+  if(workerP)return workerP;
+  workerP=new Promise(function(res,rej){
+    var tries=0;(function wait(){if(window.Tesseract)return res();if(++tries>100)return rej(new Error('no tesseract'));setTimeout(wait,100);})();
+  }).then(function(){return Tesseract.createWorker(['lit','eng'],1,{logger:function(m){if(m.status&&m.status.indexOf('loading')===0&&!worker)status(S[lang].loading+' '+Math.round((m.progress||0)*100)+'%');}});})
+  .then(function(w){worker=w;return w.setParameters({preserve_interword_spaces:'1'}).then(function(){return w;});})
+  .catch(function(e){workerP=null;ev('error',{v:'ocr_load'});throw e;});
+  return workerP;
+}
+function ocr(c,quiet){
+  busy=true;if(!quiet)status(S[lang].reading);
+  return ensureWorker().then(function(w){return w.recognize(c);}).then(function(r){
+    var d=r.data,out=[];var cd=c.getContext('2d');
+    var lines=d.lines&&d.lines.length?d.lines:[{words:d.words||[]}];
+    lines.forEach(function(ln){
+      var ws=(ln.words||[]).filter(function(wd){var tx=(wd.text||'').trim();return tx&&wd.confidence>=50&&/\p{L}/u.test(tx);});
+      if(!ws.length)return;
+      var hs=ws.map(function(wd){return wd.bbox.y1-wd.bbox.y0;}).sort(function(a,b){return a-b;});
+      var rh=ln.rowAttributes&&ln.rowAttributes.row_height;
+      var fs=rh&&rh>4?rh*0.92:hs[Math.floor(hs.length*0.75)]*1.15;
+      var bl=ln.baseline&&isFinite(ln.baseline.y0)?ln.baseline:null;
+      ws.forEach(function(wd){
+        var b=wd.bbox,w=b.x1-b.x0,h=b.y1-b.y0;if(w<6||h<5||h>c.height*0.25)return;
+        var by=b.y1;
+        if(bl&&bl.x1!==bl.x0){var cx=(b.x0+b.x1)/2;by=bl.y0+(bl.y1-bl.y0)*(cx-bl.x0)/(bl.x1-bl.x0);}
+        if(by<b.y0||by>b.y1+fs*0.4)by=b.y1-h*0.15;
+        var top=Math.min(b.y0,by-fs*0.78),bot=Math.max(b.y1,by+fs*0.24);
+        out.push({t:(wd.text||'').trim(),x:b.x0,y:top,w:w,h:bot-top,fs:fs,bl:by,col:sampleCols(cd,b,c)});
+      });
+    });
+    words=out;out.forEach(function(w,i){w.i=i;});
+    if(!liveOn||mode!=='camera'){base=c;baseKind='still';}
+    if(!out.length){if(!quiet)status(S[lang].none,4000);ev('scan_empty',{mode:mode});}
+    else{if(!quiet)status(S[lang].found+out.length,1800);if(!quiet)ev('scan_ok',{n:out.length,mode:mode});}
+    busy=false;
+  }).catch(function(e){busy=false;status(S[lang].none,4000);});
+}
+function sampleCols(cd,b,c){
+  var px=[],ink=[],pad=3,W=c.width,H=c.height;
+  function get(x,y){x=Math.max(0,Math.min(W-1,x|0));y=Math.max(0,Math.min(H-1,y|0));var p=cd.getImageData(x,y,1,1).data;return [p[0],p[1],p[2]];}
+  var xs=[b.x0-pad,(b.x0+b.x1)/2,b.x1+pad],ys=[b.y0-pad,(b.y0+b.y1)/2,b.y1+pad];
+  xs.forEach(function(x){px.push(get(x,b.y0-pad));px.push(get(x,b.y1+pad));});
+  ys.forEach(function(y){px.push(get(b.x0-pad,y));px.push(get(b.x1+pad,y));});
+  var data=cd.getImageData(b.x0,b.y0,Math.max(1,b.x1-b.x0),Math.max(1,b.y1-b.y0)).data;
+  for(var i=0;i<data.length;i+=4*7)ink.push([data[i],data[i+1],data[i+2]]);
+  function lum(p){return p[0]*.3+p[1]*.59+p[2]*.11;}
+  px.sort(function(a,b){return lum(b)-lum(a);});ink.sort(function(a,b){return lum(a)-lum(b);});
+  function avg(a,n){n=Math.max(1,Math.min(a.length,n));var s=[0,0,0];for(var i=0;i<n;i++){s[0]+=a[i][0];s[1]+=a[i][1];s[2]+=a[i][2];}return 'rgb('+(s[0]/n|0)+','+(s[1]/n|0)+','+(s[2]/n|0)+')';}
+  return {bg:avg(px,Math.ceil(px.length/2)),ink:avg(ink,Math.ceil(ink.length*0.12))};
+}
+
+/* ---------- text mode layout ---------- */
+function layoutText(){
+  var txt=$('txt').value.trim()||S[lang].demo;
+  var W=1000,fs=36,lh=fs*1.7,m=48;cv.width=W;
+  ctx.font=fs+'px '+FONT;
+  var tokens=txt.split(/\s+/),lines=[],x=m,y=m,out=[];
+  var sp=ctx.measureText(' ').width;
+  tokens.forEach(function(tk){var w=ctx.measureText(tk).width;if(x+w>W-m&&x>m){x=m;y+=lh;}out.push({t:tk,x:x,y:y,w:w,h:fs*1.05,fs:fs,col:null});x+=w+sp;});
+  cv.height=Math.ceil(y+lh+m*0.6);
+  out.forEach(function(w,i){w.i=i;});words=out;base=null;baseKind='paper';
+}
+
+/* ---------- distortion engine ---------- */
+function rnd(a,b,c){var h=(a*374761393+b*668265263+c*2147483647)|0;h=(h^(h>>>13))*1274126177|0;return ((h^(h>>>16))>>>0)/4294967295;}
+var MIR={b:'d',d:'b',p:'q',q:'p',B:'D',D:'B',P:'Q',Q:'P'};
+var SND={b:'p',p:'b',d:'t',t:'d',g:'k',k:'g',z:'s',s:'z',ž:'š',š:'ž',v:'f',f:'v',m:'n',n:'m',i:'y',y:'i',e:'ė',ė:'e',u:'ū',ū:'u',a:'e'};
+function transform(word,f,ep){
+  var ch=Array.from(word.t),i=word.i,k;
+  var L=[];ch.forEach(function(c,j){if(/\p{L}/u.test(c))L.push(j);});
+  if(f.trans&&L.length>=4&&rnd(i,ep,1)<0.55){k=1+Math.floor(rnd(i,ep,2)*(L.length-3));var a=L[k],b=L[k+1];var tmp=ch[a];ch[a]=ch[b];ch[b]=tmp;}
+  if(f.mirror){ch=ch.map(function(c,j){return MIR[c]&&rnd(i*31+j,ep,3)<0.45?MIR[c]:c;});}
+  if(f.sound&&L.length&&rnd(i,ep,4)<0.4){k=L[Math.floor(rnd(i,ep,5)*L.length)];var lc=ch[k].toLowerCase(),r=SND[lc];if(r){ch[k]=ch[k]===lc?r:r.toUpperCase();}}
+  return ch;
+}
+function drawWord(w,f,t,ep,slowA){
+  var paper=!!w.col,fs=w.fs;
+  var ch=transform(w,f,ep);
+  ctx.font=fs+'px '+FONT;
+  var widths=ch.map(function(c){return ctx.measureText(c).width;}),nat=widths.reduce(function(a,b){return a+b;},0)||1;
+  var k=paper?Math.max(0.55,Math.min(1.8,w.w/nat)):1;
+  var sp=f.crowd?0.84:1,total=nat*k*sp,x=w.x+(w.w-total)/2;
+  var baseY=paper?w.bl:w.y+fs*0.82;
+  var ink=paper?w.col.ink:'#111';
+  if(paper){ctx.fillStyle=w.col.bg;ctx.fillRect(w.x-3,w.y-3,w.w+6,w.h+6);}
+  ctx.save();ctx.globalAlpha=slowA;ctx.fillStyle=ink;
+  if(f.crowd){ctx.shadowColor=ink;ctx.shadowBlur=fs*0.09;}
+  if(f.slow&&slowA<0.5){ctx.shadowColor=ink;ctx.shadowBlur=fs*0.22;}
+  var dy=0;
+  for(var j=0;j<ch.length;j++){
+    var ox=0,oy=0;
+    if(f.shimmer){oy=Math.sin(t*2.3+j*0.9+w.i*1.7)*fs*0.08;ox=Math.sin(t*1.6+j*1.3+w.i)*fs*0.035;}
+    ctx.save();ctx.translate(x+ox,baseY+oy);ctx.scale(k,1);ctx.fillText(ch[j],0,0);
+    if(f.crowd){ctx.globalAlpha=slowA*0.32;ctx.fillText(ch[j],fs*0.07,0);}
+    ctx.restore();
+    x+=widths[j]*k*sp;
+  }
+  if(f.shimmer&&rnd(w.i,Math.floor(t/2.2),9)<0.12){ctx.globalAlpha=0.16+0.1*Math.sin(t*3);ctx.shadowBlur=fs*0.15;ctx.font=fs+'px '+FONT;ctx.fillText(ch.join(''),w.x+fs*0.3,baseY+fs*0.55);}
+  ctx.restore();
+}
+function frame(now){
+  requestAnimationFrame(frame);
+  if(!mode)return;
+  var t=(now-t0)/1000;
+  if(baseKind==='video'&&video&&video.videoWidth){ctx.drawImage(video,0,0,cv.width,cv.height);}
+  else if(base){ctx.drawImage(base,0,0,cv.width,cv.height);}
+  else if(baseKind==='paper'){ctx.fillStyle='#FBFAF6';ctx.fillRect(0,0,cv.width,cv.height);}
+  else{ctx.fillStyle='#111';ctx.fillRect(0,0,cv.width,cv.height);}
+  if(!words.length)return;
+  if(level===0&&baseKind!=='paper')return;
+  var f=feats(),ep=Math.floor(t/3.2),N=words.length,cur=(t*1.5)%(N+4);
+  for(var i=0;i<N;i++){
+    var a=1;
+    if(f.slow){var d=cur-i;a=d<0?0.16:d<1?0.16+0.84*d:d<10?1:Math.max(0.5,1-(d-10)*0.06);}
+    drawWord(words[i],f,t,ep,a);
+  }
+  if(challengeEnd){var left=Math.ceil((challengeEnd-Date.now())/1000);if(left<=0){challengeEnd=0;$('timer').classList.remove('on');status(S[lang].timeup,5000);ev('challenge_end',{level:level});}else $('timer').textContent=left;}
+}
+requestAnimationFrame(frame);
+
+/* ---------- challenge, share, vote ---------- */
+$('challenge').onclick=function(){if(level<2)setLevel(4);challengeEnd=Date.now()+20000;t0=performance.now();$('timer').textContent='20';$('timer').classList.add('on');$('view').scrollIntoView({behavior:'smooth',block:'center'});ev('challenge_start',{level:level,mode:mode});};
+$('share').onclick=function(){
+  var url=location.origin+location.pathname+'?src=share'+(lang==='en'?'&lang=en':'');
+  ev('share',{level:level});
+  if(navigator.share){navigator.share({title:document.title,text:S[lang].shareT,url:url}).catch(function(){});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){status(S[lang].copied,2000);});}
+};
+[].forEach.call($('vote').children,function(b){b.onclick=function(){[].forEach.call($('vote').children,function(x){x.setAttribute('aria-pressed',x===b);});$('thanks').style.display='block';ev('feel_vote',{v:b.getAttribute('data-v'),level:level,iso:iso,mode:mode});};});
+
+window.addEventListener('error',function(e){ev('error',{v:String(e.message).slice(0,60)});});
+applyLang();
+})();
+</script>
+</body>
+</html>
