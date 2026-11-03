@@ -232,6 +232,16 @@ h2{font-size:84px;color:var(--cyan)}
 .gifph{width:780px;height:860px;border:6px dashed #ffffff88;border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#ffffffcc}
 .gifph span{font:400 64px var(--head)}
 .gifph small{font-size:32px}
+.sndgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;flex:1;min-height:0}
+.snd{all:unset;box-sizing:border-box;cursor:pointer;background:transparent;border:5px solid var(--cyan);border-radius:28px;padding:22px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;color:#fff}
+.snd.song{border-color:var(--yellow)}
+.snd .sn{font:400 110px/1 var(--head);color:var(--cyan)}
+.snd.song .sn{color:var(--yellow)}
+.snd .nm{font:400 44px/1.1 var(--head)}
+.snd .sb{font-size:30px;font-weight:600;opacity:.85}
+.snd .pl{margin-top:8px;font:400 30px var(--head);background:#ffffff22;border-radius:999px;padding:6px 22px}
+.snd.on{background:#4FD8FF33;box-shadow:0 0 50px #4FD8FF88}
+.snd.on .pl{background:#E8413C}
 .panels{display:flex;gap:30px;flex:1;min-height:0}
 .panel{flex:1;background:#141B3ECC;border:4px solid var(--cyan);border-radius:28px;padding:26px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;min-width:0}
 .panel .rn{font:400 44px var(--head);color:var(--cyan)}
@@ -365,7 +375,7 @@ h2{font-size:84px;color:var(--cyan)}
 </section>
 
 <!-- 10 -->
-<section class="slide pic" data-src="KV_R2_D10 KV_R3_C28" data-notes='Charades, the classic: no drawing, no buttons.||Ask: “What are you most excited to wake up for?”||One volunteer steps up and acts it out. No words! Everyone else guesses.||Right guess: the actor says “I get up for ___!”||A few more rounds, a new kid acts each time.||Mentor: “That’s what makes you stop your alarm and get up. That’s your UNTIL!”' data-t="6|5">
+<section class="slide pic" data-src="KV_R2_D10 KV_R3_C28" data-notes='Charades, the classic: no drawing, no buttons.||Ask: “What are you most excited to wake up for?”||One volunteer steps up and acts it out. No words! Everyone else guesses.||Right guess: the actor says “I get up for ___!”||A few more rounds, a new kid acts each time.||Mentor: “That’s what makes you stop your alarm and get up. That’s your UNTIL!”' data-t="5|4">
   <div class="row" style="align-items:center">
     <div class="side" style="flex:1"><h2>WHAT WAKES YOU UP? 🎭</h2>
     <ol class="steps">
@@ -543,16 +553,16 @@ h2{font-size:84px;color:var(--cyan)}
 </section>
 
 <!-- 25 -->
-<section class="slide pic" data-src="KV_R3_C24 STD_ONETASK FF_RUTH_SB" data-part="Make it better" data-notes='ONE task for the whole crew. Point at the bed: “What else is missing here?”||Crews build more for the bedroom: a pillow, a blanket, a lamp, a chair, a table… No instructions, spare bricks only.||Start the timer, step back. Ask: “What is it? Who uses it?”||Last minute: every crew puts its alarm clock in the bedroom and rings it once.||Younglings: same task, the mentor helps pick one thing each.' data-t="15|9">
+<section class="slide pic" data-src="KV_R3_C24 STD_ONETASK FF_RUTH_SB" data-part="Make it better" data-notes='ONE task for the whole crew. Point at the bed: “What else is missing here?”||Crews build more for the bedroom: a pillow, a blanket, a lamp, a chair, a table… No instructions, spare bricks only.||Start the timer, step back. Ask: “What is it? Who uses it?”||Last minute: every crew puts its alarm clock in the bedroom and rings it once.||Younglings: same task, the mentor helps pick one thing each.' data-t="12|7">
   <div class="row" style="align-items:center;gap:40px">
     <div class="who" style="flex:none"><img src="deck-assets/luna-full-hq.png" alt="Luna" style="height:900px"></div>
     <div class="col" style="gap:26px;justify-content:center">
       <h2>WHAT ELSE IS MISSING HERE? 🛏️</h2>
       <div class="ladder" style="font-size:48px;gap:14px"><span>🛏️ a bed ✅</span><span>🧸 a pillow?</span><span>💡 a lamp?</span><span class="bp">🪑 what else?</span></div>
     </div>
-    <div class="clock" id="clock" data-round="900" data-rounds="1|1" style="flex:0 0 420px">
+    <div class="clock" id="clock" data-round="720" data-rounds="1|1" style="flex:0 0 420px">
       <div class="rnd" id="clkRound" style="display:none"></div>
-      <div class="dig" id="clkDigits">15:00</div>
+      <div class="dig" id="clkDigits">12:00</div>
       <div class="btns">
         <button type="button" id="clkStart">Start</button>
         <button type="button" id="clkReset">Reset</button>
@@ -603,15 +613,17 @@ h2{font-size:84px;color:var(--cyan)}
 </section>
 
 <!-- 30 -->
-<section class="slide pic" data-src="TRAJ_P11 MINE_CLIFF KV_R0_D9" data-notes='Read Luna, puzzled: “Our alarm plays music now… Leo, are you DANCING?”||Leo, wiggling: “I can’t stop! Could a robot teach me a real dance…?”||Don’t answer. Let them guess.' data-t="1|1">
-  <div class="row" style="align-items:center">
-    <div class="who" style="flex:none"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna" style="height:1000px"></div>
-    <div class="col" style="gap:40px">
-      <p class="t c" style="margin:0">NEXT TIME…</p>
-      <p class="say"><b>LUNA</b>“Leo, are you DANCING?” 🎵</p>
-      <p class="say"><b>LEO</b>“I can’t stop! 🕺”</p>
-    </div>
+<section class="slide" data-src="KV_R4_D9 TRAJ_P11" data-notes='Tap a tile = play, tap again = stop. All 5 play right here (4 and 5 are short dance tracks).||Hands up: “Which alarm wakes you best?” Ask 2–3 kids: “WHY?”||Next: the question shows. Read it slowly. Don’t answer it.||Younglings: vote with hands, then a little wake-up dance.||~5 min (60 min: 4).' data-t="5|4">
+  <h2 style="text-align:center;font-size:72px;margin:0">WHICH ALARM WAKES YOU BEST? ⏰</h2>
+  <div class="sndgrid">
+    <button type="button" class="snd" data-a="deck-assets/alarm-1-jarring.mp3"><span class="sn">1</span><span class="nm">JARRING</span><span class="sb">harsh buzzer</span><span class="pl">▶ PLAY</span></button>
+    <button type="button" class="snd" data-a="deck-assets/alarm-2-standard.mp3"><span class="sn">2</span><span class="nm">STANDARD</span><span class="sb">beep-beep</span><span class="pl">▶ PLAY</span></button>
+    <button type="button" class="snd" data-a="deck-assets/alarm-3-melodic.mp3"><span class="sn">3</span><span class="nm">MELODIC</span><span class="sb">gentle chime</span><span class="pl">▶ PLAY</span></button>
+    <button type="button" class="snd song" data-a="deck-assets/alarm-4-morning-groove.mp3"><span class="sn">4</span><span class="nm">♪ Morning Groove</span><span class="sb">happy soul</span><span class="pl">▶ PLAY</span></button>
+    <button type="button" class="snd song" data-a="deck-assets/alarm-5-sunny-shuffle.mp3"><span class="sn">5</span><span class="nm">♪ Sunny Shuffle</span><span class="sb">clap-along funk</span><span class="pl">▶ PLAY</span></button>
   </div>
+  <p class="t" style="margin:0;text-align:center">✋ Vote! Which one? <span class="y">WHY?</span></p>
+  <p class="quote rv" style="margin:0;font-size:58px">If an alarm makes you <span class="y">DANCE</span> out of bed… can we build a robot that <span class="y">DANCES?</span> 🤖🕺</p>
 </section>
 
 <!-- 31 -->
@@ -641,7 +653,7 @@ const hasReveal=s=>!!s.querySelector('.rv');
 function show(n){
   i=Math.max(0,Math.min(slides.length-1,n));
   slides.forEach((s,k)=>{s.classList.toggle('on',k===i);s.classList.remove('shown');s.querySelectorAll('.rs.in').forEach(e=>e.classList.remove('in'));const v=s.querySelector('video');if(v){if(k===i){try{v.currentTime=0;const p=v.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}else v.pause()}});
-  if(window.alarmStop)window.alarmStop();
+  if(window.alarmStop)window.alarmStop();if(window.sndStop)window.sndStop();
   document.getElementById('count').textContent=`${i+1} / ${slides.length}`;
   const s=slides[i],t=(s.dataset.t||'').split('|'),notes=(s.dataset.notes||'').split('||');
   const f=x=>x==='0'?'skip':x+' min';
@@ -654,7 +666,7 @@ document.getElementById('next').onclick=next;
 document.getElementById('tn').onclick=()=>{const n=document.getElementById('notes');n.hidden=!n.hidden};
 vp.addEventListener('click',e=>{const r=vp.getBoundingClientRect();if(e.clientX-r.left>r.width/2)next();else show(i-1)});
 document.addEventListener('keydown',e=>{
-  if(e.target&&e.target.closest&&e.target.closest('.clock,.abtns'))return;
+  if(e.target&&e.target.closest&&e.target.closest('.clock,.abtns,.sndgrid'))return;
   if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
   else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
   else if(e.key==='n'||e.key==='N'){document.getElementById('tn').click()}
@@ -740,6 +752,14 @@ document.addEventListener('keydown',e=>{
 document.addEventListener('error',e=>{const im=e.target;if(!im||im.tagName!=='IMG'||im.dataset.missed)return;im.dataset.missed=1;const d=document.createElement('div');d.className='ph';d.innerHTML='<b>PLACEHOLDER</b>'+(im.getAttribute('alt')||'')+'<span style="font-size:24px;opacity:.7">'+(im.getAttribute('src')||'').replace('deck-assets/','')+'</span>';d.style.cssText=im.getAttribute('style')||'';im.replaceWith(d)},true);
 document.querySelectorAll('img').forEach(im=>{if(im.complete&&im.naturalWidth===0)im.dispatchEvent(new Event('error'))});
 document.querySelectorAll('.slide.ad video').forEach(v=>{if(v.error)v.closest('.slide').classList.add('vfail')});
+/* Alarm-sound vote tiles: one plays at a time; clicks never change the slide */
+(function(){const tiles=[...document.querySelectorAll('.snd')];let cur=null,curT=null;
+  const stop=()=>{if(cur){cur.pause();cur.currentTime=0}if(curT){curT.classList.remove('on');curT.querySelector('.pl').textContent='▶ PLAY'}cur=null;curT=null};
+  window.sndStop=stop;
+  tiles.forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();
+    if(curT===t){stop();return}stop();const a=new Audio(t.dataset.a);a.loop=true;cur=a;curT=t;t.classList.add('on');t.querySelector('.pl').textContent='■ STOP';
+    const p=a.play();if(p&&p.catch)p.catch(()=>stop())}));
+})();
 addEventListener('resize',fit);
 const m=/^#s(\d+)$/.exec(location.hash);
 fit();show(m?+m[1]-1:0);
