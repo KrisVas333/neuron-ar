@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FB L10 Wake-Up Call</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Kanit:wght@400;600;800&display=swap">
+<style>
+/* Layout: one 1920×1080 stage scaled to fit; cloned from the L9 deck (L8 look) (purple gradient, Russo One, cyan + yellow). Notes panel under the stage. */
+:root{
+  --navy:#141B3E; --deep:#0A0620; --cyan:#4FD8FF; --yellow:#FFC24B; --frame:#FFD34D; --white:#FFFFFF; --green:#7CFC9A; --violet:#7B3FF2; --orange:#FFAB19;
+  --page:#0A0620; --ui:#1A1F4E; --uifg:#E8ECFF;
+  --head:"Russo One", "Arial Black", sans-serif; --body:"Kanit", "Segoe UI", sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--page);color:var(--uifg);font-family:var(--body);display:flex;flex-direction:column;align-items:center;padding-inline:16px;padding-block:12px}
+.bar{width:min(100%, calc((100vh - 84px) * 16 / 9));display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-bottom:10px;font-size:14px}
+.bar b{font-family:var(--head);font-weight:400;letter-spacing:.03em}
+.bar button{background:var(--ui);color:var(--uifg);border:1px solid #2f3a7a;border-radius:6px;padding:6px 12px;font:600 14px var(--body);cursor:pointer}
+.bar button:focus-visible{outline:2px solid var(--cyan)}
+.viewport{width:min(100%, calc((100vh - 84px) * 16 / 9));flex:none;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px #0008}
+.stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.slide{position:absolute;inset:0;background:url(deck-assets/image23-hq.png) center/cover;color:var(--white);padding:70px 90px;display:none;flex-direction:column;gap:30px;overflow:hidden}
+.slide.on{display:flex}
+.slide.big{box-shadow:inset 0 0 0 16px var(--frame)}
+.slide.big::after{content:"BIGGER KIDS ONLY";position:absolute;top:28px;right:40px;background:var(--frame);color:var(--navy);font:400 30px var(--head);padding:6px 18px;border-radius:8px}
+.slide.young::after{content:"YOUNGLINGS";position:absolute;top:28px;right:40px;background:var(--cyan);color:var(--navy);font:400 30px var(--head);padding:6px 18px;border-radius:8px}
+h1,h2{font-family:var(--head);font-weight:400;margin:0;line-height:1.05;text-wrap:balance}
+h1{font-size:110px}
+h2{font-size:84px;color:var(--cyan)}
+.t{font-size:52px;line-height:1.2;font-weight:600}
+.s{font-size:44px;line-height:1.25}
+.y{color:var(--yellow)}
+.c{color:var(--cyan)}
+.row{display:flex;gap:40px;align-items:stretch;flex:1;min-height:0}
+.col{display:flex;flex-direction:column;gap:24px;flex:1;min-width:0}
+.card{background:#141B3ECC;border:3px solid var(--cyan);border-radius:24px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;flex:1;min-width:0}
+.card .lb{font:400 50px var(--head)}
+.wcard{background:#fff;border-radius:24px;border:6px solid var(--white);display:flex;align-items:center;justify-content:center;overflow:hidden;min-width:0;min-height:0}
+.wcard img{width:100%;height:100%;object-fit:contain;display:block}
+.steps{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:24px;align-items:center;font-size:var(--fs,48px);line-height:1.15;font-weight:600}
+.steps .n{flex:none;width:80px;height:80px;border-radius:50%;background:var(--cyan);color:var(--navy);display:grid;place-items:center;font:400 46px var(--head)}
+.word{background:var(--yellow);color:var(--navy);border-radius:24px;padding:26px 40px;display:flex;flex-direction:column;gap:6px}
+.word .k{font:400 40px var(--head);letter-spacing:.06em}
+.word .w{font:400 120px var(--head);line-height:1}
+.word .d{font-size:50px;font-weight:600}
+.timer{position:absolute;left:40px;bottom:30px;font:400 34px var(--head);color:var(--yellow)}
+.credit{position:absolute;right:30px;bottom:14px;font-size:20px;color:#ffffffaa}
+.quote{font:800 76px/1.15 var(--body);text-align:center}
+.center{align-items:center;justify-content:center;text-align:center}
+.who img{height:560px}
+.frame{background:#141B3ECC;border-left:12px solid var(--yellow);border-radius:16px;padding:22px 30px;font-size:50px;font-weight:600;line-height:1.2}
+.rules{display:flex;gap:24px;justify-content:center}
+.rules figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;font:400 40px var(--head)}
+.rules img{width:310px;height:310px;object-fit:contain}
+.slide.ad{padding:0;background:#000}
+.slide.ad video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* picture slides: text compact on one side, picture as big as possible */
+.slide.pic{padding:40px 48px}
+.side{flex:none;display:flex;flex-direction:column;justify-content:center;gap:34px;min-width:0}
+.side h2{font-size:76px}
+.side .steps{--fs:42px;gap:20px}
+.side .steps .n{width:70px;height:70px;font-size:40px}
+/* Tomorrow Map: one white canvas image, full slide */
+.slide.mapfull{padding:0;background:#fff}
+.mapfull img.m{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mapfull .mt{position:absolute;top:26px;left:50%;transform:translateX(-50%);background:var(--navy);color:var(--cyan);font:400 64px var(--head);padding:8px 36px;border-radius:16px;white-space:nowrap}
+.mapfull .mq{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font:600 52px var(--body);padding:6px 36px;border-radius:16px;white-space:nowrap}
+.mapfull .mlbl{position:absolute;transform:translateX(-50%);font:400 48px var(--head);background:var(--yellow);color:var(--navy);border-radius:14px;padding:6px 26px;white-space:nowrap;box-shadow:0 0 40px #FFC24B88}
+/* black-canvas Tomorrow Map (old, unused) */
+.map{position:relative;flex:1;min-height:0;background:#000;border-radius:28px;border:4px solid #ffffff33;overflow:hidden}
+.map svg.path{position:absolute;inset:0;width:100%;height:100%}
+.mobj{position:absolute;width:380px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.mobj .ph{width:380px;height:290px;border-radius:20px;background:#fff;display:grid;place-items:center;overflow:hidden;border:5px solid var(--green)}
+.mobj .ph img{max-width:370px;max-height:280px;object-fit:contain}
+.mobj .ph.dark{background:#000}
+.mobj .lbl{font:400 40px var(--head);color:var(--yellow);background:#141B3E;border:3px dashed var(--yellow);border-radius:14px;padding:4px 22px;white-space:nowrap}
+.mobj.new .ph{border-color:var(--yellow);box-shadow:0 0 50px #FFC24B88}
+.mobj.new .lbl{border-style:solid;background:var(--yellow);color:var(--navy)}
+/* reveal on Next (first press reveals, second goes on) */
+.rv{transition:opacity .3s}
+.slide:not(.shown) .rv{opacity:0}
+.slide:not(.shown) .rv-cover{opacity:1}
+.slide.shown .rv-cover{opacity:0}
+/* clock game */
+.clk{position:relative;width:900px;height:900px;flex:none}
+.clk svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.clk .sec{fill:#141B3E;stroke:#fff;stroke-width:8;transition:fill .3s,opacity .3s}
+.clk .ic{position:absolute;transform:translate(-50%,-50%);transition:opacity .3s,transform .3s;display:flex;flex-direction:column;align-items:center}
+.clk .ic img{display:block;max-width:300px;max-height:240px;object-fit:contain;border-radius:18px}
+.clk.wb .ic img{max-width:410px;max-height:200px}
+.clk.tb .ic img{max-width:250px;max-height:250px;border-radius:40px}
+.clk .tick{position:absolute;transform:translate(-50%,-50%);font:400 150px var(--head);color:var(--green);opacity:0;transition:opacity .3s;text-shadow:0 0 30px #000}
+.slide.shown .clk .sec.ok{fill:#2a6b3e}
+.slide.shown .clk .sec:not(.ok){opacity:.25}
+.slide.shown .clk .ic:not(.ok){opacity:.2}
+.slide.shown .clk .ic.ok{transform:translate(-50%,-50%) scale(1.12)}
+.slide.shown .clk .tick{opacity:1}
+.clk .hub{fill:var(--yellow)}
+/* C-block drawn in CSS (check in) */
+.cblk{background:var(--orange);border-radius:18px;padding:16px 0 26px 0;display:flex;flex-direction:column;gap:12px;width:fit-content}
+.cblk .hd{font:600 44px var(--body);color:var(--navy);padding:0 26px;display:flex;align-items:center;gap:14px}
+.cblk .hd b{background:#fff;border-radius:40px;padding:0 22px}
+.cblk .in{margin-left:40px;background:#ffffff22;border-radius:10px 0 0 10px;padding:10px 20px 10px 10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.stack{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.stack img,.cblk img{height:84px;width:auto;display:block}
+.stack{gap:0}.stack img.r,.cblk img.r{height:108px}.stack img.w,.cblk img.w{height:103px}
+.stack img+img,.cblk .in img+img{margin-top:-25px}
+/* timer widget */
+.clock{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#141B3ECC;border:4px solid var(--yellow);border-radius:28px;padding:24px}
+.clock .rnd{font:400 44px var(--head);color:var(--cyan)}
+.clock .dig{font:400 170px/1 var(--head);color:var(--yellow);font-variant-numeric:tabular-nums}
+.clock .dig.end{color:#ff8a7d}
+.clock .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.clock button{font:400 36px var(--head);background:var(--cyan);color:var(--navy);border:0;border-radius:14px;padding:10px 22px;cursor:pointer}
+.clock button:focus-visible{outline:4px solid var(--white)}
+.ladder{display:flex;flex-direction:column;gap:10px;font:400 50px var(--head)}
+.ladder span{background:#141B3ECC;border:3px solid var(--cyan);border-radius:14px;padding:6px 22px}
+.ladder .bp{border-color:var(--yellow);color:var(--yellow)}
+.ladder .dr{border-color:#ff8a7d;color:#ff8a7d}
+.notes{width:min(100%, calc((100vh - 84px) * 16 / 9));margin-top:12px;background:var(--ui);border-radius:8px;padding:14px 18px;font-size:16px;line-height:1.5}
+.notes h3{margin:0 0 6px;font:400 16px var(--head);color:var(--cyan)}
+.notes ul{margin:0;padding-left:20px}
+.notes .tm{color:var(--yellow);font-weight:600}
+.notes[hidden]{display:none}
+@media (prefers-reduced-motion:no-preference){.slide.on{animation:fade .25s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+/* missing picture fallback */
+.miss{width:100%;height:100%;min-height:200px;border:6px dashed #888;border-radius:16px;background:#f4f4f4;color:#333;display:grid;place-items:center;font:600 36px var(--body);text-align:center;padding:20px;word-break:break-all}
+/* speech bubbles (hook) */
+.say{background:#fff;color:var(--navy);border-radius:28px;padding:24px 34px;font:800 56px/1.15 var(--body);position:relative;box-shadow:0 10px 30px #0006}
+.say b{display:block;font:400 40px var(--head);color:var(--violet);margin-bottom:6px}
+/* own animations (word slide + carousel), drawn by JS on a 1920 stage */
+.scene{position:relative;background:#fff;border-radius:28px;overflow:hidden}
+.scene .post{position:absolute;left:50%;width:44px;margin-left:-22px;top:60px;bottom:90px;background:repeating-linear-gradient(#9aa3ad 0 14px,#7d8690 14px 18px);border:4px solid #222;border-radius:8px}
+.scene .base{position:absolute;left:50%;bottom:40px;width:420px;height:80px;margin-left:-210px;background:#16A39A;border:4px solid #222;border-radius:50%}
+.scene .disc{position:absolute;left:50%;width:380px;height:96px;margin-left:-190px;border-radius:50%;background:#F05A8C;border:5px solid #222}
+.scene .rider{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:4px solid #222}
+.loopl{display:flex;flex-direction:column;gap:22px;font:400 54px var(--head)}
+.loopl span{border:6px solid #ffffff44;border-radius:999px;padding:12px 36px;background:#141B3ECC;transition:all .2s}
+.loopl span.in{margin-left:70px}
+.loopl span.lit{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 40px #FFC24B88}
+.carou .roof{position:absolute;left:50%;top:40px;width:0;height:0;margin-left:-330px;border-left:330px solid transparent;border-right:330px solid transparent;border-bottom:190px solid #E8413C}
+.carou .roofb{position:absolute;left:50%;top:228px;width:700px;height:56px;margin-left:-350px;background:repeating-linear-gradient(90deg,#E8413C 0 70px,#fff 70px 140px);border:4px solid #222;border-radius:14px}
+.carou .pole{position:absolute;left:50%;top:284px;bottom:150px;width:30px;margin-left:-15px;background:#FFC24B;border:4px solid #222}
+.carou .floor{position:absolute;left:50%;bottom:70px;width:820px;height:150px;margin-left:-410px;background:#4FD8FF;border:5px solid #222;border-radius:50%}
+.carou .horse{position:absolute;font-size:150px;line-height:1;margin:-75px 0 0 -75px}
+/* game: program blocks drawn in CSS */
+.prog{display:flex;flex-direction:column;align-items:flex-start;gap:18px;font:400 92px var(--head)}
+.slide.young .prog{font-size:130px}
+.gb .gb{background:#FFC870;border:5px solid #C77D00}
+.gb{background:var(--orange);color:var(--navy);border-radius:20px;padding:14px 0 26px;display:flex;flex-direction:column;gap:12px}
+.gb>.hd{padding:0 30px;display:flex;align-items:center;gap:16px}
+.gb>.hd b{background:#fff;border-radius:40px;padding:0 24px}
+.gb>.in{margin-left:46px;display:flex;flex-direction:column;gap:12px;padding-right:20px}
+.mv{background:#16A39A;color:#fff;border-radius:20px;padding:16px 40px;border:4px solid #0d6f69;width:fit-content}
+.ans{font:400 64px var(--head);background:var(--yellow);color:var(--navy);border-radius:18px;padding:10px 34px;width:fit-content}
+.gstep{display:flex;gap:30px;justify-content:center}
+.gstep figure{margin:0;flex:1;background:#141B3ECC;border:4px solid var(--cyan);border-radius:28px;padding:30px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.gstep .e{font-size:150px;line-height:1}
+.gstep .l{font:400 60px var(--head);color:var(--yellow)}
+.gstep .d{font-size:42px;font-weight:600;line-height:1.2}
+/* game programs stacked from real block tiles */
+.wp{--s:.62;display:flex;flex-direction:column;align-items:flex-start}
+.wrp{display:flex;flex-direction:column;width:calc(1024px*var(--s))}
+.wrp>img{display:block;width:100%}
+.wrp>.mid{background:url(deck-assets/icons-hq/word-repeat-spine.png) left top/100% 100% repeat-y;padding:0 0 0 calc(131px*var(--s));margin:-2px 0;display:flex;flex-direction:column;align-items:flex-start;min-height:calc(90px*var(--s))}
+.wp img.mv2{height:calc(211px*var(--s));width:auto;display:block}
+.wrp>.mid>*+*{margin-top:calc(-24px*var(--s))}
+.wrp>.mid>*:first-child{margin-top:calc(-30px*var(--s))}
+.ip{display:flex;align-items:flex-start}
+.irp{display:flex;flex-direction:column}
+.irp>.bar{height:36px;background:#FBAB18;border:4px solid #835A0C;border-radius:14px 14px 0 0;margin:0 0 -4px}
+.irp>.row2{display:flex;align-items:flex-start}
+.it{display:flex;flex-direction:column;align-items:center;gap:8px}
+.it img{width:230px;height:auto;display:block}
+.it .num{font:400 76px var(--head);background:#fff;color:var(--navy);border:5px solid #835A0C;border-radius:40px;padding:0 30px;line-height:1.15}
+/* ad fallback: only when the video fails */
+.slide.ad .vfb{display:none;position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,#2a2f7a,#0A0620);color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center}
+.slide.ad.vfail .vfb{display:flex}
+.slide.ad.vfail video{display:none}
+.vfb .moon{font-size:260px;line-height:1}
+.vfb .tag{font:400 110px var(--head)}
+.vfb .sub{font:600 56px var(--body);color:var(--cyan)}
+.vfb .fn{position:absolute;right:24px;bottom:16px;font-size:20px;color:#ffffff66}
+</style>
+<style>
+/* L10 additions: live alarm, sleepy hook, draft badge, placeholders, game panels, bug frame */
+.miss{font-size:30px;line-height:1.25}
+.ph{width:100%;height:100%;min-height:200px;border:6px dashed #c9372c;border-radius:16px;background:#fff4f2;color:#7a1d16;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font:600 34px var(--body);text-align:center;padding:24px}
+.ph b{font:400 40px var(--head);color:#c9372c}
+.alarmbox{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.alarmpic{position:relative;width:700px;height:560px;cursor:pointer}
+.alarmpic .wcard{width:100%;height:100%}
+.alarmpic.ring{animation:shake .14s linear infinite}
+@keyframes shake{0%{transform:rotate(-4deg) translateX(-6px)}50%{transform:rotate(4deg) translateX(6px)}100%{transform:rotate(-4deg) translateX(-6px)}}
+.alarmpic .wave{position:absolute;top:50%;width:120px;height:240px;margin-top:-120px;border:12px solid var(--yellow);border-radius:50%;opacity:0}
+.alarmpic .wave.l{left:-150px;border-right-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
+.alarmpic .wave.r{right:-150px;border-left-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
+.alarmpic.ring .wave{animation:wv .5s ease-out infinite}
+@keyframes wv{from{opacity:1;transform:scale(.7)}to{opacity:0;transform:scale(1.3)}}
+.abtns{display:flex;gap:30px}
+.abtn{font:400 52px var(--head);border:0;border-radius:999px;padding:18px 54px;cursor:pointer;box-shadow:0 10px 0 #0006}
+.abtn:active{transform:translateY(6px);box-shadow:0 4px 0 #0006}
+.abtn.go{background:var(--cyan);color:var(--navy)}
+.abtn.stop{background:#E8413C;color:#fff}
+.abtn:focus-visible{outline:6px solid #fff}
+.ru{display:flex;gap:24px;font:400 70px var(--head)}
+.ru span{border:6px solid #ffffff44;border-radius:999px;padding:8px 36px;background:#141B3ECC;transition:all .2s}
+.ru span.lit{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 40px #FFC24B88}
+.sleep{position:relative}
+.sun{position:absolute;right:-40px;top:-40px;font-size:220px;line-height:1;filter:drop-shadow(0 0 40px #FFC24B)}
+.zzz{position:absolute;left:60%;top:6%;font:400 110px var(--head);color:#fff;text-shadow:0 6px 20px #000a;transform:rotate(-12deg)}
+.poll{display:flex;gap:26px}
+.poll span{flex:1;background:#141B3ECC;border:4px solid var(--cyan);border-radius:24px;padding:16px;text-align:center;font:400 40px var(--head);display:flex;flex-direction:column;align-items:center;gap:6px}
+.poll span i{font-style:normal;font-size:100px;line-height:1}
+.slide.draft::before{content:"DRAFT GAME · NOT LOCKED";position:absolute;left:40px;bottom:26px;background:#E8413C;color:#fff;font:400 30px var(--head);padding:6px 18px;border-radius:8px;z-index:5}
+.rs{opacity:0;transition:opacity .3s}.rs.in{opacity:1}
+.ruq{display:flex;flex-direction:column;gap:20px;flex:1;justify-content:center;margin:0;padding:0;list-style:none}
+.ruq li{display:flex;align-items:center;gap:24px;background:#141B3ECC;border:4px solid #ffffff33;border-radius:24px;padding:14px 28px;font:700 48px/1.15 var(--body)}
+.ruq .st b{color:var(--yellow);font-family:var(--head);font-weight:400}
+.ruq .an{margin-left:auto;background:var(--yellow);color:var(--navy);border-radius:16px;padding:6px 24px;font:800 46px var(--body);white-space:nowrap}
+.slide.sugg::before{content:"⚠ SUGGESTION · NOT LOCKED";position:absolute;left:40px;bottom:26px;background:#E8413C;color:#fff;font:400 30px var(--head);padding:6px 18px;border-radius:8px;z-index:5}
+.s4 .say{background:transparent;color:#fff;border:4px solid #fff;box-shadow:none}
+.s4 .say b{color:var(--yellow)}
+.s4 .poll span{background:transparent}
+.ru.plain span{border:none;background:none;padding:0 12px}
+.ru.plain span.lit{box-shadow:none;text-shadow:0 0 30px #FFC24B}
+.gif4{flex:none;width:860px;height:860px;object-fit:contain;display:block;border-radius:32px}
+.gifph{width:780px;height:860px;border:6px dashed #ffffff88;border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#ffffffcc}
+.gifph span{font:400 64px var(--head)}
+.gifph small{font-size:32px}
+.panels{display:flex;gap:30px;flex:1;min-height:0}
+.panel{flex:1;background:#141B3ECC;border:4px solid var(--cyan);border-radius:28px;padding:26px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;min-width:0}
+.panel .rn{font:400 44px var(--head);color:var(--cyan)}
+.panel .stopw{margin-top:auto;font:400 46px var(--head);background:var(--yellow);color:var(--navy);border-radius:16px;padding:8px 26px}
+.panel .stopw.never{background:#E8413C;color:#fff}
+.gb.sm{font:600 40px var(--body)}
+.gb.sm .mv{padding:10px 24px;font-size:40px}
+.tiles{display:flex;align-items:center;gap:0}
+.tiles img{height:190px;width:auto;display:block}
+.bugbox{position:relative}
+.bugbox .hl{position:absolute;left:2.5%;top:43.5%;width:97%;height:38%;border:12px solid var(--frame);border-radius:20px;box-shadow:0 0 0 9999px #0000,0 0 50px #FFD34Daa}
+.mlbl.q{background:#fff;color:var(--navy);border:6px dashed var(--navy);font-size:90px;padding:10px 60px}
+</style>
+</head><body>
+
+<div class="bar">
+  <span><b>FB L10 · Wake-Up Call · DRAFT 1</b></span>
+  <span id="count">1 / 31</span>
+  <span style="display:flex;gap:6px">
+    <button id="prev" type="button">← Back</button>
+    <button id="next" type="button">Next →</button>
+    <button id="tn" type="button">Notes (N)</button>
+  </span>
+</div>
+
+<div class="viewport" id="vp"><div class="stage" id="stage">
+
+<!-- 1 -->
+<section class="slide pic" data-src="STD_NOREVEAL" data-part="Start" data-notes='Say: “Welcome back! Today we build something NEW for the future.” Don’t say what.||PREP: charge the motors and controllers. Build: C1 p.68 (alarm clock + button). Bigger kids: colour sensor ready for the bug part.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="col">
+      <p class="t c" style="margin:0">LESSON 10</p>
+      <h1>WELCOME BACK, FUTURE BUILDERS!</h1>
+      <p class="s" style="margin:0">Today we build something new!</p>
+    </div>
+    <div class="who"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna high five" style="height:1000px"></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide mapfull" data-src="MAP_RULE KV_MERGE STD_NOREVEAL" data-notes='Point at each thing: “Why did we need it?”||Plane → to get around. Supplies → tools for the first builders. Robot → does the chores. Spinning drop tower → FUN!||Point at the ???: “Something new goes here today.”||Younglings: mentor names the thing, kids say why.' data-t="2|1">
+  <img class="m" src="deck-assets/map-l9-end.png" alt="The Tomorrow Map: plane, supplies, helper robot and the spinning drop tower">
+  <h2 class="mt">THE TOMORROW MAP</h2>
+  <span class="mlbl q" style="left:48%;top:14%">???</span>
+  <p class="mq" style="margin:0">Why did we <span class="y">need</span> each one?</p>
+</section>
+
+<!-- 3 -->
+<section class="slide pic" data-src="FB_L9END KV_R0_BRIDGE" data-notes='Say (story bridge): “Last time our ride learned to spin, and we had so much fun we stayed up way too late. And this morning… Luna and Leo didn’t wake up! Look at the sun: it’s lunchtime already.”||Younglings: big yawn together.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="who" style="flex:none"><img src="deck-assets/luna-full-hq.png" alt="Luna" style="height:1000px"></div>
+    <div class="col">
+      <p class="t c" style="margin:0">LAST TIME…</p>
+      <p class="quote" style="text-align:left">“We stayed up <span class="y">way too late!</span> 🥱”</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide pic s4" data-src="TRAJ_P10 STD_STORY BASE203_S1 CRIT_HOOK KV_R0_D1 KV_R3_C4" data-notes='Read Luna, shocked: “We overslept! We’ll never get anything done if we oversleep in the future!”||Ask: “How do YOU wake up?” Hands up for each: alarm · a grown-up · the sun · a pet.||Press Next: “Which one keeps going UNTIL you get up?” → the ALARM.||Younglings: same, point at the pictures.||Left: the sunflower is waking up too. “Even the flower woke up before Luna!”' data-t="3|2">
+  <div class="row" style="align-items:center">
+    <img class="gif4" src="deck-assets/sunflower-wakeup.gif" alt="A cartoon sunflower yawning and waking up">
+    <div class="col" style="gap:34px">
+      <p class="say"><b>LUNA · 12:00!</b>“We overslept!” 😱</p>
+      <p class="t" style="margin:0">How do <span class="y">YOU</span> wake up?</p>
+      <div class="poll"><span><i>⏰</i>alarm</span><span><i>🙋</i>grown-up</span><span><i>☀️</i>sun</span><span><i>🐶</i>pet</span></div>
+      <p class="quote rv" style="text-align:left;margin:0;font-size:60px">Which one keeps going <span class="y">UNTIL</span> you get up?</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide center" data-src="STD_PROMISE BASE203 BASE204" data-notes='Say it together.||Bigger kids: also the second line. Younglings: first line only.||We check it on slide 28.' data-t="1|1">
+  <p class="t c" style="margin:0">OUR PROMISE</p>
+  <p class="quote">“I can make my alarm ring <span class="y">UNTIL</span> I press the button.”</p>
+  <p class="frame" style="margin:0">Bigger kids: “…and I can find a <span class="y">BUG</span> and fix it.”</p>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-src="CANON_RULES" data-notes='Quick recall of the rules.' data-t="1|1">
+  <h2 style="text-align:center">REMEMBER OUR RULES?</h2>
+  <div class="rules" style="flex:1;align-items:center">
+    <figure><img src="deck-assets/image5-hq.png" alt=""><figcaption>ATTENTION</figcaption></figure>
+    <figure><img src="deck-assets/image8-hq.png" alt=""><figcaption>ORDER</figcaption></figure>
+    <figure><img src="deck-assets/image4-hq.png" alt=""><figcaption>STOP</figcaption></figure>
+    <figure><img src="deck-assets/image9-hq.png" alt=""><figcaption>FRIENDSHIP</figcaption></figure>
+    <figure><img src="deck-assets/image6-hq.png" alt=""><figcaption>BASE</figcaption></figure>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide pic" data-src="STD_WORD BASE203_S2 KV_R0_D3 MINE_LIVE" data-notes='Click RING. Let it ring. Say: “I don’t know, guys, what should we do? This alarm ringing is gonna repeat forever… or (slowly) REPEAT… UNTIL… I stop it.” Click STOP.||Read the word. Everyone says it: REPEAT UNTIL = do it again and again, until something happens.||Ring it once more: kids shout “STOP!” only when you reach for the button.||Bigger kids: “When the code goes wrong, that is a BUG.”||Next slide: the UNTIL crowd game.' data-t="2|1">
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="col" style="flex:none;width:820px;gap:40px">
+      <div class="word"><span class="k">WORD OF THE DAY</span><span class="w" style="font-size:100px">REPEAT UNTIL</span><span class="d">= again and again, until something happens</span></div>
+      <div class="ru plain"><span id="ruRep">🔔 REPEAT…</span><span id="ruUnt">✋ UNTIL</span></div>
+    </div>
+    <div class="alarmbox" style="flex:1">
+      <div class="alarmpic" id="alarmPic"><span class="wave l"></span><span class="wave r"></span><div class="wcard"><img src="deck-assets/build-final-p68.png" alt="The alarm clock build"></div></div>
+      <div class="abtns"><button type="button" class="abtn go" id="alarmGo">🔔 RING</button><button type="button" class="abtn stop" id="alarmStop">✋ STOP</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-src="KV_R2_C7" data-notes='Crowd game, ~5 min (younglings ~3). Keep the alarm energy from the last slide.||Read the first half slowly: “Our eyes see well… UNTIL…” Then wait. Fish for answers from the crowd. Any answer that makes sense wins.||Click: the answer shows (one idea, not the only one). Say it together: “Our eyes see well UNTIL we run out of carrots!”||Same for all 5. Last one: let a kid make up their own “… UNTIL …”.||Then: “It keeps going again and again UNTIL something happens. That’s REPEAT UNTIL!”||Younglings: give a hint with your hands (drink, brush, bark) before the click.' data-t="5|3">
+  <h2 style="text-align:center;font-size:72px">UNTIL… WHAT? 🤔</h2>
+  <ol class="ruq">
+    <li><span class="st">👀 Our eyes see well… <b>UNTIL…</b></span><span class="an rs">🥕 we run out of carrots!</span></li>
+    <li><span class="st">👶 The baby cries… <b>UNTIL…</b></span><span class="an rs">🍼 she gets her milk</span></li>
+    <li><span class="st">🪥 I brush my teeth… <b>UNTIL…</b></span><span class="an rs">✨ they are clean</span></li>
+    <li><span class="st">🐶 The dog barks… <b>UNTIL…</b></span><span class="an rs">🚪 someone opens the door</span></li>
+    <li><span class="st">⚽ We play outside… <b>UNTIL…</b></span><span class="an rs">🌙 it gets dark</span></li>
+  </ol>
+</section>
+
+<!-- 9 -->
+<section class="slide pic" data-src="KR_14 CRIT_KG KV_R0_D2" data-notes='Pick one volunteer: they “sleep” (head on arms).||Everyone whispers, finger on lips: “Wake up… wake up… wake up…”, again and again.||Touch the sleeper’s shoulder = THE BUTTON. The sleeper sits up. Everyone stops.||“We said it again and again UNTIL the button. That’s REPEAT UNTIL!”' data-t="1|2">
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="side" style="width:900px">
+      <h2>LIKE WAKING UP!</h2>
+      <ol class="steps">
+        <li><span class="n">1</span>One friend sleeps 😴</li>
+        <li><span class="n">2</span>🤫 “Wake up… wake up…”</li>
+        <li><span class="n">3</span>Shoulder tap = the button ✋</li>
+        <li><span class="n">4</span>They sit up. We stop!</li>
+      </ol>
+    </div>
+    <div class="who sleep" style="flex:1;display:flex;justify-content:center"><img src="deck-assets/luna-full-hq.png" alt="Luna" style="height:960px"></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide pic" data-src="KV_R2_D10 KV_R3_C28" data-notes='Charades, the classic: no drawing, no buttons.||Ask: “What are you most excited to wake up for?”||One volunteer steps up and acts it out. No words! Everyone else guesses.||Right guess: the actor says “I get up for ___!”||A few more rounds, a new kid acts each time.||Mentor: “That’s what makes you stop your alarm and get up. That’s your UNTIL!”' data-t="6|5">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>WHAT WAKES YOU UP? 🎭</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>One friend acts it out</li>
+      <li><span class="n">2</span>No words! 🤫</li>
+      <li><span class="n">3</span>Everyone guesses 🙋</li>
+      <li><span class="n">4</span>Next friend!</li>
+    </ol>
+    <p class="frame" style="margin:0;font-size:44px">“I get up for ___!” ☀️</p></div>
+    <div class="who" style="flex:none"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna" style="height:1000px"></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide pic" data-src="KR_13" data-notes='Running late? The bedroom build and charades get shorter, never the clock build.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>TODAY’S PLAN</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Build an alarm clock ⏰</li>
+      <li><span class="n">2</span>Make it ring UNTIL…</li>
+      <li><span class="n">3</span>Build a bedroom 🛏️</li>
+    </ol></div>
+    <div class="wcard" style="flex:none;width:820px;height:900px"><img src="deck-assets/build-final-p68.png" alt="The finished alarm clock"></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide pic" data-src="STD_SKEL" data-notes='Blind pick: each kid takes one minifigure from the bag.||Colour = your part of build step 1 (blue · red · green · yellow).' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>PICK YOUR MINIFIGURE!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Pick one, eyes closed 🙈</li>
+      <li><span class="n">2</span>Your colour = your part</li>
+      <li><span class="n">3</span>Find your colour in step 1</li>
+    </ol></div>
+    <div class="wcard" style="flex:none;width:1180px;height:900px"><img src="deck-assets/build-step-01-p68.png" alt="Build step 1 split into 4 colour parts"></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide pic" data-src="BASE203_S4 KV_R2_C11 STD_YOUNGBUILD FF_RUTH_SB STD_FF MINE_BUILD" data-part="Build + REPEAT UNTIL" data-notes='Build: C1 p.68, the alarm clock + controller. One clock per crew.||Ask while they build: “Move the hands to the time now. What does the button do?”||Check: motor cable in, controller paired.||~7 min: a really simple build (younglings ~8; mentor checks every crew).||Done early: “What else could stop an alarm?” Then straight on to the bed.' data-t="7|8">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>BUILD TOGETHER</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Build your colour part</li>
+      <li><span class="n">2</span>Put the parts together</li>
+      <li><span class="n">3</span>Follow every step</li>
+      <li><span class="n">4</span>Hands move? ✅</li>
+    </ol>
+    <p class="frame" style="margin:0;font-size:40px">Done early? What else could stop an alarm?</p></div>
+    <div class="wcard" style="flex:none;width:820px;height:960px"><img src="deck-assets/build-final-p68.png" alt="The finished alarm clock"></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide pic" data-src="KV_R2_C11 KV_R3_D11" data-notes='Open build, NO instructions. “Luna and Leo need a bed! Build one, then put your alarm clock right next to it.”||Spare bricks only; the clock stays built.||Ask: “Where does the clock go, so Luna hears it?”||Done early: help another crew.||Running late: skip this slide.' data-t="5|7">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>BUILD LUNA A BED! 🛏️</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>No instructions: your idea! 💡</li>
+      <li><span class="n">2</span>A bed for Luna or Leo</li>
+      <li><span class="n">3</span>Put your clock next to it ⏰</li>
+      <li><span class="n">4</span>Show us! 🙌</li>
+    </ol>
+    <p class="frame" style="margin:0;font-size:40px">Done early? Help another crew! 🤝</p></div>
+    <div style="flex:none;display:flex;align-items:center;gap:20px"><img src="deck-assets/luna-full-hq.png" alt="Luna, sleepy" style="height:900px"></div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide big pic" data-src="BASE203_S5 TB_PREDICT CANVAS_1308" data-notes='⚡ BIGGER KIDS ONLY (yellow frame). Younglings: skip to slide 16.||Tablets face down. This is the finished code.||Ask: “What does it do? When does it STOP?” → it snores, starts moving, plays two notes again and again UNTIL both levers are down. Then it stops moving.||“Both levers down” = our button.' data-t="3|0">
+  <div class="row" style="align-items:center">
+    <div class="wcard" style="flex:none;width:1180px;height:960px;padding:24px"><img src="deck-assets/icons-hq/word-solved-1308.png" alt="Code: when clicked, play snoring, start moving, repeat until both levers are down: play two notes, then stop moving"></div>
+    <div class="side" style="flex:1"><h2>PREDICT!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Tablets face down</li>
+      <li><span class="n">2</span>What does it do?</li>
+      <li><span class="n">3</span>When does it STOP?</li>
+    </ol></div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide young pic" data-src="STD_ICON CANVAS_ICON2 KV_R0_D6" data-notes='YOUNGLINGS ONLY. Bigger kids: skip.||Point at the top: “Start → FOREVER → sound. It rings and rings and rings.”||Point at the bottom: “When we press the button → STOP.”||Ask: “When will it stop ringing?” → when we press the button!' data-t="0|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:560px"><h2>PREDICT!</h2>
+    <ol class="steps"><li><span class="n">1</span>∞ = rings and rings 🔔</li><li><span class="n">2</span>Button = STOP ✋</li><li><span class="n">3</span>When does it stop? 🤔</li></ol></div>
+    <div class="col" style="flex:1;gap:30px;align-items:center;justify-content:center">
+      <div class="wcard" style="width:100%;height:470px;padding:24px"><img src="deck-assets/icons-hq/icon-forever-sound.png" alt="Icon code: start, forever, sound"></div>
+      <div class="wcard" style="width:70%;height:420px;padding:24px"><img src="deck-assets/icons-hq/icon-button-stop.png" alt="Icon code: when the button is pressed, stop"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide big pic" data-src="BASE203_S6 CANVAS_1308" data-notes='⚡ BIGGER KIDS ONLY. Coding Canvas, Word blocks, PIN 1308. One tablet per crew.||The starter has an EMPTY slot in “repeat until”. Drag “both lever is down” into it. Play: it rings until both levers go down.||Read the yellow notes in the code.||Then: try another sound, or the arrow-key stop.' data-t="7|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:560px"><h2>TRY IT!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Connect + play ▶️</li>
+      <li><span class="n">2</span>Fill the empty slot</li>
+      <li><span class="n">3</span>Press the button ✋</li>
+      <li><span class="n">4</span>Try another sound</li>
+    </ol></div>
+    <div class="col" style="flex:1;gap:14px;align-items:center;justify-content:center">
+      <div class="wcard" style="width:560px;height:400px;padding:16px"><img src="deck-assets/icons-hq/word-repeat-until-empty.png" alt="Before: repeat until with an empty slot"></div>
+      <p class="t y" style="margin:0;font-size:46px">⬇️ drag “both lever is down” INTO the slot</p>
+      <div class="wcard" style="width:100%;height:240px;padding:16px"><img src="deck-assets/icons-hq/word-lever-both-down.png" alt="The block: both lever is down"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide big pic" data-src="STD_TRICKY BASE203_S8" data-notes='⚡ BIGGER KIDS ONLY.||A COMMENT is a note on the code: it tells people what a part does.||On a tablet: press and hold the block → Add comment (on a laptop: right-click). Type “wake-up ring”.||(Check the long press on a tablet before class.)' data-t="1|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:620px"><h2>TRICKY CODE: A COMMENT</h2>
+    <ol class="steps"><li><span class="n">1</span>Hold the block 👆</li><li><span class="n">2</span>Add comment</li><li><span class="n">3</span>Type what it does</li></ol></div>
+    <div class="wcard" style="flex:1;height:900px"><img src="deck-assets/code-comment-howto.png" alt="Before and after: a comment on the repeat until block"></div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide young pic" data-src="STD_ICON MINE_ICON2 CANVAS_ICON2 KV_R0_D6" data-notes='YOUNGLINGS ONLY: Icon blocks. NEW project → Icon blocks. One tablet per crew.||Mentor builds it on the projector; crews copy. 1) Start → FOREVER → sound. 2) Button block → STOP.||Press play: it rings. Press the button: quiet!||TEST ONCE BEFORE CLASS: if STOP doesn’t end the ringing, use the tablet’s stop button.' data-t="0|5">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:560px"><h2>TRY IT!</h2>
+    <ol class="steps"><li><span class="n">1</span>NEW → Icon blocks</li><li><span class="n">2</span>Copy the mentor 👀</li><li><span class="n">3</span>Play ▶️ then press ✋</li></ol></div>
+    <div class="col" style="flex:1;gap:30px;align-items:center;justify-content:center">
+      <div class="wcard" style="width:100%;height:470px;padding:24px"><img src="deck-assets/icons-hq/icon-forever-sound.png" alt="Icon code: start, forever, sound"></div>
+      <div class="wcard" style="width:70%;height:420px;padding:24px"><img src="deck-assets/icons-hq/icon-button-stop.png" alt="Icon code: when the button is pressed, stop"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide ad" data-src="STD_AD IB24 KV_R1_AD" data-notes='Ad break.' data-t="1|1">
+  <video src="deck-assets/tea-ad-gemini-v1.mp4" playsinline preload="auto" onerror="this.closest('.slide').classList.add('vfail')"></video>
+  <div class="vfb"><span class="moon">🍵</span><span class="tag">TEA WITH A FRIEND</span><span class="sub">Free. Already yours. Try it today.</span><span class="fn">tea-ad-gemini-v1.mp4 not found</span></div>
+</section>
+
+<!-- 21 -->
+<section class="slide pic" data-src="BASE203_S7 TB_CHECK" data-notes='Kids finish the sentence out loud: “It repeats the RING until we press the BUTTON.”||Ask: “Why not REPEAT 10?” → we don’t know when you wake up!||Younglings: one question: “What made it stop?”' data-t="3|1">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:760px"><h2>CHECK IN</h2>
+    <p class="quote" style="text-align:left;margin:0">It repeats <span class="y">____</span><br>until <span class="y">____</span></p>
+    <p class="t" style="margin:0">Why not REPEAT 10? 🤔</p></div>
+    <div class="wcard" style="flex:1;height:960px;padding:24px"><img src="deck-assets/icons-hq/word-solved-1308.png" alt="The repeat until code"></div>
+  </div>
+</section>
+
+<!-- 22 -->
+<section class="slide big pic" data-src="BASE204 BASE204_S2 STD_BUG KV_MERGE" data-part="Bug hunt (bigger kids)" data-notes='⚡ BIGGER KIDS ONLY. Younglings: skip to slide 25.||Say: “Uh-oh. This alarm RAN AWAY. It won’t stop, even when it sees red!”||A mistake in the code = a BUG. Finding and fixing it = DEBUG.' data-t="2|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>UH-OH: THE RUNAWAY CLOCK!</h2>
+    <div class="ladder" style="font-size:56px"><span class="dr">🐞 BUG = a mistake in the code</span><span class="bp">🔧 DEBUG = find it + fix it</span></div></div>
+    <div class="wcard" style="flex:none;width:820px;height:900px"><img src="deck-assets/build-final-p74.png" alt="The alarm clock with a colour sensor"></div>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="slide big pic" data-src="BASE204_S6 CANVAS_1309" data-notes='⚡ BIGGER KIDS ONLY. Word blocks, PIN 1309. Needs the colour sensor (C1 p.74). No sensor? Swap “detecting red” for the lever block.||Play: show red. It keeps ringing. Why?||Next = reveal: a FOREVER is inside the REPEAT UNTIL. Forever never ends, so “until red” is never checked.||Fix: drag the two play blocks out of FOREVER into REPEAT UNTIL, delete FOREVER, test with red.||Tip: run one program at a time.' data-t="9|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="width:600px"><h2>FIX IT!</h2>
+    <ol class="steps"><li><span class="n">1</span>Play ▶️ show 🟥</li><li><span class="n">2</span>Still ringing? 🐞</li><li><span class="n">3</span>Find the bug</li><li><span class="n">4</span>Fix + test again</li></ol></div>
+    <div class="wcard bugbox" style="flex:1;height:980px;padding:20px"><div style="position:relative;height:100%;aspect-ratio:2132/1930;margin:auto"><img src="deck-assets/icons-hq/word-bug-1309.png" alt="Bug code: repeat until red, with a forever loop inside" style="width:100%;height:100%"><span class="hl rv" aria-hidden="true"></span></div></div>
+  </div>
+</section>
+
+<!-- 24 -->
+<section class="slide big pic" data-src="BASE204_S7" data-notes='⚡ BIGGER KIDS ONLY.||Ask: “Which step helped YOU find the bug?” One kid per crew.' data-t="2|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>HOW WE DEBUG</h2>
+    <ol class="steps"><li><span class="n">1</span>Find the problem 🔍</li><li><span class="n">2</span>Check the code 👀</li><li><span class="n">3</span>Fix it 🔧</li><li><span class="n">4</span>Test again ▶️</li></ol></div>
+    <img src="deck-assets/leo-notebook-hq.png" alt="Leo writing in his notebook" style="height:960px;flex:none">
+  </div>
+</section>
+
+<!-- 25 -->
+<section class="slide pic" data-src="KV_R3_C24 STD_ONETASK FF_RUTH_SB" data-part="Make it better" data-notes='ONE task for the whole crew. Point at the bed: “What else is missing here?”||Crews build more for the bedroom: a pillow, a blanket, a lamp, a chair, a table… No instructions, spare bricks only.||Start the timer, step back. Ask: “What is it? Who uses it?”||Last minute: every crew puts its alarm clock in the bedroom and rings it once.||Younglings: same task, the mentor helps pick one thing each.' data-t="15|9">
+  <div class="row" style="align-items:center;gap:40px">
+    <div class="who" style="flex:none"><img src="deck-assets/luna-full-hq.png" alt="Luna" style="height:900px"></div>
+    <div class="col" style="gap:26px;justify-content:center">
+      <h2>WHAT ELSE IS MISSING HERE? 🛏️</h2>
+      <div class="ladder" style="font-size:48px;gap:14px"><span>🛏️ a bed ✅</span><span>🧸 a pillow?</span><span>💡 a lamp?</span><span class="bp">🪑 what else?</span></div>
+    </div>
+    <div class="clock" id="clock" data-round="900" data-rounds="1|1" style="flex:0 0 420px">
+      <div class="rnd" id="clkRound" style="display:none"></div>
+      <div class="dig" id="clkDigits">15:00</div>
+      <div class="btns">
+        <button type="button" id="clkStart">Start</button>
+        <button type="button" id="clkReset">Reset</button>
+        <button type="button" id="clkNext" style="display:none">Next</button>
+        <button type="button" id="clkMode" style="display:none">Rounds</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 26 -->
+<section class="slide pic" data-src="STD_SHARE" data-notes='Short. ONE kid per crew: “Was this hard? Was this cool? Where is your REPEAT UNTIL?”||Younglings: thumbs up / down.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="col center">
+      <h2>HOW WAS IT?</h2>
+      <p class="quote" style="margin:0">Was this hard? 😅</p>
+      <p class="quote y" style="margin:0">Was this cool? 😎</p>
+      <p class="quote" style="margin:0;font-size:64px">Where is your REPEAT UNTIL? 🔔</p>
+    </div>
+    <div class="who" style="flex:none"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna" style="height:1000px"></div>
+  </div>
+</section>
+
+<!-- 27 -->
+<section class="slide big pic" data-src="BASE_S10" data-part="Finish" data-notes='⚡ BIGGER KIDS ONLY. Notebooks: one or two lines.||“How did REPEAT UNTIL work?” “Which debug step helped you?”' data-t="2|0">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>SHOW WHAT YOU KNOW</h2>
+    <ol class="steps"><li><span class="n">1</span>How did REPEAT UNTIL work?</li><li><span class="n">2</span>Which debug step helped?</li></ol></div>
+    <img src="deck-assets/leo-notebook-hq.png" alt="Leo writing in his notebook" style="height:960px;flex:none">
+  </div>
+</section>
+
+<!-- 28 -->
+<section class="slide" data-src="TB_GOAL CRIT_TASK" data-notes='Every crew rings its clock and stops it with the button.||“TRUE?” Thumbs up or down. One kid says WHY it stopped.||Younglings: thumbs only.' data-t="1|1">
+  <h2 style="text-align:center">YOU DID IT, FUTURE BUILDERS!</h2>
+  <div class="col center" style="flex:1">
+    <p class="quote" style="font-size:72px;margin:0">“I can make my alarm ring UNTIL I press the button.”</p>
+    <p class="t y" style="margin:0">TRUE? 👍</p>
+  </div>
+</section>
+
+<!-- 29 -->
+<section class="slide mapfull" data-src="MAP_RULE KV_R0_D7" data-notes='“Now the future wakes up on time!”||Point at the new alarm clock on the map.' data-t="1|1">
+  <img class="m" src="deck-assets/map-l9-end.png" alt="The Tomorrow Map with the alarm clock added">
+  <div style="position:absolute;left:41%;top:11%;width:16%;height:25%"><img src="deck-assets/map-clock-cutout.png" alt="The alarm clock, cut out" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))"></div>
+  <h2 class="mt">THE TOMORROW MAP</h2>
+  <p class="mq" style="margin:0">Now the future wakes up <span class="y">on time!</span> ⏰</p>
+</section>
+
+<!-- 30 -->
+<section class="slide pic" data-src="TRAJ_P11 MINE_CLIFF KV_R0_D9" data-notes='Read Luna, puzzled: “Our alarm plays music now… Leo, are you DANCING?”||Leo, wiggling: “I can’t stop! Could a robot teach me a real dance…?”||Don’t answer. Let them guess.' data-t="1|1">
+  <div class="row" style="align-items:center">
+    <div class="who" style="flex:none"><img src="deck-assets/leo-luna-full-hq.png" alt="Leo and Luna" style="height:1000px"></div>
+    <div class="col" style="gap:40px">
+      <p class="t c" style="margin:0">NEXT TIME…</p>
+      <p class="say"><b>LUNA</b>“Leo, are you DANCING?” 🎵</p>
+      <p class="say"><b>LEO</b>“I can’t stop! 🕺”</p>
+    </div>
+  </div>
+</section>
+
+<!-- 31 -->
+<section class="slide pic" data-src="CANON_RITUAL" data-notes='Save the project. Take a photo of the clock.||Sort · close the box · high five. Charge motors + controllers.||Picture credits: build pictures from the base lessons' building instructions (C108, p.68 and C109, p.74); comment pictures are screenshots of the Coding Canvas (PIN 1308). Slide 4 GIF: “Sunflower, Sleepy, Yawn” by arthurpx, https://pixabay.com/gifs/sunflower-sleepy-yawn-plant-warm-7359/ (Pixabay Content License, free to use, no credit required).' data-t="4|4">
+  <div class="row" style="align-items:center">
+    <div class="side" style="flex:1"><h2>EVERY BRICK GOES HOME!</h2>
+    <ol class="steps">
+      <li><span class="n">1</span>Save + take a photo 📸</li>
+      <li><span class="n">2</span>Sort by colour</li>
+      <li><span class="n">3</span>Close the box</li>
+      <li><span class="n">4</span>High five! ✋</li>
+    </ol></div>
+    <img src="deck-assets/image22-hq.png" alt="Luna" style="height:960px;flex:none">
+  </div>
+</section>
+
+</div></div>
+
+<div class="notes" id="notes" aria-live="polite"><h3>SPEAKER NOTES</h3><div id="nbody"></div></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const stage=document.getElementById('stage'),vp=document.getElementById('vp');
+let i=0;
+function fit(){stage.style.transform=`scale(${vp.clientWidth/1920})`}
+const hasReveal=s=>!!s.querySelector('.rv');
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>{s.classList.toggle('on',k===i);s.classList.remove('shown');s.querySelectorAll('.rs.in').forEach(e=>e.classList.remove('in'));const v=s.querySelector('video');if(v){if(k===i){try{v.currentTime=0;const p=v.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}else v.pause()}});
+  if(window.alarmStop)window.alarmStop();
+  document.getElementById('count').textContent=`${i+1} / ${slides.length}`;
+  const s=slides[i],t=(s.dataset.t||'').split('|'),notes=(s.dataset.notes||'').split('||');
+  const f=x=>x==='0'?'skip':x+' min';
+  document.getElementById('nbody').innerHTML='<ul>'+notes.map(x=>`<li>${x}</li>`).join('')+`</ul><p class="tm" style="margin:6px 0 0">90 min: ${f(t[0])} · 60 min: ${f(t[1])}</p>`;
+  try{history.replaceState(null,'','#s'+(i+1))}catch(e){}
+}
+function next(){const s=slides[i];const p=s.querySelector('.rs:not(.in)');if(p){p.classList.add('in');return}if(hasReveal(s)&&!s.classList.contains('shown')){s.classList.add('shown');return}show(i+1)}
+document.getElementById('prev').onclick=()=>show(i-1);
+document.getElementById('next').onclick=next;
+document.getElementById('tn').onclick=()=>{const n=document.getElementById('notes');n.hidden=!n.hidden};
+vp.addEventListener('click',e=>{const r=vp.getBoundingClientRect();if(e.clientX-r.left>r.width/2)next();else show(i-1)});
+document.addEventListener('keydown',e=>{
+  if(e.target&&e.target.closest&&e.target.closest('.clock,.abtns'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
+  else if(e.key==='n'||e.key==='N'){document.getElementById('tn').click()}
+});
+
+/* Task countdown: no libraries; clicks and keys stay inside the timer */
+(function(){
+  const box=document.getElementById('clock');if(!box)return;
+  const dig=document.getElementById('clkDigits'),rnd=document.getElementById('clkRound'),
+    bs=document.getElementById('clkStart'),br=document.getElementById('clkReset'),
+    bn=document.getElementById('clkNext'),bm=document.getElementById('clkMode');
+  const ROUND=+box.dataset.round||300,[RA,RB]=(box.dataset.rounds||'4|1').split('|').map(Number);
+  let total=RA,cur=1,left=ROUND,timer=null,ctx=null;
+  ['click','keydown','keyup'].forEach(ev=>box.addEventListener(ev,e=>e.stopPropagation()));
+  function draw(){
+    const m=Math.floor(left/60),s=left%60;
+    dig.textContent=m+':'+String(s).padStart(2,'0');
+    dig.classList.toggle('end',left===0);
+    rnd.textContent='Swap '+cur+' of '+total;
+    bs.textContent=timer?'Pause':'Start';
+    bm.textContent='Rounds: '+total;
+    bn.textContent=cur>=total?'Done ✔':'Next';
+    bn.disabled=cur>=total;bn.style.opacity=bn.disabled?.5:1;
+  }
+  function beep(){
+    try{
+      ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+      [0,.35,.7].forEach(d=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.type='sine';o.frequency.value=660;o.connect(g);g.connect(ctx.destination);
+        const t=ctx.currentTime+d;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.15,t+.05);g.gain.linearRampToValueAtTime(0,t+.3);
+        o.start(t);o.stop(t+.32);
+      });
+    }catch(e){}
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null}}
+  function tick(){left--;if(left<=0){left=0;stop();beep()}draw()}
+  bs.onclick=()=>{
+    if(timer){stop()}
+    else if(left>0){
+      try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(e){}
+      timer=setInterval(tick,1000);
+    }
+    draw();
+  };
+  br.onclick=()=>{stop();left=ROUND;draw()};
+  bn.onclick=()=>{if(cur<total){stop();cur++;left=ROUND;draw()}};
+  bm.onclick=()=>{stop();total=total===RA?RB:RA;cur=1;left=ROUND;draw()};
+  draw();
+})();
+
+/* Live alarm (word slide): RING starts a WebAudio beep loop + shake; STOP (mentor) ends it. Clicks stay on the slide. */
+(function(){
+  const pic=document.getElementById('alarmPic'),go=document.getElementById('alarmGo'),st=document.getElementById('alarmStop');
+  if(!pic)return;
+  const rep=document.getElementById('ruRep'),unt=document.getElementById('ruUnt');
+  let ctx=null,iv=null;
+  function ring(){
+    try{
+      const t=ctx.currentTime;
+      [0,.12,.24,.36].forEach(d=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=880;o.connect(g);g.connect(ctx.destination);
+        g.gain.setValueAtTime(0,t+d);g.gain.linearRampToValueAtTime(.08,t+d+.01);g.gain.linearRampToValueAtTime(0,t+d+.09);o.start(t+d);o.stop(t+d+.1)});
+    }catch(e){}
+  }
+  function start(){
+    if(iv)return;
+    try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(e){}
+    pic.classList.add('ring');rep.classList.add('lit');unt.classList.remove('lit');
+    if(ctx){ring();iv=setInterval(ring,900)}else iv=setInterval(()=>{},900);
+  }
+  function stop(lit){
+    if(iv){clearInterval(iv);iv=null}
+    pic.classList.remove('ring');rep.classList.remove('lit');
+    if(lit)unt.classList.add('lit');else unt.classList.remove('lit');
+  }
+  window.alarmStop=()=>stop(false);
+  [go,st,pic].forEach(el=>['click','keydown'].forEach(ev=>el.addEventListener(ev,e=>e.stopPropagation())));
+  go.onclick=start;pic.onclick=start;st.onclick=()=>stop(true);
+})();
+
+/* Missing picture → dashed box with the file name (pictures still to capture) */
+document.addEventListener('error',e=>{const im=e.target;if(!im||im.tagName!=='IMG'||im.dataset.missed)return;im.dataset.missed=1;const d=document.createElement('div');d.className='ph';d.innerHTML='<b>PLACEHOLDER</b>'+(im.getAttribute('alt')||'')+'<span style="font-size:24px;opacity:.7">'+(im.getAttribute('src')||'').replace('deck-assets/','')+'</span>';d.style.cssText=im.getAttribute('style')||'';im.replaceWith(d)},true);
+document.querySelectorAll('img').forEach(im=>{if(im.complete&&im.naturalWidth===0)im.dispatchEvent(new Event('error'))});
+document.querySelectorAll('.slide.ad video').forEach(v=>{if(v.error)v.closest('.slide').classList.add('vfail')});
+addEventListener('resize',fit);
+const m=/^#s(\d+)$/.exec(location.hash);
+fit();show(m?+m[1]-1:0);
+</script>
+</body></html>
