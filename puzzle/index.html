@@ -24,10 +24,30 @@
   #win h2 { margin: 0; font: 700 34px/1.1 var(--read); color: var(--yellow); }
   #win p { margin: 6px 0 14px; font: 500 19px/1.2 var(--read); color: var(--lilac); }
   #again { height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: var(--yellow); color: #14102e; font-weight: 700; font-size: 16px; cursor: pointer; }
+  #gate { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: #0b0820; }
+  #gate form { display: flex; flex-direction: column; gap: 14px; width: min(340px, calc(100vw - 32px)); padding: 24px; box-sizing: border-box; border-radius: 14px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); text-align: center; }
+  #gate h2 { margin: 0; font: 700 26px/1.2 var(--read); color: var(--yellow); }
+  #gate input { height: 64px; border: 0; border-radius: 10px; background: #fff; color: #14102e; font: 700 32px/1 var(--read); text-align: center; user-select: text; -webkit-user-select: text; }
+  #gate button { height: 64px; border: 0; border-radius: 10px; background: var(--yellow); color: #14102e; font-weight: 700; font-size: 24px; cursor: pointer; }
+  #gatemsg { min-height: 20px; font-size: 16px; color: var(--lilac); }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<div id="gate"><form autocomplete="off"><h2>Password</h2><input id="gatepw" type="text" aria-label="Password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off"><button type="submit">Go</button><div id="gatemsg"></div></form></div>
+<script>
+// beta gate: keeps kids out of the test build. Client-side only, not real security.
+(function () {
+  var gate = document.getElementById('gate'), pw = document.getElementById('gatepw'), msg = document.getElementById('gatemsg'), KEY = 'bp-beta-ok';
+  function ok() { return pw.value.trim().toUpperCase() === 'A'; }
+  function open() { gate.hidden = true; pw.blur(); try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+  try { if (localStorage.getItem(KEY) === '1') gate.hidden = true; } catch (e) {}
+  ['keydown', 'keyup', 'pointerdown', 'pointerup', 'mousedown', 'mouseup', 'wheel'].forEach(function (t) { gate.addEventListener(t, function (e) { e.stopPropagation(); }); });
+  pw.addEventListener('input', function () { msg.textContent = ''; if (ok()) open(); });
+  gate.querySelector('form').addEventListener('submit', function (e) { e.preventDefault(); if (ok()) open(); else { msg.textContent = 'Wrong password'; pw.value = ''; pw.focus(); } });
+  if (!gate.hidden) pw.focus();
+})();
+</script>
 <div id="hint"><span>Drag each piece to its place in the outline and let go: colours show what sits next to what</span><span>Drag empty space or arrow keys: look around</span><span>Shift-drag or right-drag: turn a piece</span></div>
 <div id="credit"></div>
 <button id="reset" type="button">Restart (R)</button>
