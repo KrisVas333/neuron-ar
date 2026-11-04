@@ -1558,8 +1558,23 @@ function sheetPick(o, d) {
 function sheetPickNdc(x, y) {
   ndc.set(x, y); ray.setFromCamera(ndc, camera);
   const sw = sheetPick(ray.ray.origin, ray.ray.direction); if (!sw) return null;
-  const lh = ray.intersectObjects(letters.map(l => l.mesh), false)[0];   // a click that hits a letter still goes to the letter
+  // a click that hits a letter (or the hole in an O / Q) still goes to the letter
+  const lh = ray.intersectObjects(letters.map(l => l.mesh), false)[0] || letterOnRay(ray.ray.origin, ray.ray.direction, sw.distance);
   return lh && lh.distance < sw.distance ? null : sw;
+}
+// the letter whose glyph box the ray passes through (centre within ~half a letter of the ray), nearest first
+const lorC = new THREE.Vector3(), lorO = new THREE.Vector3();
+function letterOnRay(o, d, maxAlong, skip) {
+  let best = null;
+  for (const L of letters) {
+    if (skip && skip(L)) continue;
+    const g = L.mesh.geometry; if (!g.boundingSphere) g.computeBoundingSphere();
+    L.mesh.getWorldPosition(lorC);
+    const along = lorO.subVectors(lorC, o).dot(d); if (along < .05 || along > maxAlong) continue;
+    const r = g.boundingSphere.radius * L.mesh.getWorldScale(lorO).x * .7;
+    if (o.clone().addScaledVector(d, along).distanceTo(lorC) < r && (!best || along < best.distance)) best = { L, distance: along, point: lorC.clone(), object: L.mesh };
+  }
+  return best;
 }
 function setSheetHover(W) { if (sheetS.hover !== W) { sheetS.hover = W; sheetS.sig = ''; } }
 cv.addEventListener('pointermove', e => {
@@ -1872,6 +1887,7 @@ function updateHand(H, dt) {
     let hit = xrRay.intersectObjects(targets, false)[0];
     // the word sheet (6.5 m away, past the letter ray) and the meaning card next to it
     const far = defMesh.visible ? defRayHit(vC, vD) : null, sw = far ? null : sheetPick(vC, vD), farHit = far || sw;
+    if (farHit && !hit) { const L = letterOnRay(vC, vD, farHit.distance, l => l.dragged); if (L) hit = L; }   // a letter's hole still counts as the letter
     if (farHit && hit && hit.distance < farHit.distance) { /* a letter / button in front wins */ } else if (farHit) { hit = null; if (far) H.aimCard = true; else H.aimSheet = sw.W; }
     // aim assist: thin serif letters have holes and far ones are tiny, so also take the letter whose centre lies inside a ~2.8° cone
     // around the ray (never narrower than VR_M.aimAssist), closest in angle, then nearest
