@@ -1354,7 +1354,7 @@ function rackKeepOut(dt) {
   if (dt <= 0) return;
   const total = rackTotal(), s = rack.scale.x;
   const R = (Math.hypot(RACK.E, RACK.E, RACK.D) / 2 + KEEP.margin) * s;
-  kpOcc.clear(); for (let i = 0; i < total; i++) if (cubes[i].occ) kpOcc.add(cubes[i].occ);
+  kpOcc.clear(); for (let i = 0; i < rackS.n; i++) if (cubes[i].occ) kpOcc.add(cubes[i].occ);   // the dashed "+" box is kept clear too
   const push = B => {
     if (B.dragged || clock.t - B.releaseAt < KEEP.grace) return;
     if (B.members ? B.members.some(m => kpOcc.has(m)) : kpOcc.has(B)) return;
