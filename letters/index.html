@@ -1348,7 +1348,7 @@ function rackUpdate(dt, inXR) {
 // Kris 2026-11-04 ("you have to guard slotted letters"): free-floating letters and words drift out of a soft bubble around
 // each box, sideways / outward (never toward the player). A letter in a box, the one you carry, or one you let go of in the
 // last ~2.5 s is left alone, so placing a letter still works exactly as before.
-const KEEP = { margin: .55, k: 1.6, grace: 4 };
+const KEEP = { margin: 1.1, k: 2.2, grace: 4 };
 const kpOcc = new Set(), kpD = new THREE.Vector3();
 function rackKeepOut(dt) {
   if (dt <= 0) return;
