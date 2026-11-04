@@ -79,6 +79,21 @@
   #vrbtn.big svg { width: 48px; height: 48px; }
   #vrmsg { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); max-width: 90vw; padding: 8px 14px; border-radius: 10px; background: var(--panel); color: var(--fg);
     box-shadow: inset 0 0 0 1.5px var(--line); font: 500 15px/1.3 var(--read); display: none; z-index: 10; }
+  /* meaning card: tap a word on the far sheet (Wiktionary, English words only) */
+  #defcard { position: fixed; left: 16px; top: 80px; z-index: 12; width: min(340px, calc(100vw - 32px)); box-sizing: border-box; padding: 16px 18px 12px; border-radius: 14px;
+    background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--line), 0 10px 40px rgba(5,3,15,.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    color: var(--fg); font: 400 16px/1.4 var(--read); pointer-events: auto; user-select: text; -webkit-user-select: text; }
+  #defcard[hidden] { display: none; }
+  #defcard h2 { margin: 2px 44px 10px 0; font: 400 18px/1.3 var(--pixel); color: var(--yellow); word-break: break-word; }
+  #defcard .sub { margin: 0 0 8px; font: italic 500 16px/1.3 var(--read); color: var(--lilac); }
+  #defcard .pos { margin: 0 0 4px; font: 500 13px/1 var(--read); color: var(--lilac); }
+  #defcard ol { margin: 0; padding-left: 22px; }
+  #defcard li { margin: 4px 0; }
+  #defcard .note { margin: 2px 0 4px; font: 500 18px/1.3 var(--read); }
+  #defcard .cr { margin: 10px 0 0; font: 400 11px/1.2 var(--read); color: rgba(201,190,234,.75); }
+  #defcard .cr a { color: inherit; }
+  #defcard .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--yellow);
+    box-shadow: inset 0 0 0 1.5px var(--yellow); font: 500 22px/1 var(--read); cursor: pointer; }
   #lovable-badge { display: none !important; }
 </style>
 <script type="importmap">
@@ -97,6 +112,7 @@
   <div id="words" aria-live="polite" hidden></div>
   <button id="gyro" type="button" aria-label="Look by moving the phone" title="move the phone to look"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/><path d="M3 9a9 9 0 0 0 0 6M21 9a9 9 0 0 1 0 6"/></svg></button>
 </div>
+<div id="defcard" role="dialog" aria-label="Word meaning" aria-live="polite" hidden><button class="x" type="button" aria-label="Close">×</button><h2></h2><p class="sub"></p><p class="pos"></p><ol></ol><p class="note"></p><p class="cr"><a target="_blank" rel="noopener">Wiktionary</a> · CC BY-SA 4.0</p></div>
 <div id="win" aria-live="polite"><div class="sum"></div><button id="again" type="button" aria-label="Play again">↻</button></div>
 <div id="hint" aria-label="Controls">
   <div class="grp desk" title="look around">
@@ -154,7 +170,7 @@ const IS_MOBILE = params.has('mobile') ? params.get('mobile') !== '0'
 if (IS_MOBILE) document.body.classList.add('mobile');
 // no page scroll / pinch zoom / pull-to-refresh / iOS double-tap zoom
 for (const ev of ['gesturestart', 'gesturechange', 'dblclick']) document.addEventListener(ev, e => e.preventDefault(), { passive: false });
-document.addEventListener('touchmove', e => { if (e.target.closest && e.target.closest('#win')) return; e.preventDefault(); }, { passive: false });
+document.addEventListener('touchmove', e => { if (e.target.closest && e.target.closest('#win, #defcard')) return; e.preventDefault(); }, { passive: false });
 
 // ?emulate=1 → Meta's IWER fakes a Quest 3 (hands + controllers) in desktop Chrome. Must run BEFORE the renderer exists.
 let xrDevice = null;
@@ -629,9 +645,12 @@ cv.addEventListener('pointerdown', e => {
   hintSeen();
   // a second finger while carrying a letter = pull it close (like Space)
   if (ptr.down && e.pointerId !== ptr.id) { if (drag.L && e.pointerType === 'touch') pullCloser(); return; }
-  Object.assign(ptr, { down: true, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0, touch: e.pointerType === 'touch' });
+  Object.assign(ptr, { down: true, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0, touch: e.pointerType === 'touch', sheetW: null });
   try { cv.setPointerCapture(e.pointerId); } catch (_) {}
-  toNdc(e); const onBtn = pickRackBtn(ndc.x, ndc.y); const h = onBtn ? null : pickLetter(ndc.x, ndc.y);
+  toNdc(e); const onBtn = pickRackBtn(ndc.x, ndc.y);
+  const sw = onBtn ? null : sheetPickNdc(ndc.x, ndc.y);
+  if (sw) ptr.sheetW = sw.W; else if (defUI.W) closeDef();   // tap anywhere else closes the meaning card
+  toNdc(e); const h = onBtn || sw ? null : pickLetter(ndc.x, ndc.y);
   drag.near = false;
   if (h) {
     const B = h.L.word || h.L; // a spelled word is carried whole
@@ -685,7 +704,8 @@ const endPtr = e => {
     sfx.drop(); stats.releases++;
   } else if (ptr.moved <= moveTol()) {
     const x = (e.clientX / innerWidth) * 2 - 1, y = -(e.clientY / innerHeight) * 2 + 1;
-    if (ptr.touch && L && !pickRackBtn(x, y)) {
+    if (ptr.sheetW) selectWord(ptr.sheetW);
+    else if (ptr.touch && L && !pickRackBtn(x, y)) {
       // touch on a letter: wait to see if a second tap comes (double tap = pull), else push it away
       cancelPendingPoke();
       Object.assign(tapS, { t: performance.now() / 1000, x: e.clientX, y: e.clientY, L });
@@ -1121,7 +1141,7 @@ const DICT = (() => {
     return false;
   };
   const EN = index(d.en), LT = index(d.lt);
-  return { en: d.nEn, lt: d.nLt, has: w => has(EN, w) || has(LT, w) };
+  return { en: d.nEn, lt: d.nLt, has: w => has(EN, w) || has(LT, w), hasEn: w => has(EN, w) };
 })();
 const fold = s => s.toLocaleLowerCase('lt');
 const isWord = s => DICT.has(fold(s));
@@ -1363,7 +1383,7 @@ const sheetCv = document.createElement('canvas'); sheetCv.width = SHEET.w; sheet
 const sheetTex = new THREE.CanvasTexture(sheetCv); sheetTex.colorSpace = THREE.SRGBColorSpace; sheetTex.anisotropy = 4;
 const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, SHEET.h / SHEET.w), new THREE.MeshBasicMaterial({ map: sheetTex, transparent: true, toneMapped: false, depthWrite: false }));
 sheet.name = 'sheet'; sheet.renderOrder = 2; scene.add(sheet);
-const sheetS = { typed: 0, nextAt: 0, sig: '' };
+const sheetS = { typed: 0, nextAt: 0, sig: '', cells: [], hover: null, sel: null, look: new THREE.Vector3() };
 function placeSheet(inXR) {
   const o = new THREE.Vector3(); let yaw = 0, dist = SHEET.deskDist, up = SHEET.deskUp, w = SHEET.deskW;
   if (inXR) { const f = new THREE.Vector3(0, 0, -1).applyQuaternion(vr.headQ); yaw = Math.atan2(-f.x, -f.z); o.copy(vr.head); dist = SHEET.vrDist; up = SHEET.vrUp; w = SHEET.vrW; }
@@ -1371,11 +1391,12 @@ function placeSheet(inXR) {
   sheet.position.set(o.x - Math.sin(yaw) * dist, o.y + up, o.z - Math.cos(yaw) * dist);
   sheet.scale.setScalar(w);
   sheet.lookAt(o);                       // faces the player's start spot (tilted down toward the eyes)
+  sheetS.look.copy(o);
   sheet.updateMatrixWorld(true);
 }
 function drawSheet() {
   const n = lettersLeft(), last = words[words.length - 1], typing = last && sheetS.typed < last.ch.length;
-  const sig = n + '|' + words.length + '|' + sheetS.typed + '|' + (won ? 'W' : '');
+  const sig = n + '|' + words.length + '|' + sheetS.typed + '|' + (won ? 'W' : '') + '|' + words.indexOf(sheetS.hover) + '|' + words.indexOf(sheetS.sel);
   if (sig === sheetS.sig) return;
   sheetS.sig = sig;
   const c = sheetCv.getContext('2d'), SW = SHEET.w, SH = SHEET.h;
@@ -1399,13 +1420,20 @@ function drawSheet() {
   // typed lines: oldest top-left, newest last (bottom of the column it lands in), the most recent rows × cols words
   const top = 178, lh = (SH - top - 30) / SHEET.rows, colW = (SW - 112) / SHEET.cols, per = SHEET.rows * SHEET.cols;
   const shown = words.slice(-per);
+  sheetS.cells.length = 0;
   c.textAlign = 'left'; c.font = '400 96px ' + SERIF;
   if (!shown.length) { c.fillStyle = 'rgba(201,190,234,.6)'; c.font = '400 76px ' + SERIF; c.fillText(won ? '—' : 'your words', 84, top + lh * .5); }
   shown.forEach((W, i) => {
     const col = Math.floor(i / SHEET.rows), row = i % SHEET.rows, x = 56 + col * colW + 28, y = top + lh * (row + .5), isLast = W === last;
     const txt = isLast && typing ? W.ch.slice(0, sheetS.typed) : W.ch;
     c.font = '400 96px ' + SERIF;
-    if (isLast) { c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(x - 22, y - lh * .44, Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), lh * .88, 16); c.stroke(); }
+    const bw = Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), def = canDefine(W);
+    sheetS.cells.push({ W, def, x0: x - 22, x1: x - 22 + bw, y0: y - lh * .5, y1: y + lh * .5 });
+    // English words can be tapped for their meaning: aimed = coral glow (like a letter under the VR ray), open card = yellow
+    const hl = def && W === sheetS.sel ? '#FBBF24' : def && W === sheetS.hover ? '#FF6B6B' : null;
+    if (hl) { c.fillStyle = hl === '#FBBF24' ? 'rgba(251,191,36,.20)' : 'rgba(255,107,107,.24)'; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.fill(); }
+    if (isLast) { c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.stroke(); }
+    if (hl) { c.lineWidth = 8; c.strokeStyle = hl; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.stroke(); }
     c.fillStyle = isLast ? '#FBBF24' : '#ECE8FA'; c.fillText(txt, x, y + 6, colW - 60);
     if (isLast && typing) { const cw = Math.min(c.measureText(txt).width, colW - 60); c.fillRect(x + cw + 6, y - 38, 6, 80); }   // the carriage
   });
@@ -1414,10 +1442,231 @@ function drawSheet() {
 }
 function sheetUpdate(inXR) {
   sheet.visible = !inXR || vr.anchored;
+  if (!inXR && defUI.W) placeDefEl();
   const last = words[words.length - 1], now = performance.now();
   if (last && sheetS.typed < last.ch.length && now >= sheetS.nextAt) { sheetS.typed++; sheetS.nextAt = now + SHEET.typeMs; }
   drawSheet();
 }
+// ---------- tap a word on the sheet = what it means (Kris 2026-11-04) ----------
+// Desktop click / phone tap / VR ray + pinch or trigger on a word of the far sheet opens a small card with its Wiktionary meaning.
+// English words only: Lithuanian letters stay in the game as obstacles, Lithuanian-only words get no glow and no card.
+// Wiktionary REST definitions (CORS open) + the page wikitext (action API, origin=*) for the sense labels the REST text drops
+// (slang, vulgar, obsolete ...). Kid-safe: a sense is skipped if its label or its text is flagged; nothing left = "No meaning found".
+const DEFS = { rest: 'https://en.wiktionary.org/api/rest_v1/page/definition/',
+  wt: 'https://en.wiktionary.org/w/api.php?action=query&prop=revisions&rvprop=content&rvslots=main&format=json&formatversion=2&origin=*&titles=',
+  page: 'https://en.wiktionary.org/wiki/', timeout: 9000, maxLen: 150, senses: 2 };
+const canDefine = W => !!W && DICT.hasEn(fold(W.ch));
+// the same English lists the word list was cleaned with (LDNOOBW CC BY 4.0 + hand-made), checked against every word of a sense
+// (a few everyday verbs from those lists — suck, snatch, escort, crack — are left out here so plain meanings survive)
+const DEF_BAD_EXACT = new Set(`2g1c acrotomophilia anal anilingus anus apeshit arsehole ass asses arse arses asshole assmunch autoerotic babeland bangbros bangbus bareback barenaked bastard bastards bastardo bbw bdsm beaner beaners beastiality bestiality bimbos birdlock bitch bitches bitchy blowjob blumpkin bollocks bondage boner boob boobs booby boobies bukkake bulldyke bullshit bum bums bunghole busty butt butts buttcheeks butthole camgirl camslut camwhore carpetmuncher cialis circlejerk clit clitoris clusterfuck condom condoms coon coons coprolagnia coprophilia cornhole crap craps creampie cum cums cumming cumshot cumshots cunnilingus cunt damn damned damns darkie darky darkies daterape deepthroat dendrophilia dick dicks dildo dildos dingleberries dingleberry doggiestyle doggystyle dolcett dominatrix dommes dvda dyke dykes ecchi ejaculation erotic erotica erotism eunuch fag fags fagot fagots faggot faggots fecal felch fellatio feltch femdom figging fingerbang fisting footjob frotting fuck fuckin fucking fucktards fudgepacker futanari gangbang genitals goatcx goatse gokkun goodpoop gook gooks goregasm grope guro gyp gyps gypped handjob hell hells hentai heroin homoerotic honkey honky hooker hookers horny humping incest intercourse jailbait jap japs jigaboo jiggaboo jiggerboo jism jizz gism juggs kike kikes kinbaku kinkster kinky knobbing livesex lolita lovemaking masturbate masturbating masturbation milf mong motherfucker muffdiving naked nambla nawashi nazi nazis negro negroes neonazi nigga nigger nimphomania nipple nipples nsfw nude nudes nudie nudies nudity nutten nympho nymphomania octopussy omorashi orgasm orgasms orgy orgies paedophile paki pakis panties panty pedobear pedophile pegging penis penises pikey piss pissed pisses pissing pisspig playboy ponyplay poof poon poontang poopchute porn porno pornos pornography prick pricks pthc pubes punany pussy pussies queaf queef queer queers quim raghead rape raped rapes raping rapist rapists rectum retard retards rimjob rimming sadism santorum schlong scissoring scrotum semen sex sexed sexes sexcam sexo sexual sexuality sexually sexy sexier sexily shemale shibari shit shitblimp shitty shota shrimping skeet slanteye slut sluts sluttish smut sodomize sodomy spastic spic spics spick spicks splooge spooge sperm sperms spunk squaw squaws strapon strappado swastika swinger testes testis threesome throating thumbzilla tit tits titties titty topless tosser towelhead tranny tribadism tubgirl tushy twat twats twink twinkie undressing upskirt urophilia vagina vaginas viagra vibrator vorarephilia voyeur voyeurweb voyuer vulva wank wetback whore whores wog wogs wop wops dago dagos yid yids boche worldsex xxx yaoi yiffy zoophilia`.split(/\s+/));
+const DEF_BAD_STEM = ['fuck', 'shit', 'cunt', 'bitch', 'whor', 'slut', 'nigg', 'nigr', 'faggot', 'wank', 'twat', 'porn', 'masturb', 'pedo', 'paedo', 'pervert', 'rapist', 'sexual', 'clit', 'boner', 'blowjob', 'handjob', 'dildo', 'orgasm', 'erotic', 'genital', 'testic', 'pubic', 'fellat', 'cunnil', 'sodom', 'bestial', 'incest', 'molest', 'hooker', 'prostit', 'buttock', 'arsehole', 'asshole', 'bullshit', 'goddam', 'retard', 'spaz', 'cocksuck', 'motherf', 'jackass', 'dumbass', 'smartass', 'badass', 'kinky', 'fetish', 'stripper', 'brothel', 'pimp', 'nympho', 'lesbo', 'tranny', 'hymen', 'phallus', 'phallic', 'scrot', 'vulva', 'semen', 'sperm', 'ejacul', 'coitus', 'coital', 'copulat', 'fornic', 'adulter', 'lewd', 'lecher', 'harlot', 'strumpet', 'trollop', 'wench', 'bawd', 'trull', 'doxy', 'catamite', 'eunuch', 'nazi', 'cocain', 'opium', 'nudis', 'nudit', 'breast', 'sexes', 'sexpot', 'sexism', 'sexist', 'sexless', 'sexy', 'intercours', 'aroused', 'arousal', 'seduc', 'virgin', 'condom', 'contracept', 'menstru', 'urinat', 'excret', 'defecat', 'feces', 'faeces', 'drunk', 'marijuana', 'cannabis'];
+const DEF_BAD_RX = /fuck|shit|cunt|nigg|fagg|whore|wank|dildo|porn|rapist|orgasm|masturb|blowjob/;
+// sense labels / markers that send a sense away (from {{lb|en|...}} in the wikitext, or written in the text itself)
+const DEF_BAD_LABEL = /\b(vulgar\w*|offensive\w*|slang|sexual\w*|sex|sexuality|derogatory|pejorative|disparaging|obsolete|archaic|slur|ethnic slur|profan\w*|swear\w*|euphemis\w*|crude|lgbtq?|BDSM|dysphemis\w*|taboo)\b/i;
+const defBadWord = w => DEF_BAD_EXACT.has(w) || DEF_BAD_STEM.some(st => w.startsWith(st)) || DEF_BAD_RX.test(w);
+const defBadText = t => DEF_BAD_LABEL.test(t) || (t.toLowerCase().match(/[a-z]+/g) || []).some(defBadWord);
+const defShort = t => t.length <= DEFS.maxLen ? t : t.slice(0, Math.max(40, t.lastIndexOf(' ', DEFS.maxLen - 1))).replace(/[,;:(]+$/, '') + '…';
+const defCache = new Map();
+// one REST sense (HTML) → plain text (+ "plural of cat" style form-of link)
+function defParse(html) {
+  const b = new DOMParser().parseFromString('<body>' + html + '</body>', 'text/html').body;
+  const nested = !!b.querySelector('ol, ul, dl');            // a group heading ("Terms relating to animals.") with sub-senses below it
+  b.querySelectorAll('style, link, sup, ol, ul, dl, script').forEach(e => e.remove());
+  const text = b.textContent.replace(/\s+/g, ' ').replace(/\(\s*\)/g, '').replace(/\s+([,.;:])/g, '$1').trim();
+  let formOf = null;
+  const fo = b.querySelector('.form-of-definition');
+  if (fo) {
+    const a = fo.querySelector('.form-of-definition-link a') || [...fo.querySelectorAll('a')].pop();
+    const tgt = a && (a.getAttribute('title') || a.textContent || '').trim().toLowerCase();
+    if (tgt && /^[a-z]+$/.test(tgt)) formOf = { label: text.replace(/[.;:]+$/, ''), target: tgt };
+  }
+  return { text, nested, formOf };
+}
+// the English section of the wikitext → one list of sense lines per part-of-speech heading (same order as the REST entries)
+function defWikiSections(src) {
+  const part = src.split(/(?:^|\n)==\s*English\s*==[ \t]*\n/)[1]; if (!part) return null;
+  const en = part.split(/\n==[^=]/)[0], secs = []; let cur = null;
+  for (const l of en.split('\n')) {
+    const h = l.match(/^===+\s*([^=]+?)\s*===+/); if (h) { cur = { pos: h[1], lines: [] }; secs.push(cur); continue; }
+    const m = l.match(/^#+(.?)/); if (m && cur && !/[:*]/.test(m[1])) cur.lines.push(l);
+  }
+  return secs.filter(x => x.lines.length);
+}
+const defWikiLabels = line => { const out = []; line.replace(/\{\{\s*(?:lb|lbl|label|tlb|q|qual|qualifier|i|gloss)\s*\|([^{}]*)\}\}/g, (_, a) => { out.push(a); return ''; }); return out.join(' | '); };
+async function defFetch(url) {
+  const ac = new AbortController(), t = setTimeout(() => ac.abort(), DEFS.timeout);
+  try { const r = await fetch(url, { signal: ac.signal }); if (r.status === 404) return null; if (!r.ok) throw new Error('http ' + r.status); return await r.json(); }
+  finally { clearTimeout(t); }
+}
+// a word → its first part of speech that still has a kid-safe sense, with up to 2 senses
+async function defSenses(word) {
+  const [rest, wt] = await Promise.all([defFetch(DEFS.rest + encodeURIComponent(word)), defFetch(DEFS.wt + encodeURIComponent(word)).catch(() => null)]);
+  if (!rest || !Array.isArray(rest.en)) return null;
+  const entries = rest.en.filter(e => e.language === 'English')
+    .map(e => ({ pos: e.partOfSpeech, defs: (e.definitions || []).map(d => defParse(d.definition || '')).filter(p => p.text) }));
+  let src = null; try { src = wt.query.pages[0].revisions[0].slots.main.content; } catch (_) {}
+  const secs = src ? defWikiSections(src) : null;
+  const labelled = !!secs && secs.length === entries.length && entries.every((e, i) => secs[i].pos === e.pos && secs[i].lines.length === e.defs.length);
+  for (let i = 0; i < entries.length; i++) {
+    const good = entries[i].defs.filter((p, j) => {
+      if (p.nested || /:$/.test(p.text)) return false;
+      if (labelled && DEF_BAD_LABEL.test(defWikiLabels(secs[i].lines[j]))) return false;
+      return !defBadText(p.text);
+    });
+    if (good.length) return { pos: entries[i].pos, list: good.slice(0, DEFS.senses), labelled };
+  }
+  return { pos: null, list: [], labelled };
+}
+function defLookup(word) {
+  if (defCache.has(word)) return defCache.get(word);
+  const pr = (async () => {
+    if (navigator.onLine === false) throw new Error('offline');
+    const s = await defSenses(word);
+    if (!s || !s.list.length) return { word, state: 'none' };
+    const first = s.list[0];
+    if (first.formOf && first.formOf.target !== word) {      // "plural of cat": one hop, show cat's first meaning
+      const base = await defSenses(first.formOf.target).catch(() => null);
+      const bs = base && base.list.find(x => !x.formOf);
+      return { word, state: 'ok', formOf: first.formOf, pos: (bs ? base.pos : s.pos) || '', senses: bs ? [defShort(bs.text)] : [], labelled: s.labelled };
+    }
+    return { word, state: 'ok', pos: s.pos || '', senses: s.list.filter(x => !x.formOf).map(x => defShort(x.text)), labelled: s.labelled };
+  })().catch(e => { defCache.delete(word); return { word, state: 'offline', err: String((e && e.message) || e) }; });
+  defCache.set(word, pr);
+  return pr;
+}
+// what the card says (DOM card and VR panel share it)
+function defLines(card) {
+  if (!card || card.state === 'loading') return { note: '…', senses: [] };
+  if (card.state === 'offline') return { note: 'Needs internet', senses: [] };
+  if (card.state === 'none') return { note: 'No meaning found', senses: [] };
+  return { sub: card.formOf ? card.formOf.label : '', pos: (card.pos || '').toLowerCase(), senses: card.senses,
+    note: card.senses.length || card.formOf ? '' : 'No meaning found' };
+}
+
+// picking: a ray (scene space) → the sheet word under it (English words only), unless a letter is hit in front of it
+const sheetRay = new THREE.Raycaster();
+function sheetToScene(px, py) { return sheet.localToWorld(new THREE.Vector3(px / SHEET.w - .5, (.5 - py / SHEET.h) * SHEET.h / SHEET.w, 0)); }
+function sheetPick(o, d) {
+  if (!sheet.visible || !sheetS.cells.length) return null;
+  sheetRay.set(o, d); sheetRay.far = 1e4;
+  const hit = sheetRay.intersectObject(sheet, false)[0]; if (!hit || !hit.uv) return null;
+  const px = hit.uv.x * SHEET.w, py = (1 - hit.uv.y) * SHEET.h, pad = 24;
+  const cell = sheetS.cells.find(c => px >= c.x0 - pad && px <= c.x1 + pad && py >= c.y0 && py <= c.y1);
+  return cell && cell.def ? { W: cell.W, distance: hit.distance, point: hit.point } : null;
+}
+function sheetPickNdc(x, y) {
+  ndc.set(x, y); ray.setFromCamera(ndc, camera);
+  const sw = sheetPick(ray.ray.origin, ray.ray.direction); if (!sw) return null;
+  const lh = ray.intersectObjects(letters.map(l => l.mesh), false)[0];   // a click that hits a letter still goes to the letter
+  return lh && lh.distance < sw.distance ? null : sw;
+}
+function setSheetHover(W) { if (sheetS.hover !== W) { sheetS.hover = W; sheetS.sig = ''; } }
+cv.addEventListener('pointermove', e => {
+  if (e.pointerType !== 'mouse' || renderer.xr.isPresenting) return;
+  const sw = ptr.down ? null : sheetPickNdc((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  setSheetHover(sw ? sw.W : null);
+  cv.style.cursor = sw ? 'pointer' : '';
+});
+cv.addEventListener('pointerleave', () => { setSheetHover(null); cv.style.cursor = ''; });
+
+// the card: DOM on desktop / phone (under the word), a canvas panel beside the sheet in VR
+const defUI = { W: null, word: '', card: null, where: null, seq: 0, vrText: '' };
+const defEl = document.getElementById('defcard');
+const defH = defEl.querySelector('h2'), defSub = defEl.querySelector('.sub'), defPos = defEl.querySelector('.pos'), defOl = defEl.querySelector('ol'),
+  defNote = defEl.querySelector('.note'), defCr = defEl.querySelector('.cr a');
+defEl.querySelector('.x').addEventListener('click', e => { e.stopPropagation(); closeDef(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && defUI.W) closeDef(); });
+const DEFC = { w: 1024, h: 680, m: 2.4 };   // VR panel: canvas px; width in metres (beside the 3.6 m sheet, 6.5 m away)
+const defCv = document.createElement('canvas'); defCv.width = DEFC.w; defCv.height = DEFC.h;
+const defTex = new THREE.CanvasTexture(defCv); defTex.colorSpace = THREE.SRGBColorSpace; defTex.anisotropy = 4;
+const defMesh = new THREE.Mesh(new THREE.PlaneGeometry(DEFC.m, DEFC.m * DEFC.h / DEFC.w), new THREE.MeshBasicMaterial({ map: defTex, transparent: true, toneMapped: false, depthWrite: false }));
+defMesh.name = 'defcard'; defMesh.visible = false; defMesh.renderOrder = 3; scene.add(defMesh);
+function defRayHit(o, d) { sheetRay.set(o, d); sheetRay.far = 1e4; return sheetRay.intersectObject(defMesh, false)[0] || null; }
+function selectWord(W) {
+  if (!canDefine(W)) return null;
+  if (defUI.W === W) { closeDef(); return null; }            // select the same word again = close
+  const word = fold(W.ch), seq = ++defUI.seq;
+  Object.assign(defUI, { W, word, card: { word, state: 'loading' }, where: renderer.xr.isPresenting ? 'vr' : 'dom' });
+  sheetS.sel = W; sheetS.sig = '';
+  showDef(); sfx.click();
+  return defLookup(word).then(card => { if (seq === defUI.seq) { defUI.card = card; showDef(); } return card; });
+}
+function closeDef() {
+  defUI.seq++; defUI.W = null; defUI.card = null; defUI.vrText = '';
+  if (sheetS.sel) { sheetS.sel = null; sheetS.sig = ''; }
+  defEl.hidden = true; defMesh.visible = false;
+}
+function showDef() {
+  if (defUI.where === 'vr') { drawDefCard(); placeDefCard(); defMesh.visible = true; defEl.hidden = true; }
+  else { fillDefEl(); defMesh.visible = false; }
+}
+function fillDefEl() {
+  const L = defLines(defUI.card);
+  defH.textContent = defUI.word;
+  defSub.textContent = L.sub ? '— ' + L.sub : ''; defSub.hidden = !L.sub;
+  defPos.textContent = L.pos || ''; defPos.hidden = !L.pos;
+  defOl.replaceChildren(...L.senses.map(t => { const li = document.createElement('li'); li.textContent = t; return li; })); defOl.hidden = !L.senses.length;
+  defNote.textContent = L.note || ''; defNote.hidden = !L.note;
+  defCr.href = DEFS.page + encodeURIComponent(defUI.word);
+  defEl.hidden = false; placeDefEl();
+}
+// under the word on the sheet (follows the view), kept inside the screen
+function placeDefEl() {
+  const c = sheetS.cells.find(c => c.W === defUI.W), w = defEl.offsetWidth, h = defEl.offsetHeight;
+  let x = innerWidth / 2, y = 80;
+  if (c) {
+    const p = sheetToScene((c.x0 + c.x1) / 2, c.y1).project(camera);
+    if (p.z < 1 && Math.abs(p.x) < 1.2 && Math.abs(p.y) < 1.2) { x = (p.x + 1) / 2 * innerWidth; y = (1 - p.y) / 2 * innerHeight + 10; }
+  }
+  const left = Math.max(16, Math.min(innerWidth - w - 16, x - w / 2)), top = Math.max(16, Math.min(innerHeight - h - 16, y));
+  defEl.style.left = Math.round(left) + 'px'; defEl.style.top = Math.round(top) + 'px';
+}
+function placeDefCard() {
+  sheet.updateMatrixWorld(true);
+  const right = new THREE.Vector3(1, 0, 0).applyQuaternion(sheet.quaternion); right.y = 0; right.normalize();
+  const sw = sheet.scale.x, sh = sw * SHEET.h / SHEET.w, ch = DEFC.m * DEFC.h / DEFC.w;
+  defMesh.position.copy(sheet.position).addScaledVector(right, sw / 2 + .15 + DEFC.m / 2);
+  defMesh.position.y += (sh - ch) / 2;                       // top edges line up
+  defMesh.lookAt(sheetS.look);
+}
+function drawDefCard() {
+  const c = defCv.getContext('2d'), CW = DEFC.w, CH = DEFC.h, L = defLines(defUI.card);
+  const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
+  const PIX = '"Press Start 2P", ui-monospace, monospace', READ = 'Rubik, system-ui, sans-serif';
+  c.clearRect(0, 0, CW, CH);
+  c.fillStyle = 'rgba(14,10,40,.88)'; rr(6, 6, CW - 12, CH - 12, 36); c.fill();
+  c.lineWidth = 5; c.strokeStyle = 'rgba(201,190,234,.6)'; rr(9, 9, CW - 18, CH - 18, 34); c.stroke();
+  // ×: select it (or anywhere on the card, or the word again) to close
+  c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(CW - 112, 34, 74, 74, 16); c.stroke();
+  c.lineWidth = 7; c.lineCap = 'round'; c.beginPath(); c.moveTo(CW - 94, 52); c.lineTo(CW - 56, 90); c.moveTo(CW - 56, 52); c.lineTo(CW - 94, 90); c.stroke();
+  c.textBaseline = 'alphabetic'; c.textAlign = 'left';
+  c.fillStyle = '#FBBF24'; c.font = '400 52px ' + PIX; c.fillText(defUI.word, 56, 104, CW - 200);
+  let y = 104;
+  const text = [defUI.word];
+  const wrap = (t, font, lh, x, maxW, color, maxLines) => {
+    c.font = font; c.fillStyle = color; const ws = t.split(' '); let line = '', n = 0;
+    for (let i = 0; i < ws.length; i++) {
+      const tryL = line ? line + ' ' + ws[i] : ws[i];
+      if (c.measureText(tryL).width > maxW && line) {
+        if (++n >= maxLines) { line += '…'; break; }
+        y += lh; c.fillText(line, x, y); line = ws[i];
+      } else line = tryL;
+    }
+    y += lh; c.fillText(line, x, y);
+  };
+  if (L.sub) { y += 28; wrap('— ' + L.sub, 'italic 500 40px ' + READ, 50, 56, CW - 112, '#C9BEEA', 2); text.push('— ' + L.sub); }
+  if (L.pos) { y += 18; wrap(L.pos, '500 34px ' + READ, 44, 56, CW - 112, '#C9BEEA', 1); text.push(L.pos); }
+  const room = Math.max(1, Math.floor((CH - 90 - y) / 56) - L.senses.length);
+  L.senses.forEach((t, i) => {
+    y += 14; c.fillStyle = '#FBBF24'; c.font = '500 44px ' + READ; c.fillText((i + 1) + '.', 56, y + 56);
+    wrap(t, '400 44px ' + READ, 56, 112, CW - 168, '#ECE8FA', i === 0 ? Math.max(2, room - 1) : 2); text.push(t);
+  });
+  if (L.note) { y += 40; wrap(L.note, '500 54px ' + READ, 64, 56, CW - 112, '#ECE8FA', 1); text.push(L.note); }
+  c.fillStyle = 'rgba(201,190,234,.8)'; c.font = '400 26px ' + READ; c.fillText('Wiktionary · CC BY-SA 4.0', 56, CH - 40);
+  defUI.vrText = text.join(' | ');
+  defTex.needsUpdate = true;
+}
+
 placeSheet(false);
 if (document.fonts) document.fonts.load('40px "Press Start 2P"').then(() => document.fonts.load('40px Tinos')).then(() => { sheetS.sig = ''; drawSheet(); vr.panelSig = ''; }).catch(() => {});
 function madeWord(W) {
@@ -1452,7 +1701,7 @@ function endRound() {
 document.getElementById('again').addEventListener('click', () => resetGame());
 // new round, same 140 letters: words break up and everything is scattered again (desktop and VR)
 function resetGame() {
-  won = false;
+  won = false; closeDef(); setSheetHover(null);
   hudEl.classList.remove('end'); winEl.classList.remove('show'); panel.visible = false;
   for (const H of vr.hands) H.held = null;
   if (drag.L) { drag.L.dragged = false; drag.L = null; }
@@ -1606,7 +1855,7 @@ function updateHand(H, dt) {
   const h0 = H.hist[0], h1 = H.hist[H.hist.length - 1];
   if (h1.t - h0.t > 1e-4) H.vel.subVectors(h1.p, h0.p).divideScalar(h1.t - h0.t); else H.vel.set(0, 0, 0);
   // 3) pointer ray from the target-ray space (index-finger pointing on hands, the controller's nose otherwise)
-  H.aimed = null; H.aimBtn = false;
+  H.aimed = null; H.aimBtn = false; H.aimSheet = null; H.aimCard = false;
   let len = VR_M.rayStub;
   if (!H.held && H.ctrl.visible) {
     H.ctrl.getWorldPosition(vC); vD.set(0, 0, -1).applyQuaternion(H.ctrl.getWorldQuaternion(qA));
@@ -1615,14 +1864,18 @@ function updateHand(H, dt) {
     if (replayBtn.visible && panel.visible) targets.push(replayBtn);
     targets.push(...rackBtnLive());
     let hit = xrRay.intersectObjects(targets, false)[0];
+    // the word sheet (6.5 m away, past the letter ray) and the meaning card next to it
+    const far = defMesh.visible ? defRayHit(vC, vD) : null, sw = far ? null : sheetPick(vC, vD), farHit = far || sw;
+    if (farHit && hit && hit.distance < farHit.distance) { /* a letter / button in front wins */ } else if (farHit) { hit = null; if (far) H.aimCard = true; else H.aimSheet = sw.W; }
     // aim assist: thin serif letters have holes and far ones are tiny, so also take the letter whose centre lies inside a ~2.8° cone
     // around the ray (never narrower than VR_M.aimAssist), closest in angle, then nearest
-    if (!hit) hit = assistPick(vC, vD, VR_M.aimAssist, VR_M.rayMax, L => L.dragged);
+    if (!hit && !H.aimCard && !H.aimSheet) hit = assistPick(vC, vD, VR_M.aimAssist, VR_M.rayMax, L => L.dragged);
     if (hit) {
       len = hit.distance;
       if (hit.object === replayBtn || hit.object.userData.rackBtn) H.aimBtn = hit.object; else H.aimed = hit.object.userData.letter;
       H.dot.position.copy(hit.point); H.dot.visible = true;
-    } else H.dot.visible = false;
+    } else if (H.aimCard || H.aimSheet) { len = farHit.distance; H.dot.position.copy(farHit.point); H.dot.visible = true; }
+    else H.dot.visible = false;
     H.line.scale.z = len; H.line.visible = true;
   } else { H.line.visible = false; H.dot.visible = false; }
   // 4) pinch edges: near letter first, else the aimed far letter flies to the hand (replaces Space)
@@ -1635,7 +1888,8 @@ function updateHand(H, dt) {
         const d = toScene(L, vA).distanceTo(H.pt) - VR_M.letterR;
         if (d < VR_M.grabReach && d < bd) { bd = d; best = L; }
       }
-      if (best) grab(H, best, false); else if (H.aimBtn && H.aimBtn.userData.rackBtn) pressRackBtn(H.aimBtn); else if (H.aimed) grab(H, H.aimed, true);
+      if (best) grab(H, best, false); else if (H.aimBtn && H.aimBtn.userData.rackBtn) pressRackBtn(H.aimBtn);
+      else if (H.aimCard) closeDef(); else if (H.aimSheet) selectWord(H.aimSheet); else if (H.aimed) grab(H, H.aimed, true);
     }
   }
   if (!H.pinch && H.wasPinch) releaseHeld(H, true);
@@ -1721,6 +1975,7 @@ function xrUpdate(xrFrame, dt) {
   rig.updateMatrixWorld(true);
   if (!vr.anchored) { if (!pose) return; anchorWorld(); }
   for (const H of vr.hands) updateHand(H, dt);
+  { const a = vr.hands.find(H => H.aimSheet); setSheetHover(a ? a.aimSheet : null); }
   pushAway(dt);
   // aim highlight
   for (const L of vr.lit) if (L.mesh.material === LETTER_MAT_AIM) L.mesh.material = L.baseMat;
@@ -1760,12 +2015,13 @@ vrBtn.addEventListener('click', async () => {
   } catch (e) { console.info('VR session not started:', e.message); sayVr('VR did not start: ' + e.message); }
 });
 renderer.xr.addEventListener('sessionstart', () => {
+  closeDef(); setSheetHover(null);
   vr.anchored = false; vr.t = 0; vrBtn.querySelector('span').textContent = 'Exit VR'; vrBtn.classList.remove('big'); sayVr('');
 });
 renderer.xr.addEventListener('sessionend', () => {
   for (const H of vr.hands) { releaseHeld(H, false); H.kind = null; H.line.visible = H.dot.visible = false; }
   for (const L of vr.lit) if (L.mesh.material === LETTER_MAT_AIM) L.mesh.material = L.baseMat;
-  vr.lit.clear(); vr.anchored = false; panel.visible = false;
+  vr.lit.clear(); vr.anchored = false; panel.visible = false; closeDef(); setSheetHover(null);
   world.position.set(0, 0, 0); world.scale.setScalar(1); world.updateMatrixWorld(true);
   WORLD.rMin = DESK_WORLD.rMin; WORLD.rMax = DESK_WORLD.rMax;
   setRackVR(false); placeSheet(false); sheetS.sig = '';
@@ -1909,6 +2165,20 @@ window.__fl = {
       return p.toArray();
     },
     headPose() { return { p: vr.head.toArray(), q: vr.headQ.toArray() }; }
+  },
+  defs: {
+    // select the newest sheet word spelling `word` (as a tap / pinch would); resolves with the card, or { selectable: false }
+    select(word) { const W = [...words].reverse().find(W => fold(W.ch) === fold(word)); if (!W) return Promise.resolve({ found: false });
+      if (!canDefine(W)) return Promise.resolve({ selectable: false }); if (defUI.W === W) closeDef(); return selectWord(W); },
+    get lastCard() { return defUI.card ? { ...defUI.card, open: !!defUI.W, where: defUI.where, text: defUI.where === 'dom' ? defEl.innerText : defUI.vrText } : null; },
+    canDefine: word => DICT.hasEn(fold(word)), close: closeDef, lookup: defLookup, cache: defCache, mesh: defMesh, el: defEl, png: () => defCv.toDataURL(),
+    get hover() { return sheetS.hover ? sheetS.hover.ch : null; }, get sel() { return sheetS.sel ? sheetS.sel.ch : null; },
+    cells() { return sheetS.cells.map(c => ({ ch: c.W.ch, def: c.def })); },
+    // where a sheet word sits: screen px (desktop / phone) and scene metres (VR)
+    cellScreen(word) { const c = sheetS.cells.find(c => fold(c.W.ch) === fold(word)); if (!c) return null; const p = sheetToScene((c.x0 + c.x1) / 2, (c.y0 + c.y1) / 2).project(camera); return { x: (p.x + 1) / 2 * innerWidth, y: (1 - p.y) / 2 * innerHeight }; },
+    cellScene(word) { const c = sheetS.cells.find(c => fold(c.W.ch) === fold(word)); return c ? sheetToScene((c.x0 + c.x1) / 2, (c.y0 + c.y1) / 2).toArray() : null; },
+    cardScene() { return defMesh.getWorldPosition(new THREE.Vector3()).toArray(); },
+    hand(i) { const H = vr.hands[i]; return { aimSheet: H.aimSheet ? H.aimSheet.ch : null, aimCard: H.aimCard }; }
   },
   info() { const L = letters[0]; return { pos: L.pos.toArray().map(n => +n.toFixed(2)), vel: +L.vel.length().toFixed(3), spin: +L.angVel.length().toFixed(3), held: L.dragged, quality: stats.quality, t: +clock.t.toFixed(2) }; }
 };
