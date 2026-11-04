@@ -1470,7 +1470,7 @@ const defCache = new Map();
 // one REST sense (HTML) → plain text (+ "plural of cat" style form-of link)
 function defParse(html) {
   const b = new DOMParser().parseFromString('<body>' + html + '</body>', 'text/html').body;
-  const nested = !!b.querySelector('ol, ul, dl');            // a group heading ("Terms relating to animals.") with sub-senses below it
+  const nested = !!b.querySelector('ol, ul, dl'), raw = !!b.textContent.trim();            // a group heading ("Terms relating to animals.") with sub-senses below it
   b.querySelectorAll('style, link, sup, ol, ul, dl, script').forEach(e => e.remove());
   const text = b.textContent.replace(/\s+/g, ' ').replace(/\(\s*\)/g, '').replace(/\s+([,.;:])/g, '$1').trim();
   let formOf = null;
@@ -1480,7 +1480,7 @@ function defParse(html) {
     const tgt = a && (a.getAttribute('title') || a.textContent || '').trim().toLowerCase();
     if (tgt && /^[a-z]+$/.test(tgt)) formOf = { label: text.replace(/[.;:]+$/, ''), target: tgt };
   }
-  return { text, nested, formOf };
+  return { text, raw, nested, formOf };
 }
 // the English section of the wikitext → one list of sense lines per part-of-speech heading (same order as the REST entries)
 function defWikiSections(src) {
@@ -1503,14 +1503,14 @@ async function defSenses(word) {
   const [rest, wt] = await Promise.all([defFetch(DEFS.rest + encodeURIComponent(word)), defFetch(DEFS.wt + encodeURIComponent(word)).catch(() => null)]);
   if (!rest || !Array.isArray(rest.en)) return null;
   const entries = rest.en.filter(e => e.language === 'English')
-    .map(e => ({ pos: e.partOfSpeech, defs: (e.definitions || []).map(d => defParse(d.definition || '')).filter(p => p.text) }));
+    .map(e => ({ pos: e.partOfSpeech, defs: (e.definitions || []).map(d => defParse(d.definition || '')).filter(p => p.raw) }));   // same count as the wikitext sense lines
   let src = null; try { src = wt.query.pages[0].revisions[0].slots.main.content; } catch (_) {}
   const secs = src ? defWikiSections(src) : null;
   const labelled = !!secs && secs.length === entries.length && entries.every((e, i) => secs[i].pos === e.pos && secs[i].lines.length === e.defs.length);
   defUI.align = { word, rest: entries.map(e => e.pos + ":" + e.defs.length).join(" "), wt: secs ? secs.map(x => x.pos + ":" + x.lines.length).join(" ") : null };
   for (let i = 0; i < entries.length; i++) {
     const good = entries[i].defs.filter((p, j) => {
-      if (p.nested || /:$/.test(p.text)) return false;
+      if (!p.text || p.nested || /:$/.test(p.text)) return false;
       if (labelled && DEF_BAD_LABEL.test(defWikiLabels(secs[i].lines[j]))) return false;
       return !defBadText(p.text);
     });
