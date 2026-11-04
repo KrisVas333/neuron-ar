@@ -19,7 +19,7 @@
   canvas { display: block; outline: none; cursor: grab; touch-action: none; }
   canvas.drag { cursor: grabbing; }
   #vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, rgba(5,3,15,0) 60%, rgba(5,3,15,.45) 100%); }
-  #dot { position: fixed; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
+  #dot { display: none !important; position: fixed; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
     background: var(--fg); box-shadow: 0 0 0 1.5px rgba(5,3,15,.6), 0 0 6px rgba(201,190,234,.6); pointer-events: none; transition: transform .15s, background .15s; }
   #dot.on { transform: scale(1.9); background: var(--yellow); }
   #dot.no { animation: no .3s; }
@@ -402,7 +402,7 @@ const LETTER_MAT_AIM = makeLetterMaterial(0xFF6B6B, 1.0);
 let colorIx = 0;
 
 // ---------- physics (no library; one body per letter) ----------
-const WORLD = { rMin: 3.2, rMax: 10.0, wall: 0.9, drag: 0.4, angDrag: 0.3, gap: 1.15 };
+const WORLD = { rMin: 6.4, rMax: 20.0, wall: 0.9, drag: 0.4, angDrag: 0.3, gap: 1.15 };
 const letters = [];
 const tmpV = new THREE.Vector3(), tmpV2 = new THREE.Vector3(), tmpQ = new THREE.Quaternion();
 
@@ -720,7 +720,7 @@ cv.addEventListener('pointercancel', e => {
   if (drag.L) { drag.L.dragged = false; drag.L.releaseAt = clock.t - 1.5; drag.L = null; }
 });
 // holding a letter + Space = bring it close, right under the pointer (spelling distance = the rack's distance)
-const NEAR_DIST = 3.6;
+const NEAR_DIST = 7.2;   // Kris 2026-11-04: rack 2x farther (was 3.6)
 const nearDist = () => rackS.dist || NEAR_DIST;
 const camFwd = new THREE.Vector3();
 function pullCloser() {
@@ -865,7 +865,7 @@ shuffled.forEach((ch, i) => {
   // fibonacci sphere for even directions, random depth inside the bubble shell
   const n = shuffled.length, y = 1 - (i + .5) / n * 2, rr = Math.sqrt(1 - y * y), th = i * Math.PI * (3 - Math.sqrt(5));
   const dir = new THREE.Vector3(Math.cos(th) * rr, y * .8, Math.sin(th) * rr).normalize();
-  const L = addLetter(ch, dir.multiplyScalar(4.5 + Math.random() * 4.5));
+  const L = addLetter(ch, dir.multiplyScalar(9 + Math.random() * 9));
   L.vel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.1);
   L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).multiplyScalar(.5);
 });
@@ -1155,8 +1155,9 @@ const lettersLeft = () => letters.reduce((n, l) => n + (l.word ? 0 : 1), 0);
 // 3 solid boxes + 1 dashed box with "+". "+" makes the dashed box solid and adds a new dashed one; the small "-" in the corner
 // of the last extra box takes one away. "word!" reads the solid boxes left to right. In VR the boxes sit on a gentle arc around you,
 // so every box is the same distance away (arm's reach in VR). The rack is placed once and stays fixed in the world.
-const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.7, min: 3, max: 7, tol: .06, pull: .3,
-  dist: 3.6, drop: .1, sDesk: .62, sTouch: .5, fill: .8,   // desktop / phone (world units): at the Space-pull distance, scaled to fit the view
+const RACK = { E: 2.5, D: 2.5 * .55, gap: 2.75,   // gap 2.7 -> 2.75: 25% more space between boxes (Kris 2026-11-04)
+  min: 3, max: 7, tol: .06, pull: .3,
+  dist: 7.2, drop: .1, sDesk: 1.2, sTouch: 1.0, fill: .8,   // desktop / phone (world units): at the Space-pull distance, scaled to fit the view
   vrCube: .34, vrDist: .72, vrDrop: .3 };   // VR (metres)
 const rack = new THREE.Group(), rackInner = new THREE.Group(); // rackInner shakes on a miss
 rack.name = 'rack'; rack.add(rackInner); world.add(rack);
@@ -1325,6 +1326,33 @@ function rackUpdate(dt, inXR) {
     c.faceMat.opacity = c.lit > .5 ? .10 + .06 * c.lit : .22 + .2 * flash * (1 - want);
     if (c.occ && !c.occ.dragged && dt > 0) c.occ.vel.addScaledVector(rkV2.copy(c.centre).sub(c.occ.pos), RACK.pull * dt);
   }
+  rackKeepOut(dt);
+}
+// Kris 2026-11-04 ("you have to guard slotted letters"): free-floating letters and words drift out of a soft bubble around
+// each box, sideways / outward (never toward the player). A letter in a box, the one you carry, or one you let go of in the
+// last ~2.5 s is left alone, so placing a letter still works exactly as before.
+const KEEP = { margin: .55, k: 1.6, grace: 4 };
+const kpOcc = new Set(), kpD = new THREE.Vector3();
+function rackKeepOut(dt) {
+  if (dt <= 0) return;
+  const total = rackTotal(), s = rack.scale.x;
+  const R = (Math.hypot(RACK.E, RACK.E, RACK.D) / 2 + KEEP.margin) * s;
+  kpOcc.clear(); for (let i = 0; i < total; i++) if (cubes[i].occ) kpOcc.add(cubes[i].occ);
+  const push = B => {
+    if (B.dragged || clock.t - B.releaseAt < KEEP.grace) return;
+    if (B.members ? B.members.some(m => kpOcc.has(m)) : kpOcc.has(B)) return;
+    for (let i = 0; i < total; i++) {
+      const c = cubes[i].centre;
+      kpD.subVectors(B.pos, c); const d = kpD.length();
+      if (d >= R) continue;
+      const rl = B.pos.length();                                   // radial = away from the player (world-local origin)
+      if (rl > 1e-4) { const rd = kpD.dot(B.pos) / rl; if (rd < 0) kpD.addScaledVector(B.pos, -rd / rl); }
+      if (kpD.lengthSq() < 1e-6) kpD.set(0, 1, 0);
+      B.vel.addScaledVector(kpD.normalize(), KEEP.k * (R - d) / R * R * dt);
+    }
+  };
+  for (const L of letters) if (!L.word) push(L);
+  for (const W of words) push(W);
 }
 function setRackVR(on) {
   rackS.vr = on;
@@ -1339,7 +1367,7 @@ function fitDeskRack(total) {
   const span = n => n * RACK.gap - (RACK.gap - RACK.E);           // rack-local width of n boxes
   const sPref = IS_MOBILE ? RACK.sTouch : RACK.sDesk;
   let d = NEAR_DIST;
-  if (IS_MOBILE) d = THREE.MathUtils.clamp(span(RACK.min + 1) * sPref / (2 * htan * RACK.fill), NEAR_DIST, 8);
+  if (IS_MOBILE) d = THREE.MathUtils.clamp(span(RACK.min + 1) * sPref / (2 * htan * RACK.fill), NEAR_DIST, 16);
   const s = Math.min(sPref, 2 * htan * d * RACK.fill / span(total));
   rackS.dist = d; rackS.s = s;
   rack.scale.setScalar(s);
@@ -1378,7 +1406,7 @@ rackReady = true;
 // ---------- the typed sheet: every word you spell, typed line by line on a big sheet far away, fixed in the world ----------
 // (Kris round 5: "just a list of your words somewhere in the distance (also not moving)"). Newest line at the bottom, like a
 // typewriter; the new word types itself in letter by letter. Desktop and VR: placed once, ahead and up, and never moved.
-const SHEET = { w: 1536, h: 1024, rows: 7, cols: 2, deskDist: 30, deskUp: 9.6, deskW: 20, vrDist: 6.5, vrUp: 1.38, vrW: 3.6, typeMs: 75 };
+const SHEET = { w: 1536, h: 1024, rows: 7, cols: 2, deskDist: 30, deskUp: 9.6, deskW: 20, vrDist: 8, vrUp: 1.7, vrW: 4.4, typeMs: 75 };
 const sheetCv = document.createElement('canvas'); sheetCv.width = SHEET.w; sheetCv.height = SHEET.h;
 const sheetTex = new THREE.CanvasTexture(sheetCv); sheetTex.colorSpace = THREE.SRGBColorSpace; sheetTex.anisotropy = 4;
 const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, SHEET.h / SHEET.w), new THREE.MeshBasicMaterial({ map: sheetTex, transparent: true, toneMapped: false, depthWrite: false }));
@@ -1592,7 +1620,7 @@ const defH = defEl.querySelector('h2'), defSub = defEl.querySelector('.sub'), de
   defNote = defEl.querySelector('.note'), defCr = defEl.querySelector('.cr a');
 defEl.querySelector('.x').addEventListener('click', e => { e.stopPropagation(); closeDef(); });
 addEventListener('keydown', e => { if (e.key === 'Escape' && defUI.W) closeDef(); });
-const DEFC = { w: 1024, h: 680, m: 2.4 };   // VR panel: canvas px; width in metres (beside the 3.6 m sheet, 6.5 m away)
+const DEFC = { w: 1024, h: 680, m: 2.95 };   // VR panel: canvas px; width in metres (beside the 3.6 m sheet, 6.5 m away)
 const defCv = document.createElement('canvas'); defCv.width = DEFC.w; defCv.height = DEFC.h;
 const defTex = new THREE.CanvasTexture(defCv); defTex.colorSpace = THREE.SRGBColorSpace; defTex.anisotropy = 4;
 const defMesh = new THREE.Mesh(new THREE.PlaneGeometry(DEFC.m, DEFC.m * DEFC.h / DEFC.w), new THREE.MeshBasicMaterial({ map: defTex, transparent: true, toneMapped: false, depthWrite: false }));
@@ -1730,7 +1758,7 @@ function resetGame() {
   breakWords();
   rackS.n = RACK.min; layoutRack(false);
   if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55);
-  else scatterLetters(4.5, 9, .8);
+  else scatterLetters(9, 18, .8);
   renderHud(false);
 }
 
@@ -1738,10 +1766,10 @@ function resetGame() {
 // The physics never changes: it runs in world units. In VR the `world` group is scaled so a capital is ~22 cm
 // and centred on the head at session start; everything measured in metres (VR_M) is divided by vr.S.
 const VR_M = {
-  letterH: .22, eyeMin: .35, eyeMax: 3.0, spawnMin: .5, spawnMax: 2.7,   // letter size, float shell, spawn shell
+  letterH: .22, eyeMin: .35, eyeMax: 6.0, spawnMin: 1.0, spawnMax: 5.4,   // letter size, float shell, spawn shell
   pinchOn: .02, pinchOff: .035, grabReach: .08, letterR: .09,               // pinch hysteresis, direct-grab reach, letter contact radius
   tipR: .012, palmR: .035, ctrlR: .045,                                     // contact spheres
-  throwMax: 2.5, velWindow: .1, rayMax: 6, rayStub: .3, aimAssist: .09,     // throw clamp (m/s), velocity window (s), pointer ray
+  throwMax: 2.5, velWindow: .1, rayMax: 12, rayStub: .3, aimAssist: .09,     // throw clamp (m/s), velocity window (s), pointer ray
   pushBase: .22, pushGain: 1.1, releaseGrace: .4,                           // push-away kick
   panelDist: 1.0, panelDrop: .02, pokeR: .05                                // goal panel + replay button
 };
@@ -2047,7 +2075,7 @@ renderer.xr.addEventListener('sessionend', () => {
   world.position.set(0, 0, 0); world.scale.setScalar(1); world.updateMatrixWorld(true);
   WORLD.rMin = DESK_WORLD.rMin; WORLD.rMax = DESK_WORLD.rMax;
   setRackVR(false); placeSheet(false); sheetS.sig = '';
-  scatterLetters(4.5, 9, .8, true);
+  scatterLetters(9, 18, .8, true);
   camera.position.set(0, 0, 0); camera.zoom = 1; resize();
   vrBtn.querySelector('span').textContent = 'Enter VR'; if (IN_HEADSET) vrBtn.classList.add('big');
 });
@@ -2101,7 +2129,6 @@ function frame(now, xrFrame) {
   if (inXR) { renderer.render(scene, camera); return; } // no bloom composer in WebXR
 
   // crosshair feedback
-  if (!IS_MOBILE) dotEl.classList.toggle('on', !!pickLetter(0, 0));
 
   if (useBloom && composer) composer.render(); else renderer.render(scene, camera);
 }
@@ -2162,7 +2189,7 @@ window.__fl = {
   },
   // QA: glue every free letter into words (3s, last group up to 5), bypassing the dictionary → ends the round
   formAll() { const free = letters.filter(l => !l.word); while (free.length >= 3) { const k = free.length <= 5 ? free.length : 3; madeWord(formWord(free.splice(0, k))); }
-    if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); else scatterLetters(4.5, 9, .8, true);
+    if (renderer.xr.isPresenting && vr.anchored) scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); else scatterLetters(9, 18, .8, true);
     return lettersLeft(); },
   advance(sec, h = 1 / 60) { for (let s = 0; s < sec - 1e-6; s += h) { clock.t += h; stepAll(clock.t, h); if (this.advCollide) { const b = boxOccupants(); batSweep(h, b); collide(h, b); } stepRipples(h); } blobUniforms.uT.value = bubbleUniforms.uT.value = clock.t; },
   setLook(yawDeg, pitchDeg) { look.tYaw = look.yaw = THREE.MathUtils.degToRad(yawDeg); look.tPitch = look.pitch = THREE.MathUtils.degToRad(pitchDeg); },
