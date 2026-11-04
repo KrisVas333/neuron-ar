@@ -1507,6 +1507,7 @@ async function defSenses(word) {
   let src = null; try { src = wt.query.pages[0].revisions[0].slots.main.content; } catch (_) {}
   const secs = src ? defWikiSections(src) : null;
   const labelled = !!secs && secs.length === entries.length && entries.every((e, i) => secs[i].pos === e.pos && secs[i].lines.length === e.defs.length);
+  defUI.align = { word, rest: entries.map(e => e.pos + ":" + e.defs.length).join(" "), wt: secs ? secs.map(x => x.pos + ":" + x.lines.length).join(" ") : null };
   for (let i = 0; i < entries.length; i++) {
     const good = entries[i].defs.filter((p, j) => {
       if (p.nested || /:$/.test(p.text)) return false;
@@ -1610,15 +1611,20 @@ function fillDefEl() {
   defCr.href = DEFS.page + encodeURIComponent(defUI.word);
   defEl.hidden = false; placeDefEl();
 }
-// under the word on the sheet (follows the view), kept inside the screen
+// beside the sheet (right, else left), level with the word; no room (phones) = under the sheet. Follows the view, kept on screen,
+// and never on top of the list, so the next word can still be tapped.
+const defScr = (px, py) => { const p = sheetToScene(px, py).project(camera); return { x: (p.x + 1) / 2 * innerWidth, y: (1 - p.y) / 2 * innerHeight, ok: p.z < 1 }; };
 function placeDefEl() {
-  const c = sheetS.cells.find(c => c.W === defUI.W), w = defEl.offsetWidth, h = defEl.offsetHeight;
-  let x = innerWidth / 2, y = 80;
-  if (c) {
-    const p = sheetToScene((c.x0 + c.x1) / 2, c.y1).project(camera);
-    if (p.z < 1 && Math.abs(p.x) < 1.2 && Math.abs(p.y) < 1.2) { x = (p.x + 1) / 2 * innerWidth; y = (1 - p.y) / 2 * innerHeight + 10; }
+  const c = sheetS.cells.find(c => c.W === defUI.W), w = defEl.offsetWidth, h = defEl.offsetHeight, G = 16;
+  let left = (innerWidth - w) / 2, top = 80;
+  const tl = defScr(0, 0), br = defScr(SHEET.w, SHEET.h);
+  if (tl.ok && br.ok) {
+    const wy = c ? defScr(0, (c.y0 + c.y1) / 2).y : tl.y;
+    if (innerWidth - br.x >= w + 2 * G) { left = br.x + G; top = wy - 40; }
+    else if (tl.x >= w + 2 * G) { left = tl.x - G - w; top = wy - 40; }
+    else { top = br.y + 10; if (top + h > innerHeight - G) top = tl.y - h - 10; left = c ? defScr((c.x0 + c.x1) / 2, 0).x - w / 2 : left; }
   }
-  const left = Math.max(16, Math.min(innerWidth - w - 16, x - w / 2)), top = Math.max(16, Math.min(innerHeight - h - 16, y));
+  left = Math.max(G, Math.min(innerWidth - w - G, left)); top = Math.max(G, Math.min(innerHeight - h - G, top));
   defEl.style.left = Math.round(left) + 'px'; defEl.style.top = Math.round(top) + 'px';
 }
 function placeDefCard() {
@@ -2171,7 +2177,7 @@ window.__fl = {
     select(word) { const W = [...words].reverse().find(W => fold(W.ch) === fold(word)); if (!W) return Promise.resolve({ found: false });
       if (!canDefine(W)) return Promise.resolve({ selectable: false }); if (defUI.W === W) closeDef(); return selectWord(W); },
     get lastCard() { return defUI.card ? { ...defUI.card, open: !!defUI.W, where: defUI.where, text: defUI.where === 'dom' ? defEl.innerText : defUI.vrText } : null; },
-    canDefine: word => DICT.hasEn(fold(word)), close: closeDef, lookup: defLookup, cache: defCache, mesh: defMesh, el: defEl, png: () => defCv.toDataURL(),
+    get align() { return defUI.align; }, canDefine: word => DICT.hasEn(fold(word)), close: closeDef, lookup: defLookup, cache: defCache, mesh: defMesh, el: defEl, png: () => defCv.toDataURL(),
     get hover() { return sheetS.hover ? sheetS.hover.ch : null; }, get sel() { return sheetS.sel ? sheetS.sel.ch : null; },
     cells() { return sheetS.cells.map(c => ({ ch: c.W.ch, def: c.def })); },
     // where a sheet word sits: screen px (desktop / phone) and scene metres (VR)
