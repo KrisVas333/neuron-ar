@@ -54,7 +54,7 @@
   #wc span { font: 500 13px/1 var(--read); color: var(--fg); }
   #left.bump b, #wc.bump b { animation: bump .45s; }
   @keyframes bump { 40% { transform: scale(1.35); } }
-  #gyro { pointer-events: auto; margin-left: auto; width: 44px; height: 44px; margin-top: -3px; border: 0; border-radius: 10px; display: none; place-items: center; color: var(--lilac); padding: 0; }
+  #gyro { pointer-events: auto; margin-left: 0; width: 44px; height: 44px; margin-top: -3px; border: 0; border-radius: 10px; display: none; place-items: center; color: var(--lilac); padding: 0; }
   body.mobile #gyro.ok { display: grid; }
   #gyro.on { box-shadow: inset 0 0 0 2px var(--yellow), 0 0 12px rgba(251,191,36,.45); color: var(--yellow); }
   #gyro svg { width: 24px; height: 24px; }
@@ -98,6 +98,50 @@
   #defcard .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--yellow);
     box-shadow: inset 0 0 0 1.5px var(--yellow); font: 500 22px/1 var(--read); cursor: pointer; }
   #lovable-badge { display: none !important; }
+  /* "?" = how to play (replays the onboarding) */
+  #help { pointer-events: auto; flex: none; margin-left: auto; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 10px; background: var(--panel);
+    box-shadow: inset 0 0 0 1.5px var(--yellow); color: var(--yellow); font: 400 15px/1 var(--pixel); cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  body.mobile #help { width: 44px; height: 44px; margin-top: -3px; }
+  /* letters that are all used up (every copy is in a word) */
+  #gone { flex: none; display: flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 10px; box-sizing: border-box;
+    background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  #gone[hidden] { display: none; }
+  #gone span { font: 500 13px/1 var(--read); color: var(--lilac); margin-right: 2px; }
+  #gone i, #note i { font: 400 22px/1 Tinos, "Times New Roman", serif; font-style: normal; color: rgba(201,190,234,.6); text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+  body.mobile #hud { flex-wrap: wrap; }
+  body.mobile #gone { order: 9; }
+  #note { position: fixed; left: 50%; top: 64px; transform: translateX(-50%); z-index: 15; padding: 12px 18px; border-radius: 12px; background: var(--panel); white-space: nowrap;
+    box-shadow: inset 0 0 0 2px var(--yellow), 0 10px 30px rgba(5,3,15,.5); font: 400 14px/1.3 var(--pixel); color: var(--yellow); pointer-events: none; animation: note 2.6s ease both; }
+  #note.below { top: 200px; }
+  body.mobile #note { top: 120px; }
+  body.mobile #note.below { top: 290px; }
+  #note[hidden] { display: none; }
+  @keyframes note { 0% { opacity: 0; transform: translate(-50%, -10px) scale(.8); } 12% { opacity: 1; transform: translate(-50%, 0) scale(1.06); } 20% { transform: translate(-50%, 0) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; } }
+  /* onboarding: the guided first word */
+  #tut { position: fixed; left: 50%; top: 64px; transform: translateX(-50%); z-index: 14; width: min(520px, calc(100vw - 32px)); box-sizing: border-box; padding: 14px 18px; border-radius: 14px;
+    background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--line), 0 10px 40px rgba(5,3,15,.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--fg); pointer-events: auto; }
+  #tut[hidden] { display: none; }
+  #tut.low { top: auto; bottom: 72px; }
+  body.mobile #tut { top: 62px; }
+  body.mobile #tut.low { top: auto; bottom: max(100px, calc(env(safe-area-inset-bottom) + 90px)); }
+  #tut .top { display: flex; align-items: center; gap: 10px; margin: 0 70px 10px 0; }
+  #tut h3 { margin: 0; font: 400 14px/1.2 var(--pixel); color: var(--yellow); }
+  #tut .n { font: 500 13px/1 var(--read); color: var(--lilac); }
+  #tut .msg { margin: 0; font: 500 21px/1.35 var(--read); color: var(--fg); }
+  #tut.final .msg { font-size: 23px; }
+  #tut .yay { position: absolute; right: 18px; top: 13px; font: 400 14px/1 var(--pixel); color: var(--yellow); opacity: 0; pointer-events: none; }
+  #tut .yay.on { animation: yay 1.3s ease-out both; }
+  @keyframes yay { 0% { opacity: 0; transform: scale(.4); } 15% { opacity: 1; transform: scale(1.3); } 30% { transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-8px); } }
+  #tut .row { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 10px; }
+  #tut button { border: 0; background: transparent; cursor: pointer; border-radius: 10px; }
+  #tut .skip { padding: 8px 14px; min-height: 40px; font: 500 15px/1 var(--read); color: var(--lilac); box-shadow: inset 0 0 0 1.5px var(--line); }
+  #tut .play { padding: 12px 26px; min-height: 52px; font: 400 18px/1 var(--pixel); color: var(--yellow); box-shadow: inset 0 0 0 3px var(--yellow); }
+  #tut .play[hidden] { display: none; }
+  #ghost svg { display: block; }
+  #ghost { position: fixed; left: 0; top: 0; width: 72px; height: 72px; z-index: 13; pointer-events: none; transform-origin: 31.5px 10.5px; filter: drop-shadow(0 0 8px rgba(251,191,36,.6)); }
+  #ghostkey { position: fixed; left: 0; top: 0; z-index: 13; pointer-events: none; padding: 11px 20px; border-radius: 10px; background: var(--panel); transform-origin: 50% 50%;
+    box-shadow: inset 0 0 0 2.5px var(--yellow), 0 0 16px rgba(251,191,36,.5); font: 400 14px/1 var(--pixel); color: var(--yellow); }
+  #ghost[hidden], #ghostkey[hidden] { display: none; }
 </style>
 <script type="importmap">
 { "imports": {
@@ -113,10 +157,16 @@
   <div id="left" title="letters left"><i>a</i><b>140</b></div>
   <div id="wc" class="touch" title="words"><b>0</b><span>words</span></div>
   <div id="sc" title="score"><b>0</b><span>points</span></div>
+  <div id="gone" title="all used up" aria-live="polite" hidden></div>
   <div id="words" aria-live="polite" hidden></div>
+  <button id="help" type="button" aria-label="How to play" title="how to play">?</button>
   <button id="gyro" type="button" aria-label="Look by moving the phone" title="move the phone to look"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/><path d="M3 9a9 9 0 0 0 0 6M21 9a9 9 0 0 1 0 6"/></svg></button>
 </div>
 <div id="defcard" role="dialog" aria-label="Word meaning" aria-live="polite" hidden><button class="x" type="button" aria-label="Close">×</button><h2></h2><p class="sub"></p><p class="pos"></p><ol></ol><p class="note"></p><p class="cr"><a target="_blank" rel="noopener">Wiktionary</a> · CC BY-SA 4.0</p></div>
+<div id="tut" role="dialog" aria-label="How to play" aria-live="polite" hidden><div class="top"><h3></h3><span class="n"></span></div><p class="msg"></p><div class="yay"></div><div class="row"><button class="play" type="button" hidden>Play!</button><button class="skip" type="button">skip</button></div></div>
+<div id="ghost" aria-hidden="true" hidden><svg viewBox="0 0 24 24" width="72" height="72" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a1.5 1.5 0 0 1 3 0v6M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.8-2.4L4 15.5a1.5 1.5 0 0 1 2.4-1.8L9 15" stroke="rgba(14,10,40,.9)" stroke-width="4.2"/><path d="M9 11V5a1.5 1.5 0 0 1 3 0v6M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.8-2.4L4 15.5a1.5 1.5 0 0 1 2.4-1.8L9 15" stroke="#FBBF24" stroke-width="1.9"/></svg></div>
+<div id="ghostkey" aria-hidden="true" hidden>Space</div>
+<div id="note" aria-live="polite" hidden></div>
 <div id="win" aria-live="polite"><div class="sum"></div><button id="again" type="button" aria-label="Play again">↻</button></div>
 <div id="hint" aria-label="Controls">
   <div class="grp desk" title="look around">
@@ -944,8 +994,10 @@ function collide(dt, inBox) {
         const d = Math.sqrt(dd); cN.divideScalar(d); nC++;
         const boxA = inBox.has(A), boxB = inBox.has(B);
         const mA = bodyMass(TA) * (boxA ? COL.boxMass : 1), mB = bodyMass(TB) * (boxB ? COL.boxMass : 1);
-        const iA = 1 / mA, iB = 1 / mB;
-        const IA = 1 / (bodyInertia(TA) * (boxA ? COL.boxMass : 1)), IB = 1 / (bodyInertia(TB) * (boxB ? COL.boxMass : 1));
+        // onboarding: the tutorial letters can't be knocked (infinite mass); a free letter just bounces off them
+        const gA = tutGuard(A), gB = tutGuard(B); if (gA && gB) continue;
+        const iA = gA ? 0 : 1 / mA, iB = gB ? 0 : 1 / mB;
+        const IA = gA ? 0 : 1 / (bodyInertia(TA) * (boxA ? COL.boxMass : 1)), IB = gB ? 0 : 1 / (bodyInertia(TB) * (boxB ? COL.boxMass : 1));
         // positional correction (split by inverse mass), only the part beyond the slop, softly: no jitter
         const pen = R - d - COL.slop;
         if (pen > 0) {
@@ -1082,7 +1134,7 @@ function batSweep(dt, inBox) {
     const tips = B.members || [B];
     for (const O of letters) {
       const T = O.word || O;
-      if (T.dragged || inBox.has(O)) continue;
+      if (T.dragged || inBox.has(O) || tutGuard(O)) continue;
       for (const c of tips) {
         const dx = O.pos.x - c.pos.x, dy = O.pos.y - c.pos.y, dz = O.pos.z - c.pos.z, dd = dx * dx + dy * dy + dz * dz;
         if (dd >= r2 || dd < 1e-8) continue;
@@ -1215,7 +1267,14 @@ const wordTex = rackTex(600, 200, drawWordBtn);
 const wordBtn = new THREE.Mesh(new THREE.PlaneGeometry(2.6, .87), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, toneMapped: false, depthWrite: false, map: wordTex }));
 if (document.fonts) document.fonts.load('40px "Press Start 2P"').then(() => { drawWordBtn(wordTex.image.getContext('2d')); wordTex.needsUpdate = true; }).catch(() => {});
 wordBtn.userData.rackBtn = 'word'; rackInner.add(wordBtn);
-const rackButtons = [plusBtn, minusBtn, wordBtn];
+wordBtn.userData.base = 1;
+// VR only: a small "?" beside "word!" replays the onboarding (desktop / phone have the "?" in the HUD)
+const helpBtn = new THREE.Mesh(new THREE.CircleGeometry(.36, 40), new THREE.MeshBasicMaterial({ transparent: true, toneMapped: false, depthWrite: false,
+  map: rackTex(256, 256, c => { c.fillStyle = 'rgba(14,10,40,.55)'; c.beginPath(); c.arc(128, 128, 120, 0, 7); c.fill();
+    c.lineWidth = 14; c.strokeStyle = '#FBBF24'; c.beginPath(); c.arc(128, 128, 116, 0, 7); c.stroke();
+    c.fillStyle = '#FBBF24'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '700 150px Rubik, system-ui, sans-serif'; c.fillText('?', 128, 136); }) }));
+helpBtn.userData.rackBtn = 'help'; helpBtn.visible = false; rackInner.add(helpBtn);
+const rackButtons = [plusBtn, minusBtn, wordBtn, helpBtn];
 const rackBtnLive = () => rack.visible ? rackButtons.filter(b => b.visible && b.parent && b.parent.visible) : [];
 // box k of `total` on an arc of radius R around the viewer (who sits at rack-local (0, 0, R)), facing the viewer
 function arcPlace(o, k, total, y = 0) {
@@ -1246,7 +1305,8 @@ function layoutRack(carry = true) {
   });
   if (rackS.n < RACK.max) { cubes[rackS.n].o.add(plusBtn); plusBtn.visible = true; } else plusBtn.visible = false;
   if (rackS.n > RACK.min) { cubes[rackS.n - 1].o.add(minusBtn); minusBtn.visible = true; } else minusBtn.visible = false;
-  arcPlace(wordBtn, (total - 1) / 2, total, -1.65 - .4 * wordBtn.scale.y); wordBtn.position.z += .1;
+  arcPlace(wordBtn, (total - 1) / 2, total, -1.65 - .4 * wordBtn.userData.base); wordBtn.position.z += .1;
+  helpBtn.visible = rackS.vr; arcPlace(helpBtn, -.75, total, -1.65 - .4 * wordBtn.userData.base); helpBtn.position.z += .1;
   rackMatrices();
   cubes.forEach((c, i) => { const b = before[i]; if (b && !b.L.word && c.o.visible) b.L.pos.add(c.centre.clone().sub(b.p)); });
   rackOccupancy();
@@ -1307,6 +1367,7 @@ function pressRackBtn(b) {
   if (now - rackS.lastPress < .35) return null;
   rackS.lastPress = now;
   const k = b.userData.rackBtn;
+  if (k === 'help') { tutStart(); return true; }
   return k === 'plus' ? pressPlus() : k === 'minus' ? pressMinus() : pressWord();
 }
 const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a));
@@ -1343,6 +1404,12 @@ function rackUpdate(dt, inXR) {
     c.faceMat.opacity = c.lit > .5 ? .10 + .06 * c.lit : .22 + .2 * flash * (1 - want);
     if (c.occ && !c.occ.dragged && dt > 0) c.occ.vel.addScaledVector(rkV2.copy(c.centre).sub(c.occ.pos), RACK.pull * dt);
   }
+  // onboarding: the box the glowing letter goes into pulses yellow
+  if (tut.active && tut.pulseBox >= 0 && tut.pulseBox < rackS.n) {
+    const c = cubes[tut.pulseBox], u = .5 + .5 * Math.sin(performance.now() / 150);
+    c.mat.color.copy(RACK_LINE).lerp(RACK_LIT, .35 + .65 * u); c.mat.opacity = 1; c.thick.visible = u > .4;
+    c.faceMat.color.set(0xFBBF24); c.faceMat.opacity = .06 + .14 * u;
+  }
   rackKeepOut(dt);
 }
 // Kris 2026-11-04 ("you have to guard slotted letters"): free-floating letters and words drift out of a soft bubble around
@@ -1356,7 +1423,7 @@ function rackKeepOut(dt) {
   const R = (Math.hypot(RACK.E, RACK.E, RACK.D) / 2 + KEEP.margin) * s;
   kpOcc.clear(); for (let i = 0; i < rackS.n; i++) if (cubes[i].occ) kpOcc.add(cubes[i].occ);   // the dashed "+" box is kept clear too
   const push = B => {
-    if (B.dragged || clock.t - B.releaseAt < KEEP.grace) return;
+    if (B.dragged || clock.t - B.releaseAt < KEEP.grace || tutGuard(B)) return;
     if (B.members ? B.members.some(m => kpOcc.has(m)) : kpOcc.has(B)) return;
     for (let i = 0; i < total; i++) {
       const c = cubes[i].centre;
@@ -1389,7 +1456,7 @@ function fitDeskRack(total) {
   rackS.dist = d; rackS.s = s;
   rack.scale.setScalar(s);
   const btn = IS_MOBILE ? 1.4 : 1;                                // bigger "+" / "word!" on a phone (≥48 px tap targets)
-  plusBtn.scale.setScalar(btn); wordBtn.scale.setScalar(btn); minusBtn.scale.setScalar(IS_MOBILE ? 1.5 : 1);
+  plusBtn.scale.setScalar(btn); wordBtn.scale.setScalar(btn); wordBtn.userData.base = btn; minusBtn.scale.setScalar(IS_MOBILE ? 1.5 : 1);
   deskRackPlace();
 }
 function deskRackPlace() {
@@ -1428,7 +1495,16 @@ const sheetCv = document.createElement('canvas'); sheetCv.width = SHEET.w; sheet
 const sheetTex = new THREE.CanvasTexture(sheetCv); sheetTex.colorSpace = THREE.SRGBColorSpace; sheetTex.anisotropy = 4;
 const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1, SHEET.h / SHEET.w), new THREE.MeshBasicMaterial({ map: sheetTex, transparent: true, toneMapped: false, depthWrite: false }));
 sheet.name = 'sheet'; sheet.renderOrder = 2; scene.add(sheet);
-const sheetS = { typed: 0, nextAt: 0, sig: '', cells: [], hover: null, sel: null, look: new THREE.Vector3() };
+const sheetS = { typed: 0, nextAt: 0, sig: '', cells: [], hover: null, sel: null, look: new THREE.Vector3(), tutW: null };
+// ---------- "gone" letters (Kris 2026-11-05): a letter is gone when every copy of it (A + a, case-folded) is in a word ----------
+// A letter still sitting in a rack box counts as available. Lithuanian letters fold on their own (Ą is not A).
+const goneS = { list: [] };
+const upLetter = f => f.toLocaleUpperCase('lt');
+function goneNow() {
+  const all = new Set(), free = new Set();
+  for (const L of letters) { const f = fold(L.ch); all.add(f); if (!L.word) free.add(f); }
+  return [...all].filter(f => !free.has(f)).sort((a, b) => a.localeCompare(b, 'lt'));
+}
 function placeSheet(inXR) {
   const o = new THREE.Vector3(); let yaw = 0, dist = SHEET.deskDist, up = SHEET.deskUp, w = SHEET.deskW;
   if (inXR) { const f = new THREE.Vector3(0, 0, -1).applyQuaternion(vr.headQ); yaw = Math.atan2(-f.x, -f.z); o.copy(vr.head); dist = SHEET.vrDist; up = SHEET.vrUp; w = SHEET.vrW; }
@@ -1441,7 +1517,9 @@ function placeSheet(inXR) {
 }
 function drawSheet() {
   const n = lettersLeft(), last = words[words.length - 1], typing = last && sheetS.typed < last.ch.length;
-  const sig = n + '|' + words.length + '|' + scoreTotal() + '|' + sheetS.typed + '|' + (won ? 'W' : '') + '|' + words.indexOf(sheetS.hover) + '|' + words.indexOf(sheetS.sel);
+  const blink = !!sheetS.tutW && Math.floor(performance.now() / 420) % 2 === 0;   // onboarding: the word to select blinks
+  const sig = n + '|' + words.length + '|' + scoreTotal() + '|' + sheetS.typed + '|' + (won ? 'W' : '') + '|' + words.indexOf(sheetS.hover) + '|' + words.indexOf(sheetS.sel)
+    + '|' + goneS.list.join('') + '|' + (blink ? words.indexOf(sheetS.tutW) : -1);
   if (sig === sheetS.sig) return;
   sheetS.sig = sig;
   const c = sheetCv.getContext('2d'), SW = SHEET.w, SH = SHEET.h;
@@ -1465,8 +1543,24 @@ function drawSheet() {
   c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(tx + 2, 42, 72, 88, 13); c.stroke();
   c.fillStyle = '#FBBF24'; c.textAlign = 'center'; c.font = '400 66px ' + SERIF; c.fillText('a', tx + 38, 82);
   c.fillStyle = 'rgba(201,190,234,.45)'; c.fillRect(56, 160, SW - 112, 4);
+  // gone row (only once a letter is used up): "GONE" + the crossed-out letters
+  let top = 178;
+  if (goneS.list.length) {
+    c.textAlign = 'left'; c.fillStyle = '#C9BEEA'; c.font = '400 28px ' + PIX; c.fillText('gone', 64, 214);
+    let gx = 64 + c.measureText('gone').width + 30;
+    c.font = '400 64px ' + SERIF;
+    for (const f of goneS.list) {
+      const s = upLetter(f), w = c.measureText(s).width;
+      if (gx + w > SW - 64) { c.fillStyle = '#C9BEEA'; c.fillText('…', gx, 214); break; }
+      c.fillStyle = 'rgba(201,190,234,.6)'; c.fillText(s, gx, 212);
+      c.fillStyle = '#FF6B6B'; c.fillRect(gx - 4, 205, w + 8, 6);
+      gx += w + 26;
+    }
+    c.fillStyle = 'rgba(201,190,234,.25)'; c.fillRect(56, 252, SW - 112, 3);
+    top = 262;
+  }
   // typed lines: oldest top-left, newest last (bottom of the column it lands in), the most recent rows × cols words
-  const top = 178, lh = (SH - top - 30) / SHEET.rows, colW = (SW - 112) / SHEET.cols, per = SHEET.rows * SHEET.cols;
+  const lh = (SH - top - 30) / SHEET.rows, colW = (SW - 112) / SHEET.cols, per = SHEET.rows * SHEET.cols;
   const shown = words.slice(-per);
   sheetS.cells.length = 0;
   c.textAlign = 'left'; c.font = '400 96px ' + SERIF;
@@ -1478,7 +1572,7 @@ function drawSheet() {
     const bw = Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), def = canDefine(W);
     sheetS.cells.push({ W, def, x0: x - 22, x1: x - 22 + bw, y0: y - lh * .5, y1: y + lh * .5 });
     // English words can be tapped for their meaning: aimed = coral glow (like a letter under the VR ray), open card = yellow
-    const hl = def && W === sheetS.sel ? '#FBBF24' : def && W === sheetS.hover ? '#FF6B6B' : null;
+    const hl = def && W === sheetS.sel ? '#FBBF24' : def && (W === sheetS.hover || (blink && W === sheetS.tutW)) ? '#FF6B6B' : null;
     if (hl) { c.fillStyle = hl === '#FBBF24' ? 'rgba(251,191,36,.20)' : 'rgba(255,107,107,.24)'; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.fill(); }
     if (isLast) { c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.stroke(); }
     if (hl) { c.lineWidth = 8; c.strokeStyle = hl; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.stroke(); }
@@ -1745,8 +1839,36 @@ function madeWord(W) {
   scorePop(W);
   W.members.forEach((l, i) => spawnRipple(l.pos.clone(), i * .06, 2.0));
   sheetS.typed = 0; sheetS.nextAt = performance.now() + 120;
+  const before = new Set(goneS.list);
   renderHud(true);
+  const fresh = goneS.list.filter(f => !before.has(f));
+  if (fresh.length) goneNotice(fresh);
   if (lettersLeft() === 0) setTimeout(() => endRound(), 700);
+}
+// "A is gone": a short notice (DOM card on desktop / phone, a sprite over the rack in VR)
+const noteEl = document.getElementById('note'), goneEl = document.getElementById('gone');
+let noteTimer = 0;
+const goneStats = { notices: [] };
+function goneNotice(fs) {
+  const ups = fs.map(upLetter), txt = ups.length === 1 ? `${ups[0]} is gone` : `${ups.slice(0, -1).join(', ')} and ${ups[ups.length - 1]} are gone`;
+  goneStats.notices.push(txt);
+  if (renderer.xr.isPresenting && vr.anchored) { textPop(txt); return; }
+  noteEl.replaceChildren(); ups.forEach((u, i) => { if (i) noteEl.append(i === ups.length - 1 ? ' and ' : ', '); const e = document.createElement('i'); e.textContent = u; noteEl.append(e); });
+  noteEl.append(ups.length === 1 ? ' is gone' : ' are gone');
+  noteEl.classList.toggle('below', tut.active && !tutEl.classList.contains('low'));
+  noteEl.hidden = true; void noteEl.offsetWidth; noteEl.hidden = false;
+  clearTimeout(noteTimer); noteTimer = setTimeout(() => { noteEl.hidden = true; }, 2700);
+}
+function renderGone() {
+  goneS.list = goneNow();
+  const sig = goneS.list.join('');
+  if (goneEl.dataset.sig === sig) return;
+  goneEl.dataset.sig = sig;
+  goneEl.replaceChildren();
+  if (!goneS.list.length) { goneEl.hidden = true; return; }
+  const lb = document.createElement('span'); lb.textContent = 'gone'; goneEl.append(lb);
+  for (const f of goneS.list) { const e = document.createElement('i'); e.textContent = upLetter(f); goneEl.append(e); }
+  goneEl.hidden = false;
 }
 function renderHud(fresh) {
   const n = lettersLeft();
@@ -1755,6 +1877,7 @@ function renderHud(fresh) {
   const sc = String(scoreTotal());
   if (scNum.textContent !== sc) { scNum.textContent = sc; scEl.classList.remove('bump'); void scEl.offsetWidth; scEl.classList.add('bump'); }
   if (!fresh) { const last = words[words.length - 1]; sheetS.typed = last ? last.ch.length : 0; }
+  renderGone();
   sheetS.sig = ''; drawSheet();
   vr.panelSig = '';
 }
@@ -1795,15 +1918,25 @@ function scorePop(W) {
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: popTex(W.pts), transparent: true, depthTest: false, depthWrite: false, toneMapped: false }));
   const h = RACK.E * .55 * rack.scale.x; sp.scale.set(h * 512 / 192, h, 1); sp.renderOrder = 20;
   const base = W.pos.clone(); base.y += RACK.E * .85 * rack.scale.x;
-  sp.position.copy(base); world.add(sp); pops.push({ sp, base, t: 0, h });
+  sp.position.copy(base); world.add(sp); pops.push({ sp, base, t: 0, h, ar: 512 / 192, dur: 1.5 });
+}
+// VR notice ("A is gone"): same pop, wider, higher over the rack, stays ~2.6 s
+function textPop(str) {
+  const tex = rackTex(1024, 160, c => { c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '400 60px "Press Start 2P", ui-monospace, monospace';
+    c.lineJoin = 'round'; c.lineWidth = 16; c.strokeStyle = 'rgba(14,10,40,.92)'; c.strokeText(str, 512, 86, 1000); c.fillStyle = '#FBBF24'; c.fillText(str, 512, 86, 1000); });
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false, toneMapped: false }));
+  const h = RACK.E * .32 * rack.scale.x; sp.scale.set(h * 1024 / 160, h, 1); sp.renderOrder = 21;
+  rack.updateMatrixWorld(true);
+  const base = rack.position.clone(); base.y += RACK.E * 1.55 * rack.scale.x;
+  sp.position.copy(base); world.add(sp); pops.push({ sp, base, t: 0, h, ar: 1024 / 160, dur: 2.6 });
 }
 function stepPops(dt) {
   for (let i = pops.length - 1; i >= 0; i--) {
     const P = pops[i]; P.t += dt;
     P.sp.position.copy(P.base); P.sp.position.y += P.h * 1.2 * (1 - Math.exp(-2.5 * P.t));
-    P.sp.material.opacity = P.t < .9 ? 1 : Math.max(0, 1 - (P.t - .9) / .6);
-    const k = P.t < .25 ? .6 + .46 * Math.sin(P.t / .25 * Math.PI / 2) : 1; P.sp.scale.set(P.h * k * 512 / 192, P.h * k, 1);
-    if (P.t > 1.5) { world.remove(P.sp); P.sp.material.map.dispose(); P.sp.material.dispose(); pops.splice(i, 1); }
+    P.sp.material.opacity = P.t < P.dur - .6 ? 1 : Math.max(0, 1 - (P.t - (P.dur - .6)) / .6);
+    const k = P.t < .25 ? .6 + .46 * Math.sin(P.t / .25 * Math.PI / 2) : 1; P.sp.scale.set(P.h * k * P.ar, P.h * k, 1);
+    if (P.t > P.dur) { world.remove(P.sp); P.sp.material.map.dispose(); P.sp.material.dispose(); pops.splice(i, 1); }
   }
 }
 
@@ -1895,6 +2028,8 @@ function anchorWorld() {
   scatterLetters(VR_M.spawnMin / vr.S, VR_M.spawnMax / vr.S, .55, true); // the round (and its words) carries on in VR
   vr.anchored = true; vr.panelSig = ''; placePanel(); panel.visible = won;
   setRackVR(true); placeSheet(true); sheetS.sig = '';
+  // first time in the headset: the onboarding runs in VR (its own flag), a moment after the world appears
+  if (!onbSeen(ONB.kvr) && !params.has('notut')) { ONB.mem[ONB.kvr] = true; setTimeout(() => { if (renderer.xr.isPresenting && vr.anchored && !tut.active) tutStart(); }, 900); }
 }
 const toLocal = p => world.worldToLocal(p);                          // scene metres → world units (in place)
 const toScene = (L, out) => world.localToWorld(out.copy(L.pos));    // letter centre in scene metres
@@ -1949,7 +2084,7 @@ function updateHand(H, dt) {
   const h0 = H.hist[0], h1 = H.hist[H.hist.length - 1];
   if (h1.t - h0.t > 1e-4) H.vel.subVectors(h1.p, h0.p).divideScalar(h1.t - h0.t); else H.vel.set(0, 0, 0);
   // 3) pointer ray from the target-ray space (index-finger pointing on hands, the controller's nose otherwise)
-  H.aimed = null; H.aimBtn = false; H.aimSheet = null; H.aimCard = false;
+  H.aimed = null; H.aimBtn = false; H.aimSheet = null; H.aimCard = false; H.aimTut = null;
   let len = VR_M.rayStub;
   if (!H.held && H.ctrl.visible) {
     H.ctrl.getWorldPosition(vC); vD.set(0, 0, -1).applyQuaternion(H.ctrl.getWorldQuaternion(qA));
@@ -1965,7 +2100,11 @@ function updateHand(H, dt) {
     // aim assist: thin serif letters have holes and far ones are tiny, so also take the letter whose centre lies inside a ~2.8° cone
     // around the ray (never narrower than VR_M.aimAssist), closest in angle, then nearest
     if (!hit && !H.aimCard && !H.aimSheet) hit = assistPick(vC, vD, VR_M.aimAssist, VR_M.rayMax, L => L.dragged);
-    if (hit) {
+    // onboarding panel buttons (skip / Play!) win over anything behind them
+    const tp = tutPanelHit(vC, vD);
+    if (tp && tp.btn && (!hit || tp.distance < hit.distance)) { hit = null; H.aimCard = false; H.aimSheet = null; H.aimTut = tp.btn; len = tp.distance; H.dot.position.copy(tp.point); H.dot.visible = true; }
+    if (H.aimTut) { /* dot already placed */ }
+    else if (hit) {
       len = hit.distance;
       if (hit.object === replayBtn || hit.object.userData.rackBtn) H.aimBtn = hit.object; else H.aimed = hit.object.userData.letter;
       H.dot.position.copy(hit.point); H.dot.visible = true;
@@ -1976,6 +2115,7 @@ function updateHand(H, dt) {
   // 4) pinch edges: near letter first, else the aimed far letter flies to the hand (replaces Space)
   if (H.pinch && !H.wasPinch) {
     if (H.aimBtn === replayBtn && won) { vr.resetAt = vr.t; resetGame(); sfx.click(); }
+    else if (H.aimTut) tutPress(H.aimTut);
     else {
       let best = null, bd = Infinity;
       for (const L of letters) {
@@ -2110,10 +2250,12 @@ vrBtn.addEventListener('click', async () => {
   } catch (e) { console.info('VR session not started:', e.message); sayVr('VR did not start: ' + e.message); }
 });
 renderer.xr.addEventListener('sessionstart', () => {
+  if (tut.active) tutEnd(false);   // a flat-screen onboarding stops; the VR one has its own flag
   closeDef(); setSheetHover(null);
   vr.anchored = false; vr.t = 0; vrBtn.querySelector('span').textContent = 'Exit VR'; vrBtn.classList.remove('big'); sayVr('');
 });
 renderer.xr.addEventListener('sessionend', () => {
+  if (tut.active) tutEnd(false);
   for (const H of vr.hands) { releaseHeld(H, false); H.kind = null; H.line.visible = H.dot.visible = false; }
   for (const L of vr.lit) if (L.mesh.material === LETTER_MAT_AIM) L.mesh.material = L.baseMat;
   vr.lit.clear(); vr.anchored = false; panel.visible = false; closeDef(); setSheetHover(null);
@@ -2125,8 +2267,357 @@ renderer.xr.addEventListener('sessionend', () => {
   vrBtn.querySelector('span').textContent = 'Enter VR'; if (IN_HEADSET) vrBtn.classList.add('big');
 });
 
+// ---------- onboarding (Kris 2026-11-05): a guided first word, "aim", on desktop / phone / VR ----------
+// First open (localStorage flag; if storage fails, once per page load) and first Enter VR (its own flag). The "?" replays it.
+// The kid really does every step and the game waits: grab the glowing letter (a ghost hand shows how), bring it close, drop it in
+// the pulsing box (a, i, m), press "word!", see AIM land on the list, select it for its meaning, then the aim of the game.
+// The three letters can't be knocked away while it runs (infinite mass for free letters; the held letter skips them), the
+// current one is held still at an easy spot, and free letters are moved out of the line of sight to what the kid must aim at.
+const ONB = { k2d: 'fl.onboard.2d.v1', kvr: 'fl.onboard.vr.v1', mem: {} };
+function onbSeen(k) { if (ONB.mem[k]) return true; try { return localStorage.getItem(k) === '1'; } catch (e) { return false; } }
+function onbMark(k) { ONB.mem[k] = true; try { localStorage.setItem(k, '1'); } catch (e) {} }
+const TUT_WORD = 'aim', TUT_YAY = ['Yes!', 'Nice!', 'Great!', 'Got it!', 'Super!', 'Yay!'];
+const TUT_FINAL = 'And the aim of our game is making as many words from this limited list of letters.';
+const TUT_MAT = makeLetterMaterial(0xFBBF24, .6);
+// a soft yellow glow behind the letter whose turn it is (the yellow letters in the pool must not look the same)
+const tutHalo = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false,
+  map: rackTex(256, 256, c => { const g = c.createRadialGradient(128, 128, 8, 128, 128, 128); g.addColorStop(0, 'rgba(255,214,90,1)'); g.addColorStop(.35, 'rgba(251,191,36,.55)'); g.addColorStop(1, 'rgba(251,191,36,0)'); c.fillStyle = g; c.fillRect(0, 0, 256, 256); }) }));
+tutHalo.visible = false; world.add(tutHalo);
+const tut = { active: false, mode: null, phase: null, T: [], W: null, k: 0, sub: null, best: -1, yayText: '', yayT: -9, phaseT: 0, guard: new Set(), cur: null,
+  base: new THREE.Vector3(), fwd: new THREE.Vector3(), pulseBox: -1, step: 0, head: '', text: '', ghostT0: 0, rewards: 0, log: [] };
+function tutGuard(L) { return tut.active && tut.guard.has(L); }
+const tutEl = document.getElementById('tut'), tutH = tutEl.querySelector('h3'), tutN = tutEl.querySelector('.n'), tutMsg = tutEl.querySelector('.msg'),
+  tutYayEl = tutEl.querySelector('.yay'), tutPlayEl = tutEl.querySelector('.play'), tutSkipEl = tutEl.querySelector('.skip');
+const ghostEl = document.getElementById('ghost'), ghostKey = document.getElementById('ghostkey'), helpEl = document.getElementById('help');
+for (const el of [tutEl, helpEl]) el.addEventListener('pointerdown', e => e.stopPropagation());
+tutSkipEl.addEventListener('click', e => { e.stopPropagation(); unlockAudio(); tutPress('skip'); tutSkipEl.blur(); cv.focus(); });
+tutPlayEl.addEventListener('click', e => { e.stopPropagation(); unlockAudio(); tutPress('play'); tutPlayEl.blur(); cv.focus(); });
+helpEl.addEventListener('click', e => { e.stopPropagation(); unlockAudio(); helpEl.blur(); tutStart(); cv.focus(); });
+// VR: a canvas panel (left of the rack while spelling, so the far list stays clear; in front for the last card) + a ghost hand sprite
+const TUTC = { w: 1024, h: 420, m: .62 };
+const tutCv = document.createElement('canvas'); tutCv.width = TUTC.w; tutCv.height = TUTC.h;
+const tutTex = new THREE.CanvasTexture(tutCv); tutTex.colorSpace = THREE.SRGBColorSpace; tutTex.anisotropy = 4;
+const tutPanel = new THREE.Mesh(new THREE.PlaneGeometry(TUTC.m, TUTC.m * TUTC.h / TUTC.w), new THREE.MeshBasicMaterial({ map: tutTex, transparent: true, toneMapped: false, depthWrite: false }));
+tutPanel.name = 'tutpanel'; tutPanel.visible = false; tutPanel.renderOrder = 6; scene.add(tutPanel);
+const tutPanelS = { sig: '', btns: {} };
+const HAND_PATH = 'M9 11V5a1.5 1.5 0 0 1 3 0v6M12 10V8.5a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.8-2.4L4 15.5a1.5 1.5 0 0 1 2.4-1.8L9 15';
+const ghostTex = rackTex(256, 256, c => { const p = new Path2D(HAND_PATH); c.scale(256 / 24, 256 / 24); c.lineCap = 'round'; c.lineJoin = 'round';
+  c.strokeStyle = 'rgba(14,10,40,.9)'; c.lineWidth = 4.2; c.stroke(p); c.strokeStyle = '#FBBF24'; c.lineWidth = 1.9; c.stroke(p); });
+const ghostSpr = new THREE.Sprite(new THREE.SpriteMaterial({ map: ghostTex, transparent: true, depthTest: false, depthWrite: false, toneMapped: false }));
+ghostSpr.center.set(10.5 / 24, 1 - 3.5 / 24); ghostSpr.renderOrder = 30; ghostSpr.visible = false; scene.add(ghostSpr);
+
+function tutStart() {
+  if (tut.active) tutEnd(false);
+  const inXR = renderer.xr.isPresenting;
+  if (inXR && !vr.anchored) return false;
+  const mode = inXR ? 'vr' : IS_MOBILE ? 'touch' : 'desk';
+  ONB.mem[inXR ? ONB.kvr : ONB.k2d] = true;
+  closeDef();
+  // the real pool letters a, i, m (small first), not already in a word
+  const T = [];
+  for (const ch of TUT_WORD) {
+    const L = letters.find(l => !l.word && !T.includes(l) && l.ch === ch) || letters.find(l => !l.word && !T.includes(l) && fold(l.ch) === ch);
+    if (L) T.push(L);
+  }
+  Object.assign(tut, { active: true, mode, T, W: null, k: 0, sub: null, best: -1, yayText: '', yayT: -9, phaseT: 0, cur: null, pulseBox: -1, ghostT0: performance.now() / 1000, rewards: 0, log: [] });
+  tut.guard = new Set(T);
+  // where "in front" is: the rack's facing, from where the player stands now
+  tut.fwd.set(-Math.sin(rackS.yaw), 0, -Math.cos(rackS.yaw));
+  if (inXR) tut.base.copy(vr.head); else tut.base.set(0, 0, 0);
+  if (won || T.length < 3) tutPhase('final');      // round over / no a-i-m left: just the aim of the game
+  else {
+    // three clean boxes: anything sitting in them floats back out
+    rackS.n = RACK.min; layoutRack(false); rackOccupancy();
+    for (let i = 0; i < rackTotal(); i++) { const O = cubes[i].occ; if (O && !T.includes(O)) { O.pos.multiplyScalar(1.9); O.vel.set(0, 0, 0); O.releaseAt = -1e9; } }
+    if (!inXR) { look.tYaw = Math.round((look.yaw - rackS.yaw) / (Math.PI * 2)) * Math.PI * 2 + rackS.yaw; look.tPitch = 0; }
+    tutPhase('spell');
+  }
+  tutEl.hidden = inXR; tutPanel.visible = inXR; tutPanelS.sig = '';
+  if (inXR) placeTutPanel(false);
+  tutRender();
+  return true;
+}
+function tutPhase(p) {
+  tut.phase = p; tut.phaseT = 0; tut.ghostT0 = performance.now() / 1000;
+  if (p === 'meaning') {
+    sheetS.tutW = tut.W;
+    if (tut.mode !== 'vr') { look.tYaw = Math.round((look.yaw - rackS.yaw) / (Math.PI * 2)) * Math.PI * 2 + rackS.yaw; look.tPitch = THREE.MathUtils.degToRad(tut.mode === 'touch' ? 8 : 12); }
+  }
+  if (p === 'final' && tut.mode === 'vr') placeTutPanel(true);
+  tut.log.push(p);
+}
+function tutEnd(mark, by) {
+  if (!tut.active) return;
+  if (mark) onbMark(tut.mode === 'vr' ? ONB.kvr : ONB.k2d);
+  tut.active = false;
+  for (const L of tut.T) if (L.mesh.material === TUT_MAT) L.mesh.material = L.baseMat;
+  tut.guard.clear(); tut.pulseBox = -1;
+  if (sheetS.tutW) { sheetS.tutW = null; sheetS.sig = ''; }
+  if (tut.W && defUI.W === tut.W) closeDef();
+  wordBtn.scale.setScalar(wordBtn.userData.base); tutHalo.visible = false;
+  tutEl.hidden = true; ghostEl.hidden = true; ghostKey.hidden = true; tutPanel.visible = false; ghostSpr.visible = false;
+  tut.log.push(mark ? 'end' : 'stop'); tut.endedBy = by || (mark ? 'done' : 'stop');
+  tut.phase = null;
+}
+function tutPress(b) {
+  if (!tut.active) return;
+  if (b === 'skip') { tutEnd(true, 'skip'); sfx.click(); return; }
+  if (b === 'play' && tut.phase === 'final') { tutEnd(true, 'play'); sfx.word(); }
+}
+const tutHeld = L => tut.mode === 'vr' ? vr.hands.some(H => H.held === L) : drag.L === L && (L.dragged || (tut.mode === 'desk' && ptr.down));
+const tutVrInput = () => vr.hands.some(H => H.kind === 'hand') ? 'hand' : 'ctrl';
+function tutCopy() {
+  const m = tut.mode, L = tut.T[tut.k], ch = L ? L.ch : '', box = tut.k + 1, hand = m === 'vr' && tutVrInput() === 'hand', first = tut.k === 0;
+  switch (tut.phase === 'spell' ? tut.sub : tut.phase) {
+    case 'grab': return m === 'desk' ? (first ? `Press and hold the glowing ${ch}.` : `Now the glowing ${ch}. Press and hold.`)
+      : m === 'touch' ? `Tap the glowing ${ch} twice. Keep your finger down.`
+      : hand ? `Pinch the glowing ${ch}.` : `Point at the glowing ${ch}. Pull the trigger.`;
+    case 'near': return m === 'desk' ? 'Keep holding. Press Space!' : 'Let go. Then tap it twice, fast.';
+    case 'box': return m === 'desk' ? `Drag it into box ${box}. Let go.` : m === 'touch' ? `Slide it into box ${box}. Lift your finger.`
+      : hand ? `Put it in box ${box}. Open your fingers.` : `Put it in box ${box}. Let go of the trigger.`;
+    case 'wrong': return `Wrong box! The ${ch} goes in box ${box}.`;
+    case 'word': return m === 'desk' ? 'Click word! under the boxes.' : m === 'touch' ? 'Tap word! under the boxes.' : 'Touch word! under the boxes.';
+    case 'list': return `aim is on your list: +${tut.W ? tut.W.pts : 0} points!`;
+    case 'meaning': return m === 'desk' ? 'Click aim on your list. See what it means.' : m === 'touch' ? 'Tap aim on your list. See what it means.'
+      : hand ? 'Point at aim on your list. Pinch.' : 'Point at aim on your list. Pull the trigger.';
+    case 'read': return 'That is what aim means!';
+    case 'final': return TUT_FINAL;
+  }
+  return '';
+}
+function tutStepNo() {
+  if (tut.phase === 'spell') return tut.sub === 'word' ? 4 : tut.k > 0 ? 3 : tut.sub === 'grab' ? 1 : 2;
+  return { list: 5, meaning: 6, read: 6, final: 7 }[tut.phase] || 1;
+}
+function tutReward() {
+  tut.rewards++;
+  tut.yayText = TUT_YAY[(tut.rewards - 1) % TUT_YAY.length]; tut.yayT = performance.now();
+  sfx.bell(.45); sfx.click();
+  if (tut.mode !== 'vr') { tutYayEl.textContent = tut.yayText; tutYayEl.classList.remove('on'); void tutYayEl.offsetWidth; tutYayEl.classList.add('on'); }
+}
+// tutorial progress as one number: a reward every time it goes up (never twice for the same step)
+function tutProgress() {
+  if (tut.phase === 'spell') return tut.sub === 'word' ? 9 : tut.k * 3 + ({ grab: 0, wrong: 0, near: 1, box: 2 }[tut.sub] || 0);
+  return { list: 10, meaning: 11, read: 12, final: 13 }[tut.phase];
+}
+const tutV = new THREE.Vector3(), tutV2 = new THREE.Vector3(), tutQ = new THREE.Quaternion(), tutCam = new THREE.Vector3();
+// the easy spot for the glowing letter (world-local units): ahead and a little up, above the rack and clear of it
+function tutSpot(out) {
+  if (tut.mode === 'vr') return toLocal(out.copy(tut.base).addScaledVector(tut.fwd, .85).add(tutV2.set(0, -.02, 0)));
+  const D = tut.mode === 'touch' ? Math.max(9, rackS.dist * .8) : 11, up = D * Math.tan(THREE.MathUtils.degToRad(tut.mode === 'touch' ? 13 : 12));
+  return out.copy(tut.fwd).multiplyScalar(D).add(tutV2.set(0, up, 0));
+}
+// free letters / words drift out of the straight line from the eye to a target (world-local), so a click or ray reaches it
+function tutClearLine(target, dt, R) {
+  world.worldToLocal(camera.getWorldPosition(tutCam));
+  const u = tutV.subVectors(target, tutCam), len = u.length(); if (len < 1e-3) return; u.divideScalar(len);
+  const nudge = B => {
+    if (B.dragged || tut.guard.has(B) || (B.members && B.members.some(m => tut.guard.has(m)))) return;
+    const d = tutV2.subVectors(B.pos, tutCam), along = d.dot(u);
+    if (along <= 0 || along > len - R * .6) return;
+    d.addScaledVector(u, -along); const off = d.length();
+    if (off >= R) return;
+    if (off < 1e-4) d.set(0, 1, 0); else d.divideScalar(off);
+    B.pos.addScaledVector(d, (R - off) * Math.min(1, 6 * dt)); B.vel.addScaledVector(d, .5 * dt);
+  };
+  for (const L of letters) if (!L.word) nudge(L);
+  for (const W of words) nudge(W);
+}
+function tutUpdate(dt, inXR) {
+  if (!tut.active) return;
+  if ((tut.mode === 'vr') !== inXR) { tutEnd(false); return; }
+  if (inXR && !vr.anchored) return;
+  tut.phaseT += dt;
+  const pulse = .5 + .5 * Math.sin(performance.now() / 160);
+  TUT_MAT.emissive.set(0xFBBF24).multiplyScalar(.35 + .65 * pulse);
+  tutHalo.visible = false;
+  tut.pulseBox = -1; sheetS.tutW = null;
+  let pulseWord = false, target = null;
+  const R = inXR ? .16 / vr.S : 1.9;   // line-of-sight clearance
+  if (tut.phase === 'spell') {
+    const T = tut.T;
+    if (T.some(L => L.word)) {
+      if (T[0].word && T[0].word === T[1].word && T[1].word === T[2].word) { tut.W = T[0].word; tutPhase('list'); }
+      else { tutPhase('final'); }                       // the letters went into some other word: skip ahead to the aim
+    } else {
+      if (rackS.n !== RACK.min) { rackS.n = RACK.min; layoutRack(); }
+      const boxOf = L => { for (let i = 0; i < rackS.n; i++) if (cubes[i].occ === L) return i; return -1; };
+      let k = 0; while (k < 3 && boxOf(T[k]) === k && !T[k].dragged) k++;
+      tut.k = Math.min(k, 2);
+      if (k === 3) { tut.sub = 'word'; pulseWord = true; }
+      else {
+        const L = T[k], held = tutHeld(L), bi = boxOf(L);
+        tut.sub = held ? (tut.mode === 'vr' || drag.near ? 'box' : 'near') : bi >= 0 ? 'wrong' : 'grab';
+        if (tut.sub === 'near' || tut.sub === 'box') tut.pulseBox = k;
+        if (tut.sub === 'grab') {
+          const spot = tutSpot(tutV.set(0, 0, 0)).clone();
+          if (tut.cur !== L) {                                // its turn: it comes in from a little further out, if it's far away
+            tut.cur = L; tut.ghostT0 = performance.now() / 1000;
+            if (L.pos.distanceTo(spot) > (inXR ? .5 / vr.S : 5)) { L.pos.copy(spot).multiplyScalar(1.35); L.vel.set(0, 0, 0); spawnRipple(L.pos.clone(), 0, 1.6); }
+          }
+          // held still at the spot, turned to face you, the current off
+          const kS = 7, cS = 2 * Math.sqrt(kS) * .95;
+          L.vel.addScaledVector(tutV2.subVectors(spot, L.pos), kS * dt).multiplyScalar(Math.exp(-cS * dt));
+          L.angVel.multiplyScalar(Math.exp(-5 * dt));
+          camera.getWorldQuaternion(tutQ); L.mesh.quaternion.slerp(tutQ, 1 - Math.exp(-6 * dt));
+          L.releaseAt = clock.t;
+          target = L.pos;
+        }
+      }
+      // placed letters sit still in their boxes (no current) while the rest is spelled
+      for (let i = 0; i < Math.min(k, 3); i++) if (!T[i].dragged) T[i].releaseAt = clock.t;
+      // nothing else may sit in the three boxes while the word is spelled: strangers float out
+      for (let i = 0; i < rackTotal(); i++) {
+        const O = cubes[i].occ; if (!O || T.includes(O) || O.dragged) continue;
+        const d = tutV2.subVectors(O.pos, cubes[i].centre); if (d.lengthSq() < 1e-6) d.set(0, 1, 0); d.normalize(); d.y += .4;
+        O.vel.addScaledVector(d.normalize(), 5 * rack.scale.x * dt); O.releaseAt = Math.min(O.releaseAt, clock.t - 1.5);
+      }
+      if (k < 3) {                                          // the glow halo sits just behind the letter whose turn it is
+        const L = T[k]; world.worldToLocal(camera.getWorldPosition(tutCam));
+        tutHalo.position.copy(L.pos).addScaledVector(tutV2.subVectors(L.pos, tutCam).normalize(), .5 * L.colR);
+        tutHalo.scale.setScalar(L.colR * 5 * (1 + .15 * pulse)); tutHalo.visible = true;
+      }
+      // only the letter whose turn it is glows
+      T.forEach((L, i) => { const want = i === k && k < 3 ? TUT_MAT : L.baseMat; if (L.mesh.material !== want && (L.mesh.material === TUT_MAT || want === TUT_MAT)) L.mesh.material = want; });
+    }
+  } else if (tut.phase === 'list') {
+    if (tut.phaseT > 2.4) tutPhase('meaning');
+  } else if (tut.phase === 'meaning') {
+    sheetS.tutW = tut.W;
+    const c = sheetS.cells.find(c => c.W === tut.W);
+    if (c) target = world.worldToLocal(sheetToScene((c.x0 + c.x1) / 2, (c.y0 + c.y1) / 2));
+    if (defUI.W === tut.W) tutPhase('read');
+    if (!tut.W || words.indexOf(tut.W) < 0) tutPhase('final');
+  } else if (tut.phase === 'read') {
+    const loaded = defUI.card && defUI.card.state !== 'loading';
+    if ((loaded && tut.phaseT > 2.6) || tut.phaseT > 6) tutPhase('final');
+  }
+  if (target) tutClearLine(target, dt, R);
+  // "word!" breathes while it's the thing to press
+  const wb = wordBtn.userData.base;
+  wordBtn.scale.setScalar(pulseWord ? wb * (1 + .14 * (.5 + .5 * Math.sin(performance.now() / 140))) : wb);
+  const p = tutProgress();
+  if (p > tut.best) { if (tut.best >= 0) tutReward(); tut.best = p; }
+  tutRender();
+  if (inXR) tutGhostVR(); else tutGhost2D();
+}
+function tutRender() {
+  tut.step = tutStepNo();
+  tut.head = tut.phase === 'spell' ? 'SPELL AIM' : tut.phase === 'list' ? 'YOUR LIST' : tut.phase === 'final' ? 'THE AIM' : 'MEANING';
+  tut.text = tutCopy();
+  if (tut.mode === 'vr') { drawTutPanel(); return; }
+  if (tutH.textContent !== tut.head) tutH.textContent = tut.head;
+  const n = tut.step + ' / 7'; if (tutN.textContent !== n) tutN.textContent = n;
+  if (tutMsg.textContent !== tut.text) tutMsg.textContent = tut.text;
+  const fin = tut.phase === 'final'; tutPlayEl.hidden = !fin; tutEl.classList.toggle('final', fin);
+  tutEl.classList.toggle('low', tut.phase === 'meaning' || (!IS_MOBILE && (tut.phase === 'read' || tut.phase === 'final')));   // phone: the meaning card sits under the list
+}
+// ghost hand (desktop / phone): moves to the thing, presses, shows the gesture; loops until the step is done
+const tutScr = v => { const p = tutV2.copy(v).project(camera); return p.z < 1 && Math.abs(p.x) < 1.05 && Math.abs(p.y) < 1.05 ? { x: (p.x + 1) / 2 * innerWidth, y: (1 - p.y) / 2 * innerHeight } : null; };
+const ease = u => u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u);
+const lerpP = (a, b, u) => ({ x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u });
+function tutGhost2D() {
+  const ph = tut.phase === 'spell' ? tut.sub : tut.phase, touch = tut.mode === 'touch';
+  const now = performance.now() / 1000, per = 2.4, u = ((now - tut.ghostT0) % per) / per;
+  let P = null, B = null, pos = null, s = 1, op = 1, key = false;
+  const L = tut.T[tut.k];
+  if (['grab', 'wrong', 'near', 'box'].includes(ph) && L) { P = tutScr(world.localToWorld(tutV.copy(L.pos))); B = tutScr(world.localToWorld(tutV.copy(cubes[tut.k].centre))); }
+  else if (ph === 'word') { wordBtn.updateMatrixWorld(true); P = tutScr(wordBtn.getWorldPosition(tutV)); }
+  else if (ph === 'meaning') { const c = sheetS.cells.find(c => c.W === tut.W); if (c) P = tutScr(sheetToScene((c.x0 + c.x1) / 2, (c.y0 + c.y1) / 2)); }
+  if (P) {
+    const A = { x: P.x + 80, y: P.y + 120 };
+    if (ph === 'grab' || ph === 'wrong') {
+      if (touch) { // in, tap, tap (stays down), slide a bit toward the box
+        pos = lerpP(A, P, ease(u / .3)); if (u > .3) pos = P;
+        s = (u > .36 && u < .44) || u > .52 ? .8 : 1;
+        if (u > .62 && B) pos = lerpP(P, B, ease((u - .62) / .3) * .35);
+      } else {     // in, press and hold, a little drag toward the box
+        pos = lerpP(A, P, ease(u / .4)); s = u > .42 ? .8 : 1;
+        if (u > .6 && B) pos = lerpP(P, B, ease((u - .6) / .3) * .3);
+      }
+      op = u < .08 ? u / .08 : u > .92 ? (1 - u) / .08 : 1;
+    } else if (ph === 'near') {
+      pos = P;
+      if (touch) { s = (u % .5) < .12 || ((u % .5) > .2 && (u % .5) < .32) ? .8 : 1; }
+      else { s = .8; key = true; }
+    } else if (ph === 'box' && B) {
+      pos = lerpP(P, B, ease((u - .12) / .6)); s = u < .78 ? .8 : 1;
+      op = u > .9 ? (1 - u) / .1 : 1;
+    } else if (ph === 'word' || ph === 'meaning') {
+      pos = lerpP(A, P, ease(u / .45)); s = u > .48 && u < .62 ? .8 : 1;
+      op = u < .08 ? u / .08 : u > .9 ? (1 - u) / .1 : 1;
+    }
+  }
+  ghostEl.hidden = !pos;
+  if (pos) { ghostEl.style.transform = `translate(${(pos.x - 31.5).toFixed(1)}px, ${(pos.y - 10.5).toFixed(1)}px) scale(${s})`; ghostEl.style.opacity = Math.max(0, op).toFixed(2); }
+  ghostKey.hidden = !(key && P);
+  if (key && P) { const k = 1 + .12 * Math.max(0, Math.sin(now * 7)); ghostKey.style.transform = `translate(${(P.x - 52).toFixed(1)}px, ${(P.y + 54).toFixed(1)}px) scale(${k.toFixed(3)})`; }
+  tut.ghost = pos ? { x: pos.x, y: pos.y, s, key } : null;
+}
+function tutGhostVR() {
+  const ph = tut.phase === 'spell' ? tut.sub : tut.phase, L = tut.T[tut.k];
+  const now = performance.now() / 1000, per = 2.4, u = ((now - tut.ghostT0) % per) / per;
+  let P = null, Bx = null, s = 1, op = 1;
+  if (['grab', 'wrong', 'box'].includes(ph) && L) { P = toScene(L, new THREE.Vector3()); Bx = world.localToWorld(cubes[tut.k].centre.clone()); }
+  else if (ph === 'word') { wordBtn.updateMatrixWorld(true); P = wordBtn.getWorldPosition(new THREE.Vector3()); }
+  let pos = null;
+  if (P) {
+    const right = tutV.crossVectors(tut.fwd, THREE.Object3D.DEFAULT_UP).normalize();
+    const A = P.clone().addScaledVector(right, .16).add(tutV2.set(0, -.13, 0)).addScaledVector(tut.fwd, -.06);
+    if (ph === 'box' && Bx) { pos = P.clone().lerp(Bx, ease((u - .12) / .6)); s = u < .78 ? .78 : 1; op = u > .9 ? (1 - u) / .1 : 1; }
+    else { pos = A.lerp(P, ease(u / .42)); s = u > .45 && u < .8 ? .78 : 1; op = u < .08 ? u / .08 : u > .9 ? (1 - u) / .1 : 1; }
+  }
+  ghostSpr.visible = !!pos;
+  if (pos) { ghostSpr.position.copy(pos); ghostSpr.scale.setScalar(.11 * s); ghostSpr.material.opacity = Math.max(0, op); }
+  tut.ghost = pos ? { scene: pos.toArray(), s } : null;
+}
+function placeTutPanel(centre) {
+  const d = tutV.copy(tut.fwd);
+  if (!centre) d.applyAxisAngle(THREE.Object3D.DEFAULT_UP, THREE.MathUtils.degToRad(32));   // to the left while spelling
+  tutPanel.position.copy(tut.base).addScaledVector(d, centre ? .95 : 1.05); tutPanel.position.y += centre ? .02 : -.04;
+  tutPanel.lookAt(tut.base); tutPanel.updateMatrixWorld(true);
+}
+function drawTutPanel() {
+  const yayOn = performance.now() - tut.yayT < 1300;
+  const sig = tut.head + '|' + tut.step + '|' + tut.text + '|' + (yayOn ? tut.yayText : '') + '|' + tut.phase;
+  if (sig === tutPanelS.sig) return; tutPanelS.sig = sig;
+  const c = tutCv.getContext('2d'), CW = TUTC.w, CH = TUTC.h;
+  const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
+  const PIX = '"Press Start 2P", ui-monospace, monospace', READ = 'Rubik, system-ui, sans-serif';
+  c.clearRect(0, 0, CW, CH);
+  c.fillStyle = 'rgba(14,10,40,.88)'; rr(6, 6, CW - 12, CH - 12, 34); c.fill();
+  c.lineWidth = 5; c.strokeStyle = 'rgba(201,190,234,.6)'; rr(9, 9, CW - 18, CH - 18, 32); c.stroke();
+  c.textBaseline = 'alphabetic'; c.textAlign = 'left';
+  c.fillStyle = '#FBBF24'; c.font = '400 34px ' + PIX; c.fillText(tut.head, 48, 82);
+  const hw = c.measureText(tut.head).width; c.fillStyle = '#C9BEEA'; c.font = '500 30px ' + READ; c.fillText(tut.step + ' / 7', 48 + hw + 26, 80);
+  if (yayOn) { c.textAlign = 'right'; c.fillStyle = '#FBBF24'; c.font = '400 38px ' + PIX; c.fillText(tut.yayText, CW - 48, 84); c.textAlign = 'left'; }
+  // the line(s)
+  const fin = tut.phase === 'final';
+  c.fillStyle = '#ECE8FA'; c.font = `500 ${fin ? 44 : 50}px ` + READ;
+  const ws = tut.text.split(' '), lines = []; let line = '';
+  for (const w of ws) { const t = line ? line + ' ' + w : w; if (c.measureText(t).width > CW - 96 && line) { lines.push(line); line = w; } else line = t; }
+  lines.push(line);
+  lines.slice(0, 3).forEach((l, i) => c.fillText(l, 48, 156 + i * (fin ? 56 : 62)));
+  // buttons: skip (always), Play! (last card)
+  const btn = (k, x, y, w, h, label, font, col, lw) => { c.lineWidth = lw; c.strokeStyle = col; rr(x, y, w, h, 18); c.stroke(); c.fillStyle = col; c.font = font; c.textAlign = 'center'; c.fillText(label, x + w / 2, y + h / 2 + 13); c.textAlign = 'left'; tutPanelS.btns[k] = { x0: x, y0: y, x1: x + w, y1: y + h }; };
+  tutPanelS.btns = {};
+  btn('skip', CW - 48 - 170, CH - 48 - 76, 170, 76, 'skip', '500 36px ' + READ, '#C9BEEA', 4);
+  if (fin) btn('play', CW - 48 - 170 - 24 - 250, CH - 48 - 90, 250, 90, 'Play!', '400 34px ' + PIX, '#FBBF24', 7);
+  tutTex.needsUpdate = true;
+}
+function tutPanelHit(o, d) {
+  if (!tut.active || !tutPanel.visible) return null;
+  sheetRay.set(o, d); sheetRay.far = 50;
+  const h = sheetRay.intersectObject(tutPanel, false)[0]; if (!h || !h.uv) return null;
+  const px = h.uv.x * TUTC.w, py = (1 - h.uv.y) * TUTC.h, pad = 14;
+  const btn = Object.keys(tutPanelS.btns).find(k => { const b = tutPanelS.btns[k]; return px >= b.x0 - pad && px <= b.x1 + pad && py >= b.y0 - pad && py <= b.y1 + pad; }) || null;
+  return { btn, distance: h.distance, point: h.point };
+}
+// first open on a flat screen (a headset browser waits for Enter VR, which has its own run)
+if (!IN_HEADSET_UA && !params.has('notut') && !onbSeen(ONB.k2d)) setTimeout(() => { if (!renderer.xr.isPresenting && !tut.active) tutStart(); }, 1000);
+
 // ---------- loop ----------
-const clock = { t: 0, scale: 1, paused: false };
+const clock ={ t: 0, scale: 1, paused: false };
 const stats = { pokes: 0, grabs: 0, releases: 0, frames: 0, counted: 0, realT: 0, fps: 0, decided: false, quality: useBloom ? 'bloom' : 'plain' };
 let last = performance.now();
 const fwd = new THREE.Vector3();
@@ -2165,6 +2656,7 @@ function frame(now, xrFrame) {
   }
 
   rackUpdate(rdt, inXR);
+  tutUpdate(rdt, inXR);
   sheetUpdate(inXR);
   stepAll(clock.t, dt);
   { const inBox = boxOccupants(); batSweep(dt, inBox); collide(dt, inBox); }
@@ -2275,6 +2767,14 @@ window.__fl = {
     cardScene() { return defMesh.getWorldPosition(new THREE.Vector3()).toArray(); },
     hand(i) { const H = vr.hands[i]; return { aimSheet: H.aimSheet ? H.aimSheet.ch : null, aimCard: H.aimCard }; }
   },
+  get gone() { return goneS.list.map(upLetter); }, goneStats,
+  tut: { get state() { return { active: tut.active, mode: tut.mode, phase: tut.phase, sub: tut.sub, k: tut.k, step: tut.step, head: tut.head, text: tut.text, rewards: tut.rewards,
+      yay: tut.yayText, ghost: tut.ghost || null, log: tut.log.slice(), endedBy: tut.endedBy || null, word: tut.W ? tut.W.ch : null, panel: tutPanel.visible, dom: !tutEl.hidden,
+      letters: tut.T.map(L => L.ch) }; },
+    get T() { return tut.T; }, start: tutStart, press: tutPress, seen: k => onbSeen(k === 'vr' ? ONB.kvr : ONB.k2d), ONB, panel: tutPanel, ghostSpr,
+    btnScene(k) { const b = tutPanelS.btns[k]; if (!b) return null; tutPanel.updateMatrixWorld(true); const px = (b.x0 + b.x1) / 2, py = (b.y0 + b.y1) / 2;
+      return tutPanel.localToWorld(new THREE.Vector3((px / TUTC.w - .5) * TUTC.m, (.5 - py / TUTC.h) * TUTC.m * TUTC.h / TUTC.w, 0)).toArray(); },
+    png: () => tutCv.toDataURL() },
   info() { const L = letters[0]; return { pos: L.pos.toArray().map(n => +n.toFixed(2)), vel: +L.vel.length().toFixed(3), spin: +L.angVel.length().toFixed(3), held: L.dragged, quality: stats.quality, t: +clock.t.toFixed(2) }; }
 };
 </script>
