@@ -2437,7 +2437,7 @@ function tutUpdate(dt, inXR) {
   if (tut.phase === 'spell') {
     const T = tut.T;
     if (T.some(L => L.word)) {
-      if (T[0].word && T[0].word === T[1].word && T[1].word === T[2].word) { tut.W = T[0].word; tutPhase('list'); }
+      if (T[0].word && T[0].word === T[1].word && T[1].word === T[2].word) { tut.W = T[0].word; tut.guard.clear(); tutPhase('list'); }
       else { tutPhase('final'); }                       // the letters went into some other word: skip ahead to the aim
     } else {
       if (rackS.n !== RACK.min) { rackS.n = RACK.min; layoutRack(); }
