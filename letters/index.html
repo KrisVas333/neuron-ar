@@ -1535,10 +1535,13 @@ function drawSheet() {
   const c = sheetCv.getContext('2d'), SW = SHEET.w, SH = SHEET.h;
   const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
   c.clearRect(0, 0, SW, SH);
-  // BC deck panel: dark translucent, lilac line border; labels in Press Start 2P, words in Tinos; newest word in yellow
+  // no panel, no outlines (Kris 2026-11-05): just the text on the sky, each glyph drawn twice over a soft dark glow so it stays readable;
+  // labels in Press Start 2P, words in Tinos; newest word in yellow
   const PIX = '"Press Start 2P", ui-monospace, monospace', SERIF = 'Tinos, "Times New Roman", serif';
-  c.fillStyle = 'rgba(14,10,40,.80)'; rr(6, 6, SW - 12, SH - 12, 40); c.fill();
-  c.lineWidth = 6; c.strokeStyle = 'rgba(201,190,234,.6)'; rr(9, 9, SW - 18, SH - 18, 38); c.stroke();
+  const GLOW = 'rgba(5,3,15,.95)';
+  c.shadowColor = GLOW; c.shadowBlur = 24; c.shadowOffsetX = 0; c.shadowOffsetY = 0;
+  const fillT = CanvasRenderingContext2D.prototype.fillText;
+  c.fillText = function (...a) { fillT.apply(this, a); fillT.apply(this, a); };
   // header: how many words (left) · letters left with the "a" tile, like the desktop counter (right)
   c.textBaseline = 'middle'; c.fillStyle = '#FBBF24'; c.textAlign = 'left';
   c.font = '400 76px ' + PIX; c.fillText(String(words.length), 64, 92);
@@ -1550,9 +1553,7 @@ function drawSheet() {
   c.font = '400 50px ' + PIX;
   const ns = String(n), tw = c.measureText(ns).width, tx = SW - 64 - tw - 28 - 76;
   c.fillStyle = '#FFFFFF'; c.fillText(ns, SW - 64 - tw, 94);
-  c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(tx + 2, 42, 72, 88, 13); c.stroke();
-  c.fillStyle = '#FBBF24'; c.textAlign = 'center'; c.font = '400 66px ' + SERIF; c.fillText('a', tx + 38, 82);
-  c.fillStyle = 'rgba(201,190,234,.45)'; c.fillRect(56, 160, SW - 112, 4);
+  c.fillStyle = '#FBBF24'; c.textAlign = 'center'; c.font = '400 72px ' + SERIF; c.fillText('a', tx + 38, 86);
   // gone row (only once a letter is used up): "GONE" + the crossed-out letters
   let top = 178;
   if (goneS.list.length) {
@@ -1566,7 +1567,6 @@ function drawSheet() {
       c.fillStyle = '#FF6B6B'; c.fillRect(gx - 4, 205, w + 8, 6);
       gx += w + 26;
     }
-    c.fillStyle = 'rgba(201,190,234,.25)'; c.fillRect(56, 252, SW - 112, 3);
     top = 262;
   }
   // typed lines: oldest top-left, newest last (bottom of the column it lands in), the most recent rows × cols words
@@ -1581,16 +1581,17 @@ function drawSheet() {
     c.font = '400 96px ' + SERIF;
     const bw = Math.min(colW - 20, Math.max(70, c.measureText(W.ch).width + 44)), def = canDefine(W);
     sheetS.cells.push({ W, def, x0: x - 22, x1: x - 22 + bw, y0: y - lh * .5, y1: y + lh * .5 });
-    // English words can be tapped for their meaning: aimed = coral glow (like a letter under the VR ray), open card = yellow
+    // English words can be tapped for their meaning: aimed = coral text + coral glow (like a letter under the VR ray), open card = yellow glow
+    // (no boxes: the colour and the glow show it)
     const hl = def && W === sheetS.sel ? '#FBBF24' : def && (W === sheetS.hover || (blink && W === sheetS.tutW)) ? '#FF6B6B' : null;
-    if (hl) { c.fillStyle = hl === '#FBBF24' ? 'rgba(251,191,36,.20)' : 'rgba(255,107,107,.24)'; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.fill(); }
-    if (isLast) { c.lineWidth = 5; c.strokeStyle = '#FBBF24'; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.stroke(); }
-    if (hl) { c.lineWidth = 8; c.strokeStyle = hl; rr(x - 22, y - lh * .44, bw, lh * .88, 16); c.stroke(); }
-    c.fillStyle = isLast ? '#FBBF24' : '#ECE8FA'; c.fillText(txt, x, y + 6, colW - 60);
+    if (hl) { c.shadowColor = hl === '#FBBF24' ? 'rgba(251,191,36,.85)' : 'rgba(255,107,107,.9)'; c.shadowBlur = 30; }
+    c.fillStyle = hl || (isLast ? '#FBBF24' : '#ECE8FA'); c.fillText(txt, x, y + 6, colW - 60);
+    if (hl) { c.shadowColor = GLOW; c.shadowBlur = 24; }
     if (isLast && typing) { const cw = Math.min(c.measureText(txt).width, colW - 60); c.fillRect(x + cw + 6, y - 38, 6, 80); }   // the carriage
     else if (W.pts != null) { const cw = Math.min(c.measureText(W.ch).width, colW - 60), ps = '+' + W.pts; c.font = '400 32px ' + PIX; c.fillStyle = '#FBBF24'; c.fillText(ps, Math.min(x + cw + 34, x + colW - 40 - c.measureText(ps).width), y + 4); }
   });
   if (won) { c.fillStyle = '#ECE8FA'; c.textAlign = 'right'; c.font = '400 30px ' + PIX; c.fillText(n ? n + ' letters left' : 'every letter used!', SW - 64, SH - 50); }
+  delete c.fillText; c.shadowBlur = 0; c.shadowColor = 'rgba(0,0,0,0)';
   sheetTex.needsUpdate = true;
 }
 function sheetUpdate(inXR) {
@@ -1841,10 +1842,148 @@ function drawDefCard() {
   defTex.needsUpdate = true;
 }
 
+// ---------- point at a built word = a short meaning bubble (Kris 2026-11-05) ----------
+// Desktop: the mouse resting on a word (on the far sheet, or a built word floating in the bubble). VR: a controller / hand ray on it.
+// No click, no pinch. It shows after a short dwell (sweeping past doesn't spam), stays fully visible ~4 s even after the pointer or
+// laser leaves (a laser is hard to hold still), then fades out slowly. Pointing at it again restarts the 4 s; another word replaces it.
+// Same Wiktionary lookup, cache and kid-safe filter as the card; English words only. Phones have no hover: tap works as before.
+const HOV = { dwell: .25, hold: 4, fade: 2, vrW: 3.0, vrRef: 8, vrMin: .45 };
+const hov = { W: null, src: null, word: '', where: null, cand: null, candT: 0, seen: 0, card: null, seq: 0, alpha: 0, mx: -1, my: -1, mouse: false, text: '', shows: 0 };
+const hovEl = document.getElementById('hoverdef'), hovB = hovEl.querySelector('b'), hovS = hovEl.querySelector('span');
+const HOVC = { w: 1024, h: 400 };
+const hovCv = document.createElement('canvas'); hovCv.width = HOVC.w; hovCv.height = HOVC.h;
+const hovTex = new THREE.CanvasTexture(hovCv); hovTex.colorSpace = THREE.SRGBColorSpace; hovTex.anisotropy = 4;
+const hovMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, HOVC.h / HOVC.w), new THREE.MeshBasicMaterial({ map: hovTex, transparent: true, toneMapped: false, depthTest: false, depthWrite: false }));
+hovMesh.name = 'hoverdef'; hovMesh.visible = false; hovMesh.renderOrder = 25; scene.add(hovMesh);
+cv.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { hov.mx = e.clientX; hov.my = e.clientY; hov.mouse = true; } });
+cv.addEventListener('pointerleave', () => { hov.mouse = false; });
+// what the pointer rests on right now: { W, src: 'sheet' | 'float' } (English words only)
+function hovTarget(inXR) {
+  if (tut.active) return null;                      // the onboarding has its own "select it" step
+  if (inXR) {
+    if (!vr.anchored) return null;
+    for (const H of vr.hands) {
+      if (H.aimSheet) return { W: H.aimSheet, src: 'sheet' };
+      if (H.aimed && H.aimed.word && canDefine(H.aimed.word)) return { W: H.aimed.word, src: 'float' };
+    }
+    return null;
+  }
+  if (IS_MOBILE || !hov.mouse || ptr.down) return null;
+  const x = hov.mx / innerWidth * 2 - 1, y = -(hov.my / innerHeight) * 2 + 1;
+  if (pickRackBtn(x, y)) return null;
+  const sw = sheetPickNdc(x, y); if (sw) return { W: sw.W, src: 'sheet' };
+  const h = pickLetter(x, y);
+  return h && h.L.word && canDefine(h.L.word) ? { W: h.L.word, src: 'float' } : null;
+}
+function hovShow(W, src, inXR) {
+  if (defUI.W === W) return;                        // its full card is already open
+  const word = fold(W.ch), seq = ++hov.seq, now = performance.now() / 1000;
+  Object.assign(hov, { W, src, word, where: inXR ? 'vr' : 'dom', card: { word, state: 'loading' }, seen: now }); hov.shows++;
+  hovFill();
+  defLookup(word).then(card => { if (seq === hov.seq) { hov.card = card; hovFill(); } });
+}
+function hovHide() { hov.seq++; hov.W = null; hov.card = null; hov.alpha = 0; hov.text = ''; hovEl.hidden = true; hovMesh.visible = false; }
+function hovContent() {
+  const card = hov.card;
+  if (!card || card.state === 'loading') return { pos: '', text: '…' };
+  const L = defLines(card);
+  let text = L.senses[0] ? (L.sub ? L.sub + ': ' : '') + L.senses[0] : (L.sub || L.note || 'No meaning found');
+  if (text.length > 110) text = text.slice(0, Math.max(50, text.lastIndexOf(' ', 108))).replace(/[,;:(\s]+$/, '') + '…';   // a bubble, not the card
+  return { pos: L.pos || '', text };
+}
+function hovFill() {
+  const C = hovContent();
+  hov.text = hov.word + ' | ' + (C.pos ? C.pos + ' | ' : '') + C.text;
+  if (hov.where === 'vr') { hovDrawVR(C); return; }
+  hovB.textContent = hov.word;
+  const kids = []; if (C.pos) { const i = document.createElement('i'); i.textContent = C.pos + ' · '; kids.push(i); } kids.push(document.createTextNode(C.text));
+  hovS.replaceChildren(...kids);
+}
+function hovDrawVR(C) {
+  const c = hovCv.getContext('2d'), CW = HOVC.w, CH = HOVC.h;
+  const PIX = '"Press Start 2P", ui-monospace, monospace', READ = 'Rubik, system-ui, sans-serif';
+  c.clearRect(0, 0, CW, CH);
+  c.fillStyle = 'rgba(14,10,40,.88)'; c.beginPath(); if (c.roundRect) c.roundRect(4, 4, CW - 8, CH - 8, 40); else c.rect(4, 4, CW - 8, CH - 8); c.fill();
+  c.textBaseline = 'alphabetic'; c.textAlign = 'left';
+  c.fillStyle = '#FBBF24'; c.font = '400 54px ' + PIX; c.fillText(hov.word, 48, 100, CW - 96);
+  if (C.pos) { const ww = Math.min(c.measureText(hov.word).width, CW - 96); c.fillStyle = '#C9BEEA'; c.font = 'italic 500 42px ' + READ; c.fillText(C.pos, 48 + ww + 28, 98, Math.max(60, CW - 120 - ww)); }
+  c.fillStyle = '#ECE8FA'; c.font = '500 52px ' + READ;
+  const ws = C.text.split(' '), lines = []; let line = '';
+  for (const w of ws) { const t = line ? line + ' ' + w : w; if (c.measureText(t).width > CW - 96 && line) { lines.push(line); line = w; } else line = t; }
+  lines.push(line);
+  if (lines.length > 4) { lines.length = 4; lines[3] = lines[3].replace(/\s*\S*$/, '') + '…'; }
+  lines.forEach((l, i) => c.fillText(l, 48, 178 + i * 62, CW - 96));
+  hovTex.needsUpdate = true;
+}
+const hovV = new THREE.Vector3(), hovV2 = new THREE.Vector3(), hovR = new THREE.Vector3();
+// VR: beside the far sheet, level with the word's row (left column = left of the sheet, right column = right; the open card's side is
+// avoided), or beside a floating word; always facing you, sized for its distance (~3 m wide at the sheet's 8 m)
+function hovPlaceVR() {
+  let anchor = null, w = HOV.vrW;
+  if (hov.src === 'sheet') {
+    const c = sheetS.cells.find(c => c.W === hov.W); if (!c) return false;
+    sheet.updateMatrixWorld(true);
+    hovR.set(1, 0, 0).applyQuaternion(sheet.quaternion); hovR.y = 0; hovR.normalize();
+    const sw = sheet.scale.x;
+    let side = c.x0 < SHEET.w / 2 ? -1 : 1; if (side > 0 && defMesh.visible) side = -1;
+    w = HOV.vrW * Math.max(.5, sheet.position.distanceTo(vr.head) / HOV.vrRef);
+    anchor = sheetToScene(SHEET.w / 2, (c.y0 + c.y1) / 2).addScaledVector(hovR, side * (sw / 2 + .12 + w / 2));
+  } else {
+    const W = hov.W; world.localToWorld(hovV.copy(W.pos));
+    const dist = Math.max(.3, hovV.distanceTo(vr.head));
+    w = Math.max(HOV.vrMin, HOV.vrW * dist / HOV.vrRef);
+    hovR.set(1, 0, 0).applyQuaternion(vr.headQ);
+    let half = 0; for (const L of W.members) half = Math.max(half, world.localToWorld(hovV2.copy(L.pos)).sub(hovV).dot(hovR));
+    half += VR_M.letterH * .5;
+    anchor = hovV.clone().addScaledVector(hovR, half + .04 * dist + w / 2); anchor.y += w * HOVC.h / HOVC.w * .35;
+  }
+  hovMesh.position.copy(anchor); hovMesh.scale.setScalar(w); hovMesh.lookAt(vr.head);
+  hovMesh.material.opacity = hov.alpha; hovMesh.visible = true; hovEl.hidden = true;
+  return true;
+}
+// desktop: right of the word (left if there's no room), kept on screen
+function hovPlaceDom() {
+  let x = 0, x0 = 0, y = 0;
+  if (hov.src === 'sheet') {
+    const c = sheetS.cells.find(c => c.W === hov.W); if (!c) { hovEl.hidden = true; return false; }
+    const a = defScr(c.x0, (c.y0 + c.y1) / 2), b = defScr(c.x1, (c.y0 + c.y1) / 2); if (!a.ok) { hovEl.hidden = true; return false; }
+    x0 = a.x; x = b.x; y = b.y;
+  } else {
+    let mn = Infinity, mx = -Infinity, sy = 0, n = 0;
+    for (const L of hov.W.members) { const p = world.localToWorld(hovV.copy(L.pos)).project(camera); if (p.z >= 1) continue; const sx = (p.x + 1) / 2 * innerWidth; mn = Math.min(mn, sx); mx = Math.max(mx, sx); sy += (1 - p.y) / 2 * innerHeight; n++; }
+    if (!n) { hovEl.hidden = true; return false; }
+    x0 = mn - 24; x = mx + 24; y = sy / n;
+  }
+  hovEl.hidden = false;
+  const w = hovEl.offsetWidth, h = hovEl.offsetHeight, G = 12;
+  let left = x + 14; if (left + w > innerWidth - G) left = x0 - 14 - w;
+  left = Math.max(G, Math.min(innerWidth - w - G, left));
+  const top = Math.max(G, Math.min(innerHeight - h - G, y - h / 2));
+  hovEl.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`; hovEl.style.opacity = hov.alpha.toFixed(3);
+  hovMesh.visible = false;
+  return true;
+}
+function hovUpdate(inXR) {
+  const now = performance.now() / 1000;
+  let t = hovTarget(inXR);
+  if (t && words.indexOf(t.W) < 0) t = null;
+  if (t && t.W === hov.cand) {
+    if (now - hov.candT >= HOV.dwell) { if (hov.W !== t.W) hovShow(t.W, t.src, inXR); else { hov.seen = now; hov.src = t.src; } }
+  } else { hov.cand = t ? t.W : null; hov.candT = now; }
+  if (hov.W && (words.indexOf(hov.W) < 0 || defUI.W === hov.W || (hov.where === 'vr') !== inXR)) hovHide();   // gone / its card opened / mode changed
+  if (!hov.W) { if (!hovEl.hidden) hovEl.hidden = true; if (hovMesh.visible) hovMesh.visible = false; return; }
+  const age = now - hov.seen, u = Math.min(1, Math.max(0, (age - HOV.hold) / HOV.fade));
+  hov.alpha = 1 - u * u * (3 - 2 * u);              // full for 4 s, then a slow smooth 2 s fade
+  if (age >= HOV.hold + HOV.fade) { hovHide(); return; }
+  if (inXR) hovPlaceVR(); else hovPlaceDom();
+}
+
 placeSheet(false);
 if (document.fonts) document.fonts.load('40px "Press Start 2P"').then(() => document.fonts.load('40px Tinos')).then(() => { sheetS.sig = ''; drawSheet(); vr.panelSig = ''; }).catch(() => {});
 function madeWord(W) {
   W.pts = scoreWord(W.ch);
+  // any "aim" spelled while the onboarding asks for it is the practice word (even with other a / i / m copies): it leaves when it ends
+  if (tut.active && tut.phase === 'spell' && !tut.W && fold(W.ch) === TUT_WORD) tut.W = W;
   sfx.word();
   scorePop(W);
   W.members.forEach((l, i) => spawnRipple(l.pos.clone(), i * .06, 2.0));
@@ -2356,6 +2495,26 @@ function tutPhase(p) {
   if (p === 'final' && tut.mode === 'vr') placeTutPanel(true);
   tut.log.push(p);
 }
+// AIM is a practice word (Kris 2026-11-05): when the onboarding ends, by any path (Play!, skip, "?" replay, entering / leaving VR),
+// it leaves the list, the score and the word count, and its a, i, m float free again, so the round starts with the full pool
+// and "gone" stays right. Only the tutorial's own word is touched: the player's real words stay as they are.
+function tutDropWord(W) {
+  const i = W ? words.indexOf(W) : -1; if (i < 0) return false;
+  words.splice(i, 1);
+  for (const H of vr.hands) if (H.held === W) H.held = null;
+  if (drag.L === W) drag.L = null;
+  for (const L of W.members) {
+    L.word = null; L.dragged = false; L.angVel.set(Math.random() - .5, Math.random() - .5, Math.random() - .5);
+    // out of the boxes, back into the cloud: a push away from you (+ a little scatter), then the current takes over
+    tutV.copy(L.pos); if (tutV.lengthSq() < 1e-6) tutV.set(0, 0, -1); tutV.normalize();
+    L.vel.copy(tutV).multiplyScalar(3.2).add(tutV2.set(Math.random() - .5, Math.random() * .8, Math.random() - .5).multiplyScalar(1.2)); L.releaseAt = clock.t - 1.5;
+  }
+  if (sheetS.hover === W) setSheetHover(null);
+  if (defUI.W === W) closeDef();
+  if (hov.W === W) hovHide();
+  renderHud(false);
+  return true;
+}
 function tutEnd(mark, by) {
   if (!tut.active) return;
   if (mark) onbMark(tut.mode === 'vr' ? ONB.kvr : ONB.k2d);
@@ -2365,6 +2524,7 @@ function tutEnd(mark, by) {
   if (sheetS.tutW) { sheetS.tutW = null; sheetS.sig = ''; }
   if (tut.W && defUI.W === tut.W) closeDef();
   wordBtn.scale.setScalar(wordBtn.userData.base); tutHalo.visible = false;
+  tut.dropped = tutDropWord(tut.W) ? tut.W.ch : null; tut.W = null;
   tutEl.hidden = true; ghostEl.hidden = true; ghostKey.hidden = true; tutPanel.visible = false; ghostSpr.visible = false;
   tut.log.push(mark ? 'end' : 'stop'); tut.endedBy = by || (mark ? 'done' : 'stop');
   tut.phase = null;
@@ -2446,8 +2606,8 @@ function tutUpdate(dt, inXR) {
   const R = inXR ? .16 / vr.S : 1.9;   // line-of-sight clearance
   if (tut.phase === 'spell') {
     const T = tut.T;
-    if (T.some(L => L.word)) {
-      if (T[0].word && T[0].word === T[1].word && T[1].word === T[2].word) { tut.W = T[0].word; tut.guard.clear(); tutPhase('list'); }
+    if (tut.W || T.some(L => L.word)) {
+      if (tut.W || (T[0].word && T[0].word === T[1].word && T[1].word === T[2].word)) { tut.W = tut.W || T[0].word; tut.guard.clear(); tutPhase('list'); }
       else { tutPhase('final'); }                       // the letters went into some other word: skip ahead to the aim
     } else {
       if (rackS.n !== RACK.min) { rackS.n = RACK.min; layoutRack(); }
@@ -2668,6 +2828,7 @@ function frame(now, xrFrame) {
   rackUpdate(rdt, inXR);
   tutUpdate(rdt, inXR);
   sheetUpdate(inXR);
+  hovUpdate(inXR);
   stepAll(clock.t, dt);
   { const inBox = boxOccupants(); batSweep(dt, inBox); collide(dt, inBox); }
   stepRipples(dt); stepPops(dt);
@@ -2778,9 +2939,13 @@ window.__fl = {
     hand(i) { const H = vr.hands[i]; return { aimSheet: H.aimSheet ? H.aimSheet.ch : null, aimCard: H.aimCard }; }
   },
   get gone() { return goneS.list.map(upLetter); }, goneStats,
+  hover: { get state() { return { word: hov.W ? hov.W.ch : null, src: hov.src, where: hov.where, alpha: +hov.alpha.toFixed(3), text: hov.text, shows: hov.shows,
+      cand: hov.cand ? hov.cand.ch : null, dom: !hovEl.hidden, mesh: hovMesh.visible, state: hov.card ? hov.card.state : null }; },
+    HOV, mesh: hovMesh, el: hovEl, png: () => hovCv.toDataURL(), hide: hovHide,
+    meshScene() { return hovMesh.getWorldPosition(new THREE.Vector3()).toArray(); }, meshWidth: () => hovMesh.scale.x },
   tut: { get state() { return { active: tut.active, mode: tut.mode, phase: tut.phase, sub: tut.sub, k: tut.k, step: tut.step, head: tut.head, text: tut.text, rewards: tut.rewards,
       yay: tut.yayText, ghost: tut.ghost || null, log: tut.log.slice(), endedBy: tut.endedBy || null, word: tut.W ? tut.W.ch : null, panel: tutPanel.visible, dom: !tutEl.hidden,
-      letters: tut.T.map(L => L.ch) }; },
+      letters: tut.T.map(L => L.ch), dropped: tut.dropped || null }; },
     get T() { return tut.T; }, start: tutStart, press: tutPress, seen: k => onbSeen(k === 'vr' ? ONB.kvr : ONB.k2d), ONB, panel: tutPanel, ghostSpr,
     btnScene(k) { const b = tutPanelS.btns[k]; if (!b) return null; tutPanel.updateMatrixWorld(true); const px = (b.x0 + b.x1) / 2, py = (b.y0 + b.y1) / 2;
       return tutPanel.localToWorld(new THREE.Vector3((px / TUTC.w - .5) * TUTC.m, (.5 - py / TUTC.h) * TUTC.m * TUTC.h / TUTC.w, 0)).toArray(); },
