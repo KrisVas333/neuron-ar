@@ -2532,7 +2532,7 @@ function tutEnd(mark, by) {
 function tutPress(b) {
   if (!tut.active) return;
   if (b === 'skip') { tutEnd(true, 'skip'); sfx.click(); return; }
-  if (b === 'play' && tut.phase === 'final') { tutEnd(true, 'play'); sfx.word(); }
+  if (b === 'play' && tut.phase === 'final') { tutEnd(true, 'play'); sfx.click(); }
 }
 const tutHeld = L => tut.mode === 'vr' ? vr.hands.some(H => H.held === L) : drag.L === L && (L.dragged || (tut.mode === 'desk' && ptr.down));
 const tutVrInput = () => vr.hands.some(H => H.kind === 'hand') ? 'hand' : 'ctrl';
@@ -2562,7 +2562,7 @@ function tutStepNo() {
 function tutReward() {
   tut.rewards++;
   tut.yayText = TUT_YAY[(tut.rewards - 1) % TUT_YAY.length]; tut.yayT = performance.now();
-  sfx.bell(.45); sfx.click();
+  sfx.click(); // plain key press; the bell rings only on word!
   if (tut.mode !== 'vr') { tutYayEl.textContent = tut.yayText; tutYayEl.classList.remove('on'); void tutYayEl.offsetWidth; tutYayEl.classList.add('on'); }
 }
 // tutorial progress as one number: a reward every time it goes up (never twice for the same step)
