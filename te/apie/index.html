@@ -232,6 +232,55 @@ footer p+p{margin-top:10px}
     </div>
   </div>
 </header>
+<!-- KV newsletter box (2026-11-08) -->
+<section class="kvnl" aria-label="Naujienlaiškis tėvams">
+<style>
+.kvnl{padding:40px 20px;background:#F7F7F5;border-top:3px solid #D90429}
+.kvnl .w{max-width:640px;margin:0 auto}
+.kvnl h2{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(20px,3.2vw,26px);line-height:1.25;margin:0 0 8px}
+.kvnl p{margin:0 0 16px;color:#3a3a3a}
+.kvnl form{display:flex;flex-wrap:wrap;gap:10px}
+.kvnl input[type=email]{flex:1 1 220px;font:inherit;font-size:17px;padding:14px;border:2px solid #0A0A0A;border-radius:4px;min-width:0}
+.kvnl button{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:15px;padding:14px 20px;border:2px solid #D90429;background:#D90429;color:#fff;border-radius:4px;cursor:pointer}
+.kvnl button[disabled]{opacity:.6}
+.kvnl .hp{position:absolute;left:-9999px}
+.kvnl .msg{margin-top:12px;font-weight:600}
+.kvnl small{display:block;margin-top:10px;color:#6b6b6b;font-size:13px}
+</style>
+<div class="w">
+<h2>Gauk 7 vakarų priminimus ir laišką tėvams kartą per savaitę</h2>
+<p>Nemokamai. Vienas laiškas per savaitę. Atsisakyti galima vienu paspaudimu.</p>
+<form novalidate>
+<input type="email" name="email" required placeholder="tavo@pastas.lt" aria-label="El. paštas" autocomplete="email">
+<input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit">Noriu gauti</button>
+</form>
+<div class="msg" role="status" aria-live="polite"></div>
+<small>Spausdamas sutinki gauti Kris Vas laiškus. Duomenys niekam neperduodami. <a href="https://krisvas.lt/privatumas">Privatumas</a></small>
+</div>
+</section>
+<script>
+(function(){
+  if(window.__kvnlInit) return; window.__kvnlInit=1;
+  var URL='https://bpufgnpzsjmtqyfihkuk.supabase.co/functions/v1/mailerlite-subscribe', KEY='sb_publishable_kJxdHmhHG68-L938ap3F3w_uYkMRr9D';
+  var src=(new URLSearchParams(location.search).get('src')||'').slice(0,60);
+  document.addEventListener('submit',function(e){
+    var f=e.target; if(!f.closest||!f.closest('.kvnl')) return; e.preventDefault();
+    var box=f.closest('.kvnl'), msg=box.querySelector('.msg'), b=f.querySelector('button');
+    var em=(f.email.value||'').trim().toLowerCase();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){msg.textContent='Įrašyk el. paštą.';return;}
+    b.disabled=true; msg.textContent='Siunčiu…';
+    fetch(URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
+      body:JSON.stringify({email:em,language:'lt',source:src?('te-'+src):'te',company:f.company.value,consent:true,page_url:location.href})})
+    .then(function(r){return r.json().catch(function(){return{};}).then(function(j){return{ok:r.ok&&j&&j.ok,status:r.status,j:j};});})
+    .then(function(res){
+      if(res.ok){f.hidden=true;msg.textContent='Ačiū! Patikrink paštą, pirmas laiškas jau keliauja.';}
+      else{b.disabled=false;msg.textContent=res.status===429?'Per daug bandymų, pabandyk po minutės.':'Nepavyko. Pabandyk dar kartą arba parašyk man Instagram @kristijonas.vas.';}
+    }).catch(function(){b.disabled=false;msg.textContent='Nepavyko prisijungti. Pabandyk dar kartą.';});
+  });
+})();
+</script>
+<!-- /KV newsletter box -->
 
 <!-- STORY -->
 <section class="tint" id="istorija">
@@ -406,6 +455,55 @@ footer p+p{margin-top:10px}
     </div>
   </div>
 </section>
+<!-- KV newsletter box (2026-11-08) -->
+<section class="kvnl" aria-label="Naujienlaiškis tėvams">
+<style>
+.kvnl{padding:40px 20px;background:#F7F7F5;border-top:3px solid #D90429}
+.kvnl .w{max-width:640px;margin:0 auto}
+.kvnl h2{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(20px,3.2vw,26px);line-height:1.25;margin:0 0 8px}
+.kvnl p{margin:0 0 16px;color:#3a3a3a}
+.kvnl form{display:flex;flex-wrap:wrap;gap:10px}
+.kvnl input[type=email]{flex:1 1 220px;font:inherit;font-size:17px;padding:14px;border:2px solid #0A0A0A;border-radius:4px;min-width:0}
+.kvnl button{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:15px;padding:14px 20px;border:2px solid #D90429;background:#D90429;color:#fff;border-radius:4px;cursor:pointer}
+.kvnl button[disabled]{opacity:.6}
+.kvnl .hp{position:absolute;left:-9999px}
+.kvnl .msg{margin-top:12px;font-weight:600}
+.kvnl small{display:block;margin-top:10px;color:#6b6b6b;font-size:13px}
+</style>
+<div class="w">
+<h2>Gauk 7 vakarų priminimus ir laišką tėvams kartą per savaitę</h2>
+<p>Nemokamai. Vienas laiškas per savaitę. Atsisakyti galima vienu paspaudimu.</p>
+<form novalidate>
+<input type="email" name="email" required placeholder="tavo@pastas.lt" aria-label="El. paštas" autocomplete="email">
+<input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit">Noriu gauti</button>
+</form>
+<div class="msg" role="status" aria-live="polite"></div>
+<small>Spausdamas sutinki gauti Kris Vas laiškus. Duomenys niekam neperduodami. <a href="https://krisvas.lt/privatumas">Privatumas</a></small>
+</div>
+</section>
+<script>
+(function(){
+  if(window.__kvnlInit) return; window.__kvnlInit=1;
+  var URL='https://bpufgnpzsjmtqyfihkuk.supabase.co/functions/v1/mailerlite-subscribe', KEY='sb_publishable_kJxdHmhHG68-L938ap3F3w_uYkMRr9D';
+  var src=(new URLSearchParams(location.search).get('src')||'').slice(0,60);
+  document.addEventListener('submit',function(e){
+    var f=e.target; if(!f.closest||!f.closest('.kvnl')) return; e.preventDefault();
+    var box=f.closest('.kvnl'), msg=box.querySelector('.msg'), b=f.querySelector('button');
+    var em=(f.email.value||'').trim().toLowerCase();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){msg.textContent='Įrašyk el. paštą.';return;}
+    b.disabled=true; msg.textContent='Siunčiu…';
+    fetch(URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
+      body:JSON.stringify({email:em,language:'lt',source:src?('te-'+src):'te',company:f.company.value,consent:true,page_url:location.href})})
+    .then(function(r){return r.json().catch(function(){return{};}).then(function(j){return{ok:r.ok&&j&&j.ok,status:r.status,j:j};});})
+    .then(function(res){
+      if(res.ok){f.hidden=true;msg.textContent='Ačiū! Patikrink paštą, pirmas laiškas jau keliauja.';}
+      else{b.disabled=false;msg.textContent=res.status===429?'Per daug bandymų, pabandyk po minutės.':'Nepavyko. Pabandyk dar kartą arba parašyk man Instagram @kristijonas.vas.';}
+    }).catch(function(){b.disabled=false;msg.textContent='Nepavyko prisijungti. Pabandyk dar kartą.';});
+  });
+})();
+</script>
+<!-- /KV newsletter box -->
 
 <!-- TOGETHER -->
 <section class="together" id="kartu">
