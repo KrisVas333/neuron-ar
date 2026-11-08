@@ -105,10 +105,10 @@ nav.top a.on{background:var(--ink);color:var(--paper)}
 .ep .no{font:700 15px/1 var(--serif);color:var(--muted);text-align:right}
 .ep .th{width:64px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:var(--linen);display:grid;place-items:center;font-size:16px}
 .ep .th img{width:100%;height:100%;object-fit:cover}
-.ep .tr{position:relative;height:26px;padding-right:76px}
-.ep .bar{height:100%;width:0;border-radius:4px 13px 13px 4px;background:var(--rasp);transition:width .9s cubic-bezier(.2,.8,.2,1),background-color .4s;position:relative}
+.ep .tr{display:block;position:relative;height:26px;padding-right:76px}
+.ep .bar{display:block;height:100%;width:0;border-radius:4px 13px 13px 4px;background:var(--rasp);transition:width .9s cubic-bezier(.2,.8,.2,1),background-color .4s;position:relative}
 .ep .val{position:absolute;top:50%;transform:translateY(-50%);left:calc(var(--w,0%) + 8px);font:700 14px/1 var(--sans);white-space:nowrap;font-variant-numeric:tabular-nums;transition:left .9s cubic-bezier(.2,.8,.2,1)}
-.ep .ttl{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(var(--w,0%) - 14px);pointer-events:none}
+.ep .ttl{display:block;position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(var(--w,0%) - 14px);pointer-events:none}
 .ep.hot .bar{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--rasp)}
 .ep.young .bar{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px)}
 body[data-m="l"] .ep .bar{background-color:var(--blue)}
@@ -184,7 +184,7 @@ body[data-m="c"] .ep .bar{background-color:var(--rose)}
 /* world */
 .wbars{display:grid;gap:10px}
 .wb{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:12px;align-items:center;font-size:15px}
-.wb .t{position:relative;height:18px;padding-right:86px}
+.wb .t{display:block;position:relative;height:18px;padding-right:86px}
 .wb i{display:block;height:100%;width:0;border-radius:0 9px 9px 0;background:var(--taupe);transition:width 1.3s cubic-bezier(.2,.8,.2,1);position:relative;min-width:3px}
 .wb i::after{content:attr(data-v);position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);font:700 14px/1 var(--sans);white-space:nowrap;color:var(--ink)}
 .wb.us i{background:var(--rasp)}
