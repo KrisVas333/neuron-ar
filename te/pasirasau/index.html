@@ -167,8 +167,8 @@ footer h2{font-size:13px;color:var(--ink)}
 .kvnl small{display:block;margin-top:10px;color:#6b6b6b;font-size:13px}
 </style>
 <div class="w">
-<h2>Gauk 7 vakarų priminimus ir laišką tėvams kartą per savaitę</h2>
-<p>Nemokamai. Vienas laiškas per savaitę. Atsisakyti galima vienu paspaudimu.</p>
+<h2>Gauk laišką tėvams kartą per savaitę</h2>
+<p>Vienas faktas, vienas žmogus, 3 žingsniai be ekrano. Nemokamai, atsisakyti galima vienu paspaudimu.</p>
 <form novalidate>
 <input type="email" name="email" required placeholder="tavo@pastas.lt" aria-label="El. paštas" autocomplete="email">
 <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -193,7 +193,7 @@ footer h2{font-size:13px;color:var(--ink)}
       body:JSON.stringify({email:em,language:'lt',source:src?('te-'+src):'te',company:f.company.value,consent:true,page_url:location.href})})
     .then(function(r){return r.json().catch(function(){return{};}).then(function(j){return{ok:r.ok&&j&&j.ok,status:r.status,j:j};});})
     .then(function(res){
-      if(res.ok){f.hidden=true;msg.textContent='Ačiū! Patikrink paštą, pirmas laiškas jau keliauja.';}
+      if(res.ok){f.hidden=true;msg.textContent='Ačiū! Patikrink paštą: pasveikinimo laiškas jau pakeliui.';}
       else{b.disabled=false;msg.textContent=res.status===429?'Per daug bandymų, pabandyk po minutės.':'Nepavyko. Pabandyk dar kartą arba parašyk man Instagram @kristijonas.vas.';}
     }).catch(function(){b.disabled=false;msg.textContent='Nepavyko prisijungti. Pabandyk dar kartą.';});
   });
