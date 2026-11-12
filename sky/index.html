@@ -17,8 +17,12 @@
   button,input { font:inherit; color:inherit; }
   #prompt { position:fixed; top:max(18px,env(safe-area-inset-top)); left:16px; right:16px; text-align:center; pointer-events:none;
     font:400 24px/1.25 Georgia,"Times New Roman",serif; min-height:30px; color:var(--ink); text-shadow:0 1px 8px #000; transition:opacity .5s; }
-  #namebox { position:fixed; right:24px; bottom:100px; width:min(380px,calc(100vw - 32px)); padding:16px 18px 14px;
+  #namebox { position:fixed; right:24px; bottom:100px; width:min(380px,calc(100vw - 32px)); padding:16px 18px 14px; z-index:5;
     background:var(--panel); border:1px solid var(--line); border-radius:14px; display:none; }
+  /* a short window (a Quest window with its keyboard up): the same box, smaller (layoutUI decides, 2026-11-12) */
+  #namebox.tight { padding:9px 14px 7px; } #namebox.tight h2 { font-size:17px; margin-bottom:6px; } #namebox.tight #namehint { height:20px; margin-top:4px; font-size:15px; }
+  /* a short box: the x stays in the heading's line, above the input row, so a tap on OK's top edge is OK, never close (critic 2026-11-12, sideways phone) */
+  #namebox.tight #nameclose { top:3px; right:4px; width:40px; height:30px; } #namebox.tight h2 { margin-right:30px; }
   #namebox.open { display:block; }
   #namebox.shake { animation:shake .42s ease; }
   @keyframes shake { 0%,100%{transform:none} 20%{transform:translateX(-9px)} 45%{transform:translateX(7px)} 70%{transform:translateX(-4px)} }
@@ -31,8 +35,11 @@
   #namego:disabled { opacity:.4; cursor:default; }
   #namehint { height:24px; margin-top:8px; color:var(--gold); font-size:17px; }
   #nameclose { position:absolute; right:8px; top:8px; width:36px; height:36px; background:none; border:0; color:var(--dim); font-size:22px; cursor:pointer; }
-  #bar { position:fixed; left:50%; bottom:40px; transform:translateX(-50%); display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center;
+  /* centred without a transform (2026-11-12): a transform made the bar the frame of the big Enter VR button, which then sat over Replay, Reset all and Sound */
+  #bar { position:fixed; left:0; right:0; margin:0 auto; bottom:40px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center;
     width:max-content; max-width:calc(100vw - 16px); }
+  body.barless #bar { visibility:hidden; }     /* only when a box needs its room (layoutUI): it comes back when the box goes */
+  body.storyroom #bar, body.storyroom #prompt, body.storyroom #foot { visibility:hidden; }    /* a long story in a short window: the bar, the words and the credits step aside until it closes */
   #bar button { height:44px; padding:0 14px; background:var(--panel); border:1px solid var(--line); border-radius:9px; cursor:pointer; white-space:nowrap; }
   #bar button:disabled { opacity:.38; cursor:default; }
   #bar .seg { display:flex; } #bar .seg button { border-radius:0; } #bar .seg button:first-child { border-radius:9px 0 0 9px; }
@@ -55,29 +62,43 @@
   #findsug button { height:44px; padding:0 14px; background:var(--panel); border:1px solid var(--gold); color:var(--ink); border-radius:9px; cursor:pointer; }
   #findopen { display:none; width:44px; height:44px; background:var(--panel); border:1px solid var(--line); border-radius:9px; cursor:pointer; font-size:20px; padding:0; }
   #findx { display:none; }
-  @media (min-width:900px) { body:not(.mobile) #prompt { left:330px; right:330px; } }
-  body.mobile #find { left:12px; width:auto; right:auto; }
-  body.mobile #find:not(.open) .row, body.mobile #find:not(.open) #findhint, body.mobile #find:not(.open) #findsug { display:none; }
-  body.mobile #find:not(.open) #findopen { display:block; }
-  body.mobile #find.open { right:12px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:8px; }
-  body.mobile #find.open #findx { display:block; width:44px; height:44px; background:none; border:0; color:var(--dim); font-size:22px; cursor:pointer; }
-  body.mobile #prompt { left:64px; right:64px; }
-  body.mobile.finding #prompt { opacity:0; }
-  #langseg { position:fixed; right:16px; top:max(14px,env(safe-area-inset-top)); display:flex; z-index:5; }
+  /* wide: Find top left, the switch top right, the words between them; under 900 px the words keep clear of both */
+  body:not(.compact) #prompt { left:332px; right:calc(var(--corner-w,220px) + 24px); }
+  @media (min-width:900px) { body:not(.compact) #prompt { left:330px; right:330px; } }
+  /* compact (a phone, or any window under 736 px): Find is a search button that opens a panel; one typing box at a time (2026-11-12) */
+  body.compact #find { left:12px; width:auto; right:auto; }
+  body.compact #find:not(.open) .row, body.compact #find:not(.open) #findhint, body.compact #find:not(.open) #findsug { display:none; }
+  body.compact #find:not(.open) #findopen { display:block; }
+  body.compact #find.open { right:calc(var(--corner-w,60px) + 20px); background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:8px; }
+  body.compact #find.open #findx { display:block; width:44px; height:44px; flex:none; background:none; border:0; color:var(--dim); font-size:22px; cursor:pointer; }
+  body.compact #prompt { left:64px; right:calc(var(--corner-w,60px) + 20px); }
+  body.compact.finding #prompt { opacity:0; }
+  body.compact.finding #namebox { visibility:hidden; }     /* Find open: the name box waits under it, untouched, and comes back when Find closes */
+  body.compact.finding #hidebtn { display:none; }           /* the language switch stays (house rule: always on screen) */
+  /* top right: hide the boxes, and the language switch */
+  #corner { position:fixed; right:16px; top:max(14px,env(safe-area-inset-top)); display:flex; gap:8px; align-items:flex-start; z-index:6; }
+  #langseg { display:flex; }
   #langseg button { height:44px; min-width:48px; padding:0 10px; background:var(--panel); border:1px solid var(--line); cursor:pointer; font-weight:600; letter-spacing:.04em; }
   #langseg button:first-child { border-radius:9px 0 0 9px; } #langseg button:last-child { border-radius:0 9px 9px 0; border-left:0; }
   #langseg button.on { background:var(--gold); color:#16120a; }
-  body.mobile #langseg { right:12px; } body.mobile #langseg button.on { display:none; } body.mobile #langseg button { border-radius:9px !important; border-left:1px solid var(--line); }
-  body.mobile.finding #langseg { display:none; }
+  body.mobile #corner { right:12px; } body.mobile #langseg button.on { display:none; } body.mobile #langseg button { border-radius:9px !important; border-left:1px solid var(--line); }
+  #hidebtn { height:44px; display:flex; align-items:center; gap:7px; padding:0 12px 0 10px; background:var(--panel); border:1px solid var(--line); border-radius:9px; cursor:pointer; white-space:nowrap; }
+  #hidebtn svg { width:24px; height:24px; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; }
+  body.mobile #hidebtn { width:44px; padding:0; justify-content:center; } body.mobile #hidebtn .w { display:none; }
+  /* "just look around" (Kris 2026-11-12): every box folds into the one button; the language switch stays */
+  body.collapsed #find, body.collapsed #prompt, body.collapsed #namebox, body.collapsed #bar, body.collapsed #foot { display:none !important; }
+  body.collapsed #hidebtn { background:var(--gold); color:#16120a; border-color:var(--gold); font-weight:600; }
+  body.collapsed #hidebtn .slash { display:none; }
   #prompt small { display:block; font-size:.62em; color:var(--dim); margin-top:2px; }
-  body.mobile #namebox { bottom:auto; top:64px; left:16px; right:16px; width:auto; }
+  body.compact #namebox { bottom:auto !important; top:64px; left:16px; right:16px; width:auto; }
   body.mobile #prompt { font-size:20px; }
   @media (max-width:620px) { #foot { flex-direction:column; gap:2px; } #bar { bottom:calc(max(8px,env(safe-area-inset-bottom)) + var(--foot-h,50px) + 6px); } }
   /* a phone held sideways: a compact name box on the side away from the constellation, so its painting stays in view (critic 2026-11-09) */
   @media (orientation:landscape) and (max-height:500px) {
     body.mobile #namebox.side-l, body.mobile #namebox.side-r { top:64px; width:min(300px,38vw); padding:10px 12px 8px; }
     body.mobile #namebox.side-l { left:12px; right:auto; } body.mobile #namebox.side-r { right:12px; left:auto; }
-    body.mobile #namebox h2 { font-size:16px; margin:0 26px 6px 0; } body.mobile #namehint { font-size:14px; }
+    body.mobile #namebox h2 { font-size:16px; margin:0 30px 6px 0; } body.mobile #namehint { font-size:14px; }
+    body.mobile #namebox #nameclose { top:3px; right:4px; width:40px; height:30px; }
   }
   @media (prefers-reduced-motion:reduce) { #namebox.shake { animation-duration:.2s; } }
   /* "test": the hidden tester's jump menu (same pattern as the BrainClub Jr games), and the badge while a jump is on */
@@ -106,7 +127,7 @@
   #gate input { height:64px; border:0; border-radius:10px; background:#fff; color:#16120a; font:700 32px/1 system-ui,"Segoe UI",sans-serif; text-align:center; }
   #gate button { height:64px; border:0; border-radius:10px; background:var(--gold); color:#16120a; font-weight:700; font-size:24px; cursor:pointer; }
   #gatemsg { min-height:22px; font-size:17px; color:var(--gold); }
-  html.gated #langseg { z-index:101; }
+  html.gated #corner { z-index:101; } html.gated #hidebtn { display:none; }
 </style>
 <script type="importmap">
 { "imports": {
@@ -117,7 +138,10 @@
 </head>
 <body>
 <div id="prompt"></div>
-<div id="langseg" role="group" aria-label="Kalba / Language"><button type="button" id="lang-lt" lang="lt">LT</button><button type="button" id="lang-en" lang="en">EN</button></div>
+<div id="corner">
+  <button type="button" id="hidebtn" aria-pressed="false" aria-label="Hide the boxes to look around"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="M4 4l16 16"/></svg><span class="w">Hide</span></button>
+  <div id="langseg" role="group" aria-label="Kalba / Language"><button type="button" id="lang-lt" lang="lt">LT</button><button type="button" id="lang-en" lang="en">EN</button></div>
+</div>
 <form id="find" autocomplete="off" role="search">
   <button type="button" id="findopen" aria-label="Find a constellation">&#128269;</button>
   <div class="row">
@@ -202,10 +226,10 @@
   ['keydown', 'keyup', 'pointerdown', 'pointerup', 'mousedown', 'mouseup', 'wheel'].forEach(function (t) { gate.addEventListener(t, function (e) { e.stopPropagation(); }); });
   pw.addEventListener('input', function () { wrong = false; msg.textContent = ''; if (ok()) open(); });
   gate.querySelector('form').addEventListener('submit', function (e) { e.preventDefault(); if (ok()) open(); else { wrong = true; msg.textContent = WORDS[lang].wrong; pw.value = ''; pw.focus(); } });
-  // the same first language as the game: ?lang=, then the switch remembered on this device, then the browser's language
+  // the same first language as the game: ?lang=, then the switch remembered on this device, then Lithuanian (rule 21)
   var q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(), l = q === 'lt' || q === 'en' ? q : '';
   if (!l) { try { l = localStorage.getItem(LANG_KEY) || ''; } catch (e) {} }
-  if (l !== 'lt' && l !== 'en') l = /^lt/i.test(navigator.language || '') ? 'lt' : 'en';
+  if (l !== 'lt' && l !== 'en') l = 'lt';
   setLang(l);
   ['lt', 'en'].forEach(function (k) {   // the switch works on the gate even before the game has loaded
     $('lang-' + k).addEventListener('click', function () {
@@ -243,7 +267,7 @@ const SKY = { R: 100, LINE_ALPHA: .26, LINE_DEG: .17, LINE_TRIM: .55, LINE_PLAIN
   PICK_DEG: 5 };   // PICK_DEG: how far from a line an aim still counts; the nearest line wins
 const MEM = { HI_KEEP: 6, GAZE_S: 1, GAZE_DEG: 32, UPLOADS_PER_FRAME: 2 };   // HI_KEEP figures stay full size, the rest low-res; the one you look at comes back to full size
 const STAR = { MIN_PX: 2.3, GAIN: 1.0 };
-const VR = { KB_DIST: 1.05, KB_PITCH: -30, KB_W: .86, CTL_DIST: 1.0, CTL_YAW: 45, CTL_PITCH: -24, CTL_W: .62, pinchOn: .02, pinchOff: .035, RAY: 4 };
+const VR = { KB_DIST: 1.05, KB_PITCH: -30, KB_W: .86, CTL_DIST: 1.0, CTL_YAW: 45, CTL_PITCH: -24, CTL_W: .62, SEP_DEG: 8, pinchOn: .02, pinchOff: .035, RAY: 4 };
 const VIEW = { FOV_WIDE: 54, FOV_TALL: 78, START_DEC: 3 };
 // Find (Kris 2026-11-09, 17:00): turns the view to a constellation, lights its lines, shows its name AND wakes it, counted like a named one.
 // Any whole name (Latin, genitive, English, LT, with or without diacritics) or star pattern (its parent) wakes. A typo wakes the one closest name;
@@ -266,7 +290,11 @@ const WORDS = {
     none: 'No constellation by that name. Try another spelling.', short: 'Type a bit more of the name.', okYes: ' OK = yes.',
     vrNo: 'This browser says VR is not supported here. Try the Meta Quest Browser.', vrNoXr: 'No WebXR in this browser. Open the page in the Meta Quest Browser.', vrFail: 'VR did not start: ',
     needServer: 'This page needs a local server. In this folder run: python -m http.server 8000, then open localhost:8000.', notLoaded: 'The sky did not load: ', langAria: 'Language',
-    testTitle: 'Test: jump to a place', testAll: (a, p) => `All ${a} revealed · paintings ${p}`, testHalf: 'Half revealed', testReset: 'Reset all (back to the real game)', testClose: 'Close (Esc)', testBadge: 'TEST' },
+    testTitle: 'Test: jump to a place', testAll: (a, p) => `All ${a} revealed · paintings ${p}`, testHalf: 'Half revealed', testReset: 'Reset all (back to the real game)', testClose: 'Close (Esc)', testBadge: 'TEST',
+    // 2026-11-12: the colour wave, hiding the boxes, turning the sky in VR, the name and story on the sky
+    waving: (a, b) => `${a} of ${b}`, waveCue: 'Look around: the sky is waking up around you', hide: 'Hide', show: 'Show', hideAria: 'Hide the boxes to look around', showAria: 'Show the boxes again',
+    resetView: 'Reset view', vrHint: 'Hold the side button and move: the sky turns · Stick: turn · B or Y: hide',
+    story: 'Story', fact: 'Fun fact', folk: 'In Lithuania', lookFor: l => `Look for ${l}.`, more: 'Read its story', less: 'Close the story' },
   lt: { title: 'Gyvasis dangus', ask: 'Kaip vadinasi šis žvaigždynas?', nameAria: 'Žvaigždyno vardas', ok: 'Gerai', close: 'Uždaryti',
     v1: 'V1 Rašalas', v2: 'V2 Stiklas', vAria: 'Paveikslas nusistovi kaip', replay: 'Dar kartą', reset: 'Iš naujo', sure: 'Tikrai?', soundOn: 'Su garsu', soundOff: 'Be garso', enterVr: 'Įeiti į VR', exitVr: 'Išeiti iš VR',
     woken: (a, b, p) => `Pažadinta ${a} iš ${b} · paveikslai: ${p}`, loading: 'Kraunamas dangus…', click: 'Spustelk žvaigždyną.', tap: 'Paliesk žvaigždyną.', point: 'Nukreipk į žvaigždyną. Spausk gaiduką arba suspausk pirštus.',
@@ -276,14 +304,17 @@ const WORDS = {
     none: 'Tokio žvaigždyno neradau. Pabandyk parašyti kitaip.', short: 'Parašyk daugiau raidžių.', okYes: ' Gerai = taip.',
     vrNo: 'Ši naršyklė sako, kad VR čia neveikia. Pabandyk Meta Quest naršyklę.', vrNoXr: 'Šioje naršyklėje nėra WebXR. Atidaryk puslapį Meta Quest naršyklėje.', vrFail: 'VR nepasileido: ',
     needServer: 'Šiam puslapiui reikia vietinio serverio. Šiame aplanke paleisk: python -m http.server 8000, tada atidaryk localhost:8000.', notLoaded: 'Dangus neįsikėlė: ', langAria: 'Kalba',
-    testTitle: 'Testas: šokti į vietą', testAll: (a, p) => `Visi ${a} atskleisti · paveikslai: ${p}`, testHalf: 'Pusė atskleista', testReset: 'Iš naujo (grįžti į tikrą žaidimą)', testClose: 'Uždaryti (Esc)', testBadge: 'TESTAS' },
+    testTitle: 'Testas: šokti į vietą', testAll: (a, p) => `Visi ${a} atskleisti · paveikslai: ${p}`, testHalf: 'Pusė atskleista', testReset: 'Iš naujo (grįžti į tikrą žaidimą)', testClose: 'Uždaryti (Esc)', testBadge: 'TESTAS',
+    waving: (a, b) => `${a} iš ${b}`, waveCue: 'Apsidairyk: dangus bunda aplink tave', hide: 'Slėpti', show: 'Rodyti', hideAria: 'Paslėpti langelius ir dairytis', showAria: 'Vėl rodyti langelius',
+    resetView: 'Pradinis vaizdas', vrHint: 'Laikyk šoninį mygtuką ir judink: dangus sukasi · Svirtelė: sukti · B arba Y: slėpti',
+    story: 'Istorija', fact: 'Įdomu', folk: 'Lietuvoje', lookFor: l => `Ieškok: ${l}.`, more: 'Skaityti istoriją', less: 'Uždaryti istoriją' },
 };
 const LANG_KEY = 'living-sky-lang';
-function pickLang() {           // ?lang=lt|en, then the switch remembered on this device, then the browser's language
+function pickLang() {           // ?lang=lt|en, then the switch remembered on this device, then Lithuanian (rule 21: the default stays LT, also on a Quest set to English)
   const q = (params.get('lang') || '').toLowerCase();
   if (q === 'lt' || q === 'en') return q;
   try { const v = localStorage.getItem(LANG_KEY); if (v === 'lt' || v === 'en') return v; } catch (e) { /* private window */ }
-  return /^lt/i.test(navigator.language || '') ? 'lt' : 'en';
+  return 'lt';
 }
 let LANG = pickLang();
 const W = new Proxy({}, { get: (_, k) => k in WORDS[LANG] ? WORDS[LANG][k] : WORDS.en[k] });
@@ -294,6 +325,7 @@ const list = names => names.length > 1 ? names.slice(0, -1).join(', ') + ` ${W.a
 const sat = x => Math.min(1, Math.max(0, x));
 const ease = x => { x = sat(x); return x * x * (3 - 2 * x); };
 const rad = Math.PI / 180;
+const UP = new THREE.Vector3(0, 1, 0), qTurn = new THREE.Quaternion();
 const ADULT = params.get('adult') === '1';   // adult art is fetched only with this set; a kids deployment simply has no assets/adult/
 const IN_HEADSET = /OculusBrowser|Quest|Pico|Wolvic|MetaQuest/i.test(navigator.userAgent);
 const IS_MOBILE = params.has('mobile') ? params.get('mobile') !== '0'
@@ -367,6 +399,8 @@ const S = {
   found: null, findHint: '', findSug: [], findSugFor: '', findTyped: '', kbMode: 'name',   // Find: what is shown, its words, the "did you mean" list; kbMode: the VR keyboard names or finds
   test: false,        // a tester's jump ("test" menu) is on: the sky is not the child's, nothing is saved; Reset or reload brings the real progress back
   testOpen: false,    // the "test" menu is showing (flat: the dialog; VR: the panel)
+  collapsed: false,   // the boxes are folded away to just look around (Kris 2026-11-12); the language switch stays
+  related: null,      // { set of constellations, until }: a story's "look for" ones glow for a moment
 };
 
 // ---------- data ----------
@@ -374,6 +408,7 @@ const cons = [];      // all 88: { iau, i, name, aliases, segs, hull, fig, woken
 const byIau = {};
 const figs = [];      // the ones with art for this audience
 let ORI, lineU, stars;
+let STORIES = {};     // assets/stories.json items, by IAU code: { story_en, story_lt, fact_en, fact_lt, related: [IAU], kind: story|fact|link }
 const STORE = 'living-sky-woken-v1';
 function loadWoken() { try { const a = JSON.parse(localStorage.getItem(STORE) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
 function saveWoken() { if (S.test) return; /* a test jump is never the child's progress */ try { localStorage.setItem(STORE, JSON.stringify(cons.filter(c => c.woken).map(c => c.iau))); } catch (e) { /* private window: progress just lasts this visit */ } }
@@ -393,11 +428,13 @@ async function loadAll() {
   const tl = new THREE.TextureLoader(); tl.setCrossOrigin('anonymous');     // cross-origin art must stay usable as a WebGL texture
   const tex = u => new Promise((ok, no) => tl.load(u, ok, undefined, () => no(new Error('could not load ' + u))));
   const built = getJSON(asset('build.json')).then(j => { BUILD = String(j.build || ''); }, () => {});
-  const [starsBuf, linesJ, namesJ, ltJ, figJ, skyT] = await Promise.all([
+  const [starsBuf, linesJ, namesJ, ltJ, figJ, skyT, storyJ] = await Promise.all([
     built.then(() => fetch(stamped(asset('stars.txt')))).then(r => { if (!r.ok) throw new Error('stars.txt'); return r.text(); }).then(t => Uint8Array.from(atob(t.trim()), c => c.charCodeAt(0)).buffer),
     getJSON(asset('lines.json')), getJSON(asset('names.json')), getJSON(asset('names_lt.json')).catch(() => ({})),
     getJSON(asset('figures.json')).catch(() => ({ figures: [] })), built.then(() => tex(stamped(asset('sky.jpg')))),
+    getJSON(asset('stories.json')).catch(() => ({ items: {} })),     // stories and fun facts (2026-11-12); no file = names only, no story button
   ]);
+  STORIES = (storyJ && storyJ.items) || {};
   const adultJ = ADULT ? await getJSON(asset('adult/figures.json')).catch(() => ({ figures: [] })) : { figures: [] };
   buildSky(skyT); buildLines(linesJ, namesJ, ltJ); buildAliases();
   // Two locks: kids mode never fetches the adult list, and a kids entry that somehow points at adult art is dropped
@@ -535,8 +572,8 @@ function gridIndex(nu, nv) {
   return idx;
 }
 const SETTLED_V = `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
-const SETTLED_F = `precision highp float; uniform sampler2D uA,uB; uniform float uMix; varying vec2 vUv;
-  void main(){ gl_FragColor=uMix>=1.?texture2D(uB,vUv):mix(texture2D(uA,vUv),texture2D(uB,vUv),uMix); }`;
+const SETTLED_F = `precision highp float; uniform sampler2D uA,uB; uniform float uMix,uFade; varying vec2 vUv;
+  void main(){ gl_FragColor=(uMix>=1.?texture2D(uB,vUv):mix(texture2D(uA,vUv),texture2D(uB,vUv),uMix))*uFade; }`;   // uFade: the colour wave fades a painting in (premultiplied, so all four scale)
 function settledMesh(f) {
   if (f.mesh) return f.mesh;
   const [mu, mv] = f.grid, R = SKY.R - 2, pos = [], uv = [];
@@ -548,7 +585,7 @@ function settledMesh(f) {
   g.setIndex(gridIndex(mu - 1, mv - 1));
   g.computeBoundingSphere();          // figures behind you are not drawn
   const m = new THREE.ShaderMaterial({
-    uniforms: { uA: { value: null }, uB: { value: null }, uMix: { value: 1 } }, vertexShader: SETTLED_V, fragmentShader: SETTLED_F,
+    uniforms: { uA: { value: null }, uB: { value: null }, uMix: { value: 1 }, uFade: { value: 1 } }, vertexShader: SETTLED_V, fragmentShader: SETTLED_F,
     transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
   });
   f.mesh = new THREE.Mesh(g, m); f.mesh.renderOrder = 2; f.mesh.visible = false; sky.add(f.mesh);
@@ -669,6 +706,7 @@ async function refresh(f, quiet) {        // bring the settled figure to the art
   try { t = await loadTex(p); } catch (e) { console.info('art not loaded:', p); f.target = f.cur; return; }
   if (f.target !== p || !f.con.woken) return;
   const m = settledMesh(f), u = m.material.uniforms;
+  u.uFade.value = f.appear == null ? 1 : ease(f.appear);     // woken by the colour wave: it fades in from where tick() has it
   if (!f.cur || quiet || !m.visible) { u.uB.value = t; u.uMix.value = 1; f.prev = null; f.fading = false; }
   else { u.uA.value = u.uB.value; f.prev = f.cur; u.uB.value = t; u.uMix.value = 0; f.fading = true; }
   f.cur = p;
@@ -867,6 +905,7 @@ function nameLabel(con) {         // the name as a texture, sized to its text so
   return { tex, aspect: cv.width / cv.height };
 }
 function showFound(con, part) {
+  closeTag();      // one name on the sky at a time
   S.found = { con, part, at: performance.now(), until: performance.now() + FIND.SHOW_S * 1000 };
   setFindHint(() => part ? findTxt.part(part, con) + '.' : findTxt.here(con));
   setSuggest([]);
@@ -901,10 +940,10 @@ function findWake(con) {         // Kris 2026-11-09 17:00: what Find finds wakes
 function pickFound(con) { showFound(con, null); findWake(con); }   // a tap on one of the offered names
 function turnTo(con) {
   const [ra, dec] = radec(con.centre);
-  if (inXR()) {
+  if (inXR()) {     // a turn about the vertical, on top of whatever the hand has done to the sky (quaternions: the sky may be tilted too)
     const d = con.centre.clone().applyQuaternion(sky.quaternion), az = Math.atan2(-d.x, -d.z);
     let dy = headYaw() - az; dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-    vr.turn = { r0: sky.rotation.y, r1: sky.rotation.y + dy, t: 0 };
+    vr.turn = { q0: sky.quaternion.clone(), dy, t: 0 };
   } else {
     let dy = (ra - RA_FRONT) - look.yaw; dy = ((dy % 360) + 540) % 360 - 180;
     look.turn = { y0: look.yaw, y1: look.yaw + dy, p0: look.pitch, p1: THREE.MathUtils.clamp(dec, -80, 80), t: 0 };
@@ -912,7 +951,7 @@ function turnTo(con) {
 }
 function stepTurns(dt) {
   if (look.turn) { const w = look.turn; w.t += dt; const k = ease(w.t / FIND.TURN_S); look.yaw = w.y0 + (w.y1 - w.y0) * k; look.pitch = w.p0 + (w.p1 - w.p0) * k; if (w.t >= FIND.TURN_S) look.turn = null; }
-  if (vr.turn) { const w = vr.turn; w.t += dt; sky.rotation.y = w.r0 + (w.r1 - w.r0) * ease(w.t / FIND.TURN_S); if (w.t >= FIND.TURN_S) vr.turn = null; }
+  if (vr.turn) { const w = vr.turn; w.t += dt; sky.quaternion.copy(w.q0).premultiply(qTurn.setFromAxisAngle(UP, w.dy * ease(w.t / FIND.TURN_S))); if (w.t >= FIND.TURN_S) vr.turn = null; }
   if (label && label.visible) {
     const f = S.found, now = performance.now();
     if (!f || now >= f.until) { label.visible = false; S.found = null; return; }
@@ -949,16 +988,23 @@ function drawPrompt() {
   const [m, s] = [].concat(S.promptFn ? S.promptFn() : ''), el = $('prompt');
   el.textContent = m || '';
   if (s) { const k = document.createElement('small'); k.textContent = s; el.appendChild(k); }
-  S.promptText = s ? `${m} (${s})` : m || ''; ctl.dirty = true;
+  S.promptText = s ? `${m} (${s})` : m || ''; ctl.dirty = true; placeBadge();
 }
-function idlePrompt() { setPrompt(() => inXR() ? W.point : IS_MOBILE ? W.tap : W.click); }
+function placeBadge() {           // the TEST badge sits under the prompt's last line, never on it (critic 2026-11-12: it covered a wrapped "1690")
+  const bd = $('testbadge'); if (!bd || bd.hidden) return;
+  const el = $('prompt'), r = el.getBoundingClientRect(), st = getComputedStyle(el);
+  const shown = el.textContent && st.display !== 'none' && st.visibility !== 'hidden' && +st.opacity > .05 && r.height > 0;
+  bd.style.top = shown ? Math.max(54, Math.round(r.bottom + 6)) + 'px' : '';
+}
+function idlePrompt() { if (wave) setPrompt(wavePrompt); else setPrompt(() => inXR() ? W.point : IS_MOBILE ? W.tap : W.click); }   // while the wave runs, its counting words come back
 const wokenCount = () => cons.filter(c => c.woken).length;
 const paintedCount = () => cons.filter(c => c.woken && c.fig).length;    // Kris 2026-11-09: woken is not the same as painted, say both
 const paintTotal = () => cons.filter(c => c.fig).length;
 const countText = () => W.woken(wokenCount(), cons.length, paintedCount());
 function updateCount() { $('count').textContent = countText(); ctl.dirty = true; }
 const creditOf = con => `${con.fig.name} · ${con.fig.atlas}`;     // the art credit, the same in both languages
-const creditP = con => () => LANG === 'lt' && con.lt ? [con.lt, creditOf(con)] : creditOf(con);
+const creditP = con => () => tag.con === con && tagGroup.visible && document.body.classList.contains('compact') ? con.fig.atlas    // a phone: the name is on the sky right under it, so the top box says only where the art is from (critic 2026-11-12)
+  : LANG === 'lt' && con.lt ? [con.lt, creditOf(con)] : creditOf(con);
 
 function selectCon(con) {
   if (!canPick()) return;
@@ -972,8 +1018,12 @@ function selectCon(con) {
   if (con.woken) {                // already yours: no quiz again, it just becomes what Replay plays
     if (con.fig) { S.last = con; S.revealed = true; $('replay').disabled = false; touchHi(con.fig); refresh(con.fig); setPrompt(creditP(con)); }
     else setPrompt(() => [`${nm(con)}.`, sub(con)]);      // Kris 2026-11-09: a constellation without a figure says its name plainly, no promise of a painting
+    showTag(con);                 // Kris 2026-11-12: its name on the sky next to it, with a story button when there is a story
     return;
   }
+  closeTag();
+  if (S.collapsed) setCollapsed(false);      // naming needs its box: the boxes come back
+  if (document.body.classList.contains('finding')) closeFind();      // compact screens: one typing box at a time, the newest one wins
   S.con = con;
   S.phase = 'naming'; S.tries = 0; S.typed = ''; setHint('', '');
   if (performance.now() >= S.almostUntil) setPrompt('');   // a speed run does not wipe the true spelling off the screen
@@ -988,7 +1038,7 @@ function closeName() {
   if (S.phase !== 'naming' && S.phase !== 'told') return;
   $('namebox').classList.remove('open'); kb.mesh.visible = false; S.kbMode = 'name'; clearTimeout(S.tellTimer);
   S.phase = R.length ? 'reveal' : 'idle'; S.typed = ''; S.con = null;
-  if (S.last && S.last.rev) setPrompt(creditP(S.last)); else idlePrompt();
+  if (S.last && S.last.rev && !wave) setPrompt(creditP(S.last)); else idlePrompt();
   sweep();
 }
 function submitName(text) {
@@ -1082,6 +1132,7 @@ function settle(f) {           // end of the reveal: hand over from the reveal m
   touchHi(f);
   const m = settledMesh(f), p = f.art[kindOf(f)], e = texCache.get(p);
   m.material.uniforms.uB.value = e.tex; m.material.uniforms.uMix.value = 1; f.prev = null; f.fading = false; f.cur = f.target = p;
+  f.appear = null; m.material.uniforms.uFade.value = 1;
   m.visible = true;
   sweep();
 }
@@ -1093,7 +1144,7 @@ function resetAll() {
     S.armed = true; $('reset').textContent = W.sure; for (const b of ctl.btns) if (b.id === 'RESET') b.label = W.sure;
     ctl.dirty = true; S.armTimer = setTimeout(disarm, 3000); return;
   }
-  disarm();
+  disarm(); closeTag();
   clearTimeout(S.tellTimer); $('namebox').classList.remove('open'); kb.mesh.visible = false;
   S.phase = 'idle'; S.rt = 0; S.revealed = false; S.tries = 0; S.typed = ''; S.con = S.last = null;
   for (const r of R.slice()) dropReveal(r);
@@ -1107,7 +1158,7 @@ const TEST_WORD = 'test';
 const isTestWord = s => norm(s || '') === TEST_WORD;
 const endsTest = s => (s || '').toLowerCase().endsWith(TEST_WORD);
 function setSky(list) {        // the sky shows exactly these as woken and settled, as if the page had just loaded with them; nothing runs, nothing is saved here
-  clearTimeout(S.tellTimer); disarm();
+  clearTimeout(S.tellTimer); disarm(); stopWave(); closeTag();
   $('namebox').classList.remove('open'); kb.mesh.visible = false; S.kbMode = 'name';
   S.phase = 'idle'; S.rt = 0; S.revealed = false; S.tries = 0; S.typed = ''; S.con = S.last = null; S.almostUntil = 0;
   for (const r of R.slice()) dropReveal(r);
@@ -1139,6 +1190,7 @@ function openTest() {
   setFindHint(''); setSuggest([]); S.findSugFor = ''; S.findTyped = '';
   if (IS_MOBILE) closeFind();
   S.testOpen = true; $('testall').textContent = W.testAll(cons.length, paintTotal());
+  if (S.collapsed) setCollapsed(false);      // the tester's menu is a box too
   if (inXR()) { kb.mesh.visible = false; S.kbMode = 'name'; ctl.btns = CTL_TEST; placeCtl(); }
   else { $('testmenu').hidden = false; if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); }   // no button takes the focus: an Enter after the word must not jump
   ctl.dirty = true;
@@ -1198,12 +1250,19 @@ function tick(dt) {
   if (R.length) S.rt = R[R.length - 1].t;
   else if (S.phase === 'reveal') { S.phase = 'done'; ctl.dirty = true; }
   const k = Math.min(1, dt * 7), naming = S.phase === 'naming' || S.phase === 'told';
+  stepWave(dt);
+  const relNow = performance.now(), rel = S.related && relNow < S.related.until ? S.related : null;
+  if (S.related && !rel) S.related = null;
+  for (const f of figs) if (f.appear != null && f.appear < 1 && f.mesh && f.mesh.visible) {     // a painting the wave woke fades in
+    f.appear = Math.min(1, f.appear + dt / WAVE.FADE); f.mesh.material.uniforms.uFade.value = ease(f.appear);
+  }
   for (const c of cons) {
     let lv = c.woken ? (c.fig ? 0 : SKY.LINE_NAMED) : c.fig ? SKY.LINE_ART : SKY.LINE_PLAIN;
     if (c === S.hoverCon && S.hover) lv = SKY.LINE_HOVER;
     if (naming && c === S.con) lv = SKY.LINE_SELECTED;
     if (c.rev) lv = c.rev.lines;
     if (S.found && c === S.found.con) lv = Math.max(lv, SKY.LINE_SELECTED);   // Find lights its lines, over the art too
+    if (rel && rel.set.has(c)) lv = Math.max(lv, SKY.LINE_SELECTED * (.75 + .25 * Math.sin((relNow - rel.at) / 160)));   // a story's "look for" ones glow a moment
     if (window.__skyShowLines) lv = Math.max(lv, 1.6);      // QA: lines over the art, to check the fit by eye
     c.level += (lv - c.level) * k;
     lineU.uL.value[c.i] = c.level;
@@ -1249,9 +1308,11 @@ el.addEventListener('pointermove', e => {
     const k = camera.fov / innerHeight;
     look.yaw += dx * k; look.pitch = THREE.MathUtils.clamp(look.pitch + dy * k, -89, 89);
   } else if (e.pointerType === 'mouse' && !inXR()) {
-    S.hoverCon = canPick() ? pick(toLocalDir(screenDir(e.clientX, e.clientY, rayD))) : null;
+    const th = tagHit2D(e.clientX, e.clientY);       // over the name on the sky: it is a button
+    setTagHover(th === 'toggle');
+    S.hoverCon = !th && canPick() ? pick(toLocalDir(screenDir(e.clientX, e.clientY, rayD))) : null;
     S.hover = !!S.hoverCon;
-    el.classList.toggle('on', S.hover);
+    el.classList.toggle('on', S.hover || !!th);       // the name and the story are buttons: the + opens, the story closes
   }
 });
 const endDrag = e => {
@@ -1259,9 +1320,15 @@ const endDrag = e => {
   if (look.id !== e.pointerId) return;
   look.id = null; el.classList.remove('drag');
   if (!held && look.moved < 8 && e.type === 'pointerup') {
-    const c = canPick() ? pick(toLocalDir(screenDir(e.clientX, e.clientY, rayD))) : null;
-    if (c) selectCon(c);
-    else if (S.phase === 'naming') $('nameinput').focus();
+    const th = tagHit2D(e.clientX, e.clientY);
+    if (th === 'toggle') toggleStory();               // the name (and its +) opens and closes the story
+    else if (th === 'card') closeTag();               // a tap on the story closes it (and picks nothing behind it): no dead patch of sky while it is open
+    else {
+      closeTag();                                      // a tap anywhere else closes the name and the story
+      const c = canPick() ? pick(toLocalDir(screenDir(e.clientX, e.clientY, rayD))) : null;
+      if (c) selectCon(c);
+      else if (S.phase === 'naming') $('nameinput').focus();
+    }
   }
   if (S.phase === 'naming' && !IS_MOBILE) $('nameinput').focus();
 };
@@ -1294,6 +1361,63 @@ $('replay').addEventListener('click', replay); $('reset').addEventListener('clic
 $('sound').addEventListener('click', () => { muted = !muted; $('sound').textContent = muted ? W.soundOff : W.soundOn; });
 $('lang-lt').addEventListener('click', () => setLang('lt')); $('lang-en').addEventListener('click', () => setLang('en'));
 $('bar').addEventListener('click', () => { if (S.phase === 'naming' && !IS_MOBILE && !inXR()) $('nameinput').focus(); });   // a button press mid-name never costs the typing focus
+$('hidebtn').addEventListener('click', () => setCollapsed(!S.collapsed));
+
+// ---------- the boxes never cover each other (Kris 2026-11-12: "the find box can appear on top of the other box so you cannot type") ----------
+// Measured, not guessed: Find (top left), the corner (hide + language, top right), the bar (bottom), and the name box between them.
+// Compact (a phone, or any window under COMPACT_W): Find is a button that opens a panel, and only one typing box shows at a time.
+// Wide: the name box sits right, above the bar and under the corner; if it does not fit it gets smaller, and if it still does not fit the bar
+// steps aside while the name is typed. The big Enter VR of the Quest Browser shows only when nothing else wants the middle of the screen.
+const LAYOUT = { COMPACT_W: 736, GAP: 8, EDGE: 16 };
+function layoutUI() {
+  if (inXR()) return;
+  const b = document.body, nb = $('namebox'), vh = innerHeight;
+  const compact = IS_MOBILE || innerWidth < LAYOUT.COMPACT_W;
+  b.classList.toggle('compact', compact);
+  const corner = $('corner').getBoundingClientRect();
+  document.documentElement.style.setProperty('--corner-w', Math.ceil(corner.width) + 'px');
+  const named = nb.classList.contains('open');
+  const busy = named || !!S.findHint || S.findSug.length > 0 || !!tag.con || S.collapsed || S.testOpen || b.classList.contains('finding');
+  $('vrbtn').classList.toggle('big', IN_HEADSET && !busy);
+  const bar = $('bar').getBoundingClientRect(), findR = $('find').getBoundingClientRect();
+  let barless = !S.collapsed && findR.height > 0 && findR.bottom > bar.top - LAYOUT.GAP;      // Find's words and offered names end above the bar
+  if (named && !compact && !S.collapsed) {
+    const top = corner.bottom + LAYOUT.GAP, floor = bar.top - 12, room = floor - top;
+    nb.style.bottom = (vh - floor) + 'px';
+    nb.classList.remove('tight');
+    if (nb.offsetHeight > room) nb.classList.add('tight');
+    if (nb.offsetHeight > room) { barless = true; nb.style.bottom = LAYOUT.EDGE + 'px'; }
+  } else {
+    nb.style.bottom = ''; nb.classList.remove('tight');
+    if (named && !S.collapsed && getComputedStyle(nb).visibility !== 'hidden') { const r = nb.getBoundingClientRect(); if (r.bottom > bar.top - LAYOUT.GAP) barless = true; }
+  }
+  b.classList.toggle('storyroom', !!(tag.overBar && tag.open && !S.collapsed));       // a long story in a short window: the bar, the words, the credits step aside until it closes
+  b.classList.toggle('barless', barless);
+  placeBadge();
+}
+try { const ro = new ResizeObserver(() => layoutUI()); for (const id of ['find', 'namebox', 'bar', 'corner']) ro.observe($(id)); } catch (e) { /* old browser: resize and the calls below still lay it out */ }
+if (window.visualViewport) visualViewport.addEventListener('resize', () => layoutUI());
+
+// ---------- hide the boxes, just look around (Kris 2026-11-12) ----------
+// Flat: every box folds into the one button top right; the language switch stays. VR: the panel and the keyboard fold into a small panel
+// (Show, LT, EN) where the big one was; B or Y on a controller does the same. Naming a constellation brings the boxes back by itself.
+function setCollapsed(on) {
+  on = !!on;
+  if (S.collapsed === on && !inXR()) { drawHideBtn(); return; }
+  S.collapsed = on;
+  document.body.classList.toggle('collapsed', on);
+  if (on && document.activeElement && document.activeElement.blur && document.activeElement !== document.body) document.activeElement.blur();
+  drawHideBtn();
+  if (inXR()) {
+    if (on) { vr.kbWas = kb.mesh.visible; kb.mesh.visible = false; ctl.mesh.visible = false; placeMini(); }
+    else { mini.mesh.visible = false; placeCtl(); if (vr.kbWas || S.phase === 'naming' || S.phase === 'told') { placeKeyboard(); kb.mesh.visible = true; separatePanels(); } vr.kbWas = false; }
+  }
+  layoutUI();
+}
+function drawHideBtn() {
+  const h = $('hidebtn'); h.querySelector('.w').textContent = S.collapsed ? W.show : W.hide;
+  h.setAttribute('aria-label', S.collapsed ? W.showAria : W.hideAria); h.setAttribute('aria-pressed', S.collapsed ? 'true' : 'false');
+}
 
 function fitFoot() { document.documentElement.style.setProperty('--foot-h', $('foot').offsetHeight + 'px'); }   // the bar stands on the credits (CSS, 620 px and narrower)
 function placeNameBox(con) {     // phone held sideways: the box goes to the side away from the constellation
@@ -1303,10 +1427,11 @@ function placeNameBox(con) {     // phone held sideways: the box goes to the sid
   b.classList.add(v.x > 0 ? 'side-l' : 'side-r');
 }
 function resize() {
-  fitFoot(); if (S.phase === 'naming') placeNameBox(S.con);
+  fitFoot(); if (S.phase === 'naming') placeNameBox(S.con); layoutUI();
   camera.aspect = innerWidth / innerHeight;
   camera.fov = camera.aspect < 1 ? VIEW.FOV_TALL : VIEW.FOV_WIDE;
   camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
+  if (tag.con && !inXR()) { drawTag(); fitTag2D(); }       // the story's width and size follow the screen
   if (stars) stars.uPPD.value = innerHeight * pixelRatio / (camera.fov);
 }
 addEventListener('resize', resize);
@@ -1363,8 +1488,8 @@ const kb = makePanel(VR.KB_W, KB_PX[0], KB_PX[1], P => {
   kb.btns.push({ id: 'CLOSE', label: 'Close', x: 300, y, w: 300, h: 92, fs: 42 }, { id: 'OK', label: 'OK', x: 640, y, w: 340, h: 92, fs: 46 });
   for (let i = 0; i < FIND.SUGGEST; i++) kb.btns.push({ id: 'SUG' + i, sug: i, label: '', x: 0, y: 212, w: 0, h: 66, fs: 36, disabled: true });   // Find's offered names, laid out when shown
 }
-// V1 / V2, replay
-const CTL_PX = [1000, 460];     // second row: Find
+// V1 / V2, replay; Find and the language; hide and the view (2026-11-12); one line on how to turn the sky
+const CTL_PX = [1000, 610];
 const ctl = makePanel(VR.CTL_W, CTL_PX[0], CTL_PX[1], P => {
   const c = P.c; panelBg(c, P.pxW, P.pxH);
   c.fillStyle = '#ece6d6'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '30px Georgia,"Times New Roman",serif';
@@ -1374,19 +1499,27 @@ const ctl = makePanel(VR.CTL_W, CTL_PX[0], CTL_PX[1], P => {
     if (b.word) b.label = typeof W[b.word] === 'function' ? W[b.word](cons.length, paintTotal()) : W[b.word];   // the test menu's words, in the language of the moment
     drawBtn(c, P, b, (b.id === 'V1' && S.version === 1) || (b.id === 'V2' && S.version === 2) || (b.id === 'LT' && LANG === 'lt') || (b.id === 'EN' && LANG === 'en'));
   }
-  c.fillStyle = '#f5dc9e'; c.font = '26px Georgia,"Times New Roman",serif'; c.fillText(countText() + (S.test ? '   ' + W.testBadge : ''), P.pxW / 2, 244, 960);
+  c.fillStyle = '#f5dc9e'; c.font = '26px Georgia,"Times New Roman",serif'; c.fillText(countText() + (S.test ? '   ' + W.testBadge : ''), P.pxW / 2, 242, 960);
+  if (!S.testOpen) { c.fillStyle = '#ece6d6'; c.font = '25px system-ui,"Segoe UI",sans-serif'; c.fillText(W.vrHint, P.pxW / 2, 524, 960); }
   c.fillStyle = '#a79f8e'; c.font = '19px system-ui,"Segoe UI",sans-serif';
-  c.fillText('NASA/GSFC SVS; ESA/Gaia/DPAC; HYG v4.4 (CC BY-SA 4.0); Stellarium (CC BY-SA); Hevelius 1690 via Wikimedia Commons and e-rara;', P.pxW / 2, 276, 960);
-  c.fillText('Bode 1801 (ETH e-rara, Public Domain Mark); Flamsteed 1729 (e-rara, Public Domain)', P.pxW / 2, 302, 960);
+  c.fillText('NASA/GSFC SVS; ESA/Gaia/DPAC; HYG v4.4 (CC BY-SA 4.0); Stellarium (CC BY-SA); Hevelius 1690 via Wikimedia Commons and e-rara;', P.pxW / 2, 562, 960);
+  c.fillText('Bode 1801 (ETH e-rara, Public Domain Mark); Flamsteed 1729 (e-rara, Public Domain)', P.pxW / 2, 588, 960);
 }, 11);
 ctl.btns.push(
   { id: 'V1', label: 'V1 Ink', x: 30, y: 84, w: 225, h: 130, fs: 40 }, { id: 'V2', label: 'V2 Glass', x: 265, y: 84, w: 225, h: 130, fs: 40 },
   { id: 'REPLAY', label: 'Replay', x: 510, y: 84, w: 225, h: 130, fs: 40 }, { id: 'RESET', label: 'Reset all', x: 745, y: 84, w: 225, h: 130, fs: 40 },
-  { id: 'FIND', label: 'Find', x: 30, y: 332, w: 460, h: 104, fs: 40 }, { id: 'LT', label: 'LT', x: 510, y: 332, w: 225, h: 104, fs: 40 }, { id: 'EN', label: 'EN', x: 745, y: 332, w: 225, h: 104, fs: 40 });
+  { id: 'FIND', label: 'Find', x: 30, y: 270, w: 460, h: 104, fs: 40 }, { id: 'LT', label: 'LT', x: 510, y: 270, w: 225, h: 104, fs: 40 }, { id: 'EN', label: 'EN', x: 745, y: 270, w: 225, h: 104, fs: 40 },
+  { id: 'HIDE', label: 'Hide', x: 30, y: 388, w: 460, h: 100, fs: 38 }, { id: 'VIEW', label: 'Reset view', x: 510, y: 388, w: 460, h: 100, fs: 38 });
 const CTL_MAIN = ctl.btns;      // the panel's own buttons; "test" swaps in the tester's menu on the same panel
 const CTL_TEST = [
   { id: 'T_ALL', word: 'testAll', label: '', x: 30, y: 84, w: 460, h: 130, fs: 36 }, { id: 'T_HALF', word: 'testHalf', label: '', x: 510, y: 84, w: 460, h: 130, fs: 36 },
-  { id: 'T_RESET', word: 'testReset', label: '', x: 30, y: 332, w: 460, h: 104, fs: 32 }, { id: 'T_CLOSE', word: 'close', label: '', x: 510, y: 332, w: 460, h: 104, fs: 36 }];
+  { id: 'T_RESET', word: 'testReset', label: '', x: 30, y: 270, w: 460, h: 104, fs: 32 }, { id: 'T_CLOSE', word: 'close', label: '', x: 510, y: 270, w: 460, h: 104, fs: 36 }];
+// folded away (Hide, or B / Y): a small panel where the big one was: Show, and the language switch (house rule: always reachable)
+const mini = makePanel(.36, 720, 150, P => {
+  const c = P.c; panelBg(c, P.pxW, P.pxH);
+  for (const b of P.btns) drawBtn(c, P, b, (b.id === 'LT' && LANG === 'lt') || (b.id === 'EN' && LANG === 'en'));
+}, 11);
+mini.btns.push({ id: 'SHOW', label: 'Show', x: 18, y: 18, w: 316, h: 114, fs: 42 }, { id: 'LT', label: 'LT', x: 350, y: 18, w: 170, h: 114, fs: 40 }, { id: 'EN', label: 'EN', x: 534, y: 18, w: 168, h: 114, fs: 40 });
 function openFindVR() { S.kbMode = 'find'; S.findTyped = ''; setFindHint(''); setSuggest([]); S.findSugFor = ''; placeKeyboard(); kb.mesh.visible = true; }
 function closeFindVR() {        // back to naming if a name was being typed, else the keyboard goes
   S.kbMode = 'name'; kb.dirty = true;
@@ -1395,7 +1528,9 @@ function closeFindVR() {        // back to naming if a name was being typed, els
 
 function panelPress(P, id) {
   if (P === ctl && S.testOpen) { if (id === 'T_ALL') testJump('all'); else if (id === 'T_HALF') testJump('half'); else if (id === 'T_RESET') leaveTest(); else if (id === 'T_CLOSE') closeTest(); return; }
-  if (P === ctl) { if (id === 'V1') setVersion(1); else if (id === 'V2') setVersion(2); else if (id === 'REPLAY') replay(); else if (id === 'RESET') resetAll(); else if (id === 'FIND') openFindVR(); else if (id === 'LT' || id === 'EN') setLang(id.toLowerCase()); return; }
+  if (P === ctl) { if (id === 'V1') setVersion(1); else if (id === 'V2') setVersion(2); else if (id === 'REPLAY') replay(); else if (id === 'RESET') resetAll(); else if (id === 'FIND') openFindVR(); else if (id === 'LT' || id === 'EN') setLang(id.toLowerCase());
+    else if (id === 'HIDE') setCollapsed(true); else if (id === 'VIEW') resetView(); return; }
+  if (P === mini) { if (id === 'SHOW') setCollapsed(false); else if (id === 'LT' || id === 'EN') setLang(id.toLowerCase()); return; }
   if (id.startsWith('SUG')) {         // one tap on an offered name wakes it
     const o = S.kbMode === 'find' && S.findSug[+id.slice(3)];
     if (o) { pickFound(o); closeFindVR(); }
@@ -1430,16 +1565,29 @@ function panelHit(P, o, d) {
 }
 const head = new THREE.Vector3(0, 1.6, 0), headQ = new THREE.Quaternion();
 function headYaw() { vT.set(0, 0, -1).applyQuaternion(headQ); return Math.atan2(-vT.x, -vT.z); }
-function placeAt(P, yawDeg, pitchDeg, dist) {
-  const y = headYaw() + yawDeg * rad, p = pitchDeg * rad;
+function placeAt(P, yawDeg, pitchDeg, dist, abs = false) {     // abs: yawDeg is a world yaw, not one from where the head looks
+  const y = (abs ? 0 : headYaw()) + yawDeg * rad, p = pitchDeg * rad;
   P.mesh.position.set(head.x - Math.sin(y) * Math.cos(p) * dist, head.y + Math.sin(p) * dist, head.z - Math.cos(y) * Math.cos(p) * dist);
   P.mesh.lookAt(head); P.home.copy(P.mesh.position);
 }
-const placeKeyboard = () => { kb.dirty = true; placeAt(kb, 0, VR.KB_PITCH, VR.KB_DIST); };
-const placeCtl = () => { ctl.mesh.visible = true; ctl.dirty = true; placeAt(ctl, VR.CTL_YAW, VR.CTL_PITCH, VR.CTL_DIST); };
+const yawOf = P => Math.atan2(-(P.mesh.position.x - head.x), -(P.mesh.position.z - head.z));       // where a panel stands round the head
+const halfW = P => Math.atan2(P.W / 2, Math.hypot(P.mesh.position.x - head.x, P.mesh.position.z - head.z));
+// The keyboard comes up where you look; the panel never stays in front of it (Kris 2026-11-12: Find pressed on the panel brought the keyboard up
+// behind the panel, and the panel's Find, LT and EN caught the ray before the keys W to O). If they would touch, the panel steps aside, on the side it was.
+function separatePanels(kbUp = kb.mesh.visible) {      // kbUp: the keyboard is up, or is being put up right now
+  if (!kbUp || !ctl.mesh.visible) return false;
+  let d = yawOf(ctl) - yawOf(kb); d = Math.atan2(Math.sin(d), Math.cos(d));
+  const need = halfW(kb) + halfW(ctl) + VR.SEP_DEG * rad;      // edge to edge at least SEP_DEG apart: a ray from a hand held off to the side still meets only one
+  if (Math.abs(d) >= need) return false;
+  placeAt(ctl, (yawOf(kb) + need * (d < 0 ? -1 : 1)) / rad, VR.CTL_PITCH, VR.CTL_DIST, true); ctl.dirty = true;
+  return true;
+}
+const placeKeyboard = () => { kb.dirty = true; placeAt(kb, 0, VR.KB_PITCH, VR.KB_DIST); separatePanels(true); };     // every caller shows the keyboard next
+const placeCtl = () => { if (S.collapsed) { placeMini(); return; } ctl.mesh.visible = true; ctl.dirty = true; placeAt(ctl, VR.CTL_YAW, VR.CTL_PITCH, VR.CTL_DIST); separatePanels(); };
+const placeMini = () => { ctl.mesh.visible = false; mini.mesh.visible = true; mini.dirty = true; placeAt(mini, VR.CTL_YAW, VR.CTL_PITCH - 6, VR.CTL_DIST); };
 
 // ---------- VR input ----------
-const vr = { hands: [], anchored: false };
+const vr = { hands: [], anchored: false, drag: null, drags: 0, kbWas: false };
 const handFactory = new XRHandModelFactory();
 const rayGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
 for (let i = 0; i < 2; i++) {
@@ -1460,8 +1608,9 @@ for (let i = 0; i < 2; i++) {
   vr.hands.push(H);
 }
 const vO = new THREE.Vector3(), vD = new THREE.Vector3(), vA = new THREE.Vector3(), vB = new THREE.Vector3(), qA = new THREE.Quaternion();
-function updateHand(H) {
+function updateHand(H, dt) {
   H.aim = null; H.aimDir = null;
+  if (vr.drag && vr.drag.H === H && (!H.kind || !H.ctrl.visible)) vr.drag = null;     // a hand or controller lost mid-drag lets go
   if (!H.kind) { if (hold.H === H) holdCancel(); return; }
   if (H.kind === 'hand') {
     const th = H.hand.joints['thumb-tip'], ix = H.hand.joints['index-finger-tip'];
@@ -1472,11 +1621,14 @@ function updateHand(H) {
   if (!H.ctrl.visible) { H.line.visible = H.dot.visible = false; H.was = press; if (hold.H === H) holdCancel(); return; }
   H.ctrl.getWorldPosition(vO); vD.set(0, 0, -1).applyQuaternion(H.ctrl.getWorldQuaternion(qA));
   let len = VR.RAY, hit = null, panel = null;
-  for (const P of [kb, ctl]) { const h = panelHit(P, vO, vD); if (h && (!hit || h.distance < hit.distance)) { hit = h; panel = P; } }
+  for (const P of [kb, ctl, mini]) { const h = panelHit(P, vO, vD); if (h && (!hit || h.distance < hit.distance)) { hit = h; panel = P; } }
   H.line.visible = true;
+  const th = hit ? null : tagHit(vO, vD);        // the name and story on the sky: behind every panel, in front of the stars
   if (hit) {
     len = hit.distance; H.dot.position.copy(hit.point); H.dot.visible = true;
     if (hit.btn) H.aim = { panel, id: hit.btn };
+  } else if (th) {
+    len = Math.min(VR.RAY, th.distance); H.dot.visible = false; H.aim = { tag: th.part };
   } else {
     H.dot.visible = false;
     H.aimDir = toLocalDir(vA.copy(vD)).clone();
@@ -1486,11 +1638,55 @@ function updateHand(H) {
   H.line.scale.set(1, 1, len);
   if (press && !H.was) {
     if (H.aim && H.aim.panel) panelPress(H.aim.panel, H.aim.id);
-    else if (H.aim && H.aim.sky) selectCon(H.aim.con);
+    else if (H.aim && H.aim.tag) { if (H.aim.tag === 'toggle') toggleStory(); else closeTag(); }     // the name toggles the story; a press on the story closes it
+    else { closeTag(); if (H.aim && H.aim.sky) selectCon(H.aim.con); }               // anywhere else: the name and story go
   }
   holdVR(H, press, len);   // after the press: pulling the trigger on Cygnus still opens its name first, exactly as before
+  steerVR(H, press, dt);   // the side button drags the sky, the stick turns it (2026-11-12)
   H.was = press;
 }
+// ---------- turning the whole sky in VR (Kris 2026-11-12: "move the whole sky around"; kids play seated, so the sky turns, not the child) ----------
+// Side button (grip) held on either controller: the star under the ray stays under the ray as you move it (turn about the vertical, tilt about
+// your right hand side, so the sky never rolls). A second grip while one drags changes nothing. Stick left or right: a smooth turn.
+// Stick pressed, or Reset view on the panel: Orion in front again, upright. Hands: a pinch held on empty sky drags the same way.
+// B or Y: hide or show the panels. The trigger is untouched: it picks, and holds Cygnus.
+const STEER = { STICK_DPS: 70, DEAD: .25 };
+const sA = new THREE.Vector3(), sQ = new THREE.Quaternion();
+const btnOn = (g, i) => !!(g && g.buttons[i] && g.buttons[i].pressed);
+function steerVR(H, press, dt) {
+  const g = H.kind === 'ctrl' && H.src && H.src.gamepad;
+  const grip = btnOn(g, 1);
+  if (!vr.drag) {
+    if (grip && !H.gripWas || (H.kind === 'hand' && press && !H.was && !H.aim)) {
+      vr.drag = { H, prev: vD.clone() }; vr.turn = null; vr.drags++;
+      pulse(H, .25, 30);
+    }
+  } else if (vr.drag.H === H) {
+    if (!(H.kind === 'hand' ? press : grip)) vr.drag = null;
+    else { dragSky(vr.drag.prev, vD); vr.drag.prev.copy(vD); }
+  }
+  H.gripWas = grip;
+  if (!g) return;
+  const x = g.axes.length >= 4 ? g.axes[2] : g.axes[0] || 0;
+  if (Math.abs(x) > STEER.DEAD) { vr.turn = null; turnSky(Math.sign(x) * (Math.abs(x) - STEER.DEAD) / (1 - STEER.DEAD) * STEER.STICK_DPS * rad * dt); }
+  const st = btnOn(g, 3), by = btnOn(g, 5);
+  if (st && !H.stickWas) resetView();
+  if (by && !H.byWas) setCollapsed(!S.collapsed);
+  H.stickWas = st; H.byWas = by;
+}
+function turnSky(a) { sky.quaternion.premultiply(sQ.setFromAxisAngle(UP, a)); }    // + = what was on your right comes to the front
+function dragSky(a, b) {         // a, b: the ray's world direction last frame and now
+  const az = v => Math.atan2(-v.x, -v.z), el = v => Math.asin(THREE.MathUtils.clamp(v.y, -1, 1));
+  let dy = az(b) - az(a); dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+  const th = az(b);
+  turnSky(dy);
+  sky.quaternion.premultiply(sQ.setFromAxisAngle(sA.set(Math.cos(th), 0, -Math.sin(th)), el(b) - el(a)));
+}
+function resetView() {           // as when the headset went on: Orion ahead, upright. Flat: the first view
+  if (!inXR()) { look.turn = null; look.yaw = 0; look.pitch = VIEW.START_DEC; return; }
+  vr.turn = null; vr.drag = null; sky.quaternion.setFromAxisAngle(UP, headYaw());
+}
+function pulse(H, v, ms) { try { const g = H.src && H.src.gamepad, h = g && g.hapticActuators && g.hapticActuators[0]; if (h && h.pulse) h.pulse(v, ms); } catch (e) { /* no rumble here */ } }
 function xrUpdate(frame, dt) {
   const ref = renderer.xr.getReferenceSpace(), pose = frame && ref ? frame.getViewerPose(ref) : null;
   if (pose) {
@@ -1508,14 +1704,15 @@ function xrUpdate(frame, dt) {
     if (S.phase === 'naming') { placeKeyboard(); kb.mesh.visible = true; }
   }
   sky.updateMatrixWorld(true);
-  const nk = new Set(), nc = new Set(); let onSky = null;
+  const hov = new Map([[kb, new Set()], [ctl, new Set()], [mini, new Set()]]); let onSky = null, onTag = false;
   for (const H of vr.hands) {
-    updateHand(H);
-    if (H.aim && H.aim.panel) (H.aim.panel === kb ? nk : nc).add(H.aim.id);
+    updateHand(H, dt);
+    if (H.aim && H.aim.panel) hov.get(H.aim.panel).add(H.aim.id);
     if (H.aim && H.aim.sky) onSky = H.aim.con;
+    if (H.aim && H.aim.tag === 'toggle') onTag = true;
   }
-  S.hoverCon = onSky || null; S.hover = !!onSky;
-  for (const [P, n] of [[kb, nk], [ctl, nc]]) { if ([...n].join() !== [...P.hover].join()) { P.hover = n; P.dirty = true; } }
+  S.hoverCon = onSky || null; S.hover = !!onSky; setTagHover(onTag);
+  for (const [P, n] of hov) { if ([...n].join() !== [...P.hover].join()) { P.hover = n; P.dirty = true; } }
   // wrong answer: the keyboard gives a small shake
   if (S.shake > 0 && kb.mesh.visible) { S.shake -= dt; kb.mesh.position.copy(kb.home).addScaledVector(vT.set(1, 0, 0).applyQuaternion(kb.mesh.quaternion), Math.sin(S.shake * 42) * .012 * sat(S.shake / .42)); }
   else if (kb.mesh.visible) { S.shake = 0; kb.mesh.position.copy(kb.home); }
@@ -1546,7 +1743,7 @@ function holdCancel() { hold.on = false; hold.ptr = hold.H = null; hold.p = 0; r
 function holdDown(e) {
   if (hold.on && hold.ptr !== e.pointerId) { holdCancel(); return; }      // a second finger: that is a pinch or a drag, not a hold
   hold.firedPtr = null;
-  if (e.button !== 0 || inXR() || !holdCon() || pickScreen(e.clientX, e.clientY) !== holdCon()) return;
+  if (e.button !== 0 || inXR() || !holdCon() || tagHit2D(e.clientX, e.clientY) || pickScreen(e.clientX, e.clientY) !== holdCon()) return;
   holdBegin({ ptr: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY });
 }
 function holdMove(e) {
@@ -1584,10 +1781,260 @@ function ringShow(p, a) {
 function holdFire() {
   const ptr = hold.ptr, H = hold.H;
   holdCancel(); hold.firedPtr = ptr; hold.fired++;
-  testJump('all');                                                    // the menu's own button: same sky, same badge, nothing saved
-  setPrompt(() => W.testAll(cons.length, paintTotal()));             // "All 88 revealed · paintings 88", in the language of the moment
+  startWave();                                                        // Kris 2026-11-12: not all at once, a ball of colour from Cygnus, about 15 s
   unlockAudio(); sfxReveal();
-  try { const g = H && H.src && H.src.gamepad, h = g && g.hapticActuators && g.hapticActuators[0]; if (h && h.pulse) h.pulse(.6, 120); } catch (e) { /* no rumble on this controller */ }
+  if (H) pulse(H, .6, 120);
+}
+
+// ---------- the colour wave (Kris 2026-11-12: "like a ball of colour expanding from cygnus as the starting point, maybe like 15 secs to fill the whole sky") ----------
+// A soft rim of colour runs over the sky dome from Cygnus; behind it the colour lingers a moment and fades. Each constellation wakes when the
+// rim reaches its centre (by angle from Cygnus), its painting fading in; the far side of the sky (180 deg) is reached at S seconds.
+// The counters follow it and end at "All 88 revealed · paintings 88". Like the menu's All revealed it is a tester's sky: TEST badge on,
+// nothing saved, Reset all brings the child's own sky back. Nothing waits for it: clicks, Find, naming and the switch all work while it runs.
+// The test menu's "All constellations revealed" stays instant (it is the tester's tool).
+const WAVE = { S: 15, FADE: 1.2, EDGE: .16, LINGER_S: 2.5, END_S: 1.6, GLOW: .42 };   // EDGE: rim half width, radians (about 9 deg); GLOW: rim brightness
+let wave = null;          // { t, order: [[angle, con]], i, end }
+const waveU = { uC: { value: new THREE.Vector3(0, 0, -1) }, uFront: { value: 0 }, uT: { value: 0 }, uA: { value: 0 }, uEdge: { value: WAVE.EDGE },
+  uLinger: { value: WAVE.LINGER_S * Math.PI / WAVE.S }, uGlow: { value: WAVE.GLOW } };
+const waveMesh = new THREE.Mesh(new THREE.SphereGeometry(SKY.R - .5, 72, 36), new THREE.ShaderMaterial({
+  uniforms: waveU, transparent: true, depthTest: false, depthWrite: false, side: THREE.DoubleSide,
+  blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor,      // light added to the sky; paintings and stars draw over it
+  vertexShader: `varying vec3 vD; void main(){ vD=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader: `precision highp float; uniform vec3 uC; uniform float uFront,uT,uA,uEdge,uLinger,uGlow; varying vec3 vD;
+    vec3 hue(float h){ return .5+.5*cos(6.2831853*(h+vec3(0.,.33,.67))); }
+    void main(){
+      vec3 d=normalize(vD);
+      float wob=.06*sin(d.x*9.+uT*1.3)*sin(d.y*7.-uT*.9)*sin(d.z*8.+uT*.7);       // an uneven, living rim
+      float a=acos(clamp(dot(d,uC),-1.,1.))+wob, x=(a-uFront)/uEdge;
+      float rim=exp(-x*x);
+      float behind=smoothstep(uEdge,-uEdge,a-uFront)*exp(-max(0.,uFront-a)/uLinger);   // colour lingers behind the rim, then fades
+      float k=(rim*uGlow+behind*.15)*uA;
+      gl_FragColor=vec4(hue(a*.5-uT*.05)*k,k);
+    }`,
+}));
+waveMesh.renderOrder = -5; waveMesh.frustumCulled = false; waveMesh.visible = false; sky.add(waveMesh);
+function startWave() {
+  if (wave) return;                        // one wave at a time; a second hold during it changes nothing
+  const C = byIau[HOLD.CON].centre;
+  S.test = true; $('testbadge').hidden = false;
+  if (S.phase === 'naming' || S.phase === 'told') closeName();     // as the instant reveal did: no box left open
+  closeTag(); disarm(); S.almostUntil = 0;
+  wave = { t: 0, order: cons.filter(c => !c.woken).map(c => [c.centre.angleTo(C), c]).sort((a, b) => a[0] - b[0]), i: 0, end: 0 };
+  waveU.uC.value.copy(C); waveU.uFront.value = 0; waveU.uT.value = 0; waveU.uA.value = 1; waveMesh.visible = true;
+  setPrompt(wavePrompt);
+  ctl.dirty = true; layoutUI();
+}
+// critic 2026-11-12: a child still looking at Cygnus sees the colour pass after about 4 s, so the words say where to look; the count goes under them
+function wavePrompt() { return wave && !wave.end ? [W.waveCue, W.waving(wokenCount(), cons.length)] : W.testAll(cons.length, paintTotal()); }
+function waveWake(con) {
+  if (con.woken) return;                   // named or found while the wave ran
+  con.woken = true;
+  if (S.con === con && (S.phase === 'naming' || S.phase === 'told')) closeName();
+  if (con.fig) { con.fig.appear = 0; refresh(con.fig); }
+}
+function stepWave(dt) {
+  if (!wave) return;
+  wave.t += dt;
+  const front = Math.min(Math.PI, wave.t / WAVE.S * Math.PI);
+  waveU.uFront.value = front; waveU.uT.value = wave.t;
+  let n = 0;
+  while (wave.i < wave.order.length && wave.order[wave.i][0] <= front) { waveWake(wave.order[wave.i][1]); wave.i++; n++; }
+  if (n) { updateCount(); drawPrompt(); }
+  if (!wave.end && wave.i >= wave.order.length) { wave.end = wave.t; drawPrompt(); }       // "All 88 revealed · paintings 88"
+  if (wave.t >= WAVE.S) {
+    waveU.uA.value = 1 - sat((wave.t - WAVE.S) / WAVE.END_S);
+    if (waveU.uA.value <= 0 && wave.end) { waveMesh.visible = false; wave = null; ctl.dirty = true; }
+  }
+}
+function stopWave() {                      // Reset all, the test menu, or a reload: the sky is set at once
+  if (!wave) return;
+  wave = null; waveMesh.visible = false; waveU.uA.value = 0;
+  for (const f of figs) if (f.appear != null) { f.appear = null; if (f.mesh) f.mesh.material.uniforms.uFade.value = 1; }
+}
+
+// ---------- the name on the sky, and its story (Kris 2026-11-12: "when you press on a coloured constellation, make its name appear next to it on
+// the sky with a toggle option that expands (transparent text box, no outline) and gives either a fun fact ... or a brief story") ----------
+// A woken constellation, pressed: its name under it on the sky (LT mode: the Lithuanian name big, the Latin one small), and a round + when
+// assets/stories.json has an entry for it. The + (or the name) opens the story and fun fact below, with no box edge: a soft dark glow behind the
+// letters only. Pressed again, or anywhere else: it closes. Its "related" constellations glow for a moment. No entry: the name only, no +.
+// One drawing for both screens: planes on the sky facing you, sized in screen pixels on a flat screen and in degrees in the headset.
+const TAG = { D: SKY.R - 4, VR_DEG: .062, RES: 2.5, NAME: 30, SUB: 18, BODY: 19, LINE: 1.45, HEAD: 16, CARD_W: 400, VR_W: 520, WIDE_W: 640, SHORT_H: 600, MIN_K: .8, MAX_DEG: 35, PAD: 22, GAP: 6, BTN: 34, HI_S: 4 };     // a short flat window: a wider story, shrunk to fit no smaller than MIN_K
+const tagGroup = new THREE.Group(); tagGroup.visible = false; sky.add(tagGroup);
+function tagPlane(order) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ transparent: true, depthTest: false, depthWrite: false, side: THREE.DoubleSide }));
+  m.renderOrder = order; m.visible = false; m.frustumCulled = false; tagGroup.add(m);
+  return { m, w: 1, h: 1, tex: null };
+}
+const tag = { con: null, open: false, has: false, hover: false, anchor: null, label: tagPlane(18), card: tagPlane(17), shown: 0, k: 1, overBar: false };
+const tV1 = new THREE.Vector3(), tV2 = new THREE.Vector3(), tV3 = new THREE.Vector3(), tV4 = new THREE.Vector3(), tV5 = new THREE.Vector3();
+const NAME_FONT = px => `${px}px Georgia,"Times New Roman",serif`, BODY_FONT = (px, w = 400) => `${w} ${px}px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif`;
+function storyOf(con) {
+  const e = con && STORIES[con.iau]; if (!e) return null;
+  const t = k => String(e[`${k}_${LANG}`] || e[`${k}_en`] || e[`${k}_lt`] || '').trim();
+  const parts = [];
+  if (t('story')) parts.push({ kind: 'story', head: W.story, text: t('story') });
+  if (t('fact')) parts.push({ kind: 'fact', head: W.fact, text: t('fact') });
+  if (!parts.length) return null;
+  if (e.kind === 'fact') parts.reverse();           // a fun fact first when that is what the entry is
+  if (t('folk')) parts.push({ kind: 'folk', head: W.folk, text: t('folk') });      // the Lithuanian folk name (Grįžulo Ratai, Šienpjoviai, Sietynas): a third short part, last
+  const rel = (Array.isArray(e.related) ? e.related : []).map(i => byIau[i]).filter(c => c && c !== con);
+  return { parts, rel, kind: e.kind || 'story' };
+}
+function paintPlane(P, w, h, draw) {              // w, h in layout pixels; drawn RES times finer so the letters stay sharp
+  const cv = document.createElement('canvas'); cv.width = Math.ceil(w * TAG.RES); cv.height = Math.ceil(h * TAG.RES);
+  const c = cv.getContext('2d'); c.scale(TAG.RES, TAG.RES); draw(c);
+  if (P.tex) P.tex.dispose();
+  const t = P.tex = new THREE.CanvasTexture(cv); t.colorSpace = THREE.NoColorSpace; t.anisotropy = 4; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter;
+  P.m.material.map = t; P.m.material.needsUpdate = true; P.w = w; P.h = h;
+}
+function wrapText(c, text, maxW) {
+  const out = []; let line = '';
+  for (const w of text.split(/\s+/)) { const t = line ? line + ' ' + w : w; if (line && c.measureText(t).width > maxW) { out.push(line); line = w; } else line = t; }
+  if (line) out.push(line);
+  return out;
+}
+function drawLabel() {
+  const con = tag.con, name = nm(con), s = sub(con), m = document.createElement('canvas').getContext('2d');
+  tag.has = !!storyOf(con);
+  m.font = NAME_FONT(TAG.NAME); const nw = m.measureText(name).width; m.font = NAME_FONT(TAG.SUB); const sw = s ? m.measureText(s).width : 0;
+  const tw = Math.max(nw, sw), pad = 14, bw = tag.has ? TAG.BTN + 12 : 0;
+  const w = Math.ceil(tw + bw + pad * 2), h = Math.ceil(s ? TAG.NAME * 1.3 + TAG.SUB * 1.4 + 8 : TAG.NAME * 1.5 + 6);
+  paintPlane(tag.label, w, h, c => {
+    c.save(); c.filter = 'blur(10px)'; c.fillStyle = 'rgba(3,5,12,.6)'; rr(c, 14, 10, w - 28, h - 20, 18); c.fill(); c.restore();   // the same soft haze as the story: readable over a painting
+    c.textAlign = 'center'; c.textBaseline = 'middle'; c.shadowColor = 'rgba(0,0,0,.95)'; c.shadowBlur = 9;
+    const cx = pad + tw / 2;
+    c.font = NAME_FONT(TAG.NAME); c.fillStyle = '#f5dc9e'; c.fillText(name, cx, s ? TAG.NAME * .72 + 5 : h / 2);
+    if (s) { c.font = NAME_FONT(TAG.SUB); c.fillStyle = '#d4ccb9'; c.fillText(s, cx, TAG.NAME * 1.3 + TAG.SUB * .62 + 6); }
+    if (tag.has) {                                   // the toggle: + closed, minus open
+      const bx = pad + tw + 12 + TAG.BTN / 2, by = h / 2, r = TAG.BTN / 2 - 1;
+      c.beginPath(); c.arc(bx, by, r, 0, Math.PI * 2); c.fillStyle = tag.hover ? 'rgba(245,220,158,.42)' : 'rgba(8,10,20,.62)'; c.fill();
+      c.shadowBlur = 0; c.lineWidth = 2.5; c.strokeStyle = '#f5dc9e'; c.stroke();
+      c.lineWidth = 3.2; c.lineCap = 'round'; c.beginPath(); c.moveTo(bx - 8, by); c.lineTo(bx + 8, by); if (!tag.open) { c.moveTo(bx, by - 8); c.lineTo(bx, by + 8); } c.stroke();
+    }
+  });
+}
+function drawCard() {
+  const st = storyOf(tag.con); if (!st) return false;
+  const cw = inXR() ? TAG.VR_W : Math.min(innerHeight < TAG.SHORT_H ? TAG.WIDE_W : TAG.CARD_W, innerWidth - 24), inner = cw - TAG.PAD * 2, m = document.createElement('canvas').getContext('2d');
+  m.font = BODY_FONT(TAG.BODY);
+  const blocks = st.parts.map(p => ({ ...p, lines: wrapText(m, p.text, inner) }));
+  const look = st.rel.length ? wrapText(m, W.lookFor(list(st.rel.map(nm))), inner) : [];
+  const lh = Math.round(TAG.BODY * TAG.LINE), hh = Math.round(TAG.HEAD * 1.7);
+  let h = TAG.PAD - 4; for (const b of blocks) h += hh + b.lines.length * lh + 10; if (look.length) h += look.length * lh + 4; h += TAG.PAD - 10;
+  h = Math.ceil(h);
+  paintPlane(tag.card, cw, h, c => {
+    // no box edge and no outline: a soft dark haze behind the letters, then each letter with its own dark glow
+    c.save(); c.filter = 'blur(14px)'; c.fillStyle = 'rgba(3,5,12,.72)'; rr(c, 26, 26, cw - 52, h - 52, 30); c.fill(); c.restore();   // feathered all round: no edge
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.shadowColor = 'rgba(0,0,0,.95)'; c.shadowBlur = 6;
+    let y = TAG.PAD - 4;
+    for (const b of blocks) {
+      y += hh; c.font = BODY_FONT(TAG.HEAD, 700); c.fillStyle = b.kind === 'fact' ? '#cfe7ff' : b.kind === 'folk' ? '#ffc6a6' : '#f5dc9e'; c.fillText(b.head, TAG.PAD, y - hh * .3);     // the headings all about as bright as the gold one (critic 2026-11-12: the blue read weakest)
+      c.font = BODY_FONT(TAG.BODY); c.fillStyle = '#f4efe3';
+      for (const l of b.lines) { y += lh; c.fillText(l, TAG.PAD, y - lh * .3); }
+      y += 10;
+    }
+    if (look.length) { c.font = BODY_FONT(TAG.BODY, 600); c.fillStyle = '#bfe6ae'; y += 4; for (const l of look) { y += lh; c.fillText(l, TAG.PAD, y - lh * .3 - 4); } }
+  });
+  return true;
+}
+function layoutTag() {
+  const L = tag.label, C = tag.card;
+  L.m.scale.set(L.w, L.h, 1); L.m.position.set(0, -L.h / 2, 0);
+  C.m.scale.set(C.w, C.h, 1); C.m.position.set(0, -L.h - TAG.GAP - C.h / 2, 0);
+}
+function drawTag() {
+  if (!tag.con) return;
+  drawLabel(); tag.label.m.visible = true;
+  if (tag.open && tag.has && drawCard()) tag.card.m.visible = true; else { tag.open = false; tag.card.m.visible = false; }
+  layoutTag();
+}
+const tagScale = () => inXR() ? TAG.D * TAG.VR_DEG * rad : TAG.D * 2 * Math.tan(camera.fov * rad / 2) / innerHeight;     // world units per layout pixel
+function stepTag() {               // every frame it shows: on the sky under its constellation, facing you, upright
+  if (!tagGroup.visible || !tag.anchor) return;
+  tagGroup.position.copy(tag.anchor).multiplyScalar(TAG.D);
+  // the same size in pixels wherever it is on a flat screen: scaled by its depth along the view, not its distance
+  tagGroup.scale.setScalar(tagScale() * (inXR() ? 1 : tag.k * Math.max(.2, tag.anchor.dot(camera.getWorldDirection(tV1)))));
+  if (inXR()) tagGroup.lookAt(head);        // the headset: it faces your head, upright
+  else tagGroup.quaternion.copy(camera.quaternion);    // a flat screen: parallel to the screen, as a sprite is, so it never looks skewed off centre (the flat sky is never turned)
+  tagGroup.updateMatrixWorld(true);
+}
+function showTag(con) {
+  if (S.found) { S.found = null; if (label) label.visible = false; }      // one name on the sky at a time: Find's goes
+  if (tag.con !== con) tag.open = false;
+  tag.con = con;
+  // under its lowest line and under its painting's frame (a woken one shows its painting: the letters must not sit on it), in its own tangent plane
+  const { C, N } = con.plane, f = con.fig;
+  let low = Math.min(...con.hull.map(h => h[1]));
+  if (f && typeof f.at === 'function') for (let i = 0; i <= 8; i++) for (const [u, v] of [[i / 8, 0], [i / 8, 1], [0, i / 8], [1, i / 8]]) { const d = f.at(u, v, tV1), c = d.dot(C); if (c > .2) low = Math.min(low, d.dot(N) / c); }
+  const below = Math.min(Math.atan(Math.max(0, -low)) + FIND.LABEL_GAP * rad, TAG.MAX_DEG * rad);
+  tag.anchor = C.clone().multiplyScalar(Math.cos(below)).addScaledVector(N, -Math.sin(below)).normalize();
+  tag.hover = false; drawTag(); tagGroup.visible = true; tag.shown++;
+  drawPrompt(); stepTag(); layoutUI(); if (!inXR()) fitTag2D();
+}
+function toggleStory() {
+  if (!tag.con || !tag.has) return;
+  tag.open = !tag.open; drawTag();
+  const st = tag.open && storyOf(tag.con), now = performance.now();
+  S.related = st && st.rel.length ? { set: new Set(st.rel), at: now, until: now + TAG.HI_S * 1000 } : null;
+  stepTag(); layoutUI(); if (!inXR()) fitTag2D();
+}
+function closeTag() {
+  if (!tag.con && !tagGroup.visible) return;
+  tag.con = null; tag.open = false; tag.hover = false; tag.overBar = false; tag.k = 1; tagGroup.visible = false; tag.label.m.visible = tag.card.m.visible = false; S.related = null;
+  drawPrompt(); layoutUI();
+}
+function setTagHover(on) { on = !!on && !!tag.con && tag.has; if (on === tag.hover) return; tag.hover = on; drawLabel(); layoutTag(); }
+// a ray against the name and the story: 'toggle' (the name, when it has a story), 'card' (the story), or null. Layout pixels, y up, origin top centre
+function tagHit(O, Dw) {
+  if (!tagGroup.visible) return null;
+  const n = tV1.set(0, 0, 1).transformDirection(tagGroup.matrixWorld), p0 = tV2.setFromMatrixPosition(tagGroup.matrixWorld);
+  const den = n.dot(Dw); if (Math.abs(den) < 1e-6) return null;
+  const t = tV3.copy(p0).sub(O).dot(n) / den; if (t <= 0) return null;
+  const l = tagGroup.worldToLocal(tV3.copy(O).addScaledVector(Dw, t)), L = tag.label, C = tag.card;
+  if (tag.has && Math.abs(l.x) <= L.w / 2 + 4 && l.y <= 4 && l.y >= -L.h - 4) return { part: 'toggle', distance: t };
+  if (tag.open && C.m.visible && Math.abs(l.x) <= C.w / 2 && l.y <= -L.h - TAG.GAP && l.y >= -L.h - TAG.GAP - C.h) return { part: 'card', distance: t };
+  return null;
+}
+function tagHit2D(x, y) { if (!tagGroup.visible || inXR()) return null; const h = tagHit(camera.getWorldPosition(tV4), screenDir(x, y, tV5)); return h ? h.part : null; }
+function tagRect2D() {             // the name and story on the screen, in CSS pixels
+  const L = tag.label, C = tag.card, w = Math.max(L.w, tag.open ? C.w : 0) / 2, bot = -(L.h + (tag.open ? TAG.GAP + C.h : 0));
+  camera.updateMatrixWorld();
+  const p = [[-w, 0], [w, 0], [-w, bot], [w, bot]].map(([x, y]) => tagGroup.localToWorld(new THREE.Vector3(x, y, 0)).project(camera)).map(v => [(v.x + 1) / 2 * innerWidth, (1 - v.y) / 2 * innerHeight, v.z]);
+  return { left: Math.min(...p.map(q => q[0])), right: Math.max(...p.map(q => q[0])), top: Math.min(...p.map(q => q[1])), bottom: Math.max(...p.map(q => q[1])), behind: p.some(q => q[2] > 1), bot };
+}
+function fitTag2D() {              // flat screen: if the name or story is off screen or under a box, the view turns gently so it sits in the free middle
+  // a short window (a phone on its side, the keyboard up): the story shrinks to the room, never below MIN_K; if it still does not fit, the bar, the words and the credits step aside while it is open
+  const L = tag.label, C = tag.card, hN = L.h + (tag.open ? TAG.GAP + C.h : 0), wN = Math.max(L.w, tag.open ? C.w : 0);
+  // the top room: under whatever sits at the top across the story's width (it is centred), measured, so a phone on its side can use the gap between its corners
+  const under = (ids, w) => ids.reduce((m, id) => { const e = $(id); if (!e || getComputedStyle(e).display === 'none') return m; const r = e.getBoundingClientRect();
+    return !r.width || !r.height || r.top > innerHeight / 2 || r.right < (innerWidth - w) / 2 || r.left > (innerWidth + w) / 2 ? m : Math.max(m, r.bottom + 8); }, 12);
+  const bottom = innerHeight - 12, fitW = (innerWidth - 16) / wN;
+  const fit = (ids, fb) => {          // the room under the top boxes across the story's width; once more at the width it then gets, if that clears more of the corners
+    let ft = under(ids, wN), k = Math.min(1, (fb - ft) / hN, fitW);
+    const ft2 = under(ids, wN * Math.max(TAG.MIN_K, k)), k2 = Math.min(1, (fb - ft2) / hN, fitW);
+    if (ft2 < ft && under(ids, wN * Math.max(TAG.MIN_K, k2)) <= ft2) { ft = ft2; k = k2; }
+    return [ft, k];
+  };
+  let freeB = S.collapsed ? bottom : Math.min(bottom, $('bar').getBoundingClientRect().top - 8), [freeT, k] = fit(['find', 'findopen', 'corner', 'prompt', 'testbadge'], freeB), over = false;
+  if (k < TAG.MIN_K && tag.open && !S.collapsed) { over = true; freeB = bottom; [freeT, k] = fit(['find', 'findopen', 'corner', 'testbadge'], freeB); }
+  tag.k = Math.max(TAG.MIN_K, k); tag.room = [freeT, freeB];
+  if (over !== tag.overBar) { tag.overBar = over; layoutUI(); }
+  stepTag();
+  const r = tagRect2D();
+  if (!r.behind && r.left >= 8 && r.right <= innerWidth - 8 && r.top >= freeT && r.bottom <= freeB) return false;
+  // aim by the name's top (a fixed point on the sky; the story hangs under it at a fixed pixel size): centred across, and its top where the block sits centred
+  // in the free middle, or, too tall even at MIN_K, right under the top boxes so the name and the story's start show
+  const [ra, dec] = radec(tag.anchor), hB = hN * tag.k, yTop = hB <= freeB - freeT ? (freeT + freeB - hB) / 2 : freeT + 2;
+  const yOff = -Math.atan((innerHeight / 2 - yTop) / (innerHeight / 2) * Math.tan(camera.fov * rad / 2)) / rad;     // the exact angle, not a straight-line guess
+  let dy = (ra - RA_FRONT) - look.yaw; dy = ((dy % 360) + 540) % 360 - 180;
+  const want = dec + yOff, p1 = THREE.MathUtils.clamp(want, -85, 85), y1 = look.yaw + dy;
+  look.turn = { y0: look.yaw, y1, p0: look.pitch, p1, t: 0 };
+  if (p1 !== want) {
+    camera.rotation.set(p1 * rad, y1 * rad, 0); camera.updateMatrixWorld();
+    tag.anchor = toLocalDir(screenDir(innerWidth / 2, yTop, new THREE.Vector3())).normalize();
+    camera.rotation.set(look.pitch * rad, look.yaw * rad, 0); camera.updateMatrixWorld();
+  }
+  return true;
 }
 
 // ---------- entering VR ----------
@@ -1609,14 +2056,16 @@ vrBtn.addEventListener('click', async () => {
 renderer.xr.addEventListener('sessionstart', () => {
   holdCancel(); vr.anchored = false; vrBtn.textContent = W.exitVr; vrBtn.classList.remove('big'); sayVr('');
   $('namebox').classList.remove('open');
+  S.collapsed = false; document.body.classList.remove('collapsed'); drawHideBtn(); vr.drag = null;      // the headset starts with its panel showing
 });
 renderer.xr.addEventListener('sessionend', () => {
-  holdCancel(); vr.anchored = false; ctl.mesh.visible = false; kb.mesh.visible = false; S.hover = false;
+  holdCancel(); vr.anchored = false; ctl.mesh.visible = false; kb.mesh.visible = false; mini.mesh.visible = false; S.hover = false; vr.drag = null; vr.turn = null;
+  S.collapsed = false; document.body.classList.remove('collapsed'); drawHideBtn();
   for (const H of vr.hands) { H.kind = null; H.line.visible = H.dot.visible = false; }
   sky.position.set(0, 0, 0); sky.rotation.set(0, 0, 0); camera.position.set(0, 0, 0);
   if (S.phase === 'naming') { $('namebox').classList.add('open'); $('nameinput').value = S.typed; }
-  idlePromptIfIdle(); resize();
-  vrBtn.textContent = W.enterVr; if (IN_HEADSET) vrBtn.classList.add('big');
+  vrBtn.textContent = W.enterVr;
+  idlePromptIfIdle(); resize();     // resize lays the boxes out again, and gives the Quest Browser its big Enter VR back if nothing else is open
 });
 function idlePromptIfIdle() { if (S.phase === 'idle') idlePrompt(); }
 
@@ -1638,7 +2087,8 @@ renderer.setAnimationLoop((t, frame) => {
   pumpUploads();
   holdStep();
   if (S.phase !== 'loading') tick(dt);
-  for (const P of [kb, ctl]) if (P.dirty && (xr || window.__skyForceDraw)) { P.draw(P); P.tex.needsUpdate = true; P.dirty = false; }
+  for (const P of [kb, ctl, mini]) if (P.dirty && (xr || window.__skyForceDraw)) { P.draw(P); P.tex.needsUpdate = true; P.dirty = false; }
+  stepTag();
   renderer.render(scene, camera);
 });
 
@@ -1654,12 +2104,16 @@ function applyLang() {
   $('findinput').placeholder = W.findPh;
   if (S.phase === 'loading' && $('msg').textContent) showMsg(W.loading);
   $('lang-lt').classList.toggle('on', LANG === 'lt'); $('lang-en').classList.toggle('on', LANG === 'en');
-  for (const b of ctl.btns) b.label = { V1: W.v1, V2: W.v2, REPLAY: W.replay, RESET: S.armed ? W.sure : W.reset, FIND: W.find }[b.id] || b.label;
+  for (const b of CTL_MAIN) b.label = { V1: W.v1, V2: W.v2, REPLAY: W.replay, RESET: S.armed ? W.sure : W.reset, FIND: W.find, HIDE: W.hide, VIEW: W.resetView }[b.id] || b.label;
+  for (const b of mini.btns) b.label = { SHOW: W.show }[b.id] || b.label;
   for (const b of kb.btns) b.label = { CLOSE: W.close, OK: W.ok }[b.id] || b.label;
+  drawHideBtn();
   if (cons.length) { updateCount(); drawPrompt(); drawHint(); drawFindHint(); setSuggest(S.findSug); }
   if (label && label.visible && S.found) { const f = S.found, a0 = f.at, u = f.until; showFound(f.con, f.part); S.found.at = a0; S.found.until = u; look.turn = null; vr.turn = null; }
+  if (tag.con) { drawTag(); stepTag(); }                   // the name and story on the sky, in the new language
   if (window.skyGate) window.skyGate.setLang(LANG);      // the beta gate's three words follow the switch too
-  kb.dirty = ctl.dirty = true;
+  kb.dirty = ctl.dirty = mini.dirty = true;
+  layoutUI();
 }
 function setLang(l) {
   if (!WORDS[l] || l === LANG) return;
@@ -1695,6 +2149,11 @@ window.__sky = {
   setLang, get lang() { return LANG; }, WORDS, nm, LANG_KEY, get build() { return BUILD; },
   get testMode() { return S.test; }, get testOpen() { return S.testOpen; }, CTL_TEST,
   HOLD, hold, ring3, ASSET_BASE, asset, pickAt: (x, y) => { const c = pickScreen(x, y); return c ? c.iau : null; },     // hold Cygnus, the asset base
+  // 2026-11-12: the colour wave, hiding the boxes, the layout, the name and story on the sky, turning the sky in VR
+  WAVE, waveU, waveMesh, get wave() { return wave; }, startWave, stopWave,
+  setCollapsed, get collapsed() { return S.collapsed; }, layoutUI, LAYOUT,
+  tag, tagGroup, TAG, tagHit2D, tagRect2D, showTag, toggleStory, closeTag, storyOf, get STORIES() { return STORIES; }, stepTag,
+  mini, separatePanels, yawOf, halfW, resetView, dragSky, turnSky, STEER,
   get orion() { return ORI.fig; }, get tan() { return orionTan(); }, inOrion: d => pick(d) === ORI,
   get artU() { return lastU; },     // the latest reveal
   get art() { const r = R[R.length - 1]; return S.phase === 'reveal' && r ? (r.slot ? r.slot.mesh : { visible: false }) : (S.last && S.last.fig && S.last.fig.mesh) || { visible: false }; },

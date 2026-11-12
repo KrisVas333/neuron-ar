@@ -1,0 +1,993 @@
+{
+  "version": 1,
+  "items": {
+    "And": {
+      "story_en": "In Greek myth, Andromeda was a princess chained to a rock by the sea. The hero Perseus rescued her, and the gods later set her among the stars.",
+      "story_lt": "Graikų mite Andromeda buvo princesė, prirakinta prie uolos jūros pakrantėje. Didvyris Persėjas ją išgelbėjo, o dievai vėliau paskyrė jai vietą tarp žvaigždžių.",
+      "fact_en": "Andromeda holds a hazy patch you can see without a telescope: the Andromeda Galaxy, over 2 million light-years away.",
+      "fact_lt": "Andromedoje be teleskopo galima pamatyti miglotą dėmelę. Tai Andromedos galaktika, nutolusi daugiau nei 2 milijonus šviesmečių.",
+      "related": [
+        "Per",
+        "Cas",
+        "Cep",
+        "Cet"
+      ],
+      "kind": "story"
+    },
+    "Ant": {
+      "story_en": "In the 1750s the French astronomer Lacaille named this faint group the Air Pump, after a science machine of his time. Most of his new southern constellations honour tools of science.",
+      "story_lt": "XVIII amžiaus viduryje prancūzų astronomas Lakailis šią blyškią žvaigždžių grupę pavadino Siurbliu. Taip jis pagerbė oro siurblį, to meto mokslo prietaisą. Dauguma jo naujų pietų žvaigždynų pagerbia mokslo įrankius.",
+      "fact_en": "Antlia is so faint that its brightest star is only magnitude 4.25. Town lights hide it.",
+      "fact_lt": "Siurblys labai blyškus: ryškiausia jo žvaigždė tik 4,25 ryškio. Miesto šviesos jį paslepia.",
+      "related": [
+        "Cae",
+        "For",
+        "Hor",
+        "Cir"
+      ],
+      "kind": "story"
+    },
+    "Aps": {
+      "story_en": "Dutch sailors saw birds of paradise in the East Indies. In 1598 one was put in the southern sky on a Dutch globe. Europeans wrongly thought the bird had no feet.",
+      "story_lt": "Olandų jūreiviai Rytų Indijoje matė rojaus paukščių. 1598 metais vienas toks paukštis atsirado pietų danguje, olandų gaublyje. Europiečiai klaidingai manė, kad šis paukštis neturi kojų.",
+      "fact_en": "Apus is Greek for \"without feet\". Its brightest star is an orange giant about 48 times wider than the Sun.",
+      "fact_lt": "Apus graikiškai reiškia „be kojų“. Ryškiausia jo žvaigždė yra oranžinė milžinė, maždaug 48 kartus platesnė už Saulę.",
+      "related": [
+        "Dor",
+        "Gru",
+        "Ind",
+        "Cha"
+      ],
+      "kind": "story"
+    },
+    "Aql": {
+      "story_en": "In Greek myth, this eagle carried the thunderbolts of Zeus, king of the gods. It flies along the Milky Way, near Cygnus the Swan and Lyra the Lyre.",
+      "story_lt": "Graikų mite šis erelis nešiojo dievų valdovo Dzeuso žaibus. Jis skrenda palei Paukščių Taką, šalia Gulbės ir Lyros.",
+      "fact_en": "Altair, the eagle's brightest star, is only about 17 light-years away. It spins so fast that it is squashed.",
+      "fact_lt": "Altayras, ryškiausia Erelio žvaigždė, yra vos už 17 šviesmečių. Jis sukasi taip greitai, kad yra suplotas.",
+      "related": [
+        "Cyg",
+        "Lyr",
+        "Aqr"
+      ],
+      "kind": "fact"
+    },
+    "Aqr": {
+      "story_en": "The Water Bearer pours water from a jar. In ancient Babylon he was the god Ea, holding an overflowing vase. In Greek star maps, his stream flows down to the Southern Fish.",
+      "story_lt": "Vandenis pila vandenį iš ąsočio. Senovės Babilone tai buvo dievas Ea, laikantis ąsotį, iš kurio liejasi vanduo. Graikų žvaigždėlapiuose jo srovė teka žemyn į Pietų Žuvį.",
+      "fact_en": "The Helix Nebula in Aquarius is one of the closest planetary nebulae to us, about 650 light-years away.",
+      "fact_lt": "Vandenyje yra Sraigės ūkas, vienas artimiausių mums planetiškųjų ūkų. Jis yra už maždaug 650 šviesmečių.",
+      "related": [
+        "PsA",
+        "Cap",
+        "Aql"
+      ],
+      "kind": "link"
+    },
+    "Ara": {
+      "story_en": "In Greek myth, the gods built an altar and swore to stand together before they faced the Titans. After they won, the altar was set in the southern sky.",
+      "story_lt": "Graikų mite dievai pastatė aukurą ir prisiekė laikytis išvien prieš kovą su titanais. Jiems laimėjus, aukuras buvo iškeltas į pietų dangų.",
+      "fact_en": "Ara holds Westerlund 1, a giant star cluster with one of the largest stars known.",
+      "fact_lt": "Aukure yra Westerlund 1, milžiniškas žvaigždžių spiečius. Jame yra viena didžiausių žinomų žvaigždžių.",
+      "related": [
+        "Sco",
+        "Cen",
+        "Tel"
+      ],
+      "kind": "story"
+    },
+    "Ari": {
+      "story_en": "In Greek myth, a flying ram with golden wool saved a boy named Phrixus and carried him far across the sea. Its wool became the famous Golden Fleece.",
+      "story_lt": "Graikų mite skraidantis auksavilnis avinas išgelbėjo berniuką Friksą ir nunešė jį toli per jūrą. Jo vilna tapo garsiąja aukso vilna.",
+      "fact_en": "Over 2,000 years ago, spring began with the Sun in Aries. Today it begins with the Sun in Pisces.",
+      "fact_lt": "Prieš daugiau nei 2000 metų pavasario pradžioje Saulė būdavo Avine. Dabar tą dieną ji būna Žuvyse.",
+      "related": [
+        "Psc",
+        "Tau"
+      ],
+      "kind": "story"
+    },
+    "Aur": {
+      "story_en": "In Greek myth, Auriga is Erichthonius of Athens, who invented the four-horse chariot. Zeus put him in the sky with his chariot.",
+      "story_lt": "Graikų mite Vežėjas yra atėnietis Erichtonijus, išradęs keturių arklių vežimą. Dzeusas jį su vežimu iškėlė į dangų.",
+      "fact_en": "Capella, Auriga's brightest star, is about 43 light-years away. It is really four stars, in two pairs.",
+      "fact_lt": "Kapela, ryškiausia Vežėjo žvaigždė, yra už maždaug 43 šviesmečių. Iš tikrųjų tai keturios žvaigždės, dvi poros.",
+      "related": [
+        "Tau",
+        "Per"
+      ],
+      "kind": "story"
+    },
+    "Boo": {
+      "story_en": "The name means \"herdsman\" or \"ox-driver\". One Greek tale says he is Arcas, whose mother Callisto became the Great Bear. His star Arcturus means \"guardian of the bear\".",
+      "story_lt": "Vardas reiškia „jaučių piemuo“. Vienas graikų pasakojimas sako, kad tai Arkas, Kalistos sūnus. Kalista tapo Didžiąja Meška. Jo žvaigždė Arktūras reiškia „meškos sargas“.",
+      "fact_en": "Arcturus is about 37 light-years away. It is the fourth brightest star in the night sky.",
+      "fact_lt": "Arktūras yra už maždaug 37 šviesmečių. Tai ketvirta pagal ryškumą žvaigždė naktiniame danguje.",
+      "related": [
+        "UMa",
+        "CVn",
+        "UMi"
+      ],
+      "kind": "link"
+    },
+    "CMa": {
+      "story_en": "The Greeks pictured this as one of Orion's hunting dogs, running after him across the sky. Its star Sirius was the basis of the ancient Egyptian calendar.",
+      "story_lt": "Graikai jį įsivaizdavo kaip vieną Oriono medžioklinių šunų, bėgantį paskui jį per dangų. Pagal jo žvaigždę Sirijų senovės egiptiečiai sudarė savo kalendorių.",
+      "fact_en": "Sirius is the brightest star in the night sky and only 8.6 light-years away.",
+      "fact_lt": "Sirijus yra ryškiausia naktinio dangaus žvaigždė ir yra vos už 8,6 šviesmečio.",
+      "related": [
+        "Ori",
+        "CMi",
+        "Lep"
+      ],
+      "kind": "link"
+    },
+    "CMi": {
+      "story_en": "Procyon's name is Greek for \"coming before the dog\". It rises about an hour before Sirius, the Dog Star. So the Little Dog runs ahead of the Big Dog.",
+      "story_lt": "Prokiono vardas graikiškai reiškia „einantis prieš šunį“. Jis pateka maždaug valanda anksčiau už Sirijų, Didžiojo Šuns žvaigždę. Taigi Mažasis Šuo bėga pirma Didžiojo.",
+      "fact_en": "Procyon is only 11.4 light-years away. It is one of the ten brightest stars in our night sky.",
+      "fact_lt": "Prokionas yra vos už 11,4 šviesmečio. Tai viena iš dešimties ryškiausių naktinio dangaus žvaigždžių.",
+      "related": [
+        "CMa",
+        "Ori",
+        "Gem"
+      ],
+      "kind": "link"
+    },
+    "CVn": {
+      "story_en": "In 1687 the astronomer Hevelius made two hunting dogs, Asterion and Chara, from the stars beside Boötes the Herdsman.",
+      "story_lt": "1687 metais astronomas Hevelijus iš žvaigždžių šalia Jaučiaganio sukūrė du medžioklinius šunis, Asterioną ir Charą.",
+      "fact_en": "In 1845 Lord Rosse, in Ireland, spotted the Whirlpool Galaxy's spiral arms. It was the first spiral galaxy found.",
+      "fact_lt": "1845 metais Airijoje astronomas pamatė, kad Sūkurio galaktika turi spiralines vijas. Tai pirmoji atrasta spiralinė galaktika.",
+      "related": [
+        "Boo",
+        "UMa",
+        "Com"
+      ],
+      "kind": "story"
+    },
+    "Cae": {
+      "story_en": "In the 1750s the French astronomer Lacaille named this tiny group the Engraver's Chisel. It was one of many tools he put in the southern sky.",
+      "story_lt": "XVIII amžiaus viduryje prancūzų astronomas Lakailis šią mažą grupę pavadino Skaptuku. Tai vienas iš daugelio įrankių, kuriuos jis iškėlė į pietų dangą.",
+      "fact_en": "Caelum is the eighth smallest constellation. Its brightest star is only magnitude 4.45, so it is hard to see.",
+      "fact_lt": "Skaptukas yra aštuntas mažiausias žvaigždynas. Ryškiausia jo žvaigždė tik 4,45 ryškio, todėl jį sunku pamatyti.",
+      "related": [
+        "Hor",
+        "Col",
+        "For"
+      ],
+      "kind": "story"
+    },
+    "Cam": {
+      "story_en": "Petrus Plancius drew this giraffe in 1612 or 1613. Its name joins the Greek words for camel and leopard: a giraffe has a long neck like a camel and spots like a leopard.",
+      "story_lt": "Petras Plancijus šią žirafą nupiešė 1612 arba 1613 metais. Jos vardas sujungia graikiškus žodžius „kupranugaris“ ir „leopardas“: žirafa turi ilgą kaklą kaip kupranugaris ir dėmes kaip leopardas.",
+      "fact_en": "Kemble's Cascade in Camelopardalis is a line of more than 20 stars, about 3 degrees long.",
+      "fact_lt": "Žirafoje yra Kemblo kaskada: daugiau nei 20 žvaigždžių, išsirikiavusių į maždaug 3 laipsnių ilgio liniją.",
+      "related": [
+        "Cas",
+        "UMa",
+        "Per"
+      ],
+      "kind": "story"
+    },
+    "Cap": {
+      "story_en": "Capricornus is a sea goat, half goat and half fish. The Babylonians knew it over 3,000 years ago. In Greek myth, the god Pan grew a fish tail and dived into a river to escape a monster.",
+      "story_lt": "Ožiaragis yra jūrų ožys: pusiau ožys, pusiau žuvis. Babiloniečiai jį žinojo prieš daugiau nei 3000 metų. Graikų mite dievas Panas užsiaugino žuvies uodegą ir nėrė į upę, kad pabėgtų nuo pabaisos.",
+      "fact_en": "Neptune was found in 1846 near Deneb Algedi, the goat's brightest star. The name means \"tail of the goat\".",
+      "fact_lt": "Neptūnas 1846 metais atrastas netoli Deneb Algedi, ryškiausios Ožiaragio žvaigždės. Šis vardas reiškia „ožio uodega“.",
+      "related": [
+        "Aqr",
+        "Sgr"
+      ],
+      "kind": "story"
+    },
+    "Car": {
+      "story_en": "Carina was once the keel of the giant ship Argo Navis, sailed by Jason and the Argonauts. In the 1700s Lacaille split that huge ship into three: Carina, Puppis and Vela.",
+      "story_lt": "Kilis kadaise buvo milžiniško laivo Argo apatinė dalis. Tuo laivu plaukė Jasonas ir argonautai. XVIII amžiuje Lakailis didįjį laivą padalijo į tris žvaigždynus: Kilį, Laivagalį ir Bures.",
+      "fact_en": "Canopus, Carina's brightest star, is the second brightest in the night sky. It is about 310 light-years away.",
+      "fact_lt": "Kanopus, ryškiausia Kilio žvaigždė, yra antra pagal ryškumą naktinio dangaus žvaigždė. Ji yra už maždaug 310 šviesmečių.",
+      "related": [
+        "Pup",
+        "Vel"
+      ],
+      "kind": "link"
+    },
+    "Cas": {
+      "story_en": "In Greek myth, Queen Cassiopeia boasted too much about her beauty. She was placed in the sky on her throne, circling the sky's north pole. Her five brightest stars draw a big W.",
+      "story_lt": "Graikų mite karalienė Kasiopėja pernelyg gyrėsi savo grožiu. Ji buvo pasodinta danguje ant sosto, kuris sukasi aplink šiaurinį dangaus polių. Penkios ryškiausios jos žvaigždės brėžia didelę raidę W.",
+      "fact_en": "A star exploded in Cassiopeia in 1572. Astronomer Tycho Brahe watched it, so it is called Tycho's supernova.",
+      "fact_lt": "1572 metais Kasiopėjoje sprogo žvaigždė. Astronomas Tichas Brahė ją stebėjo, todėl ji vadinama Ticho supernova.",
+      "related": [
+        "Cep",
+        "And",
+        "Cet",
+        "UMi"
+      ],
+      "kind": "story"
+    },
+    "Cen": {
+      "story_en": "In Greek myth, this centaur is Chiron, a wise teacher. He taught young heroes, including Heracles and Jason. Most centaurs were wild, but Chiron was kind and clever.",
+      "story_lt": "Graikų mite šis kentauras yra Cheironas, išmintingas mokytojas. Jis mokė jaunus didvyrius, tarp jų Heraklį ir Jasoną. Dauguma kentaurų buvo laukiniai, o Cheironas buvo geras ir protingas.",
+      "fact_en": "Alpha Centauri, about 4.4 light-years away, is the closest star system. Its dim star Proxima is closest.",
+      "fact_lt": "Kentauro Alfa yra arčiausia mums žvaigždžių sistema, už maždaug 4,4 šviesmečio. Jos blanki žvaigždė Kentauro Proksima yra pati artimiausia.",
+      "related": [
+        "Cru",
+        "Lup",
+        "Cir"
+      ],
+      "kind": "story"
+    },
+    "Cep": {
+      "story_en": "King Cepheus ruled Aethiopia in Greek myth. He was the husband of Cassiopeia and the father of Andromeda. The whole royal family sits together in the northern sky.",
+      "story_lt": "Graikų mite Cefėjas valdė Etiopiją. Jis buvo Kasiopėjos vyras ir Andromedos tėvas. Visa karališka šeima kartu sėdi šiaurės danguje.",
+      "fact_en": "Delta Cephei brightens and fades every 5 days and 9 hours. Cepheid stars are named after it.",
+      "fact_lt": "Cefėjo Delta kas 5 paras ir 9 valandas tai pašviesėja, tai nublanksta. Pagal ją pavadintos cefeidės.",
+      "related": [
+        "Cas",
+        "And",
+        "Cet"
+      ],
+      "kind": "link"
+    },
+    "Cet": {
+      "story_en": "In Greek myth, Cetus is a sea monster sent to attack the kingdom of Aethiopia. The hero Perseus defeated it and saved Andromeda.",
+      "story_lt": "Graikų mite Banginis yra jūrų pabaisa, pasiųsta pulti Etiopijos karalystę. Didvyris Persėjas ją nugalėjo ir išgelbėjo Andromedą.",
+      "fact_en": "Mira, a star in Cetus, fades and glows again about every 332 days. Fabricius first noted it in 1596.",
+      "fact_lt": "Mira, Banginio žvaigždė, maždaug kas 332 dienas nublanksta ir vėl sužimba. Davidas Fabricijus ją pirmasis užrašė 1596 metais.",
+      "related": [
+        "And",
+        "Per",
+        "Cep",
+        "Cas"
+      ],
+      "kind": "link"
+    },
+    "Cha": {
+      "story_en": "Dutch sailors watched the southern sky on their voyage to the East Indies. In the late 1590s the mapmaker Plancius used their notes to add a chameleon, a lizard that changes colour.",
+      "story_lt": "Olandų jūreiviai, plaukdami į Rytų Indiją, stebėjo pietų dangų. XVI amžiaus pabaigoje žemėlapių kūrėjas Plancijus pagal jų užrašus pridėjo chameleoną, driežą, kuris keičia spalvą.",
+      "fact_en": "Chamaeleon has dark clouds of gas and dust where new stars are being born.",
+      "fact_lt": "Chameleone yra tamsūs dujų ir dulkių debesys, kuriuose gimsta naujos žvaigždės.",
+      "related": [
+        "Mus",
+        "Aps",
+        "Vol"
+      ],
+      "kind": "story"
+    },
+    "Cir": {
+      "story_en": "Lacaille drew this tiny group in 1756 as a pair of compasses, the tool for drawing circles. It is one of the smallest constellations, 85th out of 88.",
+      "story_lt": "1756 metais Lakailis šią mažytę grupę nupiešė kaip skriestuvą, įrankį apskritimams braižyti. Tai vienas mažiausių žvaigždynų, 85-as iš 88.",
+      "fact_en": "The Circinus Galaxy, about 13 million light-years away, is one of the closest galaxies with a very active centre.",
+      "fact_lt": "Skriestuve yra galaktika, nutolusi apie 13 milijonų šviesmečių. Tai viena artimiausių galaktikų su labai aktyviu centru.",
+      "related": [
+        "Cen",
+        "Ant",
+        "Ara"
+      ],
+      "kind": "story"
+    },
+    "Cnc": {
+      "story_en": "In Greek myth, a crab joined the fight while Heracles battled the many-headed Hydra. It nipped his foot. Hera, who disliked Heracles, then put the crab in the sky.",
+      "story_lt": "Graikų mite, kai Heraklis kovėsi su daugiagalve Hidra, prie jo atropojo vėžys ir įgnybo jam į koją. Hera, nemėgusi Heraklio, vėžį iškėlė į dangų.",
+      "fact_en": "Cancer holds the Beehive Cluster, nearly 600 light-years away. In 1609 Galileo counted 40 stars in it.",
+      "fact_lt": "Vėžyje yra spiečius Prakartas (M44), nutolęs beveik 600 šviesmečių. 1609 metais Galilėjus jame suskaičiavo 40 žvaigždžių.",
+      "related": [
+        "Her",
+        "Hya",
+        "Gem",
+        "Leo"
+      ],
+      "kind": "link"
+    },
+    "Col": {
+      "story_en": "In 1592 the mapmaker Plancius made this dove from stars near Canis Major. He called it Noah's Dove, the bird that brought news that the great flood was ending.",
+      "story_lt": "1592 metais žemėlapių kūrėjas Plancijus iš žvaigždžių prie Didžiojo Šuns sukūrė šį balandį. Jis pavadino jį Nojaus balandžiu, paukščiu, kuris atnešė žinią, kad tvanas baigiasi.",
+      "fact_en": "Phact, the Dove's brightest star, is about 268 light-years away. Mu Columbae is a runaway star.",
+      "fact_lt": "Faktas, ryškiausia Balandžio žvaigždė, yra už maždaug 268 šviesmečių. Balandžio Mu yra žvaigždė pabėgėlė.",
+      "related": [
+        "CMa",
+        "Pup"
+      ],
+      "kind": "story"
+    },
+    "Com": {
+      "story_en": "Queen Berenice of Egypt cut off her long hair and gave it to a temple, thanking the gods for her husband's safe return. It vanished, and the court astronomer Conon said the gods had put it in the sky.",
+      "story_lt": "Egipto karalienė Berenikė nusikirpo ilgus plaukus ir paaukojo šventyklai, dėkodama dievams už vyro sveiką sugrįžimą. Plaukams dingus, rūmų astronomas Kononas pasakė, kad dievai juos iškėlė į dangų.",
+      "fact_en": "The Coma Star Cluster is so spread out that its stars cover more than seven degrees of sky.",
+      "fact_lt": "Berenikės Garbanų žvaigždžių spiečius toks išsklaidytas, kad jo žvaigždės užima daugiau nei septynis dangaus laipsnius.",
+      "related": [
+        "Leo",
+        "Boo",
+        "CVn"
+      ],
+      "kind": "story"
+    },
+    "CrA": {
+      "story_en": "The Greeks saw this as a wreath near Sagittarius. It is the southern partner of the Northern Crown. Other peoples saw a turtle, an ostrich nest or a tent.",
+      "story_lt": "Graikai čia matė vainiką šalia Šaulio. Jis lyg pietinis Šiaurės Vainiko brolis. Kitos tautos čia matė vėžlį, stručio lizdą ar palapinę.",
+      "fact_en": "The Southern Crown holds one of the closest star nurseries, a dusty cloud about 430 light-years away.",
+      "fact_lt": "Pietų Vainike yra vienas artimiausių žvaigždžių lopšių: dulkėtas debesis, nutolęs apie 430 šviesmečių.",
+      "related": [
+        "CrB",
+        "Sgr",
+        "Sco"
+      ],
+      "kind": "link"
+    },
+    "CrB": {
+      "story_en": "In Greek myth, this is the crown the god Dionysus gave to Ariadne, a princess of Crete. He placed it in the sky as a ring of jewels.",
+      "story_lt": "Graikų mite tai vainikas, kurį dievas Dionisas padovanojo Ariadnei, Kretos princesei. Jis iškėlė jį į dangų kaip brangakmenių lanką.",
+      "fact_en": "Its brightest star, Alphecca, is 75 light-years away. Its Arabic name means \"the bright one of the broken ring\".",
+      "fact_lt": "Ryškiausia jo žvaigždė Gema, arabiškai Alfeka, yra už 75 šviesmečių. Arabiškas vardas reiškia „ryškioji iš sulūžusio žiedo“.",
+      "related": [
+        "Boo",
+        "Her",
+        "CrA"
+      ],
+      "kind": "story"
+    },
+    "Crt": {
+      "story_en": "In Greek myth, this is the cup of the god Apollo. He sent a crow to fetch water in it, but the crow dawdled. Apollo set cup, crow and water snake in the sky.",
+      "story_lt": "Graikų mite tai dievo Apolono taurė. Jis pasiuntė varną joje pasemti vandens, bet varnas užtruko. Apolonas iškėlė į dangų taurę, varną ir vandens gyvatę.",
+      "fact_en": "Crater has no star brighter than third magnitude. Its star Alkes has an old name meaning \"the cup\".",
+      "fact_lt": "Taurėje nėra žvaigždžių, ryškesnių už trečią ryškį. Jos žvaigždės Alkes vardas reiškia „taurė“.",
+      "related": [
+        "Crv",
+        "Hya",
+        "Leo"
+      ],
+      "kind": "link"
+    },
+    "Cru": {
+      "story_en": "Crux is the smallest of all 88 constellations. The Greeks counted its stars as part of Centaurus. Sailors in the south use the Cross to find south.",
+      "story_lt": "Kryžius yra mažiausias iš visų 88 žvaigždynų. Graikai jo žvaigždes laikė Kentauro dalimi. Pietų pusrutulio jūreiviai pagal Kryžių randa pietus.",
+      "fact_en": "Five national flags show the Southern Cross: Australia, Brazil, New Zealand, Papua New Guinea and Samoa.",
+      "fact_lt": "Pietų Kryžių savo vėliavose turi penkios šalys: Australija, Brazilija, Naujoji Zelandija, Papua Naujoji Gvinėja ir Samoa.",
+      "related": [
+        "Cen",
+        "Mus"
+      ],
+      "kind": "fact"
+    },
+    "Crv": {
+      "story_en": "In Greek myth, Apollo sent a crow to fetch water, but it stopped to wait for figs to ripen. It blamed a water snake. Apollo saw the lie and put crow, cup and snake in the sky.",
+      "story_lt": "Graikų mite Apolonas pasiuntė varną atnešti vandens, bet šis sustojo palaukti, kol sunoks figos. Varnas apkaltino vandens gyvatę. Apolonas suprato melą ir iškėlė į dangų varną, taurę ir gyvatę.",
+      "fact_en": "Four stars of Corvus make a neat four-sided shape called the Sail.",
+      "fact_lt": "Keturios Varno žvaigždės sudaro keturkampį, vadinamą Bure.",
+      "related": [
+        "Crt",
+        "Hya",
+        "Vir"
+      ],
+      "kind": "link"
+    },
+    "Cyg": {
+      "story_en": "One Greek tale says the poet Orpheus became a swan and flew beside his lyre. Cygnus flies along the Milky Way, and its brightest stars form the Northern Cross.",
+      "story_lt": "Vienas graikų pasakojimas sako, kad poetas Orfėjas tapo gulbe ir skrenda šalia savo lyros. Gulbė skrieja palei Paukščių Taką, o ryškiausios jos žvaigždės sudaro Šiaurės Kryžių.",
+      "fact_en": "Albireo, at the swan's beak, looks like one star. A telescope shows two: one amber, one blue-green.",
+      "fact_lt": "Albireo, gulbės snapas, atrodo kaip viena žvaigždė. Pro teleskopą matyti dvi: viena gintarinė, kita melsvai žalia.",
+      "related": [
+        "Lyr",
+        "Aql"
+      ],
+      "kind": "story"
+    },
+    "Del": {
+      "story_en": "A Greek legend says sailors forced the poet Arion into the sea. A dolphin who loved his music carried him safely to land, and the dolphin was placed in the sky.",
+      "story_lt": "Graikų legenda pasakoja, kad jūreiviai privertė poetą Arioną šokti į jūrą. Delfinas, pamėgęs jo muziką, saugiai nunešė jį į krantą, o pats delfinas buvo iškeltas į dangų.",
+      "fact_en": "Two stars here are named Sualocin and Rotanev. Read backwards they spell Nicolaus Venator, an astronomer's name.",
+      "fact_lt": "Dvi Delfino žvaigždės vadinamos Sualocin ir Rotanev. Perskaitę atbulai gausite Nicolaus Venator, astronomo vardą.",
+      "related": [
+        "Equ",
+        "Aql",
+        "Cyg"
+      ],
+      "kind": "fact"
+    },
+    "Dor": {
+      "story_en": "Dorado is Spanish for \"golden\" and is the name of a real fish, the mahi-mahi. Some maps draw it as a swordfish or call it the goldfish. Plancius added it in the late 1590s.",
+      "story_lt": "Dorado ispaniškai reiškia „auksinis“. Taip vadinama tikra jūrų žuvis mahi mahi. Kai kuriuose žemėlapiuose ji piešiama kaip kardžuvė arba vadinama Aukso Žuvimi. Plancijus ją pridėjo XVI amžiaus pabaigoje.",
+      "fact_en": "Dorado holds most of the Large Magellanic Cloud, a small galaxy about 160,000 light-years away.",
+      "fact_lt": "Aukso Žuvyje yra didžioji Didžiojo Magelano Debesies dalis. Tai maža galaktika, nutolusi apie 160 000 šviesmečių.",
+      "related": [
+        "Hor",
+        "Hyi",
+        "Pic"
+      ],
+      "kind": "fact"
+    },
+    "Dra": {
+      "story_en": "In Greek myth, this is Ladon, the dragon guarding the golden apples. Heracles faced it. In the sky Hercules stands with one foot on the dragon's head.",
+      "story_lt": "Graikų mite tai Ladonas, auksinių obuolių sargas slibinas. Su juo susidūrė Heraklis. Danguje Heraklis stovi viena koja ant slibino galvos.",
+      "fact_en": "Thuban in Draco was the north pole star from about 3942 BC to 1793 BC.",
+      "fact_lt": "Slibino žvaigždė Tubanas buvo šiaurės ašigalio žvaigždė maždaug nuo 3942 iki 1793 metų prieš Kristų.",
+      "related": [
+        "Her",
+        "UMa",
+        "UMi"
+      ],
+      "kind": "link"
+    },
+    "Equ": {
+      "story_en": "The Little Horse is the second smallest constellation, after Crux. One old tale says it is Celeris, a foal related to Pegasus, given to Castor by the god Mercury.",
+      "story_lt": "Žirgelis yra antras mažiausias žvaigždynas po Kryžiaus. Vienas senas pasakojimas sako, kad tai Celeris, Pegaso giminaitis kumeliukas, kurį dievas Merkurijus padovanojo Kastorui.",
+      "fact_en": "Equuleus covers just 72 square degrees. Its brightest star, Kitalpha, means \"the section of the horse\".",
+      "fact_lt": "Žirgelis užima vos 72 kvadratinius laipsnius. Ryškiausios jo žvaigždės Kitalfaro vardas reiškia „žirgo dalis“.",
+      "related": [
+        "Peg",
+        "Del",
+        "Gem",
+        "Aqr"
+      ],
+      "kind": "fact"
+    },
+    "Eri": {
+      "story_en": "A Greek tale says this river of stars marks the path of Phaethon, who lost control of the Sun's chariot. Later it was also linked with the River Po in Italy.",
+      "story_lt": "Graikų pasakojimas sako, kad ši žvaigždžių upė žymi Faetono, nesuvaldžiusio Saulės vežimo, kelią. Vėliau ji buvo siejama ir su Po upe Italijoje.",
+      "fact_en": "Achernar, about 140 light-years away, spins so fast that it is one of the flattest stars known.",
+      "fact_lt": "Achernaras, nutolęs apie 140 šviesmečių, sukasi taip greitai, kad yra viena plokščiausių žinomų žvaigždžių.",
+      "related": [
+        "Ori",
+        "Cet",
+        "For"
+      ],
+      "kind": "story"
+    },
+    "For": {
+      "story_en": "The French astronomer Lacaille named this the Chemical Furnace in the 1750s, after a lab oven. He gave many southern stars the names of science tools.",
+      "story_lt": "XVIII amžiaus viduryje prancūzų astronomas Lakailis šį žvaigždyną pavadino Chemine Krosnimi, pagal laboratorijos krosnį. Daugeliui pietų žvaigždynų jis davė mokslo prietaisų vardus.",
+      "fact_en": "The Hubble Ultra-Deep Field, a famous picture of far-away galaxies, lies inside Fornax.",
+      "fact_lt": "Krosnies žvaigždyne Hablo teleskopas padarė garsią nuotrauką, kurioje matyti daugybė tolimų galaktikų.",
+      "related": [
+        "Eri",
+        "Cet",
+        "Phe",
+        "Scl"
+      ],
+      "kind": "story"
+    },
+    "Gem": {
+      "story_en": "In Greek myth, Castor and Pollux were twin brothers. When Castor, who was mortal, died, Pollux begged Zeus to let them stay together. Zeus placed both brothers in the sky.",
+      "story_lt": "Graikų mite Kastoras ir Poluksas buvo broliai dvyniai. Kai mirtingasis Kastoras mirė, Poluksas maldavo Dzeusą leisti jiems būti kartu. Dzeusas abu brolius iškėlė į dangų.",
+      "fact_en": "Castor looks like one star, but it is six stars together, about 50 light-years away.",
+      "fact_lt": "Kastoras atrodo kaip viena žvaigždė, bet iš tikrųjų tai šešios žvaigždės, nutolusios apie 50 šviesmečių.",
+      "related": [
+        "Tau",
+        "Cnc",
+        "Ori"
+      ],
+      "kind": "story"
+    },
+    "Gru": {
+      "story_en": "Grus is a crane, a tall wading bird. The mapmaker Plancius added it to a globe in 1598, using notes from two Dutch sailors who watched the southern sky.",
+      "story_lt": "Gervė yra aukštakojis paukštis. Žemėlapių kūrėjas Plancijus ją pavaizdavo gaublyje 1598 metais, pagal olandų jūreivių, stebėjusių pietų dangų, užrašus.",
+      "fact_en": "Alnair, the Crane's brightest star, is about 101 light-years away. Its name means \"the bright one\".",
+      "fact_lt": "Alnairas, ryškiausia Gervės žvaigždė, yra už maždaug 101 šviesmečio. Jo vardas reiškia „ryškioji“.",
+      "related": [
+        "Phe",
+        "Tuc",
+        "Ind",
+        "Aps"
+      ],
+      "kind": "story"
+    },
+    "Her": {
+      "story_en": "In Greek myth, Heracles was a hero famous for his twelve labours. Hercules is his Roman name. In the sky he stands upside down, one foot on Draco the Dragon.",
+      "story_lt": "Graikų mituose Heraklis buvo didvyris, atlikęs dvylika garsių žygdarbių. Danguje jis atrodo apsivertęs aukštyn kojomis, viena koja užlipęs ant Slibino.",
+      "fact_en": "In 1974 astronomers sent a radio message toward M13, a star cluster in Hercules over 20,000 light-years away.",
+      "fact_lt": "1974 metais astronomai išsiuntė radijo žinutę į M13, Heraklio žvaigždžių spiečių, nutolusį daugiau nei 20 000 šviesmečių.",
+      "related": [
+        "Dra",
+        "CrB",
+        "Lyr"
+      ],
+      "kind": "link"
+    },
+    "Hor": {
+      "story_en": "Lacaille named this faint group in 1756 after a pendulum clock. He pictured a pendulum and a second hand, and drew the stars as parts of the clock.",
+      "story_lt": "1756 metais Lakailis šią blyškią grupę pavadino Laikrodžiu. Jis nupiešė laikrodį su švytuokle ir sekundžių rodykle.",
+      "fact_en": "Its brightest star, Alpha Horologii, is an old orange giant about 11 times wider than the Sun.",
+      "fact_lt": "Ryškiausia jo žvaigždė, Laikrodžio Alfa, yra sena oranžinė milžinė, maždaug 11 kartų platesnė už Saulę.",
+      "related": [
+        "Dor",
+        "Eri",
+        "Cae",
+        "Ret"
+      ],
+      "kind": "story"
+    },
+    "Hya": {
+      "story_en": "Hydra is the biggest constellation of all, over 100 degrees long. The Greeks linked it with the many-headed water snake Heracles beat, and with the snake in the crow and cup tale.",
+      "story_lt": "Hidra yra didžiausias žvaigždynas: ji driekiasi per daugiau nei 100 laipsnių. Graikai ją siejo su daugiagalve vandens gyvate, kurią nugalėjo Heraklis, ir su gyvate iš pasakojimo apie varną ir taurę.",
+      "fact_en": "Hydra covers 1,303 square degrees. Its brightest star, Alphard, means \"the solitary one\".",
+      "fact_lt": "Hidra užima 1303 kvadratinius laipsnius. Ryškiausia jos žvaigždė Alfardas reiškia „vienišasis“.",
+      "related": [
+        "Crt",
+        "Crv",
+        "Cnc",
+        "Her"
+      ],
+      "kind": "link"
+    },
+    "Hyi": {
+      "story_en": "Hydrus is a small water snake from the 1590s. Dutch sailors watched the south sky and Plancius mapped it. Big Hydra is the \"female\" snake, little Hydrus the \"male\" one.",
+      "story_lt": "Pietų Hidra yra maža vandens gyvatė, atsiradusi XVI amžiaus pabaigoje. Olandų jūreiviai stebėjo pietų dangų, o Plancijus ją pažymėjo žemėlapyje. Didžioji Hidra laikoma „patele“, o mažoji Pietų Hidra „patinu“.",
+      "fact_en": "Beta Hydri is only 24 light-years away and one of the oldest stars near us, over six billion years old.",
+      "fact_lt": "Pietų Hidros Beta yra vos už 24 šviesmečių. Tai viena seniausių netoliese esančių žvaigždžių, jai daugiau nei šeši milijardai metų.",
+      "related": [
+        "Hya",
+        "Dor",
+        "Tuc",
+        "Oct"
+      ],
+      "kind": "link"
+    },
+    "Ind": {
+      "story_en": "The Indian was added to the sky in 1598. The mapmaker Plancius drew a man holding arrows, using notes by Dutch sailors.",
+      "story_lt": "Indėnas atsirado danguje 1598 metais. Žemėlapių kūrėjas Plancijus, remdamasis olandų jūreivių užrašais, nupiešė vyrą su strėlėmis.",
+      "fact_en": "Epsilon Indi is about 11.8 light-years away. A pair of brown dwarfs, failed stars, circles it.",
+      "fact_lt": "Indėno Epsilon yra už maždaug 11,8 šviesmečio. Aplink ją sukasi dvi rudosios nykštukės, nepavykusios žvaigždės.",
+      "related": [
+        "Aps",
+        "Gru",
+        "Tuc",
+        "Pav"
+      ],
+      "kind": "story"
+    },
+    "LMi": {
+      "story_en": "The astronomer Johannes Hevelius drew this little lion in 1687, beside the big lion Leo. In 2007 a Dutch teacher, Hanny van Arkel, spotted a strange glowing cloud here while helping scientists online.",
+      "story_lt": "Astronomas Hevelijus šį mažą liūtą nupiešė 1687 metais, šalia didžiojo Liūto. 2007 metais olandų mokytoja Hanny van Arkel, internetu padėdama mokslininkams, čia pastebėjo keistą švytintį debesį.",
+      "fact_en": "Its brightest star, 46 Leonis Minoris, is an orange giant about 95 light-years away.",
+      "fact_lt": "Ryškiausia jo žvaigždė, 46 Leonis Minoris, yra oranžinė milžinė, maždaug 95 šviesmečių nuo mūsų.",
+      "related": [
+        "Leo"
+      ],
+      "kind": "story"
+    },
+    "Lac": {
+      "story_en": "Hevelius named this zigzag in 1687. At first he called it Stellio, after a Mediterranean lizard with star-like spots. Its W shape looks like Cassiopeia, so some call it Little Cassiopeia.",
+      "story_lt": "Hevelijus šią zigzago formos grupę pavadino 1687 metais. Iš pradžių jis ją vadino Stellio, pagal Viduržemio jūros driežą su žvaigždės formos dėmėmis. Ji primena Kasiopėjos raidę W, todėl kartais vadinama Mažąja Kasiopėja.",
+      "fact_en": "BL Lacertae looks like a dim star, but it is really the glowing heart of a faraway galaxy.",
+      "fact_lt": "BL Lacertae atrodo kaip blausi žvaigždė, bet iš tikrųjų tai tolimos galaktikos švytintis centras.",
+      "related": [
+        "Cas"
+      ],
+      "kind": "story"
+    },
+    "Leo": {
+      "story_en": "In Greek myth, Leo is the Nemean Lion, a beast no weapon could hurt. Heracles beat it as the first of his twelve labours. The lion was then placed in the sky.",
+      "story_lt": "Graikų mite Liūtas yra Nemėjos liūtas, kurio neėmė jokie ginklai. Heraklis jį nugalėjo, atlikdamas pirmąjį iš dvylikos žygdarbių. Tada liūtas buvo iškeltas į dangų.",
+      "fact_en": "Regulus, Leo's brightest star, is about 79 light-years away. Its name means \"little king\".",
+      "fact_lt": "Ryškiausia Liūto žvaigždė Regulas yra už maždaug 79 šviesmečių. Jo vardas reiškia „mažasis karalius“.",
+      "related": [
+        "LMi",
+        "Her"
+      ],
+      "kind": "story"
+    },
+    "Lep": {
+      "story_en": "Lepus is a hare running just below Orion's feet. In the old star pictures Orion hunts it, and his two hunting dogs, Canis Major and Canis Minor, chase close behind.",
+      "story_lt": "Kiškis bėga tiesiai po Oriono kojomis. Senuosiuose žvaigždžių paveiksluose Orionas jį medžioja, o du jo medžiokliniai šunys, Didysis ir Mažasis Šuo, vejasi iš paskos.",
+      "fact_en": "R Leporis is called Hind's Crimson Star for its deep red colour. It slowly brightens and fades.",
+      "fact_lt": "R Leporis vadinama Hindo raudonąja žvaigžde dėl sodrios raudonos spalvos. Jos ryškumas pamažu kinta.",
+      "related": [
+        "Ori",
+        "CMa",
+        "CMi"
+      ],
+      "kind": "link"
+    },
+    "Lib": {
+      "story_en": "Long ago Babylonians saw scales here. The Greeks saw the claws of Scorpius. Later the Romans made it the scales of Astraea, goddess of justice.",
+      "story_lt": "Labai seniai babiloniečiai čia matė svarstykles. Graikai matė Skorpiono žnyples. Vėliau romėnai jas pavertė teisingumo deivės Astrėjos svarstyklėmis.",
+      "fact_en": "Its brightest star, Zubeneschamali, has an Arabic name meaning \"northern claw\".",
+      "fact_lt": "Ryškiausia jo žvaigždė Zubenesachmalis turi arabišką vardą, reiškiantį „šiaurinė žnyplė“.",
+      "related": [
+        "Sco",
+        "Vir"
+      ],
+      "kind": "link"
+    },
+    "Lup": {
+      "story_en": "The ancient Greeks saw a wild animal here, held out by the centaur Centaurus. Hipparchus called it Therion, which means \"beast\". Only later was it called a wolf.",
+      "story_lt": "Senovės graikai čia matė laukinį žvėrį, kurį laiko Kentauras. Hiparchas jį pavadino Terionu, tai reiškia „žvėris“. Vilku jis buvo pavadintas tik vėliau.",
+      "fact_en": "In the year 1006 a star exploded in Lupus. It was the brightest star explosion in recorded history.",
+      "fact_lt": "1006 metais Vilke sprogo žvaigždė. Tai ryškiausias žvaigždės sprogimas, užfiksuotas istorijoje.",
+      "related": [
+        "Cen"
+      ],
+      "kind": "story"
+    },
+    "Lyn": {
+      "story_en": "Hevelius made Lynx in 1687 from faint stars between the Great Bear and Auriga. He joked that only people with the sharp eyes of a lynx could ever find it.",
+      "story_lt": "Hevelijus Lūšį sukūrė 1687 metais iš blyškių žvaigždžių tarp Didžiosios Meškos ir Vežėjo. Jis juokavo, kad ją pamatys tik tie, kurie turi aštrią lūšies akį.",
+      "fact_en": "Its brightest star, Alpha Lyncis, is an orange giant about 220 light-years away.",
+      "fact_lt": "Ryškiausia jos žvaigždė, Lūšies Alfa, yra oranžinė milžinė, už maždaug 220 šviesmečių.",
+      "related": [
+        "UMa",
+        "Aur"
+      ],
+      "kind": "story"
+    },
+    "Lyr": {
+      "story_en": "In Greek myth, Lyra is the lyre of Orpheus. His music was so sweet it could charm even rocks. After he died, his lyre was placed among the stars.",
+      "story_lt": "Graikų mite Lyra yra Orfėjo lyra. Jo muzika buvo tokia graži, kad žavėjo net akmenis. Orfėjui mirus, jo lyra buvo iškelta tarp žvaigždžių.",
+      "fact_en": "Vega, Lyra's brightest star, is only about 25 light-years away. It is the fifth-brightest star in our sky.",
+      "fact_lt": "Vega, ryškiausia Lyros žvaigždė, yra vos už 25 šviesmečių. Tai penkta pagal ryškumą naktinio dangaus žvaigždė.",
+      "related": [
+        "Cyg",
+        "Aql"
+      ],
+      "kind": "story"
+    },
+    "Men": {
+      "story_en": "Mensa is named after Table Mountain, a real mountain above Cape Town in South Africa. In the 1750s Lacaille watched the southern stars from near there.",
+      "story_lt": "Stalkalnis pavadintas Stalo kalno, tikro kalno virš Keiptauno Pietų Afrikoje, garbei. XVIII amžiaus viduryje netoli jo pietų žvaigždes stebėjo Lakailis.",
+      "fact_en": "Mensa is the faintest constellation of all. Part of the Large Magellanic Cloud lies inside it.",
+      "fact_lt": "Stalkalnis yra blyškiausias iš visų žvaigždynų. Jame yra dalis Didžiojo Magelano Debesies.",
+      "related": [
+        "Dor"
+      ],
+      "kind": "fact"
+    },
+    "Mic": {
+      "story_en": "Lacaille named Microscopium in the 1750s. Of his 14 new southern constellations, all but one honour tools of the Age of Enlightenment, like the microscope and the telescope.",
+      "story_lt": "Lakailis Mikroskopą pavadino XVIII amžiaus viduryje. Iš 14 jo naujų pietų žvaigždynų visi, išskyrus vieną, pagerbia Švietimo epochos prietaisus, pavyzdžiui, mikroskopą ir teleskopą.",
+      "fact_en": "Lacaille 8760 in Microscopium is the brightest red dwarf in our sky, but you need a telescope to see it.",
+      "fact_lt": "Mikroskope yra Lacaille 8760, ryškiausia mūsų danguje raudonoji nykštukė. Vis dėlto jai pamatyti reikia teleskopo.",
+      "related": [
+        "Tel"
+      ],
+      "kind": "story"
+    },
+    "Mon": {
+      "story_en": "No Greek myth here. Dutch mapmaker Petrus Plancius put the Unicorn on a globe in 1612 or 1613. It sits between Orion's dogs, Canis Major and Canis Minor.",
+      "story_lt": "Graikų mito čia nėra. Olandų kartografas Petras Plancijus Vienaragį pavaizdavo gaublyje 1612 arba 1613 metais. Jis yra tarp dviejų Oriono šunų, Didžiojo ir Mažojo Šuns.",
+      "fact_en": "The Rosette Nebula in Monoceros is a glowing cloud of gas more than 100 light-years wide.",
+      "fact_lt": "Vienaragyje yra Rozetės ūkas: švytintis dujų debesis, platesnis nei 100 šviesmečių.",
+      "related": [
+        "Ori",
+        "CMa",
+        "CMi"
+      ],
+      "kind": "story"
+    },
+    "Mus": {
+      "story_en": "Dutch sailors mapped these stars on the first Dutch voyage to the East Indies. In 1598 one of them named it The Fly. For about 200 years, other maps called it the Bee.",
+      "story_lt": "Olandų jūreiviai šias žvaigždes pažymėjo per pirmąją olandų kelionę į Rytų Indiją. 1598 metais vienas jų pavadino jas Muse. Maždaug 200 metų kiti žemėlapiai ją vadino Bite.",
+      "fact_en": "Musca is tiny: it ranks 77th in size out of the 88 constellations.",
+      "fact_lt": "Musė labai maža: pagal dydį ji 77-a iš 88 žvaigždynų.",
+      "related": [],
+      "kind": "story"
+    },
+    "Nor": {
+      "story_en": "In the 1750s Lacaille named Norma after a carpenter's square and ruler. Far beyond it, about 200 million light-years away, lies a giant galaxy cluster that may be the Great Attractor.",
+      "story_lt": "XVIII amžiaus viduryje Lakailis Kampainį pavadino pagal staliaus kampainį ir liniuotę. Toli už jo, už maždaug 200 milijonų šviesmečių, yra milžiniškas galaktikų spiečius. Galbūt tai Didysis atraktorius.",
+      "fact_en": "Norma holds Mu Normae, one of the most luminous stars known, shining like hundreds of thousands of Suns.",
+      "fact_lt": "Kampainyje yra Mu Normae, viena šviesiausių žinomų žvaigždžių, spindinti kaip šimtai tūkstančių Saulių.",
+      "related": [],
+      "kind": "fact"
+    },
+    "Oct": {
+      "story_en": "The octant is a tool sailors used to find their position by the stars. It was invented in 1730. In the 1750s Lacaille named this southern constellation after it.",
+      "story_lt": "Oktantas yra prietaisas, kuriuo jūreiviai pagal žvaigždes nustatydavo savo vietą. Jis išrastas 1730 metais. XVIII amžiaus viduryje Lakailis jo garbei pavadino šį pietų žvaigždyną.",
+      "fact_en": "The sky's south pole lies in Octans. Its faint pole star, Sigma Octantis, is only magnitude 5.4.",
+      "fact_lt": "Pietinis dangaus polius yra Oktante. Jo blyški poliarinė žvaigždė, Oktanto Sigma, yra tik 5,4 ryškio.",
+      "related": [],
+      "kind": "story"
+    },
+    "Oph": {
+      "story_en": "In Roman tales, Ophiuchus is the healer Asclepius, who learned his skill by watching a snake. Jupiter later placed him in the sky to honour his good work. He holds Serpens, the Snake.",
+      "story_lt": "Romėnų pasakojimuose Gyvatnešis yra gydytojas Asklepijas, išmokęs gydyti stebėdamas gyvatę. Jupiteris vėliau jį iškėlė į dangų, pagerbdamas jo gerus darbus. Jis laiko Gyvatę.",
+      "fact_en": "In 1604 a bright new star appeared in Ophiuchus: the last supernova in our galaxy seen by eye.",
+      "fact_lt": "1604 metais Gyvatnešyje pasirodė ryški nauja žvaigždė. Tai paskutinė mūsų galaktikoje plika akimi matyta supernova.",
+      "related": [
+        "Ser",
+        "Sco",
+        "Ori"
+      ],
+      "kind": "story"
+    },
+    "Ori": {
+      "story_en": "In Greek myth, Orion was a giant hunter. A scorpion was sent to stop him. Scorpius and Orion never share the sky: when one rises, the other sets.",
+      "story_lt": "Graikų mite Orionas buvo milžinas medžiotojas. Jam sustabdyti buvo pasiųstas skorpionas. Skorpionas ir Orionas niekada nebūna danguje kartu: kai vienas teka, kitas leidžiasi.",
+      "fact_en": "Rigel, Orion's bright blue foot, is about 860 light-years away. Red Betelgeuse is closer: 400 to 600 light-years.",
+      "fact_lt": "Rigelis, mėlyna žvaigždė Oriono kojoje, yra už maždaug 860 šviesmečių. Raudonoji Betelgeizė arčiau, nuo 400 iki 600 šviesmečių.",
+      "related": [
+        "Sco",
+        "Oph",
+        "Tau",
+        "Lep"
+      ],
+      "kind": "link",
+      "folk_en": "Lithuanians call Orion Šienpjoviai, the hay mowers, or sometimes Kūlėjai, the threshers. Three middle stars are the mowers, the other four are the sheaf binders.",
+      "folk_lt": "Lietuviai Orioną vadina Šienpjoviais, rečiau Kūlėjais. Trys vidurinės žvaigždės yra pjovėjai, kitos keturios rišėjos."
+    },
+    "Pav": {
+      "story_en": "Dutch sailors mapped Pavo on the first Dutch voyage to the East Indies. Plancius put it on a globe in 1598. The name probably comes from the peacocks they saw there.",
+      "story_lt": "Olandų jūreiviai Povą pažymėjo per pirmąją olandų kelionę į Rytų Indiją. Plancijus jį pavaizdavo gaublyje 1598 metais. Vardas greičiausiai kilo nuo ten matytų povų.",
+      "fact_en": "Alpha Pavonis, called Peacock, is two stars circling each other about every 12 days. It is about 180 light-years away.",
+      "fact_lt": "Povo Alfa, vadinama Povu, yra dvi žvaigždės, kurios apsisuka viena apie kitą maždaug per 12 dienų. Jos yra už maždaug 180 šviesmečių.",
+      "related": [],
+      "kind": "story"
+    },
+    "Peg": {
+      "story_en": "In Greek myth, the winged horse Pegasus was born from Medusa when Perseus defeated her. Later he carried the hero Bellerophon. His Great Square sits next to Andromeda.",
+      "story_lt": "Graikų mite sparnuotas žirgas Pegasas gimė iš Medūzos, kai ją nugalėjo Persėjas. Vėliau jis nešiojo didvyrį Belerofoną. Didysis Pegaso kvadratas yra šalia Andromedos.",
+      "fact_en": "In 1995 astronomers found the first planet around a Sun-like star, 51 Pegasi, just over 50 light-years away.",
+      "fact_lt": "1995 metais astronomai atrado pirmąją planetą, skriejančią aplink į Saulę panašią žvaigždę 51 Pegasi. Ši žvaigždė yra kiek daugiau nei už 50 šviesmečių.",
+      "related": [
+        "Per",
+        "And"
+      ],
+      "kind": "link"
+    },
+    "Per": {
+      "story_en": "In Greek myth, Perseus the hero defeated the monster Medusa. Then he rescued the princess Andromeda from the sea monster Cetus. Pegasus the winged horse was born from Medusa.",
+      "story_lt": "Graikų mite didvyris Persėjas nugalėjo pabaisą Medūzą. Paskui jis išgelbėjo princesę Andromedą nuo jūros pabaisos Banginio. Iš Medūzos gimė sparnuotas žirgas Pegasas.",
+      "fact_en": "Algol, Perseus's \"Demon Star\", dims every 2.87 days. It is about 90 light-years away.",
+      "fact_lt": "Algolis, Persėjo „Demono žvaigždė“, kas 2,87 dienos pritemsta. Jis yra už maždaug 90 šviesmečių.",
+      "related": [
+        "And",
+        "Peg",
+        "Cet",
+        "Cas"
+      ],
+      "kind": "story"
+    },
+    "Phe": {
+      "story_en": "The Dutch mapmaker Petrus Plancius added Phoenix to a globe in the late 1590s. The phoenix is a legendary bird that burns up and is born again from its ashes.",
+      "story_lt": "Olandų kartografas Petras Plancijus Feniksą pavaizdavo gaublyje XVI amžiaus pabaigoje. Feniksas yra legendinis paukštis, kuris sudega ir vėl atgimsta iš savo pelenų.",
+      "fact_en": "The Phoenix Cluster of galaxies, 5.7 billion light-years away, makes about 740 new stars every year.",
+      "fact_lt": "Fenikse yra Fenikso galaktikų spiečius, nutolęs 5,7 milijardo šviesmečių. Jame kasmet gimsta apie 740 naujų žvaigždžių.",
+      "related": [],
+      "kind": "story"
+    },
+    "Pic": {
+      "story_en": "Lacaille first called this the Easel and Palette in 1756, a painter's tools. Today astronomers call it Pictor, the painter's easel.",
+      "story_lt": "1756 metais Lakailis šią grupę pavadino Molbertu ir Palete, tapytojo įrankiais. Dabar ji vadinama Tapytoju.",
+      "fact_en": "Beta Pictoris, 63 light-years away, is wrapped in a big disk of dust and has three known planets.",
+      "fact_lt": "Beta Pictoris yra už 63 šviesmečių. Ją supa didelis dulkių diskas, o aplink ją skrieja trys žinomos planetos.",
+      "related": [],
+      "kind": "story"
+    },
+    "PsA": {
+      "story_en": "The Greeks called this the Great Fish. It drinks the water poured out by Aquarius. The two fishes of Pisces are said to be its babies.",
+      "story_lt": "Graikai šį žvaigždyną vadino Didžiąja Žuvimi. Ji geria vandenį, kurį pila Vandenis. Sakoma, kad dvi Žuvų žvaigždyno žuvys yra jos vaikai.",
+      "fact_en": "Fomalhaut, the fish's mouth, is only 25 light-years away. Dust circles it in a wide ring.",
+      "fact_lt": "Fomalhautas, žuvies burna, yra vos 25 šviesmečių atstumu. Aplink jį sukasi platus dulkių žiedas.",
+      "related": [
+        "Aqr",
+        "Psc"
+      ],
+      "kind": "link"
+    },
+    "Psc": {
+      "story_en": "Greek legend says the goddess Aphrodite and her son Eros once escaped the monster Typhon by jumping into a river and turning into fishes. Those two fishes are in the sky.",
+      "story_lt": "Graikų legenda sako, kad deivė Afroditė ir jos sūnus Erotas kadaise pabėgo nuo pabaisos Tifono: įšoko į upę ir pavirto žuvimis. Tos dvi žuvys dabar yra danguje.",
+      "fact_en": "The March equinox point, where the Sun crosses the sky's equator, is in Pisces, drifting toward Aquarius.",
+      "fact_lt": "Vieta, kur kovą Saulė kerta dangaus pusiaują, dabar yra Žuvyse. Ji lėtai slenka link Vandenio.",
+      "related": [
+        "Aqr",
+        "PsA"
+      ],
+      "kind": "story"
+    },
+    "Pup": {
+      "story_en": "Puppis was once the stern of the giant ship Argo Navis, sailed by Jason and the Argonauts. In the 1700s Lacaille cut that huge ship into three parts: Puppis, Vela and Carina.",
+      "story_lt": "Laivagalis kadaise buvo milžiniško laivo Argo užpakalinė dalis. Tuo laivu plaukė Jasonas ir argonautai. XVIII amžiuje Lakailis didįjį laivą padalijo į tris dalis: Laivagalį, Bures ir Kilį.",
+      "fact_en": "Naos, Puppis's brightest star, has a Greek name that means \"ship\".",
+      "fact_lt": "Naosas, ryškiausia Laivagalio žvaigždė, turi graikišką vardą, reiškiantį „laivas“.",
+      "related": [
+        "Vel",
+        "Car",
+        "Pyx"
+      ],
+      "kind": "story"
+    },
+    "Pyx": {
+      "story_en": "In the 1750s Lacaille named Pyxis the Marine Compass. Its stars lie near the spot that ancient sky watchers saw as the mast of Jason's ship, Argo Navis.",
+      "story_lt": "XVIII amžiaus viduryje Lakailis Kompasą pavadino Jūreivių kompasu. Jo žvaigždės yra netoli vietos, kurią senovėje laikė Jasono laivo Argo stiebu.",
+      "fact_en": "T Pyxidis has flared up six times: in 1890, 1902, 1920, 1944, 1966 and 2011.",
+      "fact_lt": "T Pyxidis sužibo šešis kartus: 1890, 1902, 1920, 1944, 1966 ir 2011 metais.",
+      "related": [
+        "Pup",
+        "Vel",
+        "Car"
+      ],
+      "kind": "story"
+    },
+    "Ret": {
+      "story_en": "Lacaille named Reticulum after the crosshair net inside his own telescope eyepiece. He used it to measure star positions from the Cape of Good Hope in the 1750s.",
+      "story_lt": "Lakailis Tinklelį pavadino pagal kryžminių siūlų tinklelį savo teleskopo okuliare. XVIII amžiaus viduryje juo matavo žvaigždžių padėtis Gerosios Vilties kyšulyje.",
+      "fact_en": "Zeta Reticuli is a pair of Sun-like stars about 39 light-years away.",
+      "fact_lt": "Zeta Reticuli yra dvi į Saulę panašios žvaigždės, nutolusios maždaug 39 šviesmečius.",
+      "related": [],
+      "kind": "story"
+    },
+    "Scl": {
+      "story_en": "In the 1750s Lacaille named this faint group the Sculptor's Studio. He gave several southern constellations to tools and workshops of science and art.",
+      "story_lt": "XVIII amžiaus viduryje Lakailis šią blyškią grupę pavadino Skulptoriaus dirbtuve. Kelis pietų žvaigždynus jis skyrė mokslo ir meno įrankiams bei dirbtuvėms.",
+      "fact_en": "The Cartwheel Galaxy, in Sculptor, is about 500 million light-years away. It looks like a wagon wheel.",
+      "fact_lt": "Skulptoriuje esanti Vežimo Rato galaktika yra už maždaug 500 milijonų šviesmečių. Ji atrodo kaip vežimo ratas.",
+      "related": [],
+      "kind": "story"
+    },
+    "Sco": {
+      "story_en": "Greek myth says Orion boasted that he would hunt every animal. A scorpion was sent to stop him. So Scorpius chases Orion across the sky: Orion sets as Scorpius rises.",
+      "story_lt": "Graikų mite Orionas gyrėsi, kad sumedžios visus gyvūnus. Jam sustabdyti buvo pasiųstas skorpionas. Todėl Skorpionas vejasi Orioną per dangų: Orionas leidžiasi, kai Skorpionas teka.",
+      "fact_en": "Antares, Scorpius's red heart, is about 550 light-years away. Its name means \"rival of Mars\".",
+      "fact_lt": "Antaris, raudona Skorpiono širdis, yra už maždaug 550 šviesmečių. Jo vardas reiškia „Marso varžovas“.",
+      "related": [
+        "Ori",
+        "Oph",
+        "Lib"
+      ],
+      "kind": "link"
+    },
+    "Sct": {
+      "story_en": "In 1684 Hevelius named this the Shield of Sobieski. It honours John III Sobieski, King of Poland and Grand Duke of Lithuania, and his victory at Vienna in 1683.",
+      "story_lt": "1684 metais Hevelijus šį žvaigždyną pavadino Sobieskio Skydu. Jis pagerbia Lenkijos karalių ir Lietuvos didįjį kunigaikštį Joną III Sobieskį bei jo pergalę Vienos mūšyje 1683 metais.",
+      "fact_en": "The Wild Duck Cluster, M11, is about 6,200 light-years away. Its stars look like a flock of flying ducks.",
+      "fact_lt": "Laukinių ančių spiečius M11 yra už maždaug 6200 šviesmečių. Jo žvaigždės primena skrendančių ančių pulką.",
+      "related": [],
+      "kind": "story"
+    },
+    "Ser": {
+      "story_en": "Serpens is the snake held by Ophiuchus. It is the only constellation cut into two parts: the head on one side of him, the tail on the other.",
+      "story_lt": "Gyvatę laiko Gyvatnešis. Tai vienintelis žvaigždynas, padalytas į dvi dalis: galva yra vienoje jo pusėje, uodega kitoje.",
+      "fact_en": "The Eagle Nebula, in Serpens, is about 5,700 light-years away. Its dark dust towers are the Pillars of Creation.",
+      "fact_lt": "Gyvatėje esantis Erelio ūkas yra už maždaug 5700 šviesmečių. Jo tamsūs dulkių stulpai vadinami Kūrinijos stulpais.",
+      "related": [
+        "Oph"
+      ],
+      "kind": "link"
+    },
+    "Sex": {
+      "story_en": "Hevelius named Sextans in 1687 for the sextant he lost when fire destroyed his observatory in 1679. A sextant is a tool for measuring how high a star is in the sky.",
+      "story_lt": "Hevelijus Sekstantą pavadino 1687 metais pagal sekstantą, kurį prarado, kai 1679 metais gaisras sunaikino jo observatoriją. Sekstantas yra prietaisas, kuriuo matuojama, kaip aukštai danguje yra žvaigždė.",
+      "fact_en": "After the fire, Hevelius rebuilt enough tools to watch the great comet of December 1680.",
+      "fact_lt": "Po gaisro Hevelijus atstatė tiek prietaisų, kad 1680 metų gruodį galėjo stebėti didžiąją kometą.",
+      "related": [
+        "Leo"
+      ],
+      "kind": "story"
+    },
+    "Sge": {
+      "story_en": "Sagitta is an arrow. One Greek tale says Heracles shot it to free Prometheus from an eagle. In the sky it lies just north of Aquila, the Eagle.",
+      "story_lt": "Graikų pasakojime šią strėlę paleido Heraklis, kad išlaisvintų Prometėją nuo erelio. Danguje Strėlė yra tiesiai į šiaurę nuo Erelio.",
+      "fact_en": "Sagitta is the third-smallest of the 88 constellations. Only Crux and Equuleus are smaller.",
+      "fact_lt": "Strėlė yra trečias mažiausias iš 88 žvaigždynų. Mažesni tik Kryžius ir Žirgelis.",
+      "related": [
+        "Aql",
+        "Her"
+      ],
+      "kind": "link"
+    },
+    "Sgr": {
+      "story_en": "Sagittarius is an archer. Some Greeks said he was the wise centaur Chiron. Others said he was Crotus, who lived among the Muses and invented archery. His stars make a teapot.",
+      "story_lt": "Šaulys yra lankininkas. Vieni graikai sakė, kad tai išmintingasis kentauras Cheironas. Kiti sakė, kad tai Krotas, gyvenęs tarp mūzų ir išradęs šaudymą iš lanko. Jo žvaigždės sudaro arbatinuką.",
+      "fact_en": "The centre of our Milky Way lies in the direction of Sagittarius.",
+      "fact_lt": "Mūsų Paukščių Tako centras yra ta kryptimi, kur matyti Šaulys.",
+      "related": [
+        "Sco"
+      ],
+      "kind": "story"
+    },
+    "Tau": {
+      "story_en": "Taurus is a bull, but only its front half is drawn. On its shoulder shines the Pleiades, called the Seven Sisters in Greek myth. Red Aldebaran is the bull's eye.",
+      "story_lt": "Tauras yra jautis, bet danguje nupiešta tik jo priekinė pusė. Ant jo peties spindi Sietynas, graikų mite vadinamas Septyniomis Seserimis. Raudonasis Aldebaranas yra jaučio akis.",
+      "fact_en": "In 1054 a star exploded in Taurus. Its remains are the Crab Nebula, still glowing today.",
+      "fact_lt": "1054 metais Taure sprogo žvaigždė. Jos liekanos yra Krabo ūkas, švytintis ir šiandien.",
+      "related": [
+        "Ori"
+      ],
+      "kind": "story",
+      "folk_en": "Lithuanians call the Pleiades Sietynas. This bright star cluster sits on the bull's shoulder.",
+      "folk_lt": "Lietuviai Plejadžių spiečių vadina Sietynu. Šis ryškus žvaigždžių spiečius spindi ant Tauro peties."
+    },
+    "Tel": {
+      "story_en": "Lacaille named Telescopium in the 1750s while mapping the southern sky from South Africa. Later astronomers made it smaller and gave some of its stars to neighbouring constellations.",
+      "story_lt": "Lakailis Teleskopą pavadino XVIII amžiaus viduryje, braižydamas pietų dangaus žemėlapį Pietų Afrikoje. Vėliau astronomai jį sumažino, o kai kurias jo žvaigždes atidavė kaimyniniams žvaigždynams.",
+      "fact_en": "Its brightest star, Alpha Telescopii, is a blue-white star about 280 light-years away.",
+      "fact_lt": "Ryškiausia jo žvaigždė, Teleskopo Alfa, yra melsvai balta ir nutolusi apie 280 šviesmečių.",
+      "related": [
+        "Mic",
+        "Sgr"
+      ],
+      "kind": "story"
+    },
+    "Tra": {
+      "story_en": "Its three bright stars make a nearly perfect triangle. Plancius first drew it in 1589. In 1603 Johann Bayer gave it its Latin name, Triangulum Australe, the Southern Triangle.",
+      "story_lt": "Trys ryškios jo žvaigždės sudaro beveik taisyklingą trikampį. Plancijus jį pirmą kartą nupiešė 1589 metais. 1603 metais Johanas Bajeris jam davė lotynišką vardą Triangulum Australe, Pietų Trikampis.",
+      "fact_en": "Atria, the Southern Triangle's brightest star, is an orange giant about 390 light-years away.",
+      "fact_lt": "Atria, ryškiausia Pietų Trikampio žvaigždė, yra oranžinė milžinė, nutolusi apie 390 šviesmečių.",
+      "related": [],
+      "kind": "story"
+    },
+    "Tri": {
+      "story_en": "The ancient Greeks called this triangle Deltoton, because it looks like the Greek letter delta. Eratosthenes linked it with the Nile Delta in Egypt.",
+      "story_lt": "Senovės graikai šį trikampį vadino Deltoton, nes jis panašus į graikišką raidę delta. Eratostenas jį siejo su Nilo delta Egipte.",
+      "fact_en": "The Triangulum Galaxy, M33, is about 2.3 million light-years away. Dark skies show it without a telescope.",
+      "fact_lt": "Trikampio galaktika M33 yra už maždaug 2,3 milijono šviesmečių. Tamsiame danguje ją galima pamatyti be teleskopo.",
+      "related": [
+        "And"
+      ],
+      "kind": "story"
+    },
+    "Tuc": {
+      "story_en": "Dutch mapmakers drew Tucana on a 1598 globe, after the first Dutch voyage to the East Indies. One sailor described a bird with a long beak, probably a hornbill. Today we call it a toucan.",
+      "story_lt": "Olandų kartografai Tukaną pavaizdavo 1598 metų gaublyje, po pirmosios olandų kelionės į Rytų Indiją. Vienas jūreivis aprašė paukštį ilgu snapu, greičiausiai ragasnapį. Šiandien jį vadiname tukanu.",
+      "fact_en": "47 Tucanae is a giant ball of stars, about 14,700 light-years away and over 12 billion years old.",
+      "fact_lt": "Tukanas 47 yra milžiniškas žvaigždžių kamuolys, nutolęs apie 14 700 šviesmečių ir senesnis nei 12 milijardų metų.",
+      "related": [],
+      "kind": "story"
+    },
+    "UMa": {
+      "story_en": "In Greek myth, Callisto was turned into a bear. When her son Arcas met her, Zeus lifted them both into the sky as Ursa Major and Boötes. The Plough, or Big Dipper, is the bear's back and tail.",
+      "story_lt": "Graikų mite Kalista buvo paversta meška. Kai ją sutiko sūnus Arkas, Dzeusas abu iškėlė į dangų kaip Didžiąją Mešką ir Jaučiaganį. Grįžulo Ratai yra meškos nugara ir uodega.",
+      "fact_en": "Follow Merak through Dubhe, the Dipper's two end stars, then go five times as far. You reach Polaris.",
+      "fact_lt": "Nuo Merako per Dubchę, dvi galines Grįžulo Ratų žvaigždes, nubrėžk liniją ir pratęsk ją dar penkis kartus. Rasi Šiaurinę žvaigždę.",
+      "related": [
+        "UMi",
+        "Boo"
+      ],
+      "kind": "link",
+      "folk_en": "Lithuanians call these stars Grįžulo Ratai. Grįžulas is an old word for a ring where young horses are trained.",
+      "folk_lt": "Lietuviai šias žvaigždes vadina Grįžulo Ratais. Grįžulas yra senas jodyklos, kur išjodinėjami jauni žirgai, pavadinimas."
+    },
+    "UMi": {
+      "story_en": "Greek writers said Thales of Miletus told Greek sailors to steer by the Little Bear, as Phoenician sailors did. Before that, the Greeks had used the Great Bear.",
+      "story_lt": "Graikų rašytojai pasakojo, kad Talis Miletietis patarė graikų jūreiviams plaukti pagal Mažąją Mešką, kaip darė finikiečiai. Iki tol graikai naudojosi Didžiąja Meška.",
+      "fact_en": "Polaris, the North Star at the tip of the Little Dipper's handle, is over 400 light-years away.",
+      "fact_lt": "Šiaurinė žvaigždė, esanti Mažųjų Grįžulo Ratų ienos gale, yra už daugiau nei 400 šviesmečių.",
+      "related": [
+        "UMa"
+      ],
+      "kind": "story"
+    },
+    "Vel": {
+      "story_en": "Vela is the sails of the great ship Argo Navis, Jason's ship. In the 1700s Lacaille split Argo into three parts, and Vela got the sails.",
+      "story_lt": "Burės yra didžiojo Jasono laivo Argo burės. XVIII amžiuje Lakailis tą laivą padalijo į tris dalis, ir šiam žvaigždynui atiteko burės.",
+      "fact_en": "Vela holds the remains of a star that exploded about 10,000 years ago, and a flashing pulsar.",
+      "fact_lt": "Burėse yra liekanos žvaigždės, kuri sprogo maždaug prieš 10 000 metų. Jose blykčioja pulsaras.",
+      "related": [
+        "Pup",
+        "Car",
+        "Pyx"
+      ],
+      "kind": "story"
+    },
+    "Vir": {
+      "story_en": "The Greeks and Romans saw the goddesses Demeter and Persephone here. They also saw Astraea, goddess of justice, who left the Earth for the sky. Libra, her scales, sits next to her.",
+      "story_lt": "Graikai ir romėnai čia matė deives Demetrą ir Persefonę. Jie taip pat matė teisingumo deivę Astrėją, kuri paliko Žemę ir pakilo į dangų. Šalia jos yra jos svarstyklės, Svarstyklių žvaigždynas.",
+      "fact_en": "Messier 87 is the largest galaxy in the Virgo Cluster, over 50 million light-years away.",
+      "fact_lt": "Mesjė 87 yra didžiausia Mergelės spiečiaus galaktika, nutolusi daugiau nei 50 milijonų šviesmečių.",
+      "related": [
+        "Lib",
+        "Leo",
+        "Boo"
+      ],
+      "kind": "story"
+    },
+    "Vol": {
+      "story_en": "Dutch sailors mapped these far southern stars on their voyage to the East Indies. Plancius named the group the Flying Fish on a globe in the late 1590s.",
+      "story_lt": "Olandų jūreiviai, plaukdami į Rytų Indiją, pažymėjo šias toli pietuose esančias žvaigždes. XVI amžiaus pabaigoje Plancijus gaublyje šią grupę pavadino Skraidančiąja Žuvimi.",
+      "fact_en": "Volans lies so far south that it can never be seen from Lithuania or Ireland.",
+      "fact_lt": "Skraidančioji Žuvis yra taip toli pietuose, kad iš Lietuvos ir Airijos jos niekada nematyti.",
+      "related": [],
+      "kind": "story"
+    },
+    "Vul": {
+      "story_en": "Hevelius first called this the Little Fox with the Goose. Later the goose became a separate group, but today they are one again. The goose lives on in the name of its brightest star, Anser.",
+      "story_lt": "Hevelijus šį žvaigždyną iš pradžių pavadino Lapute su žąsimi. Vėliau žąsis tapo atskira grupe, bet dabar jos vėl kartu. Žąsis išliko ryškiausios žvaigždės Ansero vardu.",
+      "fact_en": "In 1967 Jocelyn Bell, a student from Northern Ireland, found the first pulsar here. It flashes every 1.3 seconds.",
+      "fact_lt": "1967 metais studentė iš Šiaurės Airijos Jocelyn Bell čia atrado pirmąjį pulsarą. Jis blyksi kas 1,3 sekundės.",
+      "related": [
+        "Cyg"
+      ],
+      "kind": "story"
+    }
+  }
+}
