@@ -1,0 +1,901 @@
+{
+"And": {
+"name": "Andromeda",
+"en": [
+"Chained Maiden",
+"Princess"
+],
+"native": "Andromeda",
+"lt": "Andromeda",
+"parts": []
+},
+"Ant": {
+"name": "Antlia",
+"en": [
+"Air Pump"
+],
+"native": "Antlia",
+"lt": "Siurblys",
+"parts": []
+},
+"Aps": {
+"name": "Apus",
+"en": [
+"Bird of Paradise"
+],
+"native": "Apus",
+"lt": "Rojaus Paukštis",
+"parts": []
+},
+"Aql": {
+"name": "Aquila",
+"en": [
+"Eagle"
+],
+"native": "Aquila",
+"lt": "Erelis",
+"parts": [],
+"multi": [
+{
+"name": "Summer Triangle",
+"lt": "Vasaros trikampis",
+"of": [
+"Lyr",
+"Cyg",
+"Aql"
+]
+}
+]
+},
+"Aqr": {
+"name": "Aquarius",
+"en": [
+"Water Bearer",
+"Water Carrier"
+],
+"native": "Aquarius",
+"lt": "Vandenis",
+"parts": []
+},
+"Ara": {
+"name": "Ara",
+"en": [
+"Altar"
+],
+"native": "Ara",
+"lt": "Aukuras",
+"parts": []
+},
+"Ari": {
+"name": "Aries",
+"en": [
+"Ram"
+],
+"native": "Aries",
+"lt": "Avinas",
+"parts": []
+},
+"Aur": {
+"name": "Auriga",
+"en": [
+"Charioteer"
+],
+"native": "Auriga",
+"lt": "Vežėjas",
+"parts": []
+},
+"Boo": {
+"name": "Boötes",
+"en": [
+"Herdsman"
+],
+"native": "Bootes",
+"lt": "Jaučiaganis",
+"parts": [
+"Kite"
+]
+},
+"CMa": {
+"name": "Canis Major",
+"en": [
+"Great Dog",
+"Big Dog"
+],
+"native": "Canis Major",
+"lt": "Didysis Šuo",
+"parts": []
+},
+"CMi": {
+"name": "Canis Minor",
+"en": [
+"Lesser Dog",
+"Little Dog"
+],
+"native": "Canis Minor",
+"lt": "Mažasis Šuo",
+"parts": []
+},
+"CVn": {
+"name": "Canes Venatici",
+"en": [
+"Hunting Dogs"
+],
+"native": "Canes Venatici",
+"lt": "Skalikai",
+"parts": []
+},
+"Cae": {
+"name": "Caelum",
+"en": [
+"Engraving Tool",
+"Chisel"
+],
+"native": "Caelum",
+"lt": "Skaptukas",
+"parts": []
+},
+"Cam": {
+"name": "Camelopardalis",
+"en": [
+"Giraffe"
+],
+"native": "Camelopardalis",
+"lt": "Žirafa",
+"parts": []
+},
+"Cap": {
+"name": "Capricornus",
+"en": [
+"Sea Goat",
+"Goat",
+"Capricorn"
+],
+"native": "Capricornus",
+"lt": "Ožiaragis",
+"parts": []
+},
+"Car": {
+"name": "Carina",
+"en": [
+"Keel"
+],
+"native": "Carina",
+"lt": "Kilis",
+"parts": []
+},
+"Cas": {
+"name": "Cassiopeia",
+"en": [
+"Seated Queen",
+"Queen"
+],
+"native": "Cassiopeia",
+"lt": "Kasiopėja",
+"parts": [
+"Jukštandis",
+"Jojikėlis"
+]
+},
+"Cen": {
+"name": "Centaurus",
+"en": [
+"Centaur"
+],
+"native": "Centaurus",
+"lt": "Kentauras",
+"parts": []
+},
+"Cep": {
+"name": "Cepheus",
+"en": [
+"King"
+],
+"native": "Cepheus",
+"lt": "Cefėjas",
+"parts": []
+},
+"Cet": {
+"name": "Cetus",
+"en": [
+"Sea Monster",
+"Whale"
+],
+"native": "Cetus",
+"lt": "Banginis",
+"parts": []
+},
+"Cha": {
+"name": "Chamaeleon",
+"en": [
+"Chameleon"
+],
+"native": "Chamaeleon",
+"lt": "Chameleonas",
+"parts": []
+},
+"Cir": {
+"name": "Circinus",
+"en": [
+"Compasses",
+"Drawing Compass"
+],
+"native": "Circinus",
+"lt": "Skriestuvas",
+"parts": []
+},
+"Cnc": {
+"name": "Cancer",
+"en": [
+"Crab"
+],
+"native": "Cancer",
+"lt": "Vėžys",
+"parts": []
+},
+"Col": {
+"name": "Columba",
+"en": [
+"Dove"
+],
+"native": "Columba",
+"lt": "Balandis",
+"parts": []
+},
+"Com": {
+"name": "Coma Berenices",
+"en": [
+"Bernice's Hair",
+"Berenice's Hair"
+],
+"native": "Coma Berenices",
+"lt": "Berenikės Garbanos",
+"parts": []
+},
+"CrA": {
+"name": "Corona Australis",
+"en": [
+"Southern Crown"
+],
+"native": "Corona Australis",
+"lt": "Pietų Vainikas",
+"parts": []
+},
+"CrB": {
+"name": "Corona Borealis",
+"en": [
+"Northern Crown"
+],
+"native": "Corona Borealis",
+"lt": "Šiaurės Vainikas",
+"parts": [
+"Rojaus Darželis",
+"Alyvų Darželis"
+]
+},
+"Crt": {
+"name": "Crater",
+"en": [
+"Cup"
+],
+"native": "Crater",
+"lt": "Taurė",
+"parts": []
+},
+"Cru": {
+"name": "Crux",
+"en": [
+"Southern Cross"
+],
+"native": "Crux",
+"lt": "Kryžius",
+"parts": []
+},
+"Crv": {
+"name": "Corvus",
+"en": [
+"Crow",
+"Raven"
+],
+"native": "Corvus",
+"lt": "Varnas",
+"parts": []
+},
+"Cyg": {
+"name": "Cygnus",
+"en": [
+"Swan"
+],
+"native": "Cygnus",
+"lt": "Gulbė",
+"parts": [
+"Northern Cross"
+],
+"multi": [
+{
+"name": "Summer Triangle",
+"lt": "Vasaros trikampis",
+"of": [
+"Lyr",
+"Cyg",
+"Aql"
+]
+}
+]
+},
+"Del": {
+"name": "Delphinus",
+"en": [
+"Dolphin"
+],
+"native": "Delphinus",
+"lt": "Delfinas",
+"parts": []
+},
+"Dor": {
+"name": "Dorado",
+"en": [
+"Swordfish",
+"Goldfish"
+],
+"native": "Dorado",
+"lt": "Aukso Žuvis",
+"parts": []
+},
+"Dra": {
+"name": "Draco",
+"en": [
+"Dragon"
+],
+"native": "Draco",
+"lt": "Slibinas",
+"parts": []
+},
+"Equ": {
+"name": "Equuleus",
+"en": [
+"Little Horse"
+],
+"native": "Equuleus",
+"lt": "Žirgelis",
+"parts": []
+},
+"Eri": {
+"name": "Eridanus",
+"en": [
+"River"
+],
+"native": "Eridanus",
+"lt": "Eridanas",
+"parts": []
+},
+"For": {
+"name": "Fornax",
+"en": [
+"Furnace"
+],
+"native": "Fornax",
+"lt": "Krosnis",
+"parts": []
+},
+"Gem": {
+"name": "Gemini",
+"en": [
+"Twins"
+],
+"native": "Gemini",
+"lt": "Dvyniai",
+"parts": []
+},
+"Gru": {
+"name": "Grus",
+"en": [
+"Crane"
+],
+"native": "Grus",
+"lt": "Gervė",
+"parts": []
+},
+"Her": {
+"name": "Hercules",
+"en": [
+"Hercules"
+],
+"native": "Hercules",
+"lt": "Heraklis",
+"parts": [
+"Keystone"
+]
+},
+"Hor": {
+"name": "Horologium",
+"en": [
+"Clock"
+],
+"native": "Horologium",
+"lt": "Laikrodis",
+"parts": []
+},
+"Hya": {
+"name": "Hydra",
+"en": [
+"Female Water Snake",
+"Water Snake"
+],
+"native": "Hydra",
+"lt": "Hidra",
+"parts": []
+},
+"Hyi": {
+"name": "Hydrus",
+"en": [
+"Male Water Snake",
+"Little Water Snake"
+],
+"native": "Hydrus",
+"lt": "Pietų Hidra",
+"parts": []
+},
+"Ind": {
+"name": "Indus",
+"en": [
+"Indian"
+],
+"native": "Indus",
+"lt": "Indėnas",
+"parts": []
+},
+"LMi": {
+"name": "Leo Minor",
+"en": [
+"Lesser Lion",
+"Little Lion"
+],
+"native": "Leo Minor",
+"lt": "Mažasis Liūtas",
+"parts": []
+},
+"Lac": {
+"name": "Lacerta",
+"en": [
+"Lizard"
+],
+"native": "Lacerta",
+"lt": "Driežas",
+"parts": []
+},
+"Leo": {
+"name": "Leo",
+"en": [
+"Lion"
+],
+"native": "Leo",
+"lt": "Liūtas",
+"parts": [
+"Sickle"
+]
+},
+"Lep": {
+"name": "Lepus",
+"en": [
+"Hare",
+"Rabbit"
+],
+"native": "Lepus",
+"lt": "Kiškis",
+"parts": []
+},
+"Lib": {
+"name": "Libra",
+"en": [
+"Scales",
+"Balance"
+],
+"native": "Libra",
+"lt": "Svarstyklės",
+"parts": []
+},
+"Lup": {
+"name": "Lupus",
+"en": [
+"Wolf"
+],
+"native": "Lupus",
+"lt": "Vilkas",
+"parts": []
+},
+"Lyn": {
+"name": "Lynx",
+"en": [
+"Lynx"
+],
+"native": "Lynx",
+"lt": "Lūšis",
+"parts": []
+},
+"Lyr": {
+"name": "Lyra",
+"en": [
+"Lyre",
+"Harp"
+],
+"native": "Lyra",
+"lt": "Lyra",
+"parts": [],
+"multi": [
+{
+"name": "Summer Triangle",
+"lt": "Vasaros trikampis",
+"of": [
+"Lyr",
+"Cyg",
+"Aql"
+]
+}
+]
+},
+"Men": {
+"name": "Mensa",
+"en": [
+"Table Mountain"
+],
+"native": "Mensa",
+"lt": "Stalkalnis",
+"parts": []
+},
+"Mic": {
+"name": "Microscopium",
+"en": [
+"Microscope"
+],
+"native": "Microscopium",
+"lt": "Mikroskopas",
+"parts": []
+},
+"Mon": {
+"name": "Monoceros",
+"en": [
+"Unicorn"
+],
+"native": "Monoceros",
+"lt": "Vienaragis",
+"parts": []
+},
+"Mus": {
+"name": "Musca",
+"en": [
+"Fly"
+],
+"native": "Musca",
+"lt": "Musė",
+"parts": []
+},
+"Nor": {
+"name": "Norma",
+"en": [
+"Carpenter's Square"
+],
+"native": "Norma",
+"lt": "Kampainis",
+"parts": []
+},
+"Oct": {
+"name": "Octans",
+"en": [
+"Octant"
+],
+"native": "Octans",
+"lt": "Oktantas",
+"parts": []
+},
+"Oph": {
+"name": "Ophiuchus",
+"en": [
+"Serpent Bearer",
+"Snake Bearer",
+"Snake Holder"
+],
+"native": "Ophiuchus",
+"lt": "Gyvatnešis",
+"parts": []
+},
+"Ori": {
+"name": "Orion",
+"en": [
+"Hunter"
+],
+"native": "Orion",
+"lt": "Orionas",
+"parts": [
+"Trijų Karalių Žvaigždės",
+"Orion's Belt"
+]
+},
+"Pav": {
+"name": "Pavo",
+"en": [
+"Peacock"
+],
+"native": "Pavo",
+"lt": "Povas",
+"parts": []
+},
+"Peg": {
+"name": "Pegasus",
+"en": [
+"Winged Horse",
+"Flying Horse"
+],
+"native": "Pegasus",
+"lt": "Pegasas",
+"parts": [
+"Great Square of Pegasus"
+]
+},
+"Per": {
+"name": "Perseus",
+"en": [
+"Hero"
+],
+"native": "Perseus",
+"lt": "Persėjas",
+"parts": []
+},
+"Phe": {
+"name": "Phoenix",
+"en": [
+"Phoenix"
+],
+"native": "Phoenix",
+"lt": "Feniksas",
+"parts": []
+},
+"Pic": {
+"name": "Pictor",
+"en": [
+"Painter's Easel",
+"Easel"
+],
+"native": "Pictor",
+"lt": "Tapytojas",
+"parts": []
+},
+"PsA": {
+"name": "Piscis Austrinus",
+"en": [
+"Southern Fish"
+],
+"native": "Piscis Austrinus",
+"lt": "Pietų Žuvis",
+"parts": []
+},
+"Psc": {
+"name": "Pisces",
+"en": [
+"Fishes",
+"Fish"
+],
+"native": "Pisces",
+"lt": "Žuvys",
+"parts": [
+"Circlet"
+]
+},
+"Pup": {
+"name": "Puppis",
+"en": [
+"Stern"
+],
+"native": "Puppis",
+"lt": "Laivagalis",
+"parts": []
+},
+"Pyx": {
+"name": "Pyxis",
+"en": [
+"Compass",
+"Mariner's Compass"
+],
+"native": "Pyxis",
+"lt": "Kompasas",
+"parts": []
+},
+"Ret": {
+"name": "Reticulum",
+"en": [
+"Reticle"
+],
+"native": "Reticulum",
+"lt": "Tinklelis",
+"parts": []
+},
+"Scl": {
+"name": "Sculptor",
+"en": [
+"Sculptor"
+],
+"native": "Sculptor",
+"lt": "Skulptorius",
+"parts": []
+},
+"Sco": {
+"name": "Scorpius",
+"en": [
+"Scorpion",
+"Scorpio"
+],
+"native": "Scorpius",
+"lt": "Skorpionas",
+"parts": []
+},
+"Sct": {
+"name": "Scutum",
+"en": [
+"Shield"
+],
+"native": "Scutum",
+"lt": "Skydas",
+"parts": []
+},
+"Ser": {
+"name": "Serpens",
+"en": [
+"Serpent",
+"Snake"
+],
+"native": "Serpens",
+"lt": "Gyvatė",
+"parts": [
+"Gyvatės Galva",
+"Gyvatės Uodega"
+]
+},
+"Sex": {
+"name": "Sextans",
+"en": [
+"Sextant"
+],
+"native": "Sextans",
+"lt": "Sekstantas",
+"parts": []
+},
+"Sge": {
+"name": "Sagitta",
+"en": [
+"Arrow"
+],
+"native": "Sagitta",
+"lt": "Strėlė",
+"parts": []
+},
+"Sgr": {
+"name": "Sagittarius",
+"en": [
+"Archer"
+],
+"native": "Sagittarius",
+"lt": "Šaulys",
+"parts": [
+"Teapot"
+]
+},
+"Tau": {
+"name": "Taurus",
+"en": [
+"Bull"
+],
+"native": "Taurus",
+"lt": "Tauras",
+"parts": [
+"Sietynas",
+"Seven Sisters",
+"Pleiades"
+]
+},
+"Tel": {
+"name": "Telescopium",
+"en": [
+"Telescope"
+],
+"native": "Telescopium",
+"lt": "Teleskopas",
+"parts": []
+},
+"Tra": {
+"name": "Triangulum Australe",
+"en": [
+"Southern Triangle"
+],
+"native": "Triangulum Australe",
+"lt": "Pietų Trikampis",
+"parts": []
+},
+"Tri": {
+"name": "Triangulum",
+"en": [
+"Triangle"
+],
+"native": "Triangulum",
+"lt": "Trikampis",
+"parts": []
+},
+"Tuc": {
+"name": "Tucana",
+"en": [
+"Toucan"
+],
+"native": "Tucana",
+"lt": "Tukanas",
+"parts": []
+},
+"UMa": {
+"name": "Ursa Major",
+"en": [
+"Great Bear",
+"Big Bear",
+"Bear"
+],
+"native": "Ursa Major",
+"lt": "Didieji Grįžulo Ratai",
+"parts": [
+"Grįžulo Ratai",
+"Grigo Ratai",
+"Big Dipper",
+"Plough",
+"Plow",
+"Charles's Wain",
+"Saucepan"
+]
+},
+"UMi": {
+"name": "Ursa Minor",
+"en": [
+"Little Bear",
+"Bear"
+],
+"native": "Ursa Minor",
+"lt": "Mažieji Grįžulo Ratai",
+"parts": [
+"Little Dipper"
+]
+},
+"Vel": {
+"name": "Vela",
+"en": [
+"Sails"
+],
+"native": "Vela",
+"lt": "Burės",
+"parts": []
+},
+"Vir": {
+"name": "Virgo",
+"en": [
+"Maiden",
+"Virgin"
+],
+"native": "Virgo",
+"lt": "Mergelė",
+"parts": []
+},
+"Vol": {
+"name": "Volans",
+"en": [
+"Flying Fish"
+],
+"native": "Volans",
+"lt": "Skraidančioji Žuvis",
+"parts": []
+},
+"Vul": {
+"name": "Vulpecula",
+"en": [
+"Fox",
+"Little Fox"
+],
+"native": "Vulpecula",
+"lt": "Laputė",
+"parts": [
+"Coathanger"
+]
+}
+}
