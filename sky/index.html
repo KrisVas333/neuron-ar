@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>The Living Sky</title>
 <link rel="icon" href="data:,">
+<!-- asset base (2026-11-12): where assets/ lives. Empty = next to this page (the GitHub Pages copy). The brainclub.space page sets the Pages URL here. -->
+<meta name="asset-base" content="">
 <style>
   :root { --ink:#ece6d6; --dim:#a79f8e; --gold:#f5dc9e; --panel:rgba(8,10,20,.82); --line:rgba(245,220,158,.32); }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html,body { margin:0; height:100%; background:#000; color:var(--ink); overflow:hidden; overscroll-behavior:none;
     font:16px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
-  canvas { position:fixed; inset:0; display:block; touch-action:none; outline:none; cursor:grab; }
+  canvas { position:fixed; inset:0; display:block; touch-action:none; outline:none; cursor:grab; -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; }
   canvas.drag { cursor:grabbing; } canvas.on { cursor:pointer; }
   button,input { font:inherit; color:inherit; }
   #prompt { position:fixed; top:max(18px,env(safe-area-inset-top)); left:16px; right:16px; text-align:center; pointer-events:none;
@@ -89,6 +91,22 @@
   #testclose { width:100%; margin-top:12px; }
   #testbadge { position:fixed; left:50%; transform:translateX(-50%); top:max(54px,calc(env(safe-area-inset-top) + 40px)); z-index:6; padding:3px 10px; border:1px solid var(--gold);
     border-radius:6px; color:#16120a; background:var(--gold); font:700 13px/1.2 system-ui,"Segoe UI",sans-serif; letter-spacing:.12em; pointer-events:none; }
+  /* hold Cygnus 5 s: the ring that fills round the finger or the mouse (Kris 2026-11-12) */
+  #holdring { position:fixed; left:0; top:0; width:112px; height:112px; margin:-56px 0 0 -56px; z-index:4; pointer-events:none; opacity:0; transition:opacity .2s; }
+  #holdring.on { opacity:1; }
+  #holdring circle { fill:none; stroke-width:9; }
+  #holdring circle.halo { stroke:rgba(8,10,20,.55); stroke-width:15; }
+  #holdring .trk { stroke:rgba(245,220,158,.3); }     /* a dark halo under a dim gold track: the whole ring shows on black sky and on the Milky Way */
+  #holdring .arc { stroke:var(--gold); stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50%; }
+  /* beta gate: the Brain Puzzle's, keeps kids out of the test build. The language switch stays on top of it. */
+  #gate { position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; background:#05060c; }
+  #gate[hidden] { display:none; }
+  #gate form { display:flex; flex-direction:column; gap:14px; width:min(340px,calc(100vw - 32px)); padding:24px; border-radius:14px; background:var(--panel); border:1px solid var(--line); text-align:center; }
+  #gate h2 { margin:0; font:400 26px/1.25 Georgia,"Times New Roman",serif; color:var(--gold); }
+  #gate input { height:64px; border:0; border-radius:10px; background:#fff; color:#16120a; font:700 32px/1 system-ui,"Segoe UI",sans-serif; text-align:center; }
+  #gate button { height:64px; border:0; border-radius:10px; background:var(--gold); color:#16120a; font-weight:700; font-size:24px; cursor:pointer; }
+  #gatemsg { min-height:22px; font-size:17px; color:var(--gold); }
+  html.gated #langseg { z-index:101; }
 </style>
 <script type="importmap">
 { "imports": {
@@ -98,30 +116,6 @@
 </script>
 </head>
 <body>
-<style>
-#lsgate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#05070f;font-family:system-ui,sans-serif}
-#lsgate form{display:flex;flex-direction:column;gap:14px;width:min(340px,calc(100vw - 32px));padding:24px;box-sizing:border-box;border-radius:14px;background:#111827;box-shadow:inset 0 0 0 2px #334155;text-align:center}
-#lsgate h2{margin:0;font:700 24px/1.25 system-ui,sans-serif;color:#fcd34d}
-#lsgate input{height:64px;border:0;border-radius:10px;background:#fff;color:#111;font:700 32px/1 system-ui,sans-serif;text-align:center}
-#lsgate button{height:64px;border:0;border-radius:10px;background:#fcd34d;color:#111;font-weight:700;font-size:24px;cursor:pointer}
-#lsgatemsg{min-height:20px;font-size:16px;color:#cbd5e1}
-#lsgate[hidden]{display:none!important}
-</style>
-<div id="lsgate"><form autocomplete="off"><h2>Slaptažodis · Password</h2><input id="gatepw" type="text" aria-label="Slaptažodis / Password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off"><button type="submit">Eiti · Go</button><div id="lsgatemsg"></div></form></div>
-<script>
-// beta gate (same rule as the Brain Puzzle): keeps kids out of the test build. Client-side only, not real security.
-(function () {
-  var gate = document.getElementById('lsgate'), pw = document.getElementById('gatepw'), msg = document.getElementById('lsgatemsg'), KEY = 'ls-beta-ok';
-  function ok() { return pw.value.trim().toUpperCase() === 'A'; }
-  function open() { gate.hidden = true; pw.blur(); try { localStorage.setItem(KEY, '1'); } catch (e) {} }
-  try { if (localStorage.getItem(KEY) === '1') gate.hidden = true; } catch (e) {}
-  ['keydown','keyup','keypress','input','pointerdown','pointerup','mousedown','mouseup','click','wheel','touchstart','touchend'].forEach(function (t) { gate.addEventListener(t, function (e) { e.stopPropagation(); }); });
-  pw.addEventListener('input', function () { msg.textContent = ''; if (ok()) open(); });
-  gate.querySelector('form').addEventListener('submit', function (e) { e.preventDefault(); if (ok()) open(); else { msg.textContent = 'Neteisingai · Wrong password'; pw.value = ''; pw.focus(); } });
-  if (!gate.hidden) pw.focus();
-})();
-</script>
-
 <div id="prompt"></div>
 <div id="langseg" role="group" aria-label="Kalba / Language"><button type="button" id="lang-lt" lang="lt">LT</button><button type="button" id="lang-en" lang="en">EN</button></div>
 <form id="find" autocomplete="off" role="search">
@@ -169,6 +163,62 @@
     <button type="button" id="testclose">Close (Esc)</button>
   </div>
 </div>
+<div id="holdring" aria-hidden="true"><svg viewBox="0 0 100 100" width="112" height="112"><circle class="halo" cx="50" cy="50" r="42"/><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" id="holdarc" cx="50" cy="50" r="42" pathLength="100" stroke-dasharray="0 100"/></svg></div>
+<div id="gate"><form autocomplete="off"><h2 id="gateh">Password</h2><input id="gatepw" type="text" aria-label="Password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off"><button type="submit" id="gatego">Go</button><div id="gatemsg" aria-live="polite"></div></form></div>
+<script>
+// beta gate (2026-11-12): the Brain Puzzle's gate, copied. Keeps kids out of the test build. Client-side only, not real security.
+// Same password and the same remembered flag (bp-beta-ok) as the puzzle, so a tester who opened one is not asked again on the same site.
+// The puzzle compares the plain word; this file holds only its SHA-256, so the word itself is written nowhere here.
+(function () {
+  var HASH = '559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd', KEY = 'bp-beta-ok', LANG_KEY = 'living-sky-lang';
+  var WORDS = { en: { h: 'Password', go: 'Go', wrong: 'Wrong password' }, lt: { h: 'Slaptažodis', go: 'Eiti', wrong: 'Neteisingas slaptažodis' } };
+  var $ = function (id) { return document.getElementById(id); };
+  var gate = $('gate'), pw = $('gatepw'), msg = $('gatemsg'), lang = 'en', wrong = false;
+  function sha256(s) {          // plain SHA-256, hex (no crypto.subtle: that needs https, and the gate must also work on a local http server)
+    var b = new TextEncoder().encode(s), K = [], H = [], fr = function (x) { return (x - Math.floor(x)) * 4294967296 | 0; }, n, c, i, o, p;
+    for (n = 2, c = 0; c < 64; n++) { p = true; for (i = 2; i * i <= n; i++) if (n % i === 0) { p = false; break; } if (p) { if (c < 8) H[c] = fr(Math.sqrt(n)); K[c++] = fr(Math.cbrt(n)); } }
+    var L = b.length, m = new Uint8Array((L + 72) & ~63), dv = new DataView(m.buffer), w = new Int32Array(64), r = function (x, k) { return (x >>> k) | (x << (32 - k)); };
+    m.set(b); m[L] = 128; dv.setUint32(m.length - 4, L * 8); dv.setUint32(m.length - 8, Math.floor(L / 536870912));
+    for (o = 0; o < m.length; o += 64) {
+      for (i = 0; i < 64; i++) w[i] = i < 16 ? dv.getInt32(o + i * 4) : (w[i - 16] + (r(w[i - 15], 7) ^ r(w[i - 15], 18) ^ (w[i - 15] >>> 3)) + w[i - 7] + (r(w[i - 2], 17) ^ r(w[i - 2], 19) ^ (w[i - 2] >>> 10))) | 0;
+      var a = H[0], bb = H[1], cc = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var t1 = (h + (r(e, 6) ^ r(e, 11) ^ r(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) | 0, t2 = ((r(a, 2) ^ r(a, 13) ^ r(a, 22)) + ((a & bb) ^ (a & cc) ^ (bb & cc))) | 0;
+        h = g; g = f; f = e; e = (d + t1) | 0; d = cc; cc = bb; bb = a; a = (t1 + t2) | 0;
+      }
+      [a, bb, cc, d, e, f, g, h].forEach(function (v, k) { H[k] = (H[k] + v) | 0; });
+    }
+    return H.map(function (v) { return ('0000000' + (v >>> 0).toString(16)).slice(-8); }).join('');
+  }
+  function ok() { return sha256(pw.value.trim().toUpperCase()) === HASH; }
+  function setLang(l) {         // the game's language switch drives these words too (it calls window.skyGate.setLang)
+    lang = WORDS[l] ? l : 'en';
+    $('gateh').textContent = WORDS[lang].h; $('gatego').textContent = WORDS[lang].go; pw.setAttribute('aria-label', WORDS[lang].h);
+    msg.textContent = wrong ? WORDS[lang].wrong : '';
+  }
+  function open() { gate.hidden = true; document.documentElement.classList.remove('gated'); pw.blur(); try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+  try { if (localStorage.getItem(KEY) === '1') gate.hidden = true; } catch (e) {}
+  if (!gate.hidden) document.documentElement.classList.add('gated');
+  ['keydown', 'keyup', 'pointerdown', 'pointerup', 'mousedown', 'mouseup', 'wheel'].forEach(function (t) { gate.addEventListener(t, function (e) { e.stopPropagation(); }); });
+  pw.addEventListener('input', function () { wrong = false; msg.textContent = ''; if (ok()) open(); });
+  gate.querySelector('form').addEventListener('submit', function (e) { e.preventDefault(); if (ok()) open(); else { wrong = true; msg.textContent = WORDS[lang].wrong; pw.value = ''; pw.focus(); } });
+  // the same first language as the game: ?lang=, then the switch remembered on this device, then the browser's language
+  var q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(), l = q === 'lt' || q === 'en' ? q : '';
+  if (!l) { try { l = localStorage.getItem(LANG_KEY) || ''; } catch (e) {} }
+  if (l !== 'lt' && l !== 'en') l = /^lt/i.test(navigator.language || '') ? 'lt' : 'en';
+  setLang(l);
+  ['lt', 'en'].forEach(function (k) {   // the switch works on the gate even before the game has loaded
+    $('lang-' + k).addEventListener('click', function () {
+      setLang(k); $('lang-lt').classList.toggle('on', k === 'lt'); $('lang-en').classList.toggle('on', k === 'en');
+      try { localStorage.setItem(LANG_KEY, k); } catch (e) {}
+      try { var u = new URL(location.href); u.searchParams.set('lang', k); history.replaceState(null, '', u); } catch (e) {}
+    });
+  });
+  $('lang-lt').classList.toggle('on', l === 'lt'); $('lang-en').classList.toggle('on', l === 'en');
+  window.skyGate = { setLang: setLang, sha256: sha256, hash: HASH, get passed() { return gate.hidden; } };
+  if (!gate.hidden) pw.focus();
+})();
+</script>
 
 <script type="module">
 import * as THREE from 'three';
@@ -334,17 +384,21 @@ async function getJSON(u) { const r = await fetch(u, { cache: 'no-cache' }); if 
 // so after a release no browser shows an old picture from its cache; no build.json = plain URLs, as before
 let BUILD = '';
 const stamped = u => BUILD ? `${u}?v=${encodeURIComponent(BUILD)}` : u;
+// Every asset URL goes through asset() (2026-11-12): <meta name="asset-base"> empty = relative, so the game works in any subfolder;
+// set to the GitHub Pages copy, the brainclub.space page loads everything from there (Pages sends Access-Control-Allow-Origin: *).
+const ASSET_BASE = (() => { let b = (document.querySelector('meta[name="asset-base"]') || {}).content || ''; if (b && !b.endsWith('/')) b += '/'; return b; })();
+const asset = p => `${ASSET_BASE}assets/${p}`;
 
 async function loadAll() {
-  const tl = new THREE.TextureLoader();
+  const tl = new THREE.TextureLoader(); tl.setCrossOrigin('anonymous');     // cross-origin art must stay usable as a WebGL texture
   const tex = u => new Promise((ok, no) => tl.load(u, ok, undefined, () => no(new Error('could not load ' + u))));
-  const built = getJSON('assets/build.json').then(j => { BUILD = String(j.build || ''); }, () => {});
+  const built = getJSON(asset('build.json')).then(j => { BUILD = String(j.build || ''); }, () => {});
   const [starsBuf, linesJ, namesJ, ltJ, figJ, skyT] = await Promise.all([
-    built.then(() => fetch(stamped('assets/stars.txt'))).then(r => { if (!r.ok) throw new Error('stars.txt'); return r.text(); }).then(t => Uint8Array.from(atob(t.trim()), c => c.charCodeAt(0)).buffer),
-    getJSON('assets/lines.json'), getJSON('assets/names.json'), getJSON('assets/names_lt.json').catch(() => ({})),
-    getJSON('assets/figures.json').catch(() => ({ figures: [] })), built.then(() => tex(stamped('assets/sky.jpg'))),
+    built.then(() => fetch(stamped(asset('stars.txt')))).then(r => { if (!r.ok) throw new Error('stars.txt'); return r.text(); }).then(t => Uint8Array.from(atob(t.trim()), c => c.charCodeAt(0)).buffer),
+    getJSON(asset('lines.json')), getJSON(asset('names.json')), getJSON(asset('names_lt.json')).catch(() => ({})),
+    getJSON(asset('figures.json')).catch(() => ({ figures: [] })), built.then(() => tex(stamped(asset('sky.jpg')))),
   ]);
-  const adultJ = ADULT ? await getJSON('assets/adult/figures.json').catch(() => ({ figures: [] })) : { figures: [] };
+  const adultJ = ADULT ? await getJSON(asset('adult/figures.json')).catch(() => ({ figures: [] })) : { figures: [] };
   buildSky(skyT); buildLines(linesJ, namesJ, ltJ); buildAliases();
   // Two locks: kids mode never fetches the adult list, and a kids entry that somehow points at adult art is dropped
   const list = figJ.figures.filter(f => f.audience === 'kids' && !Object.values(f.art).some(p => p.startsWith('adult/'))).concat(adultJ.figures);
@@ -586,7 +640,7 @@ function loadTex(path) {
   e.p = (async () => {
     let img;
     for (let tries = 0; ; tries++) {                     // decode() can reject under load; a flaky connection can too
-      img = new Image(); img.crossOrigin = 'anonymous'; img.src = stamped('assets/' + path);
+      img = new Image(); img.crossOrigin = 'anonymous'; img.src = stamped(asset(path));     // crossOrigin before src: a texture from another origin must not taint WebGL
       try { await img.decode(); break; }                 // off the main thread where the browser can
       catch (err) { if (tries >= 2) throw err; await new Promise(ok => setTimeout(ok, 300 * (tries + 1))); }
     }
@@ -1095,6 +1149,7 @@ function closeTest() {
 }
 let testBuf = '';
 addEventListener('keydown', e => {      // capture: the menu owns the keys while open; typed anywhere outside a field, "test" opens it
+  if (!$('gate').hidden) return;        // the beta gate is up: its field gets every key, nothing reaches the game
   if (S.testOpen && !inXR()) {
     if (e.key === 'Escape') { closeTest(); e.preventDefault(); e.stopImmediatePropagation(); return; }
     if (e.key !== 'Tab' && e.key !== 'Enter' && e.key !== ' ') { e.preventDefault(); e.stopImmediatePropagation(); }
@@ -1184,8 +1239,11 @@ function screenDir(cx, cy, out) {
 function toLocalDir(d) { return d.applyQuaternion(qI.copy(sky.quaternion).invert()); }
 el.addEventListener('pointerdown', e => {
   unlockAudio(); look.turn = null; look.id = e.pointerId; el.setPointerCapture(e.pointerId); look.x = e.clientX; look.y = e.clientY; look.moved = 0; el.classList.add('drag');
+  holdDown(e);
 });
+el.addEventListener('contextmenu', e => { if (hold.on) e.preventDefault(); });   // a phone's long press must not open a menu over the ring
 el.addEventListener('pointermove', e => {
+  if (hold.ptr === e.pointerId) holdMove(e);
   if (look.id === e.pointerId) {
     const dx = e.clientX - look.x, dy = e.clientY - look.y; look.x = e.clientX; look.y = e.clientY; look.moved += Math.abs(dx) + Math.abs(dy);
     const k = camera.fov / innerHeight;
@@ -1197,9 +1255,10 @@ el.addEventListener('pointermove', e => {
   }
 });
 const endDrag = e => {
+  const held = holdUp(e);         // this press already revealed them all: letting go is not a tap
   if (look.id !== e.pointerId) return;
   look.id = null; el.classList.remove('drag');
-  if (look.moved < 8 && e.type === 'pointerup') {
+  if (!held && look.moved < 8 && e.type === 'pointerup') {
     const c = canPick() ? pick(toLocalDir(screenDir(e.clientX, e.clientY, rayD))) : null;
     if (c) selectCon(c);
     else if (S.phase === 'naming') $('nameinput').focus();
@@ -1394,8 +1453,8 @@ for (let i = 0; i < 2; i++) {
   const dot = new THREE.Mesh(new THREE.SphereGeometry(.009, 12, 8), new THREE.MeshBasicMaterial({ color: 0xffe9a8, depthTest: false }));
   dot.visible = false; dot.renderOrder = 14; scene.add(dot);
   const H = { i, ctrl, grip, hand, pad, line, dot, kind: null, sel: false, pinch: false, was: false, aim: null };
-  ctrl.addEventListener('connected', e => { H.kind = e.data && e.data.hand ? 'hand' : 'ctrl'; H.side = e.data ? e.data.handedness : ''; pad.visible = H.kind === 'ctrl'; });
-  ctrl.addEventListener('disconnected', () => { H.kind = null; H.sel = H.pinch = H.was = false; line.visible = dot.visible = pad.visible = false; H.aim = null; });
+  ctrl.addEventListener('connected', e => { H.kind = e.data && e.data.hand ? 'hand' : 'ctrl'; H.side = e.data ? e.data.handedness : ''; H.src = e.data || null; pad.visible = H.kind === 'ctrl'; });
+  ctrl.addEventListener('disconnected', () => { H.kind = null; H.sel = H.pinch = H.was = false; line.visible = dot.visible = pad.visible = false; H.aim = null; H.src = null; if (hold.H === H) holdCancel(); });
   ctrl.addEventListener('selectstart', () => { H.sel = true; });
   ctrl.addEventListener('selectend', () => { H.sel = false; });
   vr.hands.push(H);
@@ -1403,14 +1462,14 @@ for (let i = 0; i < 2; i++) {
 const vO = new THREE.Vector3(), vD = new THREE.Vector3(), vA = new THREE.Vector3(), vB = new THREE.Vector3(), qA = new THREE.Quaternion();
 function updateHand(H) {
   H.aim = null; H.aimDir = null;
-  if (!H.kind) return;
+  if (!H.kind) { if (hold.H === H) holdCancel(); return; }
   if (H.kind === 'hand') {
     const th = H.hand.joints['thumb-tip'], ix = H.hand.joints['index-finger-tip'];
     if (th && ix && th.visible && ix.visible) { const d = th.getWorldPosition(vA).distanceTo(ix.getWorldPosition(vB)); H.pinch = H.pinch ? d < VR.pinchOff : d < VR.pinchOn; }
     else H.pinch = false;
   } else H.pinch = false;
   const press = H.sel || H.pinch;
-  if (!H.ctrl.visible) { H.line.visible = H.dot.visible = false; H.was = press; return; }
+  if (!H.ctrl.visible) { H.line.visible = H.dot.visible = false; H.was = press; if (hold.H === H) holdCancel(); return; }
   H.ctrl.getWorldPosition(vO); vD.set(0, 0, -1).applyQuaternion(H.ctrl.getWorldQuaternion(qA));
   let len = VR.RAY, hit = null, panel = null;
   for (const P of [kb, ctl]) { const h = panelHit(P, vO, vD); if (h && (!hit || h.distance < hit.distance)) { hit = h; panel = P; } }
@@ -1429,6 +1488,7 @@ function updateHand(H) {
     if (H.aim && H.aim.panel) panelPress(H.aim.panel, H.aim.id);
     else if (H.aim && H.aim.sky) selectCon(H.aim.con);
   }
+  holdVR(H, press, len);   // after the press: pulling the trigger on Cygnus still opens its name first, exactly as before
   H.was = press;
 }
 function xrUpdate(frame, dt) {
@@ -1461,6 +1521,75 @@ function xrUpdate(frame, dt) {
   else if (kb.mesh.visible) { S.shake = 0; kb.mesh.position.copy(kb.home); }
 }
 
+// ---------- hold Cygnus 5 s = the test menu's "All constellations revealed" (Kris 2026-11-12: in the headset there is no keyboard to type "test") ----------
+// Mouse, touch, a controller's trigger or a hand's pinch, held on Cygnus, woken or not. After RING_S a ring fills to S; letting go, dragging
+// further than MOVE_PX, or the aim leaving Cygnus cancels without a word. A short tap is untouched: it still opens Cygnus's name, as it always did.
+// The reveal is testJump('all'), the very function the menu's button calls: TEST badge on, nothing saved, Reset all brings the child's sky back.
+const HOLD = { CON: 'Cyg', S: 5, RING_S: 1, MOVE_PX: 16 };
+const hold = { on: false, ptr: null, H: null, t0: 0, x0: 0, y0: 0, x: 0, y: 0, p: 0, firedPtr: null, fired: 0 };
+const ring3 = new THREE.Mesh(new THREE.PlaneGeometry(.5, .5), new THREE.ShaderMaterial({     // the VR ring, at the end of the ray (4 m out: about 7 deg across)
+  uniforms: { uP: { value: 0 }, uA: { value: 0 }, uGold: { value: new THREE.Vector3(...GOLD) } }, transparent: true, depthTest: false, depthWrite: false,
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader: `precision highp float; uniform float uP,uA; uniform vec3 uGold; varying vec2 vUv;
+    void main(){ vec2 d=vUv-.5; float r=length(d)*2., aa=.02;
+      float band=smoothstep(.74-aa,.74+aa,r)*(1.-smoothstep(.96-aa,.96+aa,r));
+      float t=atan(d.x,d.y)/6.2831853; t=t<0.?t+1.:t;                  // 0 at the top, clockwise; the rest of the circle a dim gold track
+      float on=t<=uP?1.:0., k=band*uA;                                    // the track half adds light, so it shows on black sky and on the Milky Way
+      gl_FragColor=vec4(uGold*mix(.3,1.,on)*k,k*mix(.3,1.,on)); }`,
+  blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
+}));
+ring3.renderOrder = 15; ring3.visible = false; ring3.frustumCulled = false; scene.add(ring3);
+const holdCon = () => byIau[HOLD.CON];
+const pickScreen = (x, y) => canPick() ? pick(toLocalDir(screenDir(x, y, rayD))) : null;
+function holdBegin(o) { Object.assign(hold, { on: true, ptr: null, H: null, p: 0, t0: performance.now() }, o); }
+function holdCancel() { hold.on = false; hold.ptr = hold.H = null; hold.p = 0; ringShow(0, 0); }
+function holdDown(e) {
+  if (hold.on && hold.ptr !== e.pointerId) { holdCancel(); return; }      // a second finger: that is a pinch or a drag, not a hold
+  hold.firedPtr = null;
+  if (e.button !== 0 || inXR() || !holdCon() || pickScreen(e.clientX, e.clientY) !== holdCon()) return;
+  holdBegin({ ptr: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY });
+}
+function holdMove(e) {
+  hold.x = e.clientX; hold.y = e.clientY;
+  if (Math.hypot(hold.x - hold.x0, hold.y - hold.y0) > HOLD.MOVE_PX) holdCancel();      // a drag is looking around
+}
+function holdUp(e) {
+  if (hold.ptr === e.pointerId) holdCancel();
+  if (hold.firedPtr !== e.pointerId) return false;
+  hold.firedPtr = null; return true;
+}
+function holdVR(H, press, len) {
+  const on = press && H.aim && H.aim.sky && H.aim.con === holdCon();
+  if (hold.H === H) {
+    if (!on) { holdCancel(); return; }                                      // let go, or the ray left Cygnus
+    ring3.position.copy(vO).addScaledVector(vD, len); ring3.lookAt(head);
+  } else if (on && !H.was && !hold.on) holdBegin({ H });                   // a fresh pull on Cygnus; holding on after the reveal never starts another
+}
+function holdStep() {             // once a frame: the clock, the ring, and the 2D check that Cygnus is still under the finger
+  if (!hold.on) return;
+  if (!canPick() || (hold.ptr != null && (inXR() || pickScreen(hold.x, hold.y) !== holdCon()))) { holdCancel(); return; }
+  const s = (performance.now() - hold.t0) / 1000;
+  if (s >= HOLD.S) { holdFire(); return; }
+  hold.p = s / HOLD.S;
+  ringShow(s >= HOLD.RING_S ? hold.p : 0, sat((s - HOLD.RING_S) / .2));
+}
+function ringShow(p, a) {
+  const xr = inXR(), r = $('holdring');
+  ring3.visible = xr && p > 0; ring3.material.uniforms.uP.value = p; ring3.material.uniforms.uA.value = a;
+  if (!xr && p > 0) {
+    r.classList.add('on'); r.style.transform = `translate(${hold.x}px,${hold.y}px)`; r.dataset.p = p.toFixed(2);
+    $('holdarc').setAttribute('stroke-dasharray', `${(p * 100).toFixed(1)} 100`);
+  } else if (r.classList.contains('on')) { r.classList.remove('on'); r.dataset.p = '0'; }
+}
+function holdFire() {
+  const ptr = hold.ptr, H = hold.H;
+  holdCancel(); hold.firedPtr = ptr; hold.fired++;
+  testJump('all');                                                    // the menu's own button: same sky, same badge, nothing saved
+  setPrompt(() => W.testAll(cons.length, paintTotal()));             // "All 88 revealed · paintings 88", in the language of the moment
+  unlockAudio(); sfxReveal();
+  try { const g = H && H.src && H.src.gamepad, h = g && g.hapticActuators && g.hapticActuators[0]; if (h && h.pulse) h.pulse(.6, 120); } catch (e) { /* no rumble on this controller */ }
+}
+
 // ---------- entering VR ----------
 const vrBtn = $('vrbtn');
 const sayVr = t => showMsg(t);
@@ -1478,11 +1607,11 @@ vrBtn.addEventListener('click', async () => {
   } catch (e) { console.info('VR session not started:', e.message); sayVr(W.vrFail + e.message); }
 });
 renderer.xr.addEventListener('sessionstart', () => {
-  vr.anchored = false; vrBtn.textContent = W.exitVr; vrBtn.classList.remove('big'); sayVr('');
+  holdCancel(); vr.anchored = false; vrBtn.textContent = W.exitVr; vrBtn.classList.remove('big'); sayVr('');
   $('namebox').classList.remove('open');
 });
 renderer.xr.addEventListener('sessionend', () => {
-  vr.anchored = false; ctl.mesh.visible = false; kb.mesh.visible = false; S.hover = false;
+  holdCancel(); vr.anchored = false; ctl.mesh.visible = false; kb.mesh.visible = false; S.hover = false;
   for (const H of vr.hands) { H.kind = null; H.line.visible = H.dot.visible = false; }
   sky.position.set(0, 0, 0); sky.rotation.set(0, 0, 0); camera.position.set(0, 0, 0);
   if (S.phase === 'naming') { $('namebox').classList.add('open'); $('nameinput').value = S.typed; }
@@ -1507,6 +1636,7 @@ renderer.setAnimationLoop((t, frame) => {
     camera.rotation.set(look.pitch * rad, look.yaw * rad, 0);
   }
   pumpUploads();
+  holdStep();
   if (S.phase !== 'loading') tick(dt);
   for (const P of [kb, ctl]) if (P.dirty && (xr || window.__skyForceDraw)) { P.draw(P); P.tex.needsUpdate = true; P.dirty = false; }
   renderer.render(scene, camera);
@@ -1528,6 +1658,7 @@ function applyLang() {
   for (const b of kb.btns) b.label = { CLOSE: W.close, OK: W.ok }[b.id] || b.label;
   if (cons.length) { updateCount(); drawPrompt(); drawHint(); drawFindHint(); setSuggest(S.findSug); }
   if (label && label.visible && S.found) { const f = S.found, a0 = f.at, u = f.until; showFound(f.con, f.part); S.found.at = a0; S.found.until = u; look.turn = null; vr.turn = null; }
+  if (window.skyGate) window.skyGate.setLang(LANG);      // the beta gate's three words follow the switch too
   kb.dirty = ctl.dirty = true;
 }
 function setLang(l) {
@@ -1563,6 +1694,7 @@ window.__sky = {
   FIND, FIND_SHOWS_PAINTING, findMatch, partOf, norm, find: doFind, closeFind, pickFound, selectCon, canPick, countText, paintedCount, paintTotal, get label() { return label; }, FIND_WHOLE, FIND_PART, FIND_MULTI, ALIAS,
   setLang, get lang() { return LANG; }, WORDS, nm, LANG_KEY, get build() { return BUILD; },
   get testMode() { return S.test; }, get testOpen() { return S.testOpen; }, CTL_TEST,
+  HOLD, hold, ring3, ASSET_BASE, asset, pickAt: (x, y) => { const c = pickScreen(x, y); return c ? c.iau : null; },     // hold Cygnus, the asset base
   get orion() { return ORI.fig; }, get tan() { return orionTan(); }, inOrion: d => pick(d) === ORI,
   get artU() { return lastU; },     // the latest reveal
   get art() { const r = R[R.length - 1]; return S.phase === 'reveal' && r ? (r.slot ? r.slot.mesh : { visible: false }) : (S.last && S.last.fig && S.last.fig.mesh) || { visible: false }; },
