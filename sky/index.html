@@ -586,7 +586,7 @@ function loadTex(path) {
   e.p = (async () => {
     let img;
     for (let tries = 0; ; tries++) {                     // decode() can reject under load; a flaky connection can too
-      img = new Image(); img.src = stamped('assets/' + path);
+      img = new Image(); img.crossOrigin = 'anonymous'; img.src = stamped('assets/' + path);
       try { await img.decode(); break; }                 // off the main thread where the browser can
       catch (err) { if (tries >= 2) throw err; await new Promise(ok => setTimeout(ok, 300 * (tries + 1))); }
     }
