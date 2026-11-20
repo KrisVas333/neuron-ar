@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuron testas</title>
+<style>body{font:18px/1.5 system-ui;margin:0;padding:48px 16px;background:#fff;color:#152039;text-align:center}a{display:inline-block;margin-top:16px;padding:12px 20px;background:#6A41D4;color:#fff;border-radius:4px;text-decoration:none}</style>
+<!-- neuron-publish:tracking -->
+<meta name="robots" content="noindex">
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="ra" data-artifact="neuron-testas" data-kind="landing"></script>
+<script>
+/* Sutikimo vartai + Microsoft Clarity (taisyklė 16). Clarity kraunamas TIK po „Leisti". */
+(function(){var ID='zgmv6aljqq',KEY='kv_p_consent';
+function rd(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+function sv(v){try{localStorage.setItem(KEY,v)}catch(e){}}
+function clarity(){if(window.clarity)return;(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,'clarity','script',ID)}
+function banner(){var lt=(document.documentElement.lang||'lt').toLowerCase().indexOf('en')!==0;
+var el=document.createElement('div');el.setAttribute('role','dialog');el.setAttribute('aria-label',lt?'Slapukų sutikimas':'Cookie consent');
+el.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:2147483000;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#0A0A0A;color:#fff;font:14px/1.35 system-ui,-apple-system,Segoe UI,sans-serif';
+var b='min-height:44px;padding:8px 16px;border-radius:4px;font:inherit;font-weight:600;cursor:pointer;';
+el.innerHTML='<span style="max-width:560px">'+(lt?'„Leisti“ įjungia anoniminius šilumos žemėlapius (Microsoft Clarity), kad matytume, kur puslapis neaiškus. Be sutikimo: tik anoniminė statistika be slapukų.':'“Allow” turns on anonymous heatmaps (Microsoft Clarity) so we can see where the page is unclear. Without consent: anonymous cookieless statistics only.')+'</span>'+
+'<button type="button" data-c="all" style="'+b+'background:#fff;color:#0A0A0A;border:0">'+(lt?'Leisti':'Allow')+'</button>'+
+'<button type="button" data-c="necessary" style="'+b+'background:transparent;color:#fff;border:1px solid #777">'+(lt?'Tik būtini':'Necessary only')+'</button>';
+el.addEventListener('click',function(e){var t=e.target.closest('button[data-c]');if(!t)return;var c=t.getAttribute('data-c');sv(c);if(c==='all')clarity();
+if(window.bt)window.bt('engage',{consent:c});el.remove()});document.body.appendChild(el)}
+function init(){var c=rd();if(c==='all'){clarity();return}if(c==='necessary')return;banner()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
+</script>
+</head>
+<body>
+<h1>Neuron publikavimo testas</h1>
+<p>Šis puslapis patikrina, ar nuoroda, sekimas ir sutikimo juosta veikia.</p>
+<a href="https://robotikosakademija.lt" onclick="window.bt&&bt('cta',{to:'ra'})">Robotikos Akademija</a>
+</body>
+</html>
