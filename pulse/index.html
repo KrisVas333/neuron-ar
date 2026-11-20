@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Laiškai tėvams · Kris Vas</title>
+<meta name="description" content="Visi Kris Vas laiškai mamoms ir tėčiams vienoje vietoje: Pulse ir Mokymosi klubas. Viena tema, tikri skaičiai ir ką padaryti su vaiku šią savaitę.">
+<meta property="og:title" content="Visi laiškai tėvams · Kris Vas">
+<meta property="og:image" content="https://krisvas333.github.io/neuron-ar/pulse/08/hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--btn:#D90429;--btn-ink:#FFFFFF;--chip:#FFFFFF;--mono:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#080808;--surface:#141414;--ink:#F2F2F2;--muted:#A6A6A6;--line:#2A2A2A;--accent:#FF4D5E;--btn:#D90429;--btn-ink:#FFFFFF;--chip:#0F0F0F}}
+:root[data-theme="dark"]{--bg:#080808;--surface:#141414;--ink:#F2F2F2;--muted:#A6A6A6;--line:#2A2A2A;--accent:#FF4D5E;--btn:#D90429;--btn-ink:#FFFFFF;--chip:#0F0F0F}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.55;overflow-x:hidden}
+main{max-width:720px;margin:0 auto;padding:16px 16px 80px}
+a{color:var(--accent)}
+.top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
+.tools{margin-left:auto;display:flex;gap:6px}
+.tools button{font-family:var(--mono);font-size:13px;font-weight:700;min-height:44px;min-width:44px;padding:0 10px;border-radius:4px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+h1{font-family:var(--mono);font-size:30px;line-height:1.2;font-weight:800;margin:0 0 12px;letter-spacing:-.01em}
+h2{font-family:var(--mono);font-size:15px;letter-spacing:.1em;text-transform:uppercase;margin:40px 0 12px}
+h3{font-family:var(--mono);font-size:19px;line-height:1.3;margin:0 0 8px}
+.promise{font-size:19px;margin:0 0 6px}
+.card{background:var(--surface);border-radius:4px;padding:18px 20px;margin:16px 0}
+.picks{border-left:3px solid var(--accent)}
+.picks ol{margin:0;padding-left:22px}.picks li{margin:0 0 12px}.picks li:last-child{margin:0}
+.picks a{font-weight:700}
+.btn{display:inline-block;padding:13px 18px;background:var(--btn);color:var(--btn-ink);border-radius:4px;font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:2px solid var(--btn);cursor:pointer;margin:4px 6px 4px 0;line-height:1.2}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--accent)}
+small,.small{color:var(--muted);font-size:15px}
+.search{width:100%;font:inherit;font-size:18px;padding:13px 14px;border:2px solid var(--ink);border-radius:4px;background:var(--bg);color:var(--ink);margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.chip{font-family:var(--mono);font-size:13px;font-weight:700;min-height:40px;padding:0 12px;border-radius:4px;border:2px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.count{font-family:var(--mono);font-size:13px;color:var(--muted);margin:0 0 6px}
+.letter{background:var(--surface);border-radius:4px;margin:18px 0;overflow:hidden}
+.letter img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.letter .in{padding:16px 18px 18px}
+.meta{font-family:var(--mono);font-size:13px;color:var(--muted);margin:0 0 6px;letter-spacing:.04em}
+.meta b{color:var(--accent)}
+.gloss{font-size:15px;color:var(--muted);margin:-4px 0 8px;font-style:italic}
+.do{margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;padding:0;list-style:none}
+.tags li{font-family:var(--mono);font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:4px;color:var(--muted)}
+.empty{display:none}.empty.on{display:block}
+.drafts{font-size:15px;color:var(--muted);margin:14px 0 0}
+.nl form{display:flex;flex-wrap:wrap;gap:10px;margin:0}
+.nl input[type=email]{flex:1 1 220px;font:inherit;font-size:17px;padding:13px;border:2px solid var(--ink);border-radius:4px;min-width:0;background:var(--bg);color:var(--ink)}
+.nl .hp{position:absolute;left:-9999px}
+.nl .msg{margin-top:10px;font-weight:600}
+.score{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.score button{font-family:var(--mono);font-size:17px;font-weight:800;min-height:48px;border-radius:4px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.score button[aria-pressed="true"]{background:var(--btn);border-color:var(--btn);color:var(--btn-ink)}
+textarea{width:100%;min-height:96px;font:inherit;font-size:17px;padding:10px;border:1px solid var(--muted);border-radius:4px;background:var(--bg);color:var(--ink);margin:6px 0}
+.linkbtn{background:none;border:0;color:var(--accent);text-decoration:underline;font:inherit;cursor:pointer;padding:0}
+html[lang="en"] .lt{display:none}
+html:not([lang="en"]) .en{display:none}
+@media (min-width:640px){.score{grid-template-columns:repeat(10,1fr)}h1{font-size:36px}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+<p class="kicker">Kris Vas · <span class="lt">Laiškai tėvams</span><span class="en">Letters to parents</span></p>
+<div class="tools"><button type="button" id="lang" aria-label="Kalba / Language">EN</button><button type="button" id="theme" aria-label="Šviesi ar tamsi tema / Light or dark theme">◐</button></div>
+</div>
+
+<h1><span class="lt">Visi laiškai mamoms ir tėčiams</span><span class="en">Every letter to mums and dads</span></h1>
+<p class="promise"><span class="lt">Kiekviename laiške viena tema, tikri skaičiai ir tai, ką su vaiku gali padaryti jau šią savaitę.</span><span class="en">Each letter has one topic, real numbers and something you can do with your child this week.</span></p>
+<p><small><span class="lt">Pradžioje laiškas vadinosi „Pulse", nuo #07 jis yra „Mokymosi klubas". Naujausias viršuje.</span><span class="en">It started as „Pulse" and since #07 it is „Mokymosi klubas" (Learning club). Newest first. The letters themselves are in Lithuanian.</span></small></p>
+<p><a class="btn ghost" href="#prenumeruok" data-ev="sub_jump"><span class="lt">Gauti kitą laišką</span><span class="en">Get the next letter</span></a></p>
+
+<h2 id="pradek"><span class="lt">Pradėk nuo šių</span><span class="en">Start with these</span></h2>
+<div class="card picks">
+<ol>
+<li><a href="07/laiskas.html" data-pick="07">#07 Mokyklos riboja telefonus. Ką daryti namie?</a><br><span class="lt">Jei nori pradėti nuo veiksmo: trys namų taisyklės, pritaikytos kiekvienam amžiui.</span><span class="en">If you want to start with action: three house rules, adapted for every age.</span></li>
+<li><a href="01/laiskas.html" data-pick="01">#01 Ar žinai, apie ką svajoja tavo vaikas?</a><br><span class="lt">Pamatas: pirma sužinok, ką vaikas myli, tik tada rinkis būrelį ar taisykles.</span><span class="en">The foundation: first find out what your child loves, then choose clubs or rules.</span></li>
+<li><a href="08/laiskas.html" data-pick="08">#08 Įdomiausias žaidimas yra realus gyvenimas</a><br><span class="lt">Jei vaikas jau lanko būrelį: patikra per 2 minutes, ar jis atlieka savo darbą.</span><span class="en">If your child already goes to a club: a 2-minute check that it does its job.</span></li>
+</ol>
+</div>
+
+<h2 id="laiskai"><span class="lt">Visi laiškai</span><span class="en">All letters</span></h2>
+<label for="q" class="small"><span class="lt">Ieškok žodžio, pvz. „telefonas" ar „būrelis"</span><span class="en">Search a word, e.g. „telefonas" (phone) or „būrelis" (club)</span></label>
+<input id="q" class="search" type="search" autocomplete="off" placeholder="telefonas, būrelis, svajonė…">
+<div class="chips" id="chips" role="group" aria-label="Temos / Topics">
+<button type="button" class="chip" data-tag="" aria-pressed="true"><span class="lt">Visi</span><span class="en">All</span></button>
+<button type="button" class="chip" data-tag="telefonai" aria-pressed="false"><span class="lt">Telefonai</span><span class="en">Phones</span></button>
+<button type="button" class="chip" data-tag="bureliai" aria-pressed="false"><span class="lt">Būreliai</span><span class="en">Clubs</span></button>
+<button type="button" class="chip" data-tag="taisykles" aria-pressed="false"><span class="lt">Namų taisyklės</span><span class="en">House rules</span></button>
+<button type="button" class="chip" data-tag="pomegiai" aria-pressed="false"><span class="lt">Pomėgiai</span><span class="en">Interests</span></button>
+<button type="button" class="chip" data-tag="pokalbiai" aria-pressed="false"><span class="lt">Pokalbiai su vaiku</span><span class="en">Talking with your child</span></button>
+<button type="button" class="chip" data-tag="namie" aria-pressed="false"><span class="lt">Mokymasis namie</span><span class="en">Learning at home</span></button>
+<button type="button" class="chip" data-tag="di" aria-pressed="false"><span class="lt">DI</span><span class="en">AI</span></button>
+</div>
+<p class="count" id="count" aria-live="polite"></p>
+
+<div id="list">
+
+<article class="letter" data-n="08" data-tags="bureliai telefonai namie pokalbiai">
+<img src="08/hero.jpg" alt="Kris su vedėjomis laidos „Arbatėlė&quot; studijoje Kaune" width="1200" height="1200" loading="lazy">
+<div class="in">
+<p class="meta"><b>#08</b> · 2026-11-20 · Mokymosi klubas #2 · 🎧</p>
+<h3 lang="lt">Įdomiausias žaidimas yra realus gyvenimas</h3>
+<p class="gloss en">The most interesting game is real life</p>
+<p class="do"><span class="lt">Patikrinsi vaiko būrelį trimis klausimais per 2 minutes, o jei būrelio dar nėra, iš mėgstamo žaidimo suprasi, kokios veiklos ieškoti.</span><span class="en">Check your child's club with three questions in 2 minutes, and if there is no club yet, use their favourite game to see what kind of activity to look for.</span></p>
+<ul class="tags"><li><span class="lt">Būreliai</span><span class="en">Clubs</span></li><li><span class="lt">Telefonai</span><span class="en">Phones</span></li><li><span class="lt">Mokymasis namie</span><span class="en">Learning at home</span></li></ul>
+<a class="btn" href="08/laiskas.html" data-to="laiskas"><span class="lt">Skaityti laišką</span><span class="en">Read the letter</span></a><a class="btn ghost" href="08/" data-to="companion"><span class="lt">Viskas iš laiško</span><span class="en">Everything from it</span></a><a class="btn ghost" href="08/#klausyk" data-to="audio">🎧 <span class="lt">Klausyk</span><span class="en">Listen</span></a>
+</div>
+</article>
+
+<article class="letter" data-n="07" data-tags="telefonai taisykles di">
+<img src="07/hero.jpg" alt="Kris klasėje rodo rankomis ir kalba" width="1200" height="799" loading="lazy">
+<div class="in">
+<p class="meta"><b>#07</b> · 2026-11-05 · Mokymosi klubas #1 · 🎧</p>
+<h3 lang="lt">Mokyklos riboja telefonus. Ką daryti namie?</h3>
+<p class="gloss en">Schools are limiting phones. What do we do at home?</p>
+<p class="do"><span class="lt">Įvesi tris telefono taisykles namams (stalas, miegamasis, DI) su patarimais kiekvienam amžiui nuo 3 iki 17 metų.</span><span class="en">Set three phone rules at home (the table, the bedroom, AI), with tips for every age from 3 to 17.</span></p>
+<ul class="tags"><li><span class="lt">Telefonai</span><span class="en">Phones</span></li><li><span class="lt">Namų taisyklės</span><span class="en">House rules</span></li><li><span class="lt">DI</span><span class="en">AI</span></li></ul>
+<a class="btn" href="07/laiskas.html" data-to="laiskas"><span class="lt">Skaityti laišką</span><span class="en">Read the letter</span></a><a class="btn ghost" href="07/" data-to="companion"><span class="lt">Viskas iš laiško</span><span class="en">Everything from it</span></a><a class="btn ghost" href="07/#klausyk" data-to="audio">🎧 <span class="lt">Klausyk</span><span class="en">Listen</span></a>
+</div>
+</article>
+
+<article class="letter" data-n="05" data-tags="telefonai taisykles">
+<img src="05/hero.jpg" alt="Kris ir Džiugas kalbasi studijoje" width="1280" height="720" loading="lazy">
+<div class="in">
+<p class="meta"><b>#05</b> · 2026-10-08 · Pulse · 🎧</p>
+<h3 lang="lt">Kas pirmas tavo rankose ryte?</h3>
+<p class="gloss en">What is the first thing in your hands in the morning?</p>
+<p class="do"><span class="lt">Įjungsi pilką telefono ekraną ir iš 10 šeimos taisyklių išsirinksi savo, kurias pasirašys visi, ir tėvai.</span><span class="en">Switch your phone to grayscale and pick your own rules from 10 family rules that everyone signs, parents too.</span></p>
+<ul class="tags"><li><span class="lt">Telefonai</span><span class="en">Phones</span></li><li><span class="lt">Namų taisyklės</span><span class="en">House rules</span></li></ul>
+<a class="btn" href="05/laiskas.html" data-to="laiskas"><span class="lt">Skaityti laišką</span><span class="en">Read the letter</span></a><a class="btn ghost" href="05/" data-to="companion"><span class="lt">Viskas iš laiško</span><span class="en">Everything from it</span></a><a class="btn ghost" href="05/#klausyk" data-to="audio">🎧 <span class="lt">Klausyk</span><span class="en">Listen</span></a>
+</div>
+</article>
+
+<article class="letter" data-n="03" data-tags="bureliai pomegiai pokalbiai">
+<img src="03/hero.jpg" alt="Kris prie būrelių mugės „Renkasi vaikai&quot; plakato Kaune" width="780" height="680" loading="lazy">
+<div class="in">
+<p class="meta"><b>#03</b> · 2026-09-25 · Pulse · 🎧</p>
+<h3 lang="lt">Ko labiausiai nori vaikas? Atsakymas telpa į 4 žodžius</h3>
+<p class="gloss en">What does a child want most? The answer fits in 4 words</p>
+<p class="do"><span class="lt">Paversi tai, ką vaikas myli ekrane, tikru nuotykiu kartu ir išmoksi rinktis būrelį pagal vadovą, ne pagal salę.</span><span class="en">Turn what your child loves on screen into a real adventure together, and learn to choose a club by its leader, not its room.</span></p>
+<ul class="tags"><li><span class="lt">Būreliai</span><span class="en">Clubs</span></li><li><span class="lt">Pomėgiai</span><span class="en">Interests</span></li><li><span class="lt">Pokalbiai su vaiku</span><span class="en">Talking with your child</span></li></ul>
+<a class="btn" href="03/laiskas.html" data-to="laiskas"><span class="lt">Skaityti laišką</span><span class="en">Read the letter</span></a><a class="btn ghost" href="03/" data-to="companion"><span class="lt">Viskas iš laiško</span><span class="en">Everything from it</span></a><a class="btn ghost" href="03/#klausyk" data-to="audio">🎧 <span class="lt">Klausyk</span><span class="en">Listen</span></a>
+</div>
+</article>
+
+<article class="letter" data-n="01" data-tags="pomegiai pokalbiai bureliai">
+<img src="01/hero-600.jpg" alt="Kris skaito parodos „Ateities trajektorija&quot; sieną Lietuvos nacionaliniame muziejuje" width="600" height="400" loading="lazy">
+<div class="in">
+<p class="meta"><b>#01</b> · 2026-09-18 · Pulse · 🎧</p>
+<h3 lang="lt">Ar žinai, apie ką svajoja tavo vaikas?</h3>
+<p class="gloss en">Do you know what your child dreams about?</p>
+<p class="do"><span class="lt">Prie vakarienės užduosi vieną klausimą ir per tris žingsnius be pinigų sužinosi, apie ką vaikas svajoja.</span><span class="en">Ask one question at dinner and, in three steps that cost nothing, find out what your child dreams about.</span></p>
+<ul class="tags"><li><span class="lt">Pomėgiai</span><span class="en">Interests</span></li><li><span class="lt">Pokalbiai su vaiku</span><span class="en">Talking with your child</span></li><li><span class="lt">Būreliai</span><span class="en">Clubs</span></li></ul>
+<a class="btn" href="01/laiskas.html" data-to="laiskas"><span class="lt">Skaityti laišką</span><span class="en">Read the letter</span></a><a class="btn ghost" href="01/" data-to="companion"><span class="lt">Viskas iš laiško</span><span class="en">Everything from it</span></a><a class="btn ghost" href="01/#player" data-to="audio">🎧 <span class="lt">Klausyk</span><span class="en">Listen</span></a>
+</div>
+</article>
+
+<article class="letter" data-n="00" data-tags="pokalbiai namie">
+<div class="in">
+<p class="meta"><b>#00</b> · 2026-08-03 · <span class="lt">pirmas laiškas, dar iki Pulse</span><span class="en">the first letter, before Pulse</span></p>
+<h3 lang="lt">Pažadėjau žemėlapį. Štai kas eina toliau.</h3>
+<p class="gloss en">I promised a map. Here is what comes next.</p>
+<p class="small" style="margin:0 0 8px"><span class="lt">Pirmas laiškas, dar prieš nusistovint formatui, todėl jame kreipiuosi „Jūs".</span><span class="en">The first letter, from before the format settled, so it addresses the reader formally („Jūs").</span></p>
+<p class="do"><span class="lt">Vietoj „kaip sekėsi mokykloje?" paprašysi vaiko parodyti, ką jis moka, ir pamatysi skirtumą jau šį vakarą.</span><span class="en">Instead of asking „how was school?", ask your child to show you what they can do, and see the difference tonight.</span></p>
+<ul class="tags"><li><span class="lt">Pokalbiai su vaiku</span><span class="en">Talking with your child</span></li><li><span class="lt">Mokymasis namie</span><span class="en">Learning at home</span></li></ul>
+<a class="btn" href="00/laiskas.html" data-to="laiskas"><span class="lt">Skaityti laišką</span><span class="en">Read the letter</span></a>
+</div>
+</article>
+
+</div>
+<p class="card empty" id="empty"><span class="lt">Nieko neradau. Pabandyk kitą žodį arba spausk „Visi".</span><span class="en">Nothing found. Try another word or press „All".</span></p>
+<p class="drafts"><span class="lt">Laiškų #02, #04 ir #06 čia dar nėra. Juos pridėsiu vėliau.</span><span class="en">Letters #02, #04 and #06 are not here yet. I will add them later.</span></p>
+
+<h2 id="prenumeruok"><span class="lt">Gauk kitą laišką</span><span class="en">Get the next letter</span></h2>
+<div class="card nl">
+<p style="margin:0 0 12px"><span class="lt">Nemokamai. Atsisakyti galima vienu paspaudimu kiekvieno laiško apačioje.</span><span class="en">Free. You can unsubscribe with one click at the bottom of every letter. The letters are in Lithuanian.</span></p>
+<form id="nl" novalidate>
+<input type="email" name="email" id="nl-email" required placeholder="tavo@pastas.lt" aria-label="El. paštas / Email" autocomplete="email">
+<input class="hp" type="text" name="company" id="nl-company" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit" class="btn" id="nl-btn" style="margin:0"><span class="lt">Noriu gauti</span><span class="en">Sign me up</span></button>
+</form>
+<div class="msg" id="nl-msg" role="status" aria-live="polite"></div>
+<p style="margin:10px 0 0"><small><span class="lt">Spausdamas sutinki gauti Kris Vas laiškus. Duomenys niekam neperduodami.</span><span class="en">By pressing you agree to receive Kris Vas letters. Your data is not shared.</span> <a href="https://krisvas.lt/privatumas"><span class="lt">Privatumas</span><span class="en">Privacy</span></a></small></p>
+</div>
+
+<h2 id="ivertink"><span class="lt">Ar šis archyvas naudingas?</span><span class="en">Is this archive useful?</span></h2>
+<div class="card">
+<p style="margin:0"><span class="lt">Įvertink nuo 1 iki 10. Balas keliauja anonimiškai, be teksto.</span><span class="en">Rate it from 1 to 10. The score is sent anonymously, without any text.</span></p>
+<div class="score" id="score" role="group" aria-label="1–10"></div>
+<p id="score-ok" aria-live="polite" style="margin:0 0 8px;font-weight:600"></p>
+<label for="comment"><span class="lt">Ko trūksta? Ką pataisyti?</span><span class="en">What is missing? What should I fix?</span></label>
+<textarea id="comment" maxlength="800"></textarea>
+<button type="button" class="btn" id="comment-send"><span class="lt">Siųsti komentarą</span><span class="en">Send comment</span></button>
+<p style="margin:8px 0 0"><small><span class="lt">Mygtukas atidaro tavo el. pašto programą su paruoštu laišku man. Šis puslapis tavo teksto niekur nesaugo ir nesiunčia.</span><span class="en">The button opens your email app with a ready letter to me. This page does not store or send your text anywhere.</span></small></p>
+</div>
+
+<h2><span class="lt">Atvirai</span><span class="en">Openly</span></h2>
+<p><span class="lt">Laiškus ir šį puslapį rašiau su disleksija, ADHD ir DI padėjėju. Esu Robotikos akademijos, BrAIn Club ir ExoClass bendraįkūrėjas, todėl apie būrelius kalbu šališkai. „Pradėk nuo šių" yra mano pasirinkimas iš mano paties laiškų, ne reitingas.</span><span class="en">I wrote the letters and this page with dyslexia, ADHD and an AI assistant. I co-founded Robotikos akademija, BrAIn Club and ExoClass, so I am biased about after-school clubs. „Start with these" is my own pick from my own letters, not a ranking.</span></p>
+<p><small><span class="lt">⚗️ Eksperimentinis prototipas, sukurtas su DI. Gali klysti, todėl svarbius dalykus pasitikrink. Nemokamas. Radai klaidą? Parašyk: <a href="https://krisvas.lt">krisvas.lt</a></span><span class="en">⚗️ Experimental prototype built with AI. It can be wrong, so check what matters. Free. Found an error? Tell me: <a href="https://krisvas.lt">krisvas.lt</a></span></small></p>
+<p><small><span class="lt">Parengta su DI pagalba, šaltiniai tikrinti, bet galiu klysti. Pastabos laukiamos. Privatumas: anoniminė statistika be slapukų. Microsoft Clarity įsijungia tik paspaudus „Leisti".</span><span class="en">Made with AI help, sources checked, but I can be wrong. Feedback welcome. Privacy: anonymous cookieless stats. Microsoft Clarity only turns on after you press „Leisti" (Allow).</span> <a href="https://krisvas.lt/privatumas"><span class="lt">Privatumo politika</span><span class="en">Privacy policy</span></a> · <button class="linkbtn" id="consent"><span class="lt">Keisti sutikimą</span><span class="en">Change consent</span></button></small></p>
+</main>
+<script>
+(function () {
+  var root = document.documentElement;
+  try { var l0 = localStorage.getItem('kv-archive-lang'); if (l0 === 'en') root.setAttribute('lang', 'en'); } catch (e) {}
+  try { var t0 = localStorage.getItem('kv-archive-theme'); if (t0 === 'light' || t0 === 'dark') root.setAttribute('data-theme', t0); } catch (e) {}
+
+  var SRC = 'direct';
+  try { SRC = (new URLSearchParams(location.search).get('src') || 'direct').slice(0, 40); } catch (e) {}
+  var q = [], tries = 0;
+  function ev(name, props) {
+    var p = { src: SRC };
+    for (var k in props || {}) p[k] = props[k];
+    try { if (window.bt) window.bt(name, p); else q.push([name, p]); } catch (e) {}
+  }
+  (function flush() {
+    if (window.bt) { q.splice(0).forEach(function (a) { try { window.bt(a[0], a[1]); } catch (e) {} }); return; }
+    if (tries++ < 40) setTimeout(flush, 500);
+  })();
+  ev('archive_open', {});
+  function isEn() { return root.getAttribute('lang') === 'en'; }
+
+  /* language + theme */
+  var lb = document.getElementById('lang');
+  function syncLang() { lb.textContent = isEn() ? 'LT' : 'EN'; render(); markScore(); }
+  lb.addEventListener('click', function () {
+    var en = !isEn();
+    root.setAttribute('lang', en ? 'en' : 'lt');
+    try { localStorage.setItem('kv-archive-lang', en ? 'en' : 'lt'); } catch (e) {}
+    syncLang(); ev('lang_toggle', { to: en ? 'en' : 'lt' });
+  });
+  document.getElementById('theme').addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme');
+    if (!cur) cur = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('kv-archive-theme', next); } catch (e) {}
+    ev('theme_toggle', { to: next });
+  });
+
+  /* filter + search */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.letter'));
+  var input = document.getElementById('q'), tag = '';
+  function norm(s) {
+    s = (s || '').toLowerCase();
+    try { s = s.normalize('NFD').replace(/[̀-ͯ]/g, ''); } catch (e) {}
+    return s;
+  }
+  cards.forEach(function (c) { c._text = norm(c.textContent); });
+  function render() {
+    var words = norm(input.value).split(/\s+/).filter(Boolean), shown = 0;
+    cards.forEach(function (c) {
+      var okTag = !tag || (' ' + c.getAttribute('data-tags') + ' ').indexOf(' ' + tag + ' ') !== -1;
+      var okText = words.every(function (w) { return c._text.indexOf(w) !== -1; });
+      var on = okTag && okText;
+      c.hidden = !on; if (on) shown++;
+    });
+    document.getElementById('count').textContent = isEn() ? ('Showing ' + shown + ' of ' + cards.length) : ('Rodoma ' + shown + ' iš ' + cards.length);
+    document.getElementById('empty').className = 'card empty' + (shown ? '' : ' on');
+    return shown;
+  }
+  document.getElementById('chips').addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.chip') : null; if (!b) return;
+    tag = b.getAttribute('data-tag');
+    Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    var n = render();
+    ev('archive_filter', { tag: tag || 'all', hits: n });
+  });
+  var st = null;
+  input.addEventListener('input', function () {
+    var n = render();
+    clearTimeout(st);
+    /* only length + hit count go to analytics, never the typed words */
+    st = setTimeout(function () { if (input.value.trim()) ev('archive_search', { len: input.value.trim().length, hits: n }); }, 900);
+  });
+
+  /* clicks: cards, picks, subscribe jump */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a') : null; if (!a) return;
+    var card = a.closest('.letter');
+    if (card && a.getAttribute('data-to')) ev('archive_card_click', { n: card.getAttribute('data-n'), to: a.getAttribute('data-to') });
+    else if (a.getAttribute('data-pick')) ev('archive_pick_click', { n: a.getAttribute('data-pick') });
+    else if (a.getAttribute('data-ev') === 'sub_jump') ev('archive_sub_jump', {});
+  }, { passive: true, capture: true });
+
+  /* newsletter signup: same krisvas.lt edge function + group as te/apie (KV newsletter box) */
+  var NL = { URL: 'https://bpufgnpzsjmtqyfihkuk.supabase.co/functions/v1/mailerlite-subscribe', KEY: 'sb_publishable_kJxdHmhHG68-L938ap3F3w_uYkMRr9D' };
+  var f = document.getElementById('nl'), em = document.getElementById('nl-email'), btn = document.getElementById('nl-btn'), msg = document.getElementById('nl-msg'), hp = document.getElementById('nl-company');
+  function say(lt, en) { msg.textContent = isEn() ? en : lt; }
+  var seen = false;
+  try { new IntersectionObserver(function (es) { if (!seen && es[0].isIntersecting) { seen = true; ev('nl_view', { place: 'pulse-archive' }); } }).observe(f); } catch (e) {}
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = (em.value || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { say('Patikrink el. pašto adresą.', 'Please check the email address.'); em.focus(); return; }
+    btn.disabled = true; say('Siunčiu…', 'Sending…'); ev('nl_submit', { place: 'pulse-archive' });
+    var ctrl = null; try { ctrl = new AbortController(); setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, 15000); } catch (e) {}
+    fetch(NL.URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': NL.KEY, 'Authorization': 'Bearer ' + NL.KEY },
+      body: JSON.stringify({ email: v, language: 'lt', source: 'pulse-archive', src: SRC, page_url: location.origin + location.pathname, consent: true, company: hp.value }), signal: ctrl ? ctrl.signal : undefined })
+    .then(function (r) { return r.json().catch(function () { return null; }).then(function (d) { return { r: r, d: d }; }); })
+    .then(function (x) {
+      if (x.r.status === 429) { btn.disabled = false; say('Per daug bandymų. Palauk minutę.', 'Too many tries. Wait a minute.'); ev('nl_error', { place: 'pulse-archive', kind: 'rate' }); return; }
+      if (!x.r.ok || !x.d || !x.d.ok) { btn.disabled = false; say('Nepavyko, pabandyk dar kartą.', 'That did not work, please try again.'); ev('nl_error', { place: 'pulse-archive', kind: 'http', status: x.r.status }); return; }
+      f.hidden = true;
+      say(x.d.duplicate ? 'Tu jau skaitai, ačiū!' : 'Ačiū! Patikrink paštą.', x.d.duplicate ? 'You already get the letters, thank you!' : 'Thank you! Check your inbox.');
+      ev('nl_ok', { place: 'pulse-archive', duplicate: x.d.duplicate ? 1 : 0 });
+    }).catch(function () { btn.disabled = false; say('Nepavyko prisijungti. Pabandyk dar kartą.', 'Could not connect. Please try again.'); ev('nl_error', { place: 'pulse-archive', kind: 'network' }); });
+  });
+
+  /* usefulness score 1–10: score -> tracker event, comment -> mailto only */
+  var box = document.getElementById('score'), chosen = 0, sentScore = {};
+  for (var i = 1; i <= 10; i++) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = i; b.setAttribute('data-s', i); b.setAttribute('aria-pressed', 'false'); box.appendChild(b);
+  }
+  try { chosen = +localStorage.getItem('kv-archive-score') || 0; } catch (e) {}
+  function markScore() {
+    Array.prototype.forEach.call(box.children, function (x) { x.setAttribute('aria-pressed', +x.getAttribute('data-s') === chosen ? 'true' : 'false'); });
+    document.getElementById('score-ok').textContent = chosen ? (isEn() ? 'Thank you! You rated it ' + chosen + '/10.' : 'Ačiū! Įvertinai ' + chosen + '/10.') : '';
+  }
+  markScore();
+  box.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('button[data-s]') : null; if (!b) return;
+    chosen = +b.getAttribute('data-s');
+    try { localStorage.setItem('kv-archive-score', String(chosen)); } catch (e) {}
+    markScore();
+    if (!sentScore[chosen]) { sentScore[chosen] = 1; ev('archive_score', { score: chosen }); }
+  });
+  document.getElementById('comment-send').addEventListener('click', function () {
+    var text = document.getElementById('comment').value.trim().slice(0, 800);
+    var subject = 'Laiškų archyvas' + (chosen ? ': ' + chosen + '/10' : '');
+    ev('archive_comment_mailto', { has_text: text ? 1 : 0, score: chosen || 0 });
+    location.href = 'mailto:kristijonas.vasiliauskas@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+  });
+
+  document.getElementById('consent').addEventListener('click', function () { if (window.kvConsent) window.kvConsent('reset'); });
+  syncLang();
+})();
+</script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body>
+</html>
