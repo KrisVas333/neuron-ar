@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RA testas: Povilo puslapis</title>
+<style>
+:root{--navy:#152039;--purple:#6A41D4;--cyan:#02B7F5;--ground:#FFFFFF;--ink:#152039;--muted:#4A5068}
+@media (prefers-color-scheme:dark){:root{--ground:#152039;--ink:#FFFFFF;--muted:#C9CEDD}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--ground);color:var(--ink);font:17px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+display:flex;align-items:center;justify-content:center;padding:24px}
+main{max-width:560px;width:100%;text-align:center}
+.logo{display:inline-block;background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:28px}
+.logo img{width:260px;max-width:70vw;height:auto;display:block}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:0 0 12px}
+h1 span{color:var(--purple)}
+@media (prefers-color-scheme:dark){h1 span{color:var(--cyan)}}
+p{color:var(--muted);margin:0 0 28px}
+.bar{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--purple),var(--cyan));margin:0 auto 28px;width:120px}
+button{min-height:48px;padding:10px 22px;border:0;border-radius:8px;font:inherit;font-weight:700;cursor:pointer;
+background:var(--purple);color:#fff}
+button:hover{background:var(--cyan);color:var(--navy)}
+#out{min-height:1.5em;margin-top:16px;font-weight:600;color:var(--cyan)}
+.lang{position:fixed;top:12px;right:12px;background:transparent;color:var(--ink);border:1px solid var(--muted);min-height:36px;padding:4px 12px;font-size:14px}
+</style>
+<!-- neuron-publish:tracking -->
+<meta name="robots" content="noindex">
+<script defer src="https://krisvas333.github.io/neuron-ar/track.js" data-brand="ra" data-artifact="povilo-testas" data-kind="landing"></script>
+<script>
+/* Sutikimo vartai + Microsoft Clarity (taisyklė 16). Clarity kraunamas TIK po „Leisti". */
+(function(){var ID='zgmv6aljqq',KEY='kv_p_consent';
+function rd(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+function sv(v){try{localStorage.setItem(KEY,v)}catch(e){}}
+function clarity(){if(window.clarity)return;(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,'clarity','script',ID)}
+function banner(){var lt=(document.documentElement.lang||'lt').toLowerCase().indexOf('en')!==0;
+var el=document.createElement('div');el.setAttribute('role','dialog');el.setAttribute('aria-label',lt?'Slapukų sutikimas':'Cookie consent');
+el.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:2147483000;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#0A0A0A;color:#fff;font:14px/1.35 system-ui,-apple-system,Segoe UI,sans-serif';
+var b='min-height:44px;padding:8px 16px;border-radius:4px;font:inherit;font-weight:600;cursor:pointer;';
+el.innerHTML='<span style="max-width:560px">'+(lt?'„Leisti“ įjungia anoniminius šilumos žemėlapius (Microsoft Clarity), kad matytume, kur puslapis neaiškus. Be sutikimo: tik anoniminė statistika be slapukų.':'“Allow” turns on anonymous heatmaps (Microsoft Clarity) so we can see where the page is unclear. Without consent: anonymous cookieless statistics only.')+'</span>'+
+'<button type="button" data-c="all" style="'+b+'background:#fff;color:#0A0A0A;border:0">'+(lt?'Leisti':'Allow')+'</button>'+
+'<button type="button" data-c="necessary" style="'+b+'background:transparent;color:#fff;border:1px solid #777">'+(lt?'Tik būtini':'Necessary only')+'</button>';
+el.addEventListener('click',function(e){var t=e.target.closest('button[data-c]');if(!t)return;var c=t.getAttribute('data-c');sv(c);if(c==='all')clarity();
+if(window.bt)window.bt('engage',{consent:c});el.remove()});document.body.appendChild(el)}
+function init(){var c=rd();if(c==='all'){clarity();return}if(c==='necessary')return;banner()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
+</script>
+</head>
+<body>
+<button class="lang" id="lang" type="button">EN</button>
+<main>
+  <div class="logo"><img src="ra-logo.svg" alt="Robotikos Akademija"></div>
+  <h1 data-lt="RA testas: <span>Povilo puslapis</span>" data-en="RA test: <span>Povilas's page</span>">RA testas: <span>Povilo puslapis</span></h1>
+  <div class="bar"></div>
+  <p data-lt="Tai bandomasis puslapis. Jei jį matai, paskelbimas veikia." data-en="This is a test page. If you can see it, publishing works.">Tai bandomasis puslapis. Jei jį matai, paskelbimas veikia.</p>
+  <button id="go" type="button" data-cta="test" data-lt="Paspausk mane" data-en="Click me">Paspausk mane</button>
+  <div id="out" aria-live="polite"></div>
+</main>
+<script>
+(function(){var L='lt';
+function apply(){document.documentElement.lang=L;document.querySelectorAll('[data-lt]').forEach(function(e){e.innerHTML=e.getAttribute('data-'+L)});
+document.getElementById('lang').textContent=L==='lt'?'EN':'LT';document.getElementById('out').textContent=''}
+document.getElementById('lang').onclick=function(){L=L==='lt'?'en':'lt';apply()};
+document.getElementById('go').onclick=function(){document.getElementById('out').textContent=L==='lt'?'Veikia! 🤖':'It works! 🤖';if(window.bt)window.bt('cta',{id:'test'})};
+})();
+</script>
+</body>
+</html>
