@@ -85,6 +85,78 @@
     .edittools,#editHint{display:none!important}
   }
   @media (max-width:640px){.page{padding:28px 20px}.types{grid-template-columns:1fr}.beats li{grid-template-columns:1fr}}
+
+  /* ===== 3 psl. — VR pagrindai (tik .vr- klasės) ===== */
+  .vr-sub{color:var(--grey);font-size:13px;margin:2px 0 4px}
+  .vr-h2{margin:22px 0 10px;break-after:avoid;page-break-after:avoid}
+  .vr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;break-inside:avoid;page-break-inside:avoid}
+  .vr-card{background:var(--lav);border-top:4px solid var(--purple);border-radius:0 0 6px 6px;padding:10px 12px 12px;min-width:0;break-inside:avoid;page-break-inside:avoid}
+  .vr-card h3{font-family:'Space Grotesk';font-weight:700;font-size:14px;line-height:1.3;margin-bottom:8px}
+  .vr-card h3 .vr-n{color:var(--gold);margin-right:6px}
+  .vr-fig{background:#fff;border-radius:6px;padding:6px}
+  .vr-fig svg{display:block;width:100%;height:auto;font-family:'Inter',system-ui,sans-serif}
+  .vr-fig .ln{fill:#fff;stroke:var(--ink);stroke-width:1.8;stroke-linejoin:round}
+  .vr-fig .lt{fill:var(--lav2)}
+  .vr-fig .au{fill:#F6E7BF;stroke:var(--gold);stroke-width:2}
+  .vr-fig .ld{fill:none;stroke:var(--ink);stroke-width:1}
+  .vr-fig .lg{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round}
+  .vr-fig .t{font-size:13px;fill:var(--ink)}
+  .vr-fig .tb{font-size:13px;font-weight:700;fill:var(--ink)}
+  .vr-fig .tg{font-size:13px;fill:var(--grey)}
+  .vr-fig .tk{font-size:13px;font-weight:800;fill:var(--gold)}
+  .vr-fig .tw{font-size:13px;font-weight:800;fill:#fff}
+  .vr-card p{font-size:12.5px;line-height:1.5;margin-top:8px}
+  .vr-card p b,.vr-list b{color:var(--purple)}
+  .vr-list{list-style:none}
+  .vr-list li{font-size:12.5px;line-height:1.45;padding:5px 0;border-bottom:1px solid var(--lav2)}
+  .vr-list li:last-child{border-bottom:none}
+  .vr-fig + .vr-list{margin-top:6px}
+  .vr-say{margin-top:8px;background:#fff;border-left:4px solid var(--gold);padding:7px 10px;font-size:13px;display:flex;gap:10px}
+  .vr-say .saytag{padding-top:1px}
+  .vr-dark{background:var(--ink);color:#fff;border-top-color:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .vr-dark h3{color:#F3C969}
+  .vr-exit{list-style:none}
+  .vr-exit li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.18);font-size:13px;line-height:1.45}
+  .vr-exit li:last-child{border-bottom:none}
+  .vr-exit .vr-num{width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--ink);font-family:'Space Grotesk';font-weight:700;display:flex;align-items:center;justify-content:center;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .vr-exit b{color:#F3C969;display:block;font-family:'Space Grotesk';letter-spacing:.02em}
+  .vr-exit-note{font-size:12px;color:#CFC8E6;margin-top:6px}
+  .vr-fix{width:100%;border-collapse:collapse;font-size:13px}
+  .vr-fix th{text-align:left;font-family:'Space Grotesk';font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);padding:7px 12px;background:var(--lav)}
+  .vr-fix td{padding:8px 12px;border-bottom:1px solid var(--lav2);vertical-align:top;line-height:1.45}
+  .vr-fix td:first-child{font-weight:800;width:32%}
+  .vr-fix td b{color:var(--purple)}
+  .vr-fix tr{break-inside:avoid;page-break-inside:avoid}
+  .vr-src{font-size:11.5px;color:var(--grey);margin-top:10px}
+  @media (max-width:640px){
+    .vr-grid{grid-template-columns:1fr;gap:10px}
+    .vr-card{padding:8px 8px 10px}
+    .vr-fig{padding:4px}
+    .vr-fix thead{display:none}
+    .vr-fix tr{display:block;border-bottom:1px solid var(--lav2);padding:6px 0}
+    .vr-fix td{display:block;width:auto!important;border-bottom:none;padding:2px 4px}
+  }
+  @media print{
+    .vr-grid,.vr-card,.vr-fix tr{break-inside:avoid;page-break-inside:avoid}
+    .vr-page{padding-top:24px;padding-bottom:16px}
+    .vr-page h1{font-size:24px!important;margin-bottom:2px}
+    .vr-page .eyebrow{margin-bottom:4px}
+    .vr-sub{font-size:12px}
+    .vr-grid{gap:10px;margin-bottom:10px}
+    .vr-card{padding:6px 8px 8px}
+    .vr-card h3{font-size:13px;margin-bottom:4px}
+    .vr-fig{padding:2px}
+    .vr-card p,.vr-list li{font-size:11px;line-height:1.4}
+    .vr-card p{margin-top:5px}
+    .vr-list li{padding:3px 0}
+    .vr-say{font-size:11px;padding:5px 8px;margin-top:5px}
+    .vr-exit li{font-size:12px;padding:6px 0}
+    .vr-h2{margin:10px 0 6px;font-size:17px}
+    .vr-fix{font-size:11px}
+    .vr-fix td,.vr-fix th{padding:4px 8px}
+    .vr-src{margin-top:6px}
+    .vr-page footer{margin-top:12px}
+  }
 </style>
 </head>
 <body class="">
@@ -137,7 +209,7 @@
     </ul>
   </div>
 
-  <footer><span>BrAIn Club · 1 psl. iš 2</span><span>Klausimai → programos komandai</span></footer>
+  <footer><span>BrAIn Club · 1 psl. iš 3</span><span>Klausimai → programos komandai</span></footer>
 </div>
 
 <!-- ==================== PUSLAPIS 2 ==================== -->
@@ -213,7 +285,358 @@
     </ul>
   </div>
 
-  <footer><span>BrAIn Club · 2 psl. iš 2</span><span>v2 — pavyzdžiai iš 1 bloko (L1–L4)</span></footer>
+  <footer><span>BrAIn Club · 2 psl. iš 3</span><span>v2 — pavyzdžiai iš 1 bloko (L1–L4)</span></footer>
+</div>
+<!-- ==================== PUSLAPIS 3 — VR PAGRINDAI ==================== -->
+<div class="page pagebreak vr-page" contenteditable="false">
+  <div class="eyebrow">Vidinis · VR pagrindai</div>
+  <h1 style="font-size:28px">VR pagrindai: valdikliai, rankos, ribos</h1>
+  <div class="vr-sub">Viskas, ko reikia, kad galėtum padėti vaikui su VR akiniais. Lietuvoje naudojame <b>Meta Quest 3</b>. Airijoje — Quest 2: valdiklių mygtukai ten išdėstyti taip pat.</div>
+
+  <div class="vr-grid">
+    <div class="vr-card">
+      <h3><span class="vr-n">1</span>Kairysis valdiklis</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 182" role="img" aria-label="Kairysis valdiklis iš viršaus: nykštinė svirtis, Y, X ir meniu mygtukas">
+          <path class="ln lt" d="M110 126 L113 168 Q114 177 124 177 L146 177 Q156 177 157 168 L160 126 Z"/>
+          <ellipse class="ln" cx="135" cy="84" rx="82" ry="58"/>
+          <circle class="ln lt" cx="130" cy="56" r="18"/>
+          <circle class="au" cx="130" cy="56" r="11"/>
+          <circle class="au" cx="166" cy="80" r="12"/>
+          <text class="tb" x="166" y="84.5" text-anchor="middle">Y</text>
+          <circle class="au" cx="122" cy="100" r="12"/>
+          <text class="tb" x="122" y="104.5" text-anchor="middle">X</text>
+          <circle class="au" cx="90" cy="100" r="9"/>
+          <path class="ld" d="M85 96.5h10M85 100h10M85 103.5h10"/>
+          <path class="ld" d="M146 50 L228 31"/>
+          <path class="ld" d="M178 80 L228 81"/>
+          <path class="ld" d="M133 106 L228 125"/>
+          <path class="ld" d="M84 107 L52 138"/>
+          <text class="tb" x="232" y="34">Nykštinė svirtis</text>
+          <text class="tg" x="232" y="50">judėti</text>
+          <text x="232" y="86"><tspan class="tb">Y</tspan><tspan class="t"> · atgal</tspan></text>
+          <text x="232" y="130"><tspan class="tb">X</tspan><tspan class="t"> · pasirinkti</tspan></text>
+          <text class="tb" x="6" y="156">Meniu</text>
+          <text class="tg" x="6" y="172">pauzė</text>
+        </svg>
+      </div>
+      <p><b>Meniu ☰</b> — žaidimo meniu, pauzė. <b>Nykštinę svirtį</b> galima ir paspausti žemyn — tada ji veikia kaip mygtukas.</p>
+    </div>
+    <div class="vr-card">
+      <h3>Dešinysis valdiklis</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 182" role="img" aria-label="Dešinysis valdiklis iš viršaus: nykštinė svirtis, B, A ir Meta mygtukas">
+          <path class="ln lt" d="M250 126 L247 168 Q246 177 236 177 L214 177 Q204 177 203 168 L200 126 Z"/>
+          <ellipse class="ln" cx="225" cy="84" rx="82" ry="58"/>
+          <circle class="ln lt" cx="230" cy="56" r="18"/>
+          <circle class="au" cx="230" cy="56" r="11"/>
+          <circle class="au" cx="194" cy="80" r="12"/>
+          <text class="tb" x="194" y="84.5" text-anchor="middle">B</text>
+          <circle class="au" cx="238" cy="100" r="12"/>
+          <text class="tb" x="238" y="104.5" text-anchor="middle">A</text>
+          <circle class="au" cx="270" cy="100" r="10"/>
+          <text class="tb" x="270" y="104.5" text-anchor="middle">∞</text>
+          <path class="ld" d="M214 50 L132 31"/>
+          <path class="ld" d="M182 80 L132 81"/>
+          <path class="ld" d="M227 106 L132 125"/>
+          <path class="ld" d="M276 109 L290 136"/>
+          <text class="tb" x="128" y="34" text-anchor="end">Nykštinė svirtis</text>
+          <text class="tg" x="128" y="50" text-anchor="end">judėti</text>
+          <text x="128" y="86" text-anchor="end"><tspan class="tb">B</tspan><tspan class="t"> · atgal</tspan></text>
+          <text x="128" y="130" text-anchor="end"><tspan class="tb">A</tspan><tspan class="t"> · pasirinkti</tspan></text>
+          <text class="tb" x="258" y="156">Meta mygtukas</text>
+          <text class="tg" x="258" y="172">meniu, „namo“</text>
+        </svg>
+      </div>
+      <p><b>Meta mygtukas</b>: paspausk — pagrindinis meniu („namo“). <b>Laikyk nuspaudęs</b> — <b>sucentruoti vaizdą</b> (valdiklį nukreipk tiesiai į priekį).</p>
+    </div>
+  </div>
+
+  <div class="vr-grid">
+    <div class="vr-card">
+      <h3><span class="vr-n">2</span>Kaip pagriebti</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 214" role="img" aria-label="Valdiklis iš šono: priekinis gaidukas po smiliumi ir šoninis gaidukas po didžiuoju pirštu. Abu spaudžiami kartu.">
+          <text class="tg" x="6" y="20">vaizdas iš šono</text>
+          <g transform="translate(70 -16) scale(.8)">
+            <path class="ln lt" d="M120 70 L166 76 L140 188 Q126 210 100 182 Z"/>
+            <path class="au" d="M176 74 C198 76 206 96 192 108 C184 114 172 106 172 96 Z"/>
+            <path class="au" d="M160 100 C164 108 156 146 148 150 C140 152 138 140 141 126 C144 112 152 96 160 100 Z"/>
+            <rect class="ln" x="56" y="34" width="170" height="44" rx="22" transform="rotate(-4 141 56)"/>
+            <path class="ln lt" d="M124 42 V28 H136 V41"/>
+            <ellipse class="ln lt" cx="130" cy="27" rx="15" ry="5"/>
+          </g>
+          <path class="lg" d="M265 54 q-6 8 0 16 M273 50 q-9 12 0 24"/>
+          <path class="lg" d="M228 84 q-6 8 0 16 M236 80 q-9 12 0 24"/>
+          <circle cx="248" cy="62" r="11" fill="#C79A2E"/>
+          <text class="tw" x="248" y="66.5" text-anchor="middle">1</text>
+          <circle cx="212" cy="92" r="11" fill="#C79A2E"/>
+          <text class="tw" x="212" y="96.5" text-anchor="middle">2</text>
+          <circle cx="16" cy="158" r="10" fill="#C79A2E"/>
+          <text class="tw" x="16" y="162.5" text-anchor="middle">1</text>
+          <text x="34" y="163"><tspan class="tb">Priekinis gaidukas</tspan><tspan class="t"> — smilius</tspan></text>
+          <circle cx="16" cy="182" r="10" fill="#C79A2E"/>
+          <text class="tw" x="16" y="186.5" text-anchor="middle">2</text>
+          <text x="34" y="187"><tspan class="tb">Šoninis gaidukas</tspan><tspan class="t"> — didysis pirštas</tspan></text>
+          <text class="tk" x="34" y="209">1 + 2 kartu = pagriebti</text>
+        </svg>
+      </div>
+      <p>Pagal Meta: priekiniu gaiduku <b>pasirenkama</b>, šoniniu — <b>griebiama</b>. Bet žaidimai skiriasi, todėl mokome spausti <b>abu kartu</b> — tada nereikia spėlioti.</p>
+      <div class="vr-say"><span class="saytag">VAIKUI</span><span>„Suspausk abu gaidukus — smiliumi ir didžiuoju pirštu — ir laikyk. Atleidi — paleidi.“</span></div>
+    </div>
+    <div class="vr-card vr-dark">
+      <h3>Trys būdai išeiti iš VR</h3>
+      <ul class="vr-exit">
+        <li><span class="vr-num">1</span><span><b>Meta mygtukas</b>Atsidaro pagrindinis meniu — „namo“.</span></li>
+        <li><span class="vr-num">2</span><span><b>Dukart bakstelėk akinių šoną</b>Matai tikrą kambarį. Dar kartą dukart — atgal į VR.</span></li>
+        <li><span class="vr-num">3</span><span><b>Nusiimk akinius</b>Paprasčiausia — ir visada galima.</span></li>
+      </ul>
+      <div class="vr-exit-note">Mokome 1-oje pamokoje. Kartok, kol kiekvienas vaikas pasako visus tris.</div>
+    </div>
+  </div>
+
+  <div class="vr-grid">
+    <div class="vr-card">
+      <h3><span class="vr-n">3a</span>Dukart bakstelėk akinių šoną → matai kambarį</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 184" role="img" aria-label="Dukart bakstelėjus akinių šoną matomas tikras kambarys">
+          <path class="ln lt" d="M22 76 h14 v24 h-14 z"/>
+          <path class="ln lt" d="M168 76 h14 v24 h-14 z"/>
+          <rect class="ln" x="34" y="46" width="136" height="84" rx="30"/>
+          <rect class="ln lt" x="50" y="64" width="34" height="48" rx="17"/>
+          <rect class="ln lt" x="120" y="64" width="34" height="48" rx="17"/>
+          <circle cx="67" cy="88" r="5" fill="#241A4A"/>
+          <circle cx="137" cy="88" r="5" fill="#241A4A"/>
+          <circle cx="102" cy="98" r="3.5" fill="#241A4A"/>
+          <path d="M226 38 L190 78" stroke="#241A4A" stroke-width="16" stroke-linecap="round"/>
+          <path d="M226 38 L190 78" stroke="#F6E7BF" stroke-width="12.5" stroke-linecap="round"/>
+          <path class="lg" d="M174 66 q-8 -6 -6 -16 M184 98 q2 10 -4 16"/>
+          <text class="tk" x="204" y="116" style="font-size:18px">×2</text>
+          <path d="M238 86 H262" stroke="#241A4A" stroke-width="2" fill="none"/>
+          <path d="M255 79 L264 86 L255 93" stroke="#241A4A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <rect class="ln lt" x="282" y="40" width="44" height="36" rx="3"/>
+          <path class="ld" d="M304 40 V76 M282 58 H326"/>
+          <rect class="ln" x="292" y="102" width="56" height="8" rx="2"/>
+          <path class="ld" d="M298 110 V130 M342 110 V130" style="stroke-width:1.8"/>
+          <path class="ld" d="M272 130 H356" style="stroke-width:1.8"/>
+          <text class="tb" x="102" y="158" text-anchor="middle">Dukart bakstelėk</text>
+          <text class="tb" x="102" y="174" text-anchor="middle">akinių šoną</text>
+          <text class="t" x="314" y="158" text-anchor="middle">Matai tikrą</text>
+          <text class="t" x="314" y="174" text-anchor="middle">kambarį</text>
+        </svg>
+      </div>
+      <p>Tinka kairysis ar dešinysis šonas. Dar kartą dukart — atgal į VR. <b>Neveikia?</b> Šią funkciją reikia įjungti Passthrough nustatymuose.</p>
+    </div>
+    <div class="vr-card">
+      <h3><span class="vr-n">3b</span>Dukart suduok valdiklius → rankos</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 184" role="img" aria-label="Dukart suduok valdiklius šonais, padėk juos ir valdyk rankomis">
+          <g transform="translate(40 70) rotate(25)">
+            <path class="ln lt" d="M-7 6 L-5 42 Q0 47 5 42 L7 6 Z"/>
+            <ellipse class="ln" cx="0" cy="0" rx="17" ry="12"/>
+          </g>
+          <g transform="translate(82 70) rotate(-25)">
+            <path class="ln lt" d="M-7 6 L-5 42 Q0 47 5 42 L7 6 Z"/>
+            <ellipse class="ln" cx="0" cy="0" rx="17" ry="12"/>
+          </g>
+          <path class="lg" d="M61 48 v-10 M52 51 l-6 -7 M70 51 l6 -7"/>
+          <text class="tk" x="61" y="28" text-anchor="middle" style="font-size:18px">×2</text>
+          <path d="M112 88 H128" stroke="#241A4A" stroke-width="2" fill="none"/>
+          <path d="M122 82 L130 88 L122 94" stroke="#241A4A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <g transform="translate(152 100) rotate(-90) scale(.72)">
+            <path class="ln lt" d="M-7 6 L-5 42 Q0 47 5 42 L7 6 Z"/>
+            <ellipse class="ln" cx="0" cy="0" rx="17" ry="12"/>
+          </g>
+          <g transform="translate(200 100) rotate(-90) scale(.72)">
+            <path class="ln lt" d="M-7 6 L-5 42 Q0 47 5 42 L7 6 Z"/>
+            <ellipse class="ln" cx="0" cy="0" rx="17" ry="12"/>
+          </g>
+          <path class="ld" d="M136 114 H238" style="stroke-width:1.8"/>
+          <path d="M240 88 H252" stroke="#241A4A" stroke-width="2" fill="none"/>
+          <path d="M246 82 L254 88 L246 94" stroke="#241A4A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <g transform="translate(286 88) scale(.9)">
+            <g stroke="#241A4A" stroke-width="11" stroke-linecap="round" fill="none">
+              <path d="M-11 -6 L-13 -32 M-3 -8 L-3 -40 M5 -8 L6 -37 M13 -5 L15 -27 M-14 12 L-27 -4"/>
+            </g>
+            <rect x="-18.5" y="-12.5" width="37" height="41" rx="13" fill="#241A4A"/>
+            <g stroke="#F6E7BF" stroke-width="7.5" stroke-linecap="round" fill="none">
+              <path d="M-11 -6 L-13 -32 M-3 -8 L-3 -40 M5 -8 L6 -37 M13 -5 L15 -27 M-14 12 L-27 -4"/>
+            </g>
+            <rect x="-17" y="-11" width="34" height="38" rx="12" fill="#F6E7BF"/>
+          </g>
+          <g transform="translate(332 88) scale(-.9 .9)">
+            <g stroke="#241A4A" stroke-width="11" stroke-linecap="round" fill="none">
+              <path d="M-11 -6 L-13 -32 M-3 -8 L-3 -40 M5 -8 L6 -37 M13 -5 L15 -27 M-14 12 L-27 -4"/>
+            </g>
+            <rect x="-18.5" y="-12.5" width="37" height="41" rx="13" fill="#241A4A"/>
+            <g stroke="#F6E7BF" stroke-width="7.5" stroke-linecap="round" fill="none">
+              <path d="M-11 -6 L-13 -32 M-3 -8 L-3 -40 M5 -8 L6 -37 M13 -5 L15 -27 M-14 12 L-27 -4"/>
+            </g>
+            <rect x="-17" y="-11" width="34" height="38" rx="12" fill="#F6E7BF"/>
+          </g>
+          <text class="tb" x="61" y="158" text-anchor="middle">Dukart suduok</text>
+          <text class="tb" x="61" y="174" text-anchor="middle">šonais</text>
+          <text class="t" x="187" y="158" text-anchor="middle">Padėk</text>
+          <text class="t" x="187" y="174" text-anchor="middle">ant stalo</text>
+          <text class="t" x="309" y="158" text-anchor="middle">Valdai</text>
+          <text class="t" x="309" y="174" text-anchor="middle">rankomis</text>
+        </svg>
+      </div>
+      <p><b>Atgal prie valdiklių:</b> tiesiog paimk valdiklį į ranką — akiniai persijungia patys. <b>Rankos neveikia?</b> Settings → Hands &amp; body → įjunk Hand and body tracking.</p>
+    </div>
+  </div>
+
+  <div class="vr-grid">
+    <div class="vr-card">
+      <h3>Rankų gestai (be valdiklių)</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 166" role="img" aria-label="Rankų gestai: delnas nuo savęs, suspausti smilių su nykščiu — pasirinkti; delnas į save, suspausti ir palaikyti — Meta mygtukas">
+          <text class="tg" x="90" y="18" text-anchor="middle">delnas nuo savęs</text>
+          <text class="tg" x="270" y="18" text-anchor="middle">delnas į save</text>
+          <path d="M180 28 V158" stroke="#EAE4F7" stroke-width="2"/>
+          <g transform="translate(102 80) scale(1.05)">
+            <g stroke="#241A4A" stroke-width="12" stroke-linecap="round" fill="none">
+              <path d="M-2 0 L-2 -36 M8 0 L10 -32 M16 4 L20 -22"/>
+              <path d="M-12 2 Q-22 -28 -33 -12"/>
+              <path d="M-14 30 Q-42 24 -34 -4"/>
+            </g>
+            <rect x="-19.5" y="-1.5" width="41" height="43" rx="14" fill="#241A4A"/>
+            <g stroke="#FFFFFF" stroke-width="8.5" stroke-linecap="round" fill="none">
+              <path d="M-2 0 L-2 -36 M8 0 L10 -32 M16 4 L20 -22"/>
+              <path d="M-12 2 Q-22 -28 -33 -12"/>
+              <path d="M-14 30 Q-42 24 -34 -4"/>
+            </g>
+            <rect x="-18" y="0" width="38" height="40" rx="13" fill="#FFFFFF"/>
+            <circle cx="-34" cy="-8" r="7" fill="#C79A2E"/>
+          </g>
+          <g transform="translate(258 80) scale(-1.05 1.05)">
+            <g stroke="#241A4A" stroke-width="12" stroke-linecap="round" fill="none">
+              <path d="M-2 0 L-2 -36 M8 0 L10 -32 M16 4 L20 -22"/>
+              <path d="M-12 2 Q-22 -28 -33 -12"/>
+              <path d="M-14 30 Q-42 24 -34 -4"/>
+            </g>
+            <rect x="-19.5" y="-1.5" width="41" height="43" rx="14" fill="#241A4A"/>
+            <g stroke="#F6E7BF" stroke-width="8.5" stroke-linecap="round" fill="none">
+              <path d="M-2 0 L-2 -36 M8 0 L10 -32 M16 4 L20 -22"/>
+              <path d="M-12 2 Q-22 -28 -33 -12"/>
+              <path d="M-14 30 Q-42 24 -34 -4"/>
+            </g>
+            <rect x="-18" y="0" width="38" height="40" rx="13" fill="#F6E7BF"/>
+            <path d="M-10 14 Q2 22 14 12 M-8 26 Q4 32 14 24" stroke="#C79A2E" stroke-width="1.6" fill="none"/>
+            <circle cx="-34" cy="-8" r="7" fill="#C79A2E"/>
+          </g>
+          <text class="tb" x="90" y="142" text-anchor="middle">Rodyk ir suspausk</text>
+          <text class="t" x="90" y="158" text-anchor="middle">= pasirinkti</text>
+          <text class="tb" x="270" y="142" text-anchor="middle">Suspausk ir palaikyk</text>
+          <text class="t" x="270" y="158" text-anchor="middle">= Meta mygtukas</text>
+        </svg>
+      </div>
+      <ul class="vr-list">
+        <li><b>Meta mygtukas rankomis:</b> pažiūrėk į delną akių aukštyje, suspausk smilių ir nykštį ir palaikyk, kol mygtukas užsipildys.</li>
+        <li><b>Slinkti:</b> suspausk ir tempk aukštyn, žemyn ar į šonus.</li>
+        <li>L1 gide: „į vidų“ = delnas į save, „į išorę“ = delnas nuo savęs.</li>
+      </ul>
+    </div>
+    <div class="vr-card">
+      <h3><span class="vr-n">4</span>Ribos (boundary)</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 196" role="img" aria-label="Ribos iš viršaus: stovint vietoje apie 1 metro ratas; judant erdvėje nubrėžtas plotas bent 2 x 2 metrai, prie krašto tinklelio siena">
+          <circle cx="85" cy="74" r="54" fill="#F6E7BF" fill-opacity=".45" stroke="#C79A2E" stroke-width="2" stroke-dasharray="6 4"/>
+          <ellipse class="ln lt" cx="85" cy="76" rx="18" ry="8"/>
+          <circle class="ln" cx="85" cy="74" r="8"/>
+          <path class="ld" d="M31 150 H139 M31 145 V155 M139 145 V155"/>
+          <text class="tb" x="85" y="143" text-anchor="middle">≈ 1 m</text>
+          <path d="M180 10 V188" stroke="#EAE4F7" stroke-width="2"/>
+          <path d="M205 26 L330 18 L350 66 L340 132 L232 136 L200 92 Z" fill="#F6E7BF" fill-opacity=".45" stroke="#C79A2E" stroke-width="2" stroke-dasharray="6 4"/>
+          <path d="M330 18 L350 66 L340 132" stroke="#241A4A" stroke-width="1.6" fill="none"/>
+          <path d="M320 22 L339 67 L330 129" stroke="#241A4A" stroke-width="1" fill="none"/>
+          <path class="ld" d="M323 20 L332 22 M327 30 L336 31 M331 40 L340 41 M335 50 L344 51 M339 60 L348 62 M338 72 L348 73 M337 82 L347 83 M335 92 L345 94 M334 102 L344 103 M332 112 L342 114 M331 122 L341 123"/>
+          <ellipse class="ln lt" cx="266" cy="80" rx="18" ry="8"/>
+          <circle class="ln" cx="266" cy="78" r="8"/>
+          <path class="lg" d="M240 56 q-14 24 0 48 M292 56 q14 24 0 48"/>
+          <text class="tb" x="270" y="156" text-anchor="middle">≥ 2 × 2 m</text>
+          <text class="tb" x="85" y="172" text-anchor="middle">Stovėk vietoje</text>
+          <text class="tg" x="85" y="188" text-anchor="middle">Stationary</text>
+          <text class="tb" x="270" y="172" text-anchor="middle">Judėk erdvėje</text>
+          <text class="tg" x="270" y="188" text-anchor="middle">Roomscale</text>
+        </svg>
+      </div>
+      <p><b>Stovint vietoje</b> akiniai patys sukuria ratą ~1 × 1 m. <b>Judant</b> ribą nubrėžk valdikliu ant grindų — bent 2 × 2 m. Prie krašto atsiranda tinklelio siena, už jos rodomas tikras kambarys.</p>
+      <div class="vr-say"><span class="saytag">KLASĖJE</span><span>Kiekvienas vaikas — savo erdvėje: ištiestos rankos nesiekia kito vaiko, sienos ar stalo. Patikrink: ištiesk rankas ir lėtai apsisuk.</span></div>
+    </div>
+  </div>
+
+  <div class="vr-grid">
+    <div class="vr-card">
+      <h3><span class="vr-n">5</span>Akiniai — mygtukai</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 210" role="img" aria-label="Meta Quest 3 iš vidaus: įjungimo mygtukas kairiajame šone, lęšių ratukas apačioje kairėje">
+          <path class="ln lt" d="M66 78 L40 70 L40 108 L66 102 Z"/>
+          <path class="ln lt" d="M294 78 L320 70 L320 108 L294 102 Z"/>
+          <rect class="ln" x="66" y="40" width="228" height="118" rx="44"/>
+          <path class="ln lt" d="M98 62 H262 Q280 62 280 80 V120 Q280 140 262 140 H214 Q202 140 196 128 L190 116 Q180 102 170 116 L164 128 Q158 140 146 140 H98 Q80 140 80 120 V80 Q80 62 98 62 Z"/>
+          <circle class="ln" cx="136" cy="98" r="27"/>
+          <circle cx="136" cy="98" r="17" fill="none" stroke="#EAE4F7" stroke-width="2"/>
+          <circle class="ln" cx="224" cy="98" r="27"/>
+          <circle cx="224" cy="98" r="17" fill="none" stroke="#EAE4F7" stroke-width="2"/>
+          <rect class="au" x="60" y="52" width="11" height="28" rx="5.5"/>
+          <rect class="au" x="106" y="153" width="32" height="12" rx="4"/>
+          <path class="ld" d="M112 155 V163 M117 155 V163 M122 155 V163 M127 155 V163 M132 155 V163"/>
+          <path class="ld" d="M60 58 L36 47"/>
+          <path class="ld" d="M108 164 L60 174"/>
+          <text class="tb" x="6" y="22">Įjungimo mygtukas</text>
+          <text class="tg" x="6" y="38">kairiajame šone</text>
+          <text class="tb" x="6" y="188">Lęšių ratukas</text>
+          <text class="tg" x="6" y="204">apačioje kairėje</text>
+          <text class="tg" x="40" y="128" text-anchor="middle">kairė</text>
+          <text class="tg" x="320" y="128" text-anchor="middle">dešinė</text>
+        </svg>
+      </div>
+      <p>Vaizdas iš vidaus — kaip užsidedant. Įjungti: laikyk mygtuką ~3 s. Garsas: Meta mygtukas → viršutinė juosta → slankiklis.</p>
+    </div>
+    <div class="vr-card">
+      <h3>Kaip užsidėti</h3>
+      <div class="vr-fig" contenteditable="false">
+        <svg viewBox="0 0 360 212" role="img" aria-label="Galva iš šono su akiniais: pirma priveržiamas galinis dirželis, tada viršutinis">
+          <circle class="ln" cx="150" cy="82" r="56"/>
+          <path class="ln" d="M203 72 L218 94 L202 98"/>
+          <path class="ld" d="M118 132 L120 150 M174 132 L176 150" style="stroke-width:1.8"/>
+          <ellipse class="ln" cx="142" cy="88" rx="8" ry="12"/>
+          <path d="M188 80 C164 82 128 84 110 86 M110 86 C100 80 96 72 96 64 M110 86 C102 94 99 102 100 110" stroke="#241A4A" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M188 80 C164 82 128 84 110 86 M110 86 C100 80 96 72 96 64 M110 86 C102 94 99 102 100 110" stroke="#FFFFFF" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M198 58 C190 12 120 6 98 62" stroke="#241A4A" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M198 58 C190 12 120 6 98 62" stroke="#FFFFFF" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <rect class="ln lt" x="186" y="56" width="52" height="42" rx="12"/>
+          <circle cx="86" cy="88" r="11" fill="#C79A2E"/>
+          <text class="tw" x="86" y="92.5" text-anchor="middle">1</text>
+          <circle cx="150" cy="22" r="11" fill="#C79A2E"/>
+          <text class="tw" x="150" y="26.5" text-anchor="middle">2</text>
+          <circle cx="16" cy="176" r="10" fill="#C79A2E"/>
+          <text class="tw" x="16" y="180.5" text-anchor="middle">1</text>
+          <text x="34" y="181"><tspan class="tb">Galinis dirželis</tspan><tspan class="t"> — priveržk pirma</tspan></text>
+          <circle cx="16" cy="200" r="10" fill="#C79A2E"/>
+          <text class="tw" x="16" y="204.5" text-anchor="middle">2</text>
+          <text x="34" y="205"><tspan class="tb">Viršutinis</tspan><tspan class="t"> — kad akiniai nespaustų veido</tspan></text>
+        </svg>
+      </div>
+      <p>Pirma atlaisvink abu dirželius, uždėk akinius ant veido, tada priveržk <b>1 → 2</b>.</p>
+    </div>
+  </div>
+
+  <h2 class="vr-h2">Kas dažnai nutinka → ką daryti</h2>
+  <table class="vr-fix">
+    <thead><tr><th>Kas nutiko</th><th>Ką daryti</th></tr></thead>
+    <tbody>
+      <tr><td>Vaizdas pasviręs ar pasislinkęs</td><td>Nukreipk valdiklį tiesiai į priekį ir <b>laikyk nuspaudęs Meta mygtuką</b> — vaizdas susicentruos.</td></tr>
+      <tr><td>Valdiklis dingo ar nereaguoja</td><td>Paspausk bet kurį mygtuką — valdiklis pabus. Laikyk jį priešais akinius, kad kameros jį matytų. Lemputė nešviečia arba akiniuose matai raudoną tašką — keisk bateriją.</td></tr>
+      <tr><td>Vaizdas neryškus</td><td>Sukiok <b>lęšių ratuką</b>, kol vaizdas aiškus. Pakreipk akinius šiek tiek aukštyn ar žemyn. Lęšius valyk tik sausa mikropluošto šluoste.</td></tr>
+      <tr><td>Ribos „pabėgo“, grindys per aukštai</td><td>Nubrėžk ribą iš naujo: Meta mygtukas → viršutinė juosta (Quick controls) → Settings → Environment setup → Boundary → <b>Create new boundary</b>. Ten pat yra ir <b>Set floor level</b> (grindų aukštis).</td></tr>
+      <tr><td>Vietoj valdiklių rodomos rankos</td><td>Paimk valdiklį į ranką — akiniai persijungs patys. Jei valdiklis nepabudo, paspausk bet kurį jo mygtuką.</td></tr>
+    </tbody>
+  </table>
+  <div class="vr-src">Faktai patikrinti Meta Quest pagalbos ir Meta kūrėjų puslapiuose, 2026-11.</div>
+
+  <footer><span>BrAIn Club · 3 psl. iš 3</span><span>VR pagrindai · Meta Quest 3</span></footer>
 </div>
 </div>
 
